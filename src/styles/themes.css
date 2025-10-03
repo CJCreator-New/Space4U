@@ -1,0 +1,113 @@
+/* Light Theme (Default) */
+:root {
+  --primary: #4F46E5;
+  --primary-light: #6366F1;
+  --secondary: #10B981;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --background: #FFFFFF;
+  --surface: #F9FAFB;
+  --text-primary: #111827;
+  --text-secondary: #6B7280;
+  --border: #E5E7EB;
+  --border-light: #F3F4F6;
+}
+
+/* Dark Theme */
+.dark {
+  --primary: #6366F1;
+  --primary-light: #8B5CF6;
+  --secondary: #10B981;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --background: #1F2937;
+  --surface: #374151;
+  --text-primary: #F9FAFB;
+  --text-secondary: #D1D5DB;
+  --border: #4B5563;
+  --border-light: #6B7280;
+}
+
+/* Ensure smooth transitions between themes */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Dark mode specific overrides */
+.dark .card {
+  @apply bg-surface border-gray-600;
+}
+
+.dark .bg-gray-50 {
+  @apply bg-gray-700;
+}
+
+.dark .bg-gray-100 {
+  @apply bg-gray-600;
+}
+
+.dark .bg-gray-200 {
+  @apply bg-gray-500;
+}
+
+.dark .text-gray-600 {
+  @apply text-gray-300;
+}
+
+.dark .text-gray-700 {
+  @apply text-gray-200;
+}
+
+.dark .text-gray-800 {
+  @apply text-gray-100;
+}
+
+.dark .text-gray-900 {
+  @apply text-white;
+}
+
+.dark .border-gray-200 {
+  @apply border-gray-600;
+}
+
+.dark .border-gray-300 {
+  @apply border-gray-500;
+}
+
+/* Chart backgrounds for dark mode */
+.dark .recharts-wrapper {
+  @apply bg-surface;
+}
+
+.dark .recharts-cartesian-grid line {
+  stroke: #4B5563;
+}
+
+/* Modal overlays */
+.dark .modal-overlay {
+  @apply bg-black/70;
+}
+
+/* Skeleton loading in dark mode */
+.dark .animate-pulse > * {
+  @apply bg-gray-600;
+}
+
+/* Toast notifications */
+.dark .toast-success {
+  @apply bg-green-600;
+}
+
+.dark .toast-error {
+  @apply bg-red-600;
+}
+
+.dark .toast-info {
+  @apply bg-blue-600;
+}
+
+.dark .toast-warning {
+  @apply bg-orange-600;
+}

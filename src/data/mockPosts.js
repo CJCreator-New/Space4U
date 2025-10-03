@@ -1,0 +1,222 @@
+export const mockPosts = [
+  {
+    id: 1,
+    circleId: 1,
+    author: { username: "AnxiousBear", avatar: "🐻" },
+    content: "Having a tough day with work deadlines. Just needed to share somewhere safe. The breathing exercises aren't working today.",
+    timestamp: "2 hours ago",
+    hearts: 23,
+    commentCount: 8,
+    isHearted: false,
+    tags: ["work-stress", "breathing"]
+  },
+  {
+    id: 2,
+    circleId: 2,
+    author: { username: "HopefulSun", avatar: "☀️" },
+    content: "Three weeks anxiety-free! Small win but it matters to me. Still taking it one day at a time.",
+    timestamp: "4 hours ago",
+    hearts: 47,
+    commentCount: 12,
+    isHearted: false,
+    tags: ["milestone", "progress"]
+  },
+  {
+    id: 3,
+    circleId: 3,
+    author: { username: "TiredOwl", avatar: "🦉" },
+    content: "Does anyone else feel guilty for taking mental health days? My manager was understanding but I still feel like I'm letting everyone down.",
+    timestamp: "6 hours ago",
+    hearts: 31,
+    commentCount: 15,
+    isHearted: false,
+    tags: ["guilt", "work-life"]
+  },
+  {
+    id: 4,
+    circleId: 1,
+    author: { username: "CalmWave", avatar: "🌊" },
+    content: "Found a breathing technique that actually helps. 4-7-8 method: inhale 4, hold 7, exhale 8. Happy to share more details if anyone wants.",
+    timestamp: "8 hours ago",
+    hearts: 38,
+    commentCount: 9,
+    isHearted: false,
+    tags: ["techniques", "breathing", "helpful"]
+  },
+  {
+    id: 5,
+    circleId: 4,
+    author: { username: "LonelyHeart", avatar: "💙" },
+    content: "Ended a toxic relationship last month. Still processing but I know it was right. Some days are harder than others.",
+    timestamp: "12 hours ago",
+    hearts: 29,
+    commentCount: 11,
+    isHearted: false,
+    tags: ["relationships", "healing"]
+  },
+  {
+    id: 6,
+    circleId: 5,
+    author: { username: "StudyBug", avatar: "🐛" },
+    content: "Finals week is killing me. Can't sleep, can't eat properly. Anyone have tips for managing study anxiety?",
+    timestamp: "1 day ago",
+    hearts: 19,
+    commentCount: 7,
+    isHearted: false,
+    tags: ["finals", "study-tips"]
+  },
+  {
+    id: 7,
+    circleId: 2,
+    author: { username: "QuietMoon", avatar: "🌙" },
+    content: "Bad brain day today. Everything feels overwhelming. Just reminding myself this feeling will pass.",
+    timestamp: "1 day ago",
+    hearts: 42,
+    commentCount: 16,
+    isHearted: false,
+    tags: ["bad-days", "reminder"]
+  },
+  {
+    id: 8,
+    circleId: 6,
+    author: { username: "RainbowFox", avatar: "🦊" },
+    content: "Coming out to my parents this weekend. Nervous but ready. Your support here has given me so much courage.",
+    timestamp: "2 days ago",
+    hearts: 56,
+    commentCount: 18,
+    isHearted: false,
+    tags: ["coming-out", "courage"]
+  },
+  {
+    id: 9,
+    circleId: 7,
+    author: { username: "TiredParent", avatar: "😴" },
+    content: "Baby didn't sleep again. I love them but I'm running on empty. How do other parents cope with the exhaustion?",
+    timestamp: "2 days ago",
+    hearts: 24,
+    commentCount: 13,
+    isHearted: false,
+    tags: ["sleep-deprivation", "parenting"]
+  },
+  {
+    id: 10,
+    circleId: 8,
+    author: { username: "SelfCareCat", avatar: "🐱" },
+    content: "Started a gratitude journal this week. Writing down 3 things daily. It's small but shifting my perspective.",
+    timestamp: "3 days ago",
+    hearts: 33,
+    commentCount: 6,
+    isHearted: false,
+    tags: ["gratitude", "journaling"]
+  },
+  {
+    id: 11,
+    circleId: 1,
+    author: { username: "PanicPanda", avatar: "🐼" },
+    content: "Panic attack at the grocery store today. A kind stranger helped me through it. Humanity still exists.",
+    timestamp: "3 days ago",
+    hearts: 67,
+    commentCount: 22,
+    isHearted: false,
+    tags: ["panic-attack", "kindness"]
+  },
+  {
+    id: 12,
+    circleId: 3,
+    author: { username: "BurnoutBee", avatar: "🐝" },
+    content: "Thinking about quitting my job. The stress is affecting my health but I need the income. Feeling trapped.",
+    timestamp: "4 days ago",
+    hearts: 28,
+    commentCount: 14,
+    isHearted: false,
+    tags: ["burnout", "career-change"]
+  },
+  {
+    id: 13,
+    circleId: 2,
+    author: { username: "StrugglingStar", avatar: "⭐" },
+    content: "Therapy session was rough today. Unpacked some heavy stuff. Feeling raw but also lighter somehow.",
+    timestamp: "4 days ago",
+    hearts: 41,
+    commentCount: 10,
+    isHearted: false,
+    tags: ["therapy", "healing"]
+  },
+  {
+    id: 14,
+    circleId: 4,
+    author: { username: "LoveBird", avatar: "🕊️" },
+    content: "Partner doesn't understand my anxiety. They mean well but 'just relax' isn't helpful. How do I explain it better?",
+    timestamp: "5 days ago",
+    hearts: 35,
+    commentCount: 17,
+    isHearted: false,
+    tags: ["relationships", "understanding"]
+  },
+  {
+    id: 15,
+    circleId: 8,
+    author: { username: "MindfulMouse", avatar: "🐭" },
+    content: "Meditation streak: 30 days! Started with just 2 minutes. Now up to 15. Progress isn't always linear but it's progress.",
+    timestamp: "5 days ago",
+    hearts: 52,
+    commentCount: 8,
+    isHearted: false,
+    tags: ["meditation", "milestone"]
+  },
+  {
+    id: 16,
+    circleId: 5,
+    author: { username: "StressedStudent", avatar: "📖" },
+    content: "Imposter syndrome is hitting hard. Everyone seems smarter than me. How do you deal with feeling like a fraud?",
+    timestamp: "6 days ago",
+    hearts: 44,
+    commentCount: 19,
+    isHearted: false,
+    tags: ["imposter-syndrome", "confidence"]
+  },
+  {
+    id: 17,
+    circleId: 6,
+    author: { username: "ProudButterfly", avatar: "🦋" },
+    content: "One year on HRT today! The journey has been challenging but I'm finally feeling like myself.",
+    timestamp: "6 days ago",
+    hearts: 73,
+    commentCount: 25,
+    isHearted: false,
+    tags: ["transition", "milestone"]
+  },
+  {
+    id: 18,
+    circleId: 7,
+    author: { username: "NewMomBear", avatar: "🐻" },
+    content: "Postpartum anxiety is real. Love my baby but the constant worry is exhausting. Seeing a therapist next week.",
+    timestamp: "1 week ago",
+    hearts: 39,
+    commentCount: 12,
+    isHearted: false,
+    tags: ["postpartum", "anxiety"]
+  },
+  {
+    id: 19,
+    circleId: 1,
+    author: { username: "BreathingBird", avatar: "🐦" },
+    content: "Social anxiety made me cancel plans again. Friends are understanding but I feel like I'm missing out on life.",
+    timestamp: "1 week ago",
+    hearts: 26,
+    commentCount: 9,
+    isHearted: false,
+    tags: ["social-anxiety", "isolation"]
+  },
+  {
+    id: 20,
+    circleId: 8,
+    author: { username: "WellnessWolf", avatar: "🐺" },
+    content: "Bad mental health day turned around with a walk in nature. Sometimes the simplest things help the most.",
+    timestamp: "1 week ago",
+    hearts: 31,
+    commentCount: 5,
+    isHearted: false,
+    tags: ["nature", "self-care"]
+  }
+]
