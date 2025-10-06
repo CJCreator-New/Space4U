@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Home, Users, Brain, User, Activity, Heart } from 'lucide-react'
+import { Home, Users, Brain, User, Activity, Heart, Sparkles, Building2 } from 'lucide-react'
 
 const navItems = [
   { path: '/', icon: Home, label: 'Home' },
@@ -7,6 +7,8 @@ const navItems = [
   { path: '/insights', icon: Brain, label: 'Insights' },
   { path: '/gratitude', icon: Heart, label: 'Gratitude' },
   { path: '/tools', icon: Activity, label: 'Tools' },
+  { path: '/analytics', icon: Sparkles, label: 'Analytics' },
+  { path: '/professional', icon: Building2, label: 'Professional' },
   { path: '/profile', icon: User, label: 'Profile' },
 ]
 

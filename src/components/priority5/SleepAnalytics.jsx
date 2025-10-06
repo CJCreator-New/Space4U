@@ -3,7 +3,7 @@ import { Moon, TrendingUp, Clock } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
 function SleepAnalytics() {
-  const [sleepData, setS leepData] = useState([])
+  const [sleepData, setSleepData] = useState([])
   const [stats, setStats] = useState({ avgQuality: 0, avgHours: 0, sleepDebt: 0 })
 
   useEffect(() => {
@@ -20,7 +20,7 @@ function SleepAnalytics() {
     const avgHours = last30.reduce((sum, l) => sum + l.hours, 0) / last30.length || 0
     const sleepDebt = Math.max(0, (8 - avgHours) * 30)
 
-    setS leepData(chartData)
+    setSleepData(chartData)
     setStats({ avgQuality: avgQuality.toFixed(1), avgHours: avgHours.toFixed(1), sleepDebt: sleepDebt.toFixed(1) })
   }, [])
 
