@@ -1,0 +1,48 @@
+export const DEFAULT_TAGS = [
+  { id: 'work', label: 'Work', color: 'blue', category: 'productivity' },
+  { id: 'productive', label: 'Productive', color: 'green', category: 'productivity' },
+  { id: 'stressed', label: 'Stressed', color: 'red', category: 'productivity' },
+  { id: 'exercise', label: 'Exercise', color: 'emerald', category: 'health' },
+  { id: 'sleep', label: 'Sleep', color: 'indigo', category: 'health' },
+  { id: 'tired', label: 'Tired', color: 'gray', category: 'health' },
+  { id: 'energetic', label: 'Energetic', color: 'yellow', category: 'health' },
+  { id: 'social', label: 'Social', color: 'pink', category: 'social' },
+  { id: 'family', label: 'Family', color: 'rose', category: 'social' },
+  { id: 'friends', label: 'Friends', color: 'purple', category: 'social' },
+  { id: 'lonely', label: 'Lonely', color: 'slate', category: 'social' },
+  { id: 'anxious', label: 'Anxious', color: 'orange', category: 'mental' },
+  { id: 'calm', label: 'Calm', color: 'teal', category: 'mental' },
+  { id: 'motivated', label: 'Motivated', color: 'lime', category: 'mental' },
+  { id: 'overwhelmed', label: 'Overwhelmed', color: 'red', category: 'mental' },
+  { id: 'meditation', label: 'Meditation', color: 'violet', category: 'activity' },
+  { id: 'therapy', label: 'Therapy', color: 'cyan', category: 'activity' },
+  { id: 'hobby', label: 'Hobby', color: 'amber', category: 'activity' },
+]
+
+export const TAG_COLORS = {
+  blue: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
+  green: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
+  red: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
+  emerald: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',
+  indigo: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
+  gray: 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
+  yellow: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300',
+  pink: 'bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-300',
+  rose: 'bg-rose-100 text-rose-700 dark:bg-rose-900 dark:text-rose-300',
+  purple: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300',
+  slate: 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300',
+  orange: 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300',
+  teal: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+  lime: 'bg-lime-100 text-lime-700 dark:bg-lime-900 dark:text-lime-300',
+  violet: 'bg-violet-100 text-violet-700 dark:bg-violet-900 dark:text-violet-300',
+  cyan: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900 dark:text-cyan-300',
+  amber: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
+}
+
+export const TAG_CATEGORIES = {
+  productivity: { label: 'Work & Productivity', icon: '💼' },
+  health: { label: 'Physical Health', icon: '💪' },
+  social: { label: 'Social & Relationships', icon: '👥' },
+  mental: { label: 'Mental & Emotional', icon: '🧠' },
+  activity: { label: 'Activities', icon: '🎯' },
+}

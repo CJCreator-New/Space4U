@@ -4,7 +4,13 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Anonymous peer support platform for mental health",
-  "keywords": ["mental-health", "support", "community", "wellness", "react"],
+  "keywords": [
+    "mental-health",
+    "support",
+    "community",
+    "wellness",
+    "react"
+  ],
   "author": "Space4U Team",
   "license": "MIT",
   "homepage": "https://space4u.app",
@@ -22,6 +28,7 @@
     "analyze": "npx vite-bundle-analyzer"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.58.0",
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

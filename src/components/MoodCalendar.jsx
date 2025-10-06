@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, X, Edit, Trash2 } from 'lucide-react'
+import { useMoods } from '../hooks/useMoods'
 
 const moodColors = {
   5: '#10B981', // Amazing - green
@@ -20,22 +21,9 @@ const moodLabels = {
 function MoodCalendar() {
   const [view, setView] = useState('week')
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [moods, setMoods] = useState({})
+  const { moods, loading } = useMoods()
   const [selectedDay, setSelectedDay] = useState(null)
   const [showModal, setShowModal] = useState(false)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    loadMoods()
-  }, [])
-
-  const loadMoods = () => {
-    const savedMoods = localStorage.getItem('safespace_moods')
-    if (savedMoods) {
-      setMoods(JSON.parse(savedMoods))
-    }
-    setLoading(false)
-  }
 
   const getWeekDates = (date) => {
     const week = []
@@ -105,12 +93,12 @@ function MoodCalendar() {
     }
   }
 
-  const deleteMood = () => {
+  const deleteMood = async () => {
     if (selectedDay) {
       const dateKey = formatDateKey(selectedDay.date)
+      // TODO: Add delete functionality to useMoods hook
       const updatedMoods = { ...moods }
       delete updatedMoods[dateKey]
-      setMoods(updatedMoods)
       localStorage.setItem('safespace_moods', JSON.stringify(updatedMoods))
       setShowModal(false)
     }

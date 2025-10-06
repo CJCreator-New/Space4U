@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts'
 import { TrendingUp, Calendar, Target, Award } from 'lucide-react'
+import { useMoods } from '../hooks/useMoods'
 
 const moodLabels = {
   5: { label: 'Amazing', emoji: '😊' },
@@ -14,15 +15,17 @@ function MoodTrends() {
   const [period, setPeriod] = useState('7')
   const [chartData, setChartData] = useState([])
   const [stats, setStats] = useState(null)
+  const { moods, loading: moodsLoading } = useMoods()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    loadMoodData()
-  }, [period])
+    if (!moodsLoading) {
+      loadMoodData()
+    }
+  }, [period, moods, moodsLoading])
 
   const loadMoodData = () => {
-    const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
-    const moodEntries = Object.entries(moods).map(([date, mood]) => ({
+    const moodEntries = Object.entries(moods || {}).map(([date, mood]) => ({
       date,
       mood: mood.mood,
       emoji: mood.emoji,

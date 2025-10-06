@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { addPoints, POINT_VALUES, checkMoodLogBadges } from '../utils/badgeSystem'
 import { queueMoodLog } from '../utils/offlineQueue'
+import { useMoods } from '../hooks/useMoods'
+import TagSelector from './mood/TagSelector'
 
 const moods = [
   { emoji: '😊', label: 'Amazing', value: 5, color: '#10B981' },
@@ -13,6 +15,7 @@ const moods = [
 function MoodTracker({ onMoodLogged }) {
   const [selectedMood, setSelectedMood] = useState(null)
   const [note, setNote] = useState('')
+  const [selectedTags, setSelectedTags] = useState([])
   const [showNote, setShowNote] = useState(false)
   const [isLogged, setIsLogged] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
@@ -31,17 +34,18 @@ function MoodTracker({ onMoodLogged }) {
     day: 'numeric' 
   })
 
+  const { moods: moodsData, saveMood } = useMoods()
+
   useEffect(() => {
-    const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
-    const todayMood = moods[today]
+    const todayMood = moodsData[today]
     
     if (todayMood) {
       setTodaysMood(todayMood)
       setIsLogged(true)
     }
     
-    calculateStreak(moods)
-  }, [today])
+    calculateStreak(moodsData)
+  }, [today, moodsData])
 
   const calculateStreak = (moods) => {
     let streakCount = 0
@@ -67,34 +71,32 @@ function MoodTracker({ onMoodLogged }) {
     setShowNote(true)
   }
 
-  const handleLogMood = () => {
-    const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
-    
+  const handleLogMood = async () => {
     const moodData = {
       mood: selectedMood.value,
       emoji: selectedMood.emoji,
       label: selectedMood.label,
       note: note.trim(),
-      timestamp: new Date().toISOString(),
-      date: today
+      tags: selectedTags,
+      timestamp: new Date().toISOString()
     }
     
-    moods[today] = moodData
-    localStorage.setItem('safespace_moods', JSON.stringify(moods))
+    // Save to Supabase or localStorage
+    await saveMood(today, moodData)
     
     // Queue for offline sync
-    queueMoodLog(moodData)
+    queueMoodLog({ ...moodData, date: today })
     
     // Add points and check for badge unlocks
     addPoints(POINT_VALUES.moodLog, 'Mood logged')
     checkMoodLogBadges()
     
     setShowSuccess(true)
-    calculateStreak(moods)
+    calculateStreak({ ...moodsData, [today]: moodData })
     
     setTimeout(() => {
       setShowSuccess(false)
-      setTodaysMood(moods[today])
+      setTodaysMood(moodData)
       setIsLogged(true)
       setSelectedMood(null)
       setNote('')
@@ -192,6 +194,14 @@ function MoodTracker({ onMoodLogged }) {
       {showNote && (
         <div className="overflow-hidden transition-all duration-300 ease-out">
           <div className="mb-4">
+            <TagSelector 
+              selectedTags={selectedTags}
+              onChange={setSelectedTags}
+              maxTags={5}
+            />
+          </div>
+          
+          <div className="mb-4">
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value.slice(0, 200))}
@@ -219,6 +229,7 @@ function MoodTracker({ onMoodLogged }) {
                 setSelectedMood(null)
                 setShowNote(false)
                 setNote('')
+                setSelectedTags([])
               }}
               className="text-text-secondary dark:text-gray-300 hover:text-text-primary dark:hover:text-white transition-colors"
             >

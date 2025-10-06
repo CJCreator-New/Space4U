@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Search, Heart, Play, Book, Phone, AlertTriangle, Clock, User, Bookmark } from 'lucide-react'
 import { mockResources } from '../data/mockResources'
-import BreathingExercisePlayer from '../components/BreathingExercisePlayer'
+import BreathingExercise from '../components/resources/BreathingExercise'
 import { addPoints, POINT_VALUES } from '../utils/badgeSystem'
 
 function ResourceLibraryPage() {
@@ -59,48 +59,7 @@ function ResourceLibraryPage() {
   }
 
   const renderBreathingExercises = () => {
-    const exercises = filterResources(mockResources.breathingExercises, 'breathing')
-
-    return (
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {exercises.map((exercise) => (
-          <div key={exercise.id} className="card p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <h3 className="font-bold text-text-primary mb-2">{exercise.title}</h3>
-                <p className="text-text-secondary text-sm mb-3">{exercise.description}</p>
-                <div className="flex items-center gap-4 text-xs text-text-secondary mb-4">
-                  <div className="flex items-center gap-1">
-                    <Clock size={12} />
-                    {exercise.duration} min
-                  </div>
-                  <span className="px-2 py-1 bg-primary/10 text-primary rounded-full">
-                    {exercise.difficulty}
-                  </span>
-                </div>
-              </div>
-              <button
-                onClick={() => toggleBookmark(exercise.id, 'breathing')}
-                className={`p-2 rounded-full transition-colors ${
-                  isBookmarked(exercise.id, 'breathing')
-                    ? 'text-red-500 bg-red-50'
-                    : 'text-text-secondary hover:text-red-500'
-                }`}
-              >
-                <Heart size={16} fill={isBookmarked(exercise.id, 'breathing') ? 'currentColor' : 'none'} />
-              </button>
-            </div>
-            <button
-              onClick={() => startBreathingExercise(exercise)}
-              className="w-full bg-primary text-white py-3 rounded-xl font-medium hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
-            >
-              <Play size={16} />
-              Start Exercise
-            </button>
-          </div>
-        ))}
-      </div>
-    )
+    return <BreathingExercise />
   }
 
   const renderMeditations = () => {

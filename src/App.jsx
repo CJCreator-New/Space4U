@@ -3,9 +3,6 @@ import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import OnboardingFlow from './components/onboarding/OnboardingFlow'
 import ErrorBoundary from './components/ErrorBoundary'
-import InstallPrompt from './components/InstallPrompt'
-import OfflineBanner from './components/OfflineBanner'
-import { useTheme } from './hooks/useTheme'
 import HomePage from './pages/HomePage'
 import CirclesPage from './pages/CirclesPage'
 import CircleFeedPage from './pages/CircleFeedPage'
@@ -15,11 +12,24 @@ import ResourceLibraryPage from './pages/ResourceLibraryPage'
 import SettingsPage from './pages/SettingsPage'
 import PremiumPage from './pages/PremiumPage'
 import PremiumSuccessPage from './pages/PremiumSuccessPage'
+import AuthPage from './pages/AuthPage'
+import TherapeuticToolsPage from './pages/TherapeuticToolsPage'
+import GratitudeJournalPage from './pages/GratitudeJournalPage'
+import HabitTrackerPage from './pages/HabitTrackerPage'
+import EmotionTrackerPage from './pages/EmotionTrackerPage'
+import CopingSkillsPage from './pages/CopingSkillsPage'
+import RemindersPage from './pages/RemindersPage'
+import WellnessDashboardPage from './pages/WellnessDashboardPage'
+import Priority2FeaturesPage from './pages/Priority2FeaturesPage'
+import GamificationPage from './pages/GamificationPage'
+import WellnessPlanPage from './pages/WellnessPlanPage'
+import SocialHubPage from './pages/SocialHubPage'
+import AdvancedAnalyticsPage from './pages/AdvancedAnalyticsPage'
+import ProfessionalPage from './pages/ProfessionalPage'
 
 function App() {
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const { theme } = useTheme() // Initialize theme
 
   useEffect(() => {
     const onboardingComplete = localStorage.getItem('safespace_onboarding_complete')
@@ -45,21 +55,37 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <OfflineBanner />
-      <Layout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/circles" element={<CirclesPage />} />
-          <Route path="/circles/:circleId" element={<CircleFeedPage />} />
-          <Route path="/insights" element={<InsightsPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/resources" element={<ResourceLibraryPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/premium" element={<PremiumPage />} />
-          <Route path="/premium/success" element={<PremiumSuccessPage />} />
-        </Routes>
-      </Layout>
-      <InstallPrompt />
+      <Routes>
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/*" element={
+          <Layout>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/circles" element={<CirclesPage />} />
+              <Route path="/circles/:circleId" element={<CircleFeedPage />} />
+              <Route path="/insights" element={<InsightsPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/resources" element={<ResourceLibraryPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/premium" element={<PremiumPage />} />
+              <Route path="/premium/success" element={<PremiumSuccessPage />} />
+              <Route path="/tools" element={<TherapeuticToolsPage />} />
+              <Route path="/gratitude" element={<GratitudeJournalPage />} />
+              <Route path="/habits" element={<HabitTrackerPage />} />
+              <Route path="/emotions" element={<EmotionTrackerPage />} />
+              <Route path="/coping-skills" element={<CopingSkillsPage />} />
+              <Route path="/reminders" element={<RemindersPage />} />
+              <Route path="/wellness" element={<WellnessDashboardPage />} />
+              <Route path="/advanced-tools" element={<Priority2FeaturesPage />} />
+              <Route path="/gamification" element={<GamificationPage />} />
+              <Route path="/wellness-plan" element={<WellnessPlanPage />} />
+              <Route path="/social" element={<SocialHubPage />} />
+              <Route path="/analytics" element={<AdvancedAnalyticsPage />} />
+              <Route path="/professional" element={<ProfessionalPage />} />
+            </Routes>
+          </Layout>
+        } />
+      </Routes>
     </ErrorBoundary>
   )
 }
