@@ -26,6 +26,8 @@ import WellnessPlanPage from './pages/WellnessPlanPage'
 import SocialHubPage from './pages/SocialHubPage'
 import AdvancedAnalyticsPage from './pages/AdvancedAnalyticsPage'
 import ProfessionalPage from './pages/ProfessionalPage'
+import TechnicalFeaturesPage from './pages/TechnicalFeaturesPage'
+import PremiumManagePage from './pages/PremiumManagePage'
 
 function App() {
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
@@ -69,6 +71,7 @@ function App() {
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/premium" element={<PremiumPage />} />
               <Route path="/premium/success" element={<PremiumSuccessPage />} />
+              <Route path="/premium/manage" element={<PremiumManagePage />} />
               <Route path="/tools" element={<TherapeuticToolsPage />} />
               <Route path="/gratitude" element={<GratitudeJournalPage />} />
               <Route path="/habits" element={<HabitTrackerPage />} />
@@ -82,6 +85,7 @@ function App() {
               <Route path="/social" element={<SocialHubPage />} />
               <Route path="/analytics" element={<AdvancedAnalyticsPage />} />
               <Route path="/professional" element={<ProfessionalPage />} />
+              <Route path="/technical" element={<TechnicalFeaturesPage />} />
             </Routes>
           </Layout>
         } />

@@ -475,7 +475,7 @@ function ProfilePage() {
           {[
             { icon: Bell, label: 'Notifications', onClick: () => {} },
             { icon: Shield, label: 'Privacy & Data', onClick: () => {} },
-            { icon: Crown, label: 'Upgrade to Premium', onClick: () => navigate('/premium') },
+            { icon: Crown, label: badgeData?.totalPoints >= 500 ? 'Manage Premium' : 'Upgrade to Premium', onClick: () => navigate(badgeData?.totalPoints >= 500 ? '/premium/manage' : '/premium') },
             { icon: Settings, label: 'Settings', onClick: () => navigate('/settings') },
             { icon: Globe, label: 'Language', onClick: () => {} },
             { icon: HelpCircle, label: 'Help & Support', onClick: () => {} },

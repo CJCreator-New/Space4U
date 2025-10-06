@@ -149,6 +149,14 @@ function HomePage() {
             </div>
             <p className="text-text-secondary text-sm">Therapist & crisis</p>
           </a>
+          
+          <a href="/technical" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-3xl">📡</span>
+              <h3 className="text-lg font-semibold">Technical</h3>
+            </div>
+            <p className="text-text-secondary text-sm">Voice, offline, PWA</p>
+          </a>
         </div>
       </div>
     </div>
