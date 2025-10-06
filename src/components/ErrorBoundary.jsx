@@ -31,7 +31,11 @@ class ErrorBoundary extends React.Component {
   }
 
   handleGoHome = () => {
+    // Clear error state and reset
+    this.setState({ hasError: false, error: null, errorInfo: null })
+    // Force full page reload to clear any cached errors
     window.location.href = '/'
+    window.location.reload()
   }
 
   render() {

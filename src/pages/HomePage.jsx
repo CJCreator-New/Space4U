@@ -2,20 +2,47 @@ import { useState, useEffect } from 'react'
 import MoodTracker from '../components/MoodTracker'
 import MoodCalendar from '../components/MoodCalendar'
 import MoodTrends from '../components/MoodTrends'
+import SafeComponent from '../components/SafeComponent'
 
 function HomePage() {
   const [user, setUser] = useState(null)
   const [refreshKey, setRefreshKey] = useState(0)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    const userData = localStorage.getItem('safespace_user')
-    if (userData) {
-      setUser(JSON.parse(userData))
+    try {
+      const userData = localStorage.getItem('safespace_user')
+      if (userData) {
+        setUser(JSON.parse(userData))
+      }
+    } catch (err) {
+      console.error('Error loading user data:', err)
+      setError('Failed to load user data')
     }
   }, [])
 
   const handleMoodLogged = () => {
-    setRefreshKey(prev => prev + 1)
+    try {
+      setRefreshKey(prev => prev + 1)
+    } catch (err) {
+      console.error('Error refreshing mood data:', err)
+    }
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-4xl mx-auto p-4">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+          >
+            Reload Page
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -37,11 +64,24 @@ function HomePage() {
         </div>
       </div>
       
-      <MoodTracker onMoodLogged={handleMoodLogged} />
+      {/* Mood Tracking Section - Wrapped in SafeComponent */}
+      <SafeComponent>
+        <div className="mb-6">
+          <MoodTracker onMoodLogged={handleMoodLogged} />
+        </div>
+      </SafeComponent>
       
-      <MoodCalendar key={refreshKey} />
+      <SafeComponent>
+        <div className="mb-6">
+          <MoodCalendar key={refreshKey} />
+        </div>
+      </SafeComponent>
       
-      <MoodTrends key={refreshKey} />
+      <SafeComponent>
+        <div className="mb-6">
+          <MoodTrends key={refreshKey} />
+        </div>
+      </SafeComponent>
       
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-4">Wellness Tools</h2>
@@ -156,6 +196,14 @@ function HomePage() {
               <h3 className="text-lg font-semibold">Technical</h3>
             </div>
             <p className="text-text-secondary text-sm">Voice, offline, PWA</p>
+          </a>
+          
+          <a href="/premium/features" className="card p-6 hover:shadow-xl transition-all duration-300 group border-2 border-yellow-400">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-3xl">👑</span>
+              <h3 className="text-lg font-semibold">Premium Features</h3>
+            </div>
+            <p className="text-text-secondary text-sm">Exclusive tools</p>
           </a>
         </div>
       </div>

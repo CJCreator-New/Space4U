@@ -61,9 +61,12 @@ function SettingsPage() {
   const [showAutoDeleteModal, setShowAutoDeleteModal] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState('')
   const [resetConfirm, setResetConfirm] = useState(false)
+  const [isPremium, setIsPremium] = useState(false)
 
   useEffect(() => {
     loadSettings()
+    const premiumData = JSON.parse(localStorage.getItem('safespace_premium') || '{}')
+    setIsPremium(premiumData.isPremium || false)
   }, [])
 
   const loadSettings = () => {
@@ -88,6 +91,23 @@ function SettingsPage() {
       }
     }
     saveSettings(newSettings)
+  }
+
+  const togglePremium = () => {
+    const newStatus = !isPremium
+    setIsPremium(newStatus)
+    if (newStatus) {
+      localStorage.setItem('safespace_premium', JSON.stringify({
+        isPremium: true,
+        plan: 'annual',
+        startDate: new Date().toISOString(),
+        endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+      }))
+      showToast('Premium enabled')
+    } else {
+      localStorage.removeItem('safespace_premium')
+      showToast('Premium disabled')
+    }
   }
 
   const showToast = (message) => {
@@ -230,6 +250,22 @@ function SettingsPage() {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:border-primary outline-none"
         />
+      </div>
+
+      {/* Developer Tools */}
+      <div className="card mb-4 bg-yellow-50 border-2 border-yellow-200">
+        <div className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Crown className="text-yellow-600" size={24} />
+              <div>
+                <h3 className="font-semibold text-yellow-900">Developer Mode</h3>
+                <p className="text-sm text-yellow-700">Toggle premium status for testing</p>
+              </div>
+            </div>
+            <ToggleSwitch checked={isPremium} onChange={togglePremium} />
+          </div>
+        </div>
       </div>
 
       <div className="space-y-4">
