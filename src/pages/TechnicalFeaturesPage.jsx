@@ -3,6 +3,7 @@ import { Mic, Wifi, Smartphone } from 'lucide-react'
 import VoiceJournal from '../components/priority7/VoiceJournal'
 import OfflineMode from '../components/priority7/OfflineMode'
 import PWASettings from '../components/priority7/PWASettings'
+import SafeComponent from '../components/SafeComponent'
 
 function TechnicalFeaturesPage() {
   const [activeTab, setActiveTab] = useState('voice')
@@ -14,6 +15,7 @@ function TechnicalFeaturesPage() {
   ]
 
   return (
+    <SafeComponent>
     <div className="max-w-6xl mx-auto p-4 pb-24">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-text-primary mb-2">Technical Features</h1>
@@ -46,6 +48,8 @@ function TechnicalFeaturesPage() {
         {activeTab === 'pwa' && <PWASettings />}
       </div>
     </div>
+  
+    </SafeComponent>
   )
 }
 

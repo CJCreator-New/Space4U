@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Plus, Bell, BellOff, Trash2 } from 'lucide-react'
+import SafeComponent from '../components/SafeComponent'
 
 const REMINDER_TYPES = [
   { value: 'mood_checkin', label: 'Mood Check-in', icon: '😊' },
@@ -56,6 +57,7 @@ function RemindersPage() {
   }
 
   return (
+    <SafeComponent>
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -181,6 +183,8 @@ function RemindersPage() {
         </div>
       )}
     </div>
+  
+    </SafeComponent>
   )
 }
 

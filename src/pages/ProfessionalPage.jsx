@@ -3,6 +3,7 @@ import { UserCheck, Phone, Download } from 'lucide-react'
 import TherapistPortal from '../components/priority6/TherapistPortal'
 import CrisisHotlines from '../components/priority6/CrisisHotlines'
 import DataExport from '../components/priority6/DataExport'
+import SafeComponent from '../components/SafeComponent'
 
 function ProfessionalPage() {
   const [activeTab, setActiveTab] = useState('therapist')
@@ -14,6 +15,7 @@ function ProfessionalPage() {
   ]
 
   return (
+    <SafeComponent>
     <div className="max-w-6xl mx-auto p-4 pb-24">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-text-primary mb-2">Professional Integration</h1>
@@ -47,6 +49,8 @@ function ProfessionalPage() {
         {activeTab === 'export' && <DataExport />}
       </div>
     </div>
+  
+    </SafeComponent>
   )
 }
 

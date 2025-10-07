@@ -6,6 +6,7 @@ import MindfulnessExercises from '../components/therapeutic/MindfulnessExercises
 import SleepHygieneTracker from '../components/therapeutic/SleepHygieneTracker'
 import CrisisSafetyPlan from '../components/therapeutic/CrisisSafetyPlan'
 import MentalHealthAssessments from '../components/therapeutic/MentalHealthAssessments'
+import SafeComponent from '../components/SafeComponent'
 
 const TOOLS = [
   { id: 'cbt', name: 'CBT Thought Record', icon: Brain, color: 'blue', description: 'Challenge negative thought patterns' },
@@ -34,6 +35,7 @@ function TherapeuticToolsPage() {
   if (activeTool) return renderTool()
 
   return (
+    <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
@@ -62,6 +64,8 @@ function TherapeuticToolsPage() {
         })}
       </div>
     </div>
+  
+    </SafeComponent>
   )
 }
 

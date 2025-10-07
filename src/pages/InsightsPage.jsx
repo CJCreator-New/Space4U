@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Brain, TrendingUp, Calendar, Target, Award, Users, Clock, Heart, Zap, Book } from 'lucide-react'
+import SafeComponent from '../components/SafeComponent'
 import { 
   calculateAverageMood, 
   detectWeekdayPatterns, 
@@ -130,28 +131,31 @@ function InsightsPage() {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto">
-        <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-gray-200 rounded w-64"></div>
-          <div className="card p-6">
-            <div className="h-32 bg-gray-200 rounded"></div>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {Array.from({ length: 4 }, (_, i) => (
-              <div key={i} className="card p-6">
-                <div className="h-20 bg-gray-200 rounded"></div>
-              </div>
-            ))}
+      <SafeComponent>
+        <div className="max-w-4xl mx-auto">
+          <div className="animate-pulse space-y-6">
+            <div className="h-8 bg-gray-200 rounded w-64"></div>
+            <div className="card p-6">
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              {Array.from({ length: 4 }, (_, i) => (
+                <div key={i} className="card p-6">
+                  <div className="h-20 bg-gray-200 rounded"></div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </SafeComponent>
     )
   }
 
   const minData = getMinDataMessage()
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <SafeComponent>
+      <div className="max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
@@ -432,7 +436,8 @@ function InsightsPage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </SafeComponent>
   )
 }
 

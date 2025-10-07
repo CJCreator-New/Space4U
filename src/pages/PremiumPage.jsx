@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import SafeComponent from '../components/SafeComponent'
 import { 
   Crown, Check, X, Brain, Users, Download, Star, Lock, 
   CreditCard, Smartphone, ChevronDown, Shield, Sparkles
@@ -38,6 +39,7 @@ function PremiumPage() {
   }
 
   return (
+    <SafeComponent>
     <div className="max-w-6xl mx-auto">
       {/* Hero Section */}
       <div className="text-center mb-12">
@@ -255,6 +257,8 @@ function PremiumPage() {
         />
       )}
     </div>
+  
+    </SafeComponent>
   )
 }
 

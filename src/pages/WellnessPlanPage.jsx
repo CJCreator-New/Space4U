@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Plus, Clock, CheckCircle2, Circle } from 'lucide-react'
+import SafeComponent from '../components/SafeComponent'
 
 function WellnessPlanPage() {
   const [plans, setPlans] = useState([])
@@ -59,6 +60,7 @@ function WellnessPlanPage() {
   const todayActivities = activePlan?.activities?.filter(a => a.days.includes(new Date().getDay())) || []
 
   return (
+    <SafeComponent>
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -180,6 +182,8 @@ function WellnessPlanPage() {
         </div>
       )}
     </div>
+  
+    </SafeComponent>
   )
 }
 

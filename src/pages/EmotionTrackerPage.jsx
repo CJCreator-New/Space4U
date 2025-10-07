@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Plus, Heart } from 'lucide-react'
+import SafeComponent from '../components/SafeComponent'
 
 const EMOTIONS = {
   joy: { color: 'yellow', secondary: ['Optimistic', 'Proud', 'Content', 'Playful'] },
@@ -32,6 +33,7 @@ function EmotionTrackerPage() {
   }
 
   return (
+    <SafeComponent>
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -156,6 +158,8 @@ function EmotionTrackerPage() {
         </div>
       )}
     </div>
+  
+    </SafeComponent>
   )
 }
 

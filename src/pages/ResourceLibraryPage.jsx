@@ -3,6 +3,7 @@ import { Search, Heart, Play, Book, Phone, AlertTriangle, Clock, User, Bookmark 
 import { mockResources } from '../data/mockResources'
 import BreathingExercise from '../components/resources/BreathingExercise'
 import { addPoints, POINT_VALUES } from '../utils/badgeSystem'
+import SafeComponent from '../components/SafeComponent'
 
 function ResourceLibraryPage() {
   const [activeTab, setActiveTab] = useState('breathing')
@@ -66,6 +67,7 @@ function ResourceLibraryPage() {
     const meditations = filterResources(mockResources.meditations, 'meditation')
 
     return (
+    <SafeComponent>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {meditations.map((meditation) => (
           <div key={meditation.id} className="card p-6 hover:shadow-lg transition-shadow">
@@ -105,7 +107,9 @@ function ResourceLibraryPage() {
           </div>
         ))}
       </div>
-    )
+    
+    </SafeComponent>
+  )
   }
 
   const renderArticles = () => {

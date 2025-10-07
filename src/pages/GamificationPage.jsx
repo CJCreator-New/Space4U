@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Trophy, Target, Zap, Star, Calendar } from 'lucide-react'
+import SafeComponent from '../components/SafeComponent'
 
 const CHALLENGES = [
   { id: 1, title: '7-Day Mood Tracker', description: 'Track mood daily for 7 days', duration: 7, progress: 0, badge: '🎯' },
@@ -68,6 +69,7 @@ function GamificationPage() {
   const xpToNextLevel = userLevel.level * 100
 
   return (
+    <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Gamification Hub</h1>
@@ -202,6 +204,8 @@ function GamificationPage() {
         </div>
       )}
     </div>
+  
+    </SafeComponent>
   )
 }
 

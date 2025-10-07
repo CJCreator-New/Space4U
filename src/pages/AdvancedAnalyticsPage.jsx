@@ -3,6 +3,7 @@ import { BarChart3, Tag, Moon } from 'lucide-react'
 import TagAnalytics from '../components/priority5/TagAnalytics'
 import SleepAnalytics from '../components/priority5/SleepAnalytics'
 import MoodPrediction from '../components/priority5/MoodPrediction'
+import SafeComponent from '../components/SafeComponent'
 
 function AdvancedAnalyticsPage() {
   const [activeTab, setActiveTab] = useState('tags')
@@ -14,6 +15,7 @@ function AdvancedAnalyticsPage() {
   ]
 
   return (
+    <SafeComponent>
     <div className="max-w-6xl mx-auto p-4 pb-24">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-text-primary mb-2">Advanced Analytics</h1>
@@ -47,6 +49,8 @@ function AdvancedAnalyticsPage() {
         {activeTab === 'prediction' && <MoodPrediction />}
       </div>
     </div>
+  
+    </SafeComponent>
   )
 }
 

@@ -7,6 +7,7 @@ import FilterModal from '../components/FilterModal'
 import { formatNumber } from '../utils/helpers'
 import { EmptyStates } from '../components/common/EmptyState'
 import LoadingState from '../components/common/LoadingState'
+import SafeComponent from '../components/SafeComponent'
 
 function CirclesPage() {
   const navigate = useNavigate()
@@ -117,6 +118,7 @@ function CirclesPage() {
 
   if (loading) {
     return (
+    <SafeComponent>
       <div className="max-w-6xl mx-auto">
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-48 mb-2"></div>
@@ -128,7 +130,9 @@ function CirclesPage() {
           </div>
         </div>
       </div>
-    )
+    
+    </SafeComponent>
+  )
   }
 
   return (

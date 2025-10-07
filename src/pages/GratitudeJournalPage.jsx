@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth'
 import GratitudeEntryModal from '../components/gratitude/GratitudeEntryModal'
 import GratitudeCard from '../components/gratitude/GratitudeCard'
 import GratitudeStats from '../components/gratitude/GratitudeStats'
+import SafeComponent from '../components/SafeComponent'
 
 function GratitudeJournalPage() {
   const { user } = useAuth()
@@ -73,6 +74,7 @@ function GratitudeJournalPage() {
   const todayEntry = entries.find(e => e.date === new Date().toISOString().split('T')[0])
 
   return (
+    <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
@@ -149,6 +151,8 @@ function GratitudeJournalPage() {
         />
       )}
     </div>
+  
+    </SafeComponent>
   )
 }
 

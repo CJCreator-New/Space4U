@@ -4,6 +4,7 @@ import AccountabilityPartner from '../components/priority4/AccountabilityPartner
 import PeerSupport from '../components/priority4/PeerSupport'
 import SupportRequests from '../components/priority4/SupportRequests'
 import MoodSuggestions from '../components/priority4/MoodSuggestions'
+import SafeComponent from '../components/SafeComponent'
 
 function SocialHubPage() {
   const [activeTab, setActiveTab] = useState('partner')
@@ -16,6 +17,7 @@ function SocialHubPage() {
   ]
 
   return (
+    <SafeComponent>
     <div className="max-w-6xl mx-auto p-4 pb-24">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-text-primary mb-2">Social & Community</h1>
@@ -49,6 +51,8 @@ function SocialHubPage() {
         {activeTab === 'suggestions' && <MoodSuggestions />}
       </div>
     </div>
+  
+    </SafeComponent>
   )
 }
 

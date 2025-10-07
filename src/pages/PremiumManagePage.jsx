@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Crown, Calendar, CreditCard, AlertCircle, CheckCircle, X } from 'lucide-react'
 import { checkPremiumStatus, cancelPremium, getPremiumDaysLeft } from '../utils/premiumManager'
 import { useNavigate } from 'react-router-dom'
+import SafeComponent from '../components/SafeComponent'
 
 function PremiumManagePage() {
   const navigate = useNavigate()
@@ -10,6 +11,7 @@ function PremiumManagePage() {
 
   if (!premium.isPremium && !premium.trialActive) {
     return (
+    <SafeComponent>
       <div className="max-w-2xl mx-auto p-4 text-center">
         <div className="text-6xl mb-4">🔒</div>
         <h1 className="text-2xl font-bold mb-2">No Active Subscription</h1>
@@ -21,7 +23,9 @@ function PremiumManagePage() {
           View Premium Plans
         </button>
       </div>
-    )
+    
+    </SafeComponent>
+  )
   }
 
   const daysLeft = getPremiumDaysLeft()

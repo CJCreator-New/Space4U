@@ -6,6 +6,7 @@ import WorryScheduler from '../components/priority2/WorryScheduler'
 import SelfCompassion from '../components/priority2/SelfCompassion'
 import TherapyPrep from '../components/priority2/TherapyPrep'
 import MedicationTracker from '../components/priority2/MedicationTracker'
+import SafeComponent from '../components/SafeComponent'
 
 const TOOLS = [
   { id: 'triggers', name: 'Trigger Tracker', icon: AlertTriangle, color: 'red', description: 'Identify mood triggers' },
@@ -34,6 +35,7 @@ function Priority2FeaturesPage() {
   if (activeTool) return renderTool()
 
   return (
+    <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Advanced Wellness Tools</h1>
@@ -59,6 +61,8 @@ function Priority2FeaturesPage() {
         })}
       </div>
     </div>
+  
+    </SafeComponent>
   )
 }
 

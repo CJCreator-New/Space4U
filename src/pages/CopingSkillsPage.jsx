@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Search, Heart, Star } from 'lucide-react'
+import SafeComponent from '../components/SafeComponent'
 
 const SKILLS = [
   { id: 1, name: 'Deep Breathing', category: 'relaxation', situation: ['anxiety', 'stress'], duration: 5, description: '4-7-8 breathing technique' },
@@ -35,6 +36,7 @@ function CopingSkillsPage() {
   })
 
   return (
+    <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Coping Skills Library</h1>
@@ -100,6 +102,8 @@ function CopingSkillsPage() {
         </div>
       )}
     </div>
+  
+    </SafeComponent>
   )
 }
 

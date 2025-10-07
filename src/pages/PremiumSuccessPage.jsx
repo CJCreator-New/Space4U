@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Crown, Sparkles, Check } from 'lucide-react'
+import SafeComponent from '../components/SafeComponent'
 
 function PremiumSuccessPage() {
   const navigate = useNavigate()
@@ -20,6 +21,7 @@ function PremiumSuccessPage() {
     : ''
 
   return (
+    <SafeComponent>
     <div className="max-w-2xl mx-auto text-center py-12">
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none z-50">
@@ -92,6 +94,8 @@ function PremiumSuccessPage() {
         Start Exploring Premium
       </button>
     </div>
+  
+    </SafeComponent>
   )
 }
 

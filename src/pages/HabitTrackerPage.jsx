@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Plus, CheckCircle2, Circle, TrendingUp } from 'lucide-react'
+import SafeComponent from '../components/SafeComponent'
 
 function HabitTrackerPage() {
   const [habits, setHabits] = useState([])
@@ -47,6 +48,7 @@ function HabitTrackerPage() {
   const today = new Date().toISOString().split('T')[0]
 
   return (
+    <SafeComponent>
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -136,6 +138,8 @@ function HabitTrackerPage() {
         </div>
       )}
     </div>
+  
+    </SafeComponent>
   )
 }
 

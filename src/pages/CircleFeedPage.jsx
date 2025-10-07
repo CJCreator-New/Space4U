@@ -6,6 +6,7 @@ import { mockPosts } from '../data/mockPosts'
 import PostCard from '../components/PostCard'
 import CreatePostModal from '../components/CreatePostModal'
 import { formatNumber } from '../utils/helpers'
+import SafeComponent from '../components/SafeComponent'
 
 function CircleFeedPage() {
   const { circleId } = useParams()
@@ -36,7 +37,7 @@ function CircleFeedPage() {
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [hasMore, loadingMore])
+  }, [hasMore, loadingMore, loadMorePosts])
 
   const loadCircleData = () => {
     const foundCircle = mockCircles.find(c => c.id === parseInt(circleId))
@@ -143,24 +144,27 @@ function CircleFeedPage() {
 
   if (loading || !circle) {
     return (
-      <div className="max-w-2xl mx-auto">
-        <div className="animate-pulse">
-          <div className="h-16 bg-gray-200 rounded mb-4"></div>
-          <div className="space-y-4">
-            {Array.from({ length: 3 }, (_, i) => (
-              <div key={i} className="card p-4">
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-20 bg-gray-200 rounded"></div>
-              </div>
-            ))}
+      <SafeComponent>
+        <div className="max-w-2xl mx-auto">
+          <div className="animate-pulse">
+            <div className="h-16 bg-gray-200 rounded mb-4"></div>
+            <div className="space-y-4">
+              {Array.from({ length: 3 }, (_, i) => (
+                <div key={i} className="card p-4">
+                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-20 bg-gray-200 rounded"></div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </SafeComponent>
     )
   }
 
   return (
-    <div className="max-w-2xl mx-auto pb-20">
+    <SafeComponent>
+      <div className="max-w-2xl mx-auto pb-20">
       {/* Sticky Header */}
       <div className="sticky top-0 bg-background z-40 pb-4">
         <div className="flex items-center justify-between mb-4">
@@ -310,7 +314,8 @@ function CircleFeedPage() {
         circle={circle}
         onPostCreated={handlePostCreated}
       />
-    </div>
+      </div>
+    </SafeComponent>
   )
 }
 

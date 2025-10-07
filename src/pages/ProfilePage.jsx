@@ -5,6 +5,7 @@ import {
   ChevronRight, Bell, Shield, Globe, HelpCircle, Info, Download, 
   Trash2, X, Check, Eye, Calendar, Target, Book, Settings, Crown
 } from 'lucide-react'
+import SafeComponent from '../components/SafeComponent'
 import { 
   BADGES, 
   LEVELS, 
@@ -217,6 +218,7 @@ function ProfilePage() {
 
   if (!user || !stats) {
     return (
+    <SafeComponent>
       <div className="max-w-4xl mx-auto">
         <div className="animate-pulse space-y-6">
           <div className="card p-6">
@@ -224,7 +226,9 @@ function ProfilePage() {
           </div>
         </div>
       </div>
-    )
+    
+    </SafeComponent>
+  )
   }
 
   return (

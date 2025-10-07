@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { TrendingUp, Heart, Target, Brain, Smile } from 'lucide-react'
+import SafeComponent from '../components/SafeComponent'
 
 function WellnessDashboardPage() {
   const [score, setScore] = useState(0)
@@ -82,6 +83,7 @@ function WellnessDashboardPage() {
   }
 
   return (
+    <SafeComponent>
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Wellness Dashboard</h1>
@@ -181,6 +183,8 @@ function WellnessDashboardPage() {
         </div>
       </div>
     </div>
+  
+    </SafeComponent>
   )
 }
 
