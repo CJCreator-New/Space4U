@@ -1,17 +1,21 @@
 import { useState } from 'react'
 import { Heart, MessageCircle, Share, MoreHorizontal, Send } from 'lucide-react'
 import { formatRelativeTime, truncateText } from '../utils/helpers'
-import { mockComments } from '../data/mockComments'
 import { addPoints, POINT_VALUES } from '../utils/badgeSystem'
+import { useRealtimeComments } from '../hooks/useRealtimeComments'
+import { circleService } from '../services/circleService'
+import { useSupabaseAuth } from '../contexts/AuthContext'
 
 function PostCard({ post, circleColor, onHeart, onShare }) {
+  const { user } = useSupabaseAuth()
   const [isHearted, setIsHearted] = useState(post.isHearted)
   const [heartCount, setHeartCount] = useState(post.hearts)
   const [showComments, setShowComments] = useState(false)
   const [newComment, setNewComment] = useState('')
   const [isExpanded, setIsExpanded] = useState(false)
+  const [posting, setPosting] = useState(false)
 
-  const comments = mockComments[post.id] || []
+  const { comments, loading: commentsLoading } = useRealtimeComments(showComments ? post.id : null)
   const shouldTruncate = post.content.length > 200
 
   const handleHeart = () => {
@@ -30,10 +34,17 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
     onShare?.()
   }
 
-  const handleAddComment = () => {
-    if (newComment.trim()) {
-      // Add comment logic here
+  const handleAddComment = async () => {
+    if (!newComment.trim() || !user || posting) return
+
+    setPosting(true)
+    try {
+      await circleService.createComment(user.id, post.id, newComment.trim(), false)
       setNewComment('')
+    } catch (error) {
+      console.error('Failed to add comment:', error)
+    } finally {
+      setPosting(false)
     }
   }
 
@@ -108,7 +119,7 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
           className="flex items-center gap-2 px-3 py-1 rounded-lg text-text-secondary hover:text-primary hover:bg-primary/10 transition-colors"
         >
           <MessageCircle size={20} />
-          <span className="text-sm">{post.commentCount}</span>
+          <span className="text-sm">{comments.length || post.commentCount || 0}</span>
         </button>
 
         <button
@@ -122,7 +133,11 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
       {/* Comments Section */}
       {showComments && (
         <div className="mt-4 pt-4 border-t border-gray-100">
-          {comments.length > 0 ? (
+          {commentsLoading ? (
+            <div className="text-center py-4">
+              <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+            </div>
+          ) : comments.length > 0 ? (
             <div className="space-y-3 mb-4">
               {comments.slice(0, 5).map((comment) => (
                 <div key={comment.id} className="flex gap-3">
@@ -132,12 +147,14 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
                   <div className="flex-1">
                     <div className="bg-gray-50 rounded-xl p-3">
                       <p className="font-medium text-sm text-text-primary mb-1">
-                        {comment.author.username}
+                        {comment.profiles?.username || 'Anonymous'}
                       </p>
                       <p className="text-sm text-text-primary">{comment.content}</p>
                     </div>
                     <div className="flex items-center gap-4 mt-1 ml-3">
-                      <span className="text-xs text-text-secondary">{comment.timestamp}</span>
+                      <span className="text-xs text-text-secondary">
+                        {formatRelativeTime(comment.created_at)}
+                      </span>
                       <button className="text-xs text-text-secondary hover:text-primary">
                         Reply
                       </button>
@@ -175,14 +192,14 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
               />
               <button
                 onClick={handleAddComment}
-                disabled={!newComment.trim()}
+                disabled={!newComment.trim() || posting}
                 className={`p-2 rounded-xl transition-colors ${
-                  newComment.trim()
+                  newComment.trim() && !posting
                     ? 'bg-primary text-white hover:bg-primary/90'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                <Send size={16} />
+                <Send size={16} className={posting ? 'animate-pulse' : ''} />
               </button>
             </div>
           </div>

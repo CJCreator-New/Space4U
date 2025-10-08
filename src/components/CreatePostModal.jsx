@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { X, Tag, AlertTriangle, FileText, Check, Loader } from 'lucide-react'
+import { circleService } from '../services/circleService'
+import { useSupabaseAuth } from '../contexts/AuthContext'
 
 const commonTags = [
   'advice-needed', 'venting', 'success-story', 'question', 'support', 'resources'
@@ -24,7 +26,8 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
   const [error, setError] = useState('')
 
   const textareaRef = useRef(null)
-  const user = JSON.parse(localStorage.getItem('safespace_user') || '{}')
+  const { user } = useSupabaseAuth()
+  const localUser = JSON.parse(localStorage.getItem('safespace_user_profile') || '{}')
 
   useEffect(() => {
     if (isOpen) {
@@ -139,44 +142,28 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
   }
 
   const handlePost = async () => {
-    if (!content.trim() || content.length > 500 || isPosting) return
+    if (!content.trim() || content.length > 500 || isPosting || !user) return
 
     setIsPosting(true)
     setError('')
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      const { data, error } = await circleService.createPost(
+        user.id,
+        circle.id,
+        content.trim(),
+        false
+      )
 
-      const newPost = {
-        id: Date.now(),
-        circleId: circle.id,
-        author: {
-          username: user.username || 'Anonymous',
-          avatar: user.avatar || '🐻'
-        },
-        content: content.trim(),
-        timestamp: 'just now',
-        hearts: 0,
-        commentCount: 0,
-        isHearted: false,
-        tags: tags.length > 0 ? tags : undefined,
-        hasTriggerWarning,
-        triggerWarning: hasTriggerWarning ? triggerWarning : undefined
-      }
-
-      // Save to user posts
-      const userPosts = JSON.parse(localStorage.getItem('safespace_user_posts') || '[]')
-      userPosts.push(newPost)
-      localStorage.setItem('safespace_user_posts', JSON.stringify(userPosts))
+      if (error) throw error
 
       setShowSuccess(true)
       
       setTimeout(() => {
         resetForm()
         onClose()
-        onPostCreated?.(newPost)
-      }, 2000)
+        onPostCreated?.(data?.[0])
+      }, 1500)
 
     } catch (err) {
       setError('Failed to post. Please try again.')
@@ -236,11 +223,11 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
             <div className="px-5 md:px-8 py-4 bg-gray-50">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-lg">
-                  {user.avatar || '🐻'}
+                  {localUser.avatar || '🐻'}
                 </div>
                 <div>
-                  <p className="font-medium text-text-primary">{user.username || 'Anonymous'}</p>
-                  <p className="text-sm text-text-secondary">Posting anonymously</p>
+                  <p className="font-medium text-text-primary">{localUser.username || 'Anonymous'}</p>
+                  <p className="text-sm text-text-secondary">Posting to circle</p>
                 </div>
               </div>
             </div>

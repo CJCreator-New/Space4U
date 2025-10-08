@@ -2,16 +2,21 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Users, ChevronDown, Plus, Grid, List } from 'lucide-react'
 import { mockCircles } from '../data/mockCircles'
-import { mockPosts } from '../data/mockPosts'
 import PostCard from '../components/PostCard'
 import CreatePostModal from '../components/CreatePostModal'
 import { formatNumber } from '../utils/helpers'
 import SafeComponent from '../components/SafeComponent'
+import { useRealtimePosts } from '../hooks/useRealtimePosts'
+import { useOnlineUsers } from '../hooks/useOnlineUsers'
+import { useSupabaseAuth } from '../contexts/AuthContext'
 
 function CircleFeedPage() {
   const { circleId } = useParams()
   const navigate = useNavigate()
+  const { user } = useSupabaseAuth()
   const [circle, setCircle] = useState(null)
+  const { posts: realtimePosts, loading: postsLoading } = useRealtimePosts(circleId)
+  const onlineCount = useOnlineUsers(circleId)
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
@@ -25,8 +30,16 @@ function CircleFeedPage() {
 
   useEffect(() => {
     loadCircleData()
-    loadPosts()
   }, [circleId])
+
+  useEffect(() => {
+    if (!postsLoading) {
+      const sortedPosts = sortPosts(realtimePosts, sortBy)
+      const filteredPosts = filterPosts(sortedPosts, filterBy)
+      setPosts(filteredPosts)
+      setLoading(false)
+    }
+  }, [realtimePosts, postsLoading, sortBy, filterBy])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,15 +57,7 @@ function CircleFeedPage() {
     setCircle(foundCircle)
   }
 
-  const loadPosts = () => {
-    const circlePosts = mockPosts.filter(post => post.circleId === parseInt(circleId))
-    const sortedPosts = sortPosts(circlePosts, sortBy)
-    const filteredPosts = filterPosts(sortedPosts, filterBy)
-    
-    setPosts(filteredPosts.slice(0, 10))
-    setHasMore(filteredPosts.length > 10)
-    setLoading(false)
-  }
+
 
   const loadMorePosts = useCallback(() => {
     if (loadingMore || !hasMore) return
@@ -133,13 +138,11 @@ function CircleFeedPage() {
   const handleSortChange = (newSort) => {
     setSortBy(newSort)
     setPage(1)
-    loadPosts()
   }
 
   const handleFilterChange = (newFilter) => {
     setFilterBy(newFilter)
     setPage(1)
-    loadPosts()
   }
 
   if (loading || !circle) {
@@ -182,6 +185,9 @@ function CircleFeedPage() {
                 <div className="flex items-center gap-1 text-sm text-text-secondary">
                   <Users size={14} />
                   <span>{formatNumber(circle.members)} members</span>
+                  {onlineCount > 0 && (
+                    <span className="ml-2 text-green-600">• {onlineCount} online</span>
+                  )}
                 </div>
               </div>
             </div>

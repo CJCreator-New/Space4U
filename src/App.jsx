@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
 import Layout from './components/Layout'
 import OnboardingFlow from './components/onboarding/OnboardingFlow'
 import ErrorBoundary from './components/ErrorBoundary'
+import MigrationStatus from './components/MigrationStatus'
+import ProtectedRoute from './components/ProtectedRoute'
 import HomePage from './pages/HomePage'
 import CirclesPage from './pages/CirclesPage'
 import CircleFeedPage from './pages/CircleFeedPage'
@@ -58,10 +61,12 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <Routes>
+      <AuthProvider>
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <MigrationStatus />
+          <Routes>
           <Route path="/auth" element={<AuthPage />} />
-          <Route element={<Layout />}>
+          <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
             <Route path="/" element={<HomePage />} />
             <Route path="/circles" element={<CirclesPage />} />
             <Route path="/circles/:circleId" element={<CircleFeedPage />} />
@@ -88,8 +93,9 @@ function App() {
             <Route path="/professional" element={<ProfessionalPage />} />
             <Route path="/technical" element={<TechnicalFeaturesPage />} />
           </Route>
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </ErrorBoundary>
   )
 }
