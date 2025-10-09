@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import MoodTracker from '../components/MoodTracker'
 import MoodCalendar from '../components/MoodCalendar'
 import MoodTrends from '../components/MoodTrends'
@@ -86,125 +87,125 @@ function HomePage() {
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-4">Wellness Tools</h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <a href="/gratitude" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/gratitude" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">❤️</span>
               <h3 className="text-lg font-semibold">Gratitude</h3>
             </div>
             <p className="text-text-secondary text-sm">Daily gratitude practice</p>
-          </a>
+          </Link>
           
-          <a href="/habits" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/habits" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🎯</span>
               <h3 className="text-lg font-semibold">Habits</h3>
             </div>
             <p className="text-text-secondary text-sm">Track daily habits</p>
-          </a>
+          </Link>
           
-          <a href="/emotions" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/emotions" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">💭</span>
               <h3 className="text-lg font-semibold">Emotions</h3>
             </div>
             <p className="text-text-secondary text-sm">Understand your feelings</p>
-          </a>
+          </Link>
           
-          <a href="/coping-skills" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/coping-skills" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🛠️</span>
               <h3 className="text-lg font-semibold">Coping Skills</h3>
             </div>
             <p className="text-text-secondary text-sm">Strategies for tough times</p>
-          </a>
+          </Link>
           
-          <a href="/reminders" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/reminders" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">⏰</span>
               <h3 className="text-lg font-semibold">Reminders</h3>
             </div>
             <p className="text-text-secondary text-sm">Stay on track</p>
-          </a>
+          </Link>
           
-          <a href="/tools" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/tools" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🧰</span>
               <h3 className="text-lg font-semibold">Therapy Tools</h3>
             </div>
             <p className="text-text-secondary text-sm">CBT, DBT, and more</p>
-          </a>
+          </Link>
           
-          <a href="/wellness" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/wellness" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">📊</span>
               <h3 className="text-lg font-semibold">Wellness Score</h3>
             </div>
             <p className="text-text-secondary text-sm">Track overall progress</p>
-          </a>
+          </Link>
           
-          <a href="/advanced-tools" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/advanced-tools" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🚀</span>
               <h3 className="text-lg font-semibold">Advanced Tools</h3>
             </div>
             <p className="text-text-secondary text-sm">Triggers, journal, therapy</p>
-          </a>
+          </Link>
           
-          <a href="/gamification" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/gamification" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🏆</span>
               <h3 className="text-lg font-semibold">Gamification</h3>
             </div>
             <p className="text-text-secondary text-sm">Challenges, quests, streaks</p>
-          </a>
+          </Link>
           
-          <a href="/wellness-plan" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/wellness-plan" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">📅</span>
               <h3 className="text-lg font-semibold">Wellness Plan</h3>
             </div>
             <p className="text-text-secondary text-sm">Daily routine builder</p>
-          </a>
+          </Link>
           
-          <a href="/social" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/social" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🤝</span>
               <h3 className="text-lg font-semibold">Social Hub</h3>
             </div>
             <p className="text-text-secondary text-sm">Connect & support</p>
-          </a>
+          </Link>
           
-          <a href="/analytics" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/analytics" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">📊</span>
               <h3 className="text-lg font-semibold">Analytics</h3>
             </div>
             <p className="text-text-secondary text-sm">Deep insights</p>
-          </a>
+          </Link>
           
-          <a href="/professional" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/professional" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🏥</span>
               <h3 className="text-lg font-semibold">Professional</h3>
             </div>
             <p className="text-text-secondary text-sm">Therapist & crisis</p>
-          </a>
+          </Link>
           
-          <a href="/technical" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <Link to="/technical" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">📡</span>
               <h3 className="text-lg font-semibold">Technical</h3>
             </div>
             <p className="text-text-secondary text-sm">Voice, offline, PWA</p>
-          </a>
+          </Link>
           
-          <a href="/premium/features" className="card p-6 hover:shadow-xl transition-all duration-300 group border-2 border-yellow-400">
+          <Link to="/premium/features" className="card p-6 hover:shadow-xl transition-all duration-300 group border-2 border-yellow-400">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">👑</span>
               <h3 className="text-lg font-semibold">Premium Features</h3>
             </div>
             <p className="text-text-secondary text-sm">Exclusive tools</p>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

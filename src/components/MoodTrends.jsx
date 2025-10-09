@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts'
+import { useState, useEffect, useMemo, useCallback } from 'react'
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { TrendingUp, Calendar, Target, Award } from 'lucide-react'
 import { useMoods } from '../hooks/useMoods'
 
@@ -114,7 +114,7 @@ function MoodTrends() {
     })
   }
 
-  const CustomTooltip = ({ active, payload, label }) => {
+  const CustomTooltip = useCallback(({ active, payload, label }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
@@ -134,11 +134,11 @@ function MoodTrends() {
       )
     }
     return null
-  }
+  }, [])
 
-  const formatYAxisLabel = (value) => {
+  const formatYAxisLabel = useCallback((value) => {
     return moodLabels[value]?.emoji || ''
-  }
+  }, [])
 
   if (loading) {
     return (
@@ -168,11 +168,11 @@ function MoodTrends() {
     )
   }
 
-  const periodLabels = {
+  const periodLabels = useMemo(() => ({
     '7': 'Last 7 days',
     '30': 'Last 30 days',
     'all': 'All time'
-  }
+  }), [])
 
   return (
     <div className="card p-6 mb-6 dark:bg-gray-800 dark:border-gray-700">

@@ -22,10 +22,12 @@ function AuthPage() {
       if (isLogin) {
         const { error } = await signIn(email, password)
         if (error) throw error
+        localStorage.setItem('safespace_auth_attempted', 'true')
         navigate('/')
       } else {
         const { error } = await signUp(email, password)
         if (error) throw error
+        localStorage.setItem('safespace_auth_attempted', 'true')
         setError('Check your email to confirm your account!')
       }
     } catch (err) {

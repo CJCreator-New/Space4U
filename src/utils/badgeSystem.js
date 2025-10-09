@@ -1,4 +1,5 @@
 // Badge definitions and achievement system
+import { memoize } from './memoize'
 
 export const BADGES = {
   // Consistency Badges
@@ -197,16 +198,16 @@ export const initializeBadgeSystem = () => {
   return JSON.parse(existing)
 }
 
-export const calculateUserLevel = (points) => {
+export const calculateUserLevel = memoize((points) => {
   for (const [key, level] of Object.entries(LEVELS)) {
     if (points >= level.min && points <= level.max) {
       return key
     }
   }
   return 'beginner'
-}
+})
 
-export const getProgressToNextLevel = (points) => {
+export const getProgressToNextLevel = memoize((points) => {
   const currentLevel = calculateUserLevel(points)
   const levelKeys = Object.keys(LEVELS)
   const currentIndex = levelKeys.indexOf(currentLevel)
@@ -222,7 +223,7 @@ export const getProgressToNextLevel = (points) => {
   const progress = ((points - LEVELS[currentLevel].min) / (currentLevelMax - LEVELS[currentLevel].min)) * 100
   
   return { progress, pointsNeeded, nextLevel: nextLevelKey }
-}
+})
 
 export const checkBadgeProgress = (badgeId, currentProgress) => {
   const badgeData = JSON.parse(localStorage.getItem('safespace_badges'))

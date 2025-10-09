@@ -29,7 +29,10 @@ export function AuthProvider({ children }) {
 
   const signUp = (email, password) => supabase.auth.signUp({ email, password })
   const signIn = (email, password) => supabase.auth.signInWithPassword({ email, password })
-  const signOut = () => supabase.auth.signOut()
+  const signOut = () => {
+    localStorage.removeItem('safespace_auth_attempted')
+    return supabase.auth.signOut()
+  }
 
   return (
     <AuthContext.Provider value={{ user, loading, signUp, signIn, signOut }}>

@@ -3,7 +3,7 @@ import {
   Bell, Shield, Palette, Globe, Eye, User, HelpCircle, Info,
   Search, ChevronDown, ChevronRight, Download, Trash2, X, Check,
   Sun, Moon, Monitor, Type, Zap, Volume2, Mail, Smartphone,
-  ExternalLink, RotateCcw, Crown, Dot
+  ExternalLink, RotateCcw, Crown, Dot, Keyboard
 } from 'lucide-react'
 import { useTheme } from '../hooks/useTheme'
 
@@ -648,7 +648,11 @@ function SettingsPage() {
                     placeholder="your@email.com"
                     className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                   />
-                  <button className="px-3 py-2 text-primary font-medium hover:underline">
+                  <button 
+                    disabled
+                    title="Coming soon"
+                    className="px-3 py-2 text-gray-400 font-medium cursor-not-allowed"
+                  >
                     Verify
                   </button>
                 </div>
@@ -671,7 +675,11 @@ function SettingsPage() {
               </SettingRow>
               
               <SettingRow icon={User} label="Session management" description="Current device logged in">
-                <button className="text-primary font-medium hover:underline">
+                <button 
+                  disabled
+                  title="Coming soon"
+                  className="text-gray-400 font-medium cursor-not-allowed"
+                >
                   Manage Sessions
                 </button>
               </SettingRow>
@@ -689,6 +697,15 @@ function SettingsPage() {
           />
           {expandedSections.help && (
             <div className="border-t border-gray-100">
+              <SettingRow icon={Keyboard} label="Keyboard shortcuts" description="View all keyboard shortcuts">
+                <button 
+                  onClick={() => window.dispatchEvent(new Event('showKeyboardHelp'))}
+                  className="text-primary dark:text-primary-light font-medium hover:underline"
+                >
+                  View Shortcuts
+                </button>
+              </SettingRow>
+              
               {[
                 { icon: HelpCircle, label: 'FAQ', action: 'View FAQ' },
                 { icon: Mail, label: 'Contact support', action: 'Get Help' },
@@ -697,7 +714,11 @@ function SettingsPage() {
                 { icon: ExternalLink, label: 'Community guidelines', action: 'Read' }
               ].map((item, index) => (
                 <SettingRow key={index} icon={item.icon} label={item.label}>
-                  <button className="text-primary font-medium hover:underline">
+                  <button 
+                    disabled
+                    title="Coming soon"
+                    className="text-gray-400 font-medium cursor-not-allowed"
+                  >
                     {item.action}
                   </button>
                 </SettingRow>
@@ -726,7 +747,11 @@ function SettingsPage() {
                 { label: 'Open source licenses', action: 'View' }
               ].map((item, index) => (
                 <SettingRow key={index} icon={ExternalLink} label={item.label}>
-                  <button className="text-primary font-medium hover:underline">
+                  <button 
+                    disabled
+                    title="Coming soon"
+                    className="text-gray-400 font-medium cursor-not-allowed"
+                  >
                     {item.action}
                   </button>
                 </SettingRow>
