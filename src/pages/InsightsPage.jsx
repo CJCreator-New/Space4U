@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Brain, TrendingUp, Calendar, Target, Award, Users, Clock, Heart, Zap, Book } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
 import { CardSkeleton } from '../components/Skeleton'
-import { cache } from '../utils/cache'
+import { cacheManager as cache } from '../utils/cacheManager'
 import { 
   calculateAverageMood, 
   detectWeekdayPatterns, 
@@ -164,7 +164,8 @@ function InsightsPage() {
   const minData = getMinDataMessage()
 
   return (
-    <div className="max-w-4xl mx-auto animate-fade-in">
+    <SafeComponent>
+      <div className="max-w-4xl mx-auto animate-fade-in">
       {/* Header */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-500 via-blue-500 to-indigo-600 p-8 mb-6 shadow-2xl">
         <div className="absolute inset-0 bg-black/10"></div>
@@ -448,7 +449,8 @@ function InsightsPage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </SafeComponent>
   )
 }
 
