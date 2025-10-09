@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Brain, Heart, Moon, Shield, ClipboardList, Wind, Activity } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Brain, Heart, Moon, Shield, ClipboardList, Wind, Activity, TrendingUp, Clock, Star } from 'lucide-react'
 import CBTThoughtRecord from '../components/therapeutic/CBTThoughtRecord'
 import DBTSkillsModule from '../components/therapeutic/DBTSkillsModule'
 import MindfulnessExercises from '../components/therapeutic/MindfulnessExercises'
@@ -9,16 +9,30 @@ import MentalHealthAssessments from '../components/therapeutic/MentalHealthAsses
 import SafeComponent from '../components/SafeComponent'
 
 const TOOLS = [
-  { id: 'cbt', name: 'CBT Thought Record', icon: Brain, color: 'blue', description: 'Challenge negative thought patterns' },
-  { id: 'dbt', name: 'DBT Skills', icon: Heart, color: 'pink', description: 'Practice dialectical behavior therapy' },
-  { id: 'mindfulness', name: 'Mindfulness', icon: Wind, color: 'purple', description: 'Guided meditation exercises' },
-  { id: 'sleep', name: 'Sleep Tracker', icon: Moon, color: 'indigo', description: 'Monitor sleep patterns' },
-  { id: 'crisis', name: 'Crisis Plan', icon: Shield, color: 'red', description: 'Emergency safety planning' },
-  { id: 'assessments', name: 'Assessments', icon: ClipboardList, color: 'green', description: 'Mental health screening tools' }
+  { id: 'cbt', name: 'CBT Thought Record', icon: Brain, gradient: 'from-blue-500 to-cyan-500', description: 'Challenge negative thought patterns', category: 'Cognitive' },
+  { id: 'dbt', name: 'DBT Skills', icon: Heart, gradient: 'from-pink-500 to-rose-500', description: 'Practice dialectical behavior therapy', category: 'Behavioral' },
+  { id: 'mindfulness', name: 'Mindfulness', icon: Wind, gradient: 'from-purple-500 to-indigo-500', description: 'Guided meditation exercises', category: 'Mindfulness' },
+  { id: 'sleep', name: 'Sleep Tracker', icon: Moon, gradient: 'from-indigo-500 to-blue-500', description: 'Monitor sleep patterns', category: 'Wellness' },
+  { id: 'crisis', name: 'Crisis Plan', icon: Shield, gradient: 'from-red-500 to-orange-500', description: 'Emergency safety planning', category: 'Safety' },
+  { id: 'assessments', name: 'Assessments', icon: ClipboardList, gradient: 'from-green-500 to-emerald-500', description: 'Mental health screening tools', category: 'Assessment' }
 ]
 
 function TherapeuticToolsPage() {
   const [activeTool, setActiveTool] = useState(null)
+  const [toolStats, setToolStats] = useState({})
+
+  useEffect(() => {
+    const stats = JSON.parse(localStorage.getItem('safespace_tool_usage') || '{}')
+    setToolStats(stats)
+  }, [])
+
+  const trackToolUsage = (toolId) => {
+    const stats = JSON.parse(localStorage.getItem('safespace_tool_usage') || '{}')
+    stats[toolId] = (stats[toolId] || 0) + 1
+    localStorage.setItem('safespace_tool_usage', JSON.stringify(stats))
+    setToolStats(stats)
+    setActiveTool(toolId)
+  }
 
   const renderTool = () => {
     switch(activeTool) {
@@ -34,34 +48,99 @@ function TherapeuticToolsPage() {
 
   if (activeTool) return renderTool()
 
+  const totalUsage = Object.values(toolStats).reduce((sum, count) => sum + count, 0)
+  const mostUsed = TOOLS.find(t => t.id === Object.keys(toolStats).sort((a, b) => (toolStats[b] || 0) - (toolStats[a] || 0))[0])
+
   return (
     <SafeComponent>
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <Activity className="w-8 h-8 text-primary" />
-          <h1 className="text-3xl font-bold">Therapeutic Tools</h1>
+    <div className="max-w-6xl mx-auto">
+      {/* Gradient Header */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 p-8 mb-6 shadow-2xl">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-2">
+            <Activity className="w-10 h-10 text-white" />
+            <h1 className="text-4xl font-bold text-white drop-shadow-lg">Therapeutic Tools</h1>
+          </div>
+          <p className="text-white/90 text-lg mb-4">Evidence-based tools to support your mental wellness journey</p>
+          
+          {totalUsage > 0 && (
+            <div className="flex gap-4 mt-4">
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+                <div className="flex items-center gap-2 text-white">
+                  <TrendingUp size={16} />
+                  <span className="text-sm font-medium">{totalUsage} sessions</span>
+                </div>
+              </div>
+              {mostUsed && (
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+                  <div className="flex items-center gap-2 text-white">
+                    <Star size={16} />
+                    <span className="text-sm font-medium">Most used: {mostUsed.name}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
-        <p className="text-text-secondary">Evidence-based tools to support your mental wellness journey</p>
       </div>
 
+      {/* Tools Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {TOOLS.map(tool => {
           const Icon = tool.icon
+          const usageCount = toolStats[tool.id] || 0
           return (
             <button
               key={tool.id}
-              onClick={() => setActiveTool(tool.id)}
-              className={`card p-6 text-left hover:scale-105 transition-transform group`}
+              onClick={() => trackToolUsage(tool.id)}
+              className="card p-6 text-left hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden"
             >
-              <div className={`w-12 h-12 rounded-xl bg-${tool.color}-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                <Icon className={`w-6 h-6 text-${tool.color}-500`} />
+              {/* Gradient Background on Hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-5 transition-opacity`}></div>
+              
+              <div className="relative z-10">
+                {/* Icon with Gradient */}
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg`}>
+                  <Icon className="w-7 h-7 text-white" />
+                </div>
+                
+                {/* Category Badge */}
+                <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full mb-3">
+                  {tool.category}
+                </span>
+                
+                <h3 className="text-xl font-bold mb-2 text-text-primary group-hover:text-primary transition-colors">{tool.name}</h3>
+                <p className="text-text-secondary text-sm mb-4">{tool.description}</p>
+                
+                {/* Usage Stats */}
+                {usageCount > 0 && (
+                  <div className="flex items-center gap-2 text-xs text-text-secondary">
+                    <Clock size={14} />
+                    <span>Used {usageCount} time{usageCount !== 1 ? 's' : ''}</span>
+                  </div>
+                )}
               </div>
-              <h3 className="text-xl font-semibold mb-2">{tool.name}</h3>
-              <p className="text-text-secondary text-sm">{tool.description}</p>
             </button>
           )
         })}
+      </div>
+
+      {/* Info Banner */}
+      <div className="mt-8 card p-6 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center flex-shrink-0">
+            <Brain className="text-primary" size={24} />
+          </div>
+          <div>
+            <h3 className="font-semibold text-text-primary mb-2">Professional Support</h3>
+            <p className="text-text-secondary text-sm">
+              These tools are designed to complement professional mental health care, not replace it. 
+              If you're experiencing a crisis, please contact a mental health professional or call your local emergency services.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   

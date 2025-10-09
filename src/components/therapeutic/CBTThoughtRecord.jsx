@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { X, Plus, Minus } from 'lucide-react'
+import { X, Plus, Minus, Info } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
+import Disclaimer from '../common/Disclaimer'
 
 function CBTThoughtRecord({ onClose }) {
   const { user } = useAuth()
@@ -65,26 +66,45 @@ function CBTThoughtRecord({ onClose }) {
         <div className="p-6 space-y-6">
           {step === 1 && (
             <>
+              <Disclaimer type="therapy" />
+              
+              <div className="card p-4 bg-blue-50 border border-blue-200">
+                <div className="flex gap-3">
+                  <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-gray-700">
+                    <p className="font-medium mb-1">How CBT Thought Records Work</p>
+                    <p>This technique helps you identify and challenge negative thought patterns. By examining the evidence, you can develop more balanced perspectives.</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+          
+          {step === 1 && (
+            <>
               <div>
-                <label className="block text-sm font-medium mb-2">What was the situation?</label>
+                <label className="block text-sm font-medium mb-2">1. What was the situation?</label>
+                <p className="text-xs text-text-secondary mb-2">Describe the event or situation that triggered your thoughts</p>
                 <textarea
                   value={record.situation}
                   onChange={(e) => setRecord({ ...record, situation: e.target.value })}
                   className="input w-full h-24"
-                  placeholder="Describe what happened..."
+                  placeholder="Example: I sent a text to my friend and they didn't reply for 3 hours..."
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">What automatic thought came to mind?</label>
+                <label className="block text-sm font-medium mb-2">2. What automatic thought came to mind?</label>
+                <p className="text-xs text-text-secondary mb-2">What went through your mind? What did you think would happen?</p>
                 <textarea
                   value={record.automatic_thought}
                   onChange={(e) => setRecord({ ...record, automatic_thought: e.target.value })}
                   className="input w-full h-24"
-                  placeholder="What did you think?"
+                  placeholder="Example: They're ignoring me. They must be angry with me..."
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">What emotions did you feel?</label>
+                <label className="block text-sm font-medium mb-2">3. What emotions did you feel?</label>
+                <p className="text-xs text-text-secondary mb-2">Rate the intensity from 1 (mild) to 10 (extreme)</p>
                 {record.emotions.map((emotion, i) => (
                   <div key={i} className="flex gap-2 mb-2">
                     <input

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Heart, Plus, Calendar, TrendingUp, Sparkles } from 'lucide-react'
+import { Heart, Plus, Calendar, TrendingUp, Sparkles, Info, BookOpen } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 import GratitudeEntryModal from '../components/gratitude/GratitudeEntryModal'
 import GratitudeCard from '../components/gratitude/GratitudeCard'
@@ -76,6 +76,20 @@ function GratitudeJournalPage() {
   return (
     <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
+      {/* Educational Banner */}
+      <div className="card p-4 bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 mb-6">
+        <div className="flex gap-3">
+          <BookOpen className="w-5 h-5 text-pink-600 flex-shrink-0 mt-0.5" />
+          <div className="text-sm">
+            <p className="font-semibold mb-1 text-gray-900">The Science of Gratitude</p>
+            <p className="text-gray-700">
+              Research shows that regular gratitude practice can improve mental health, increase happiness, and reduce symptoms of depression. 
+              This journal is a tool to support your wellness journey, complementing professional care when needed.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
@@ -126,7 +140,19 @@ function GratitudeJournalPage() {
           <div className="card p-12 text-center">
             <Heart className="w-16 h-16 text-text-secondary mx-auto mb-4 opacity-50" />
             <h3 className="text-xl font-semibold mb-2">Start Your Gratitude Journey</h3>
-            <p className="text-text-secondary mb-6">Research shows that practicing gratitude can improve mental health and overall well-being.</p>
+            <p className="text-text-secondary mb-4">Research shows that practicing gratitude can improve mental health and overall well-being.</p>
+            
+            {/* Benefits List */}
+            <div className="max-w-md mx-auto mb-6 text-left">
+              <p className="text-sm font-medium text-gray-700 mb-2">Daily gratitude practice can help you:</p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Increase positive emotions and life satisfaction</li>
+                <li>• Reduce stress and improve sleep quality</li>
+                <li>• Strengthen relationships and social connections</li>
+                <li>• Build resilience during challenging times</li>
+              </ul>
+            </div>
+            
             <button onClick={() => setShowModal(true)} className="btn-primary">
               <Plus className="w-5 h-5" /> Create First Entry
             </button>
@@ -150,6 +176,37 @@ function GratitudeJournalPage() {
           onSave={handleSave}
         />
       )}
+
+      {/* Tips & Disclaimer */}
+      <div className="mt-8 space-y-4">
+        <div className="card p-4 bg-blue-50 border border-blue-200">
+          <div className="flex gap-3">
+            <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+            <div className="text-sm">
+              <p className="font-semibold mb-1 text-gray-900">Tips for Effective Gratitude Practice</p>
+              <ul className="text-gray-700 space-y-1">
+                <li>• Be specific - instead of "I'm grateful for my family," try "I'm grateful my sister called to check on me"</li>
+                <li>• Focus on people rather than things when possible</li>
+                <li>• Reflect on surprises or unexpected positive moments</li>
+                <li>• Consider what your life would be like without certain blessings</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="card p-4 bg-purple-50 border border-purple-200">
+          <div className="flex gap-3">
+            <Heart className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+            <div className="text-sm">
+              <p className="font-semibold mb-1 text-gray-900">Remember</p>
+              <p className="text-gray-700">
+                While gratitude practice is beneficial, it's not a cure for mental health conditions. 
+                If you're struggling with depression, anxiety, or other mental health concerns, please seek support from a qualified mental health professional.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   
     </SafeComponent>

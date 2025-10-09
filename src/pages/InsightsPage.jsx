@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Brain, TrendingUp, Calendar, Target, Award, Users, Clock, Heart, Zap, Book } from 'lucide-react'
+import { Brain, TrendingUp, Calendar, Target, Award, Users, Clock, Heart, Zap, Book, Info, Shield } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
 import { CardSkeleton } from '../components/Skeleton'
 import { cacheManager as cache } from '../utils/cacheManager'
+import Disclaimer from '../components/common/Disclaimer'
 import { 
   calculateAverageMood, 
   detectWeekdayPatterns, 
@@ -165,7 +166,22 @@ function InsightsPage() {
 
   return (
     <SafeComponent>
-      <div className="max-w-4xl mx-auto animate-fade-in">
+    <div className="max-w-4xl mx-auto animate-fade-in">
+      {/* Disclaimer Banner */}
+      <div className="card p-4 bg-blue-50 border border-blue-200 mb-6">
+        <div className="flex gap-3">
+          <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+          <div className="text-sm">
+            <p className="font-semibold mb-1 text-gray-900">About Your Insights</p>
+            <p className="text-gray-700">
+              These insights are generated from your mood tracking data using pattern recognition algorithms. 
+              They are meant to help you understand your emotional patterns, not to diagnose or treat any condition. 
+              For professional mental health support, please consult a licensed therapist or counselor.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Header */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-500 via-blue-500 to-indigo-600 p-8 mb-6 shadow-2xl">
         <div className="absolute inset-0 bg-black/10"></div>
@@ -439,17 +455,34 @@ function InsightsPage() {
         </>
       )}
 
-      {/* Privacy Note */}
-      <div className="card p-4 bg-gray-50 border border-gray-200">
-        <div className="flex items-center gap-2 text-sm text-text-secondary">
-          <span className="text-lg">🔒</span>
-          <div>
-            <span className="font-medium">Your data is private and stored only on your device.</span>
-            <span className="ml-1">AI insights are generated locally - we never see your moods.</span>
+      {/* Privacy & Professional Help Notice */}
+      <div className="space-y-4">
+        <div className="card p-4 bg-gray-50 border border-gray-200">
+          <div className="flex items-center gap-3">
+            <Shield className="w-5 h-5 text-gray-600 flex-shrink-0" />
+            <div className="text-sm">
+              <p className="font-semibold text-gray-900 mb-1">Privacy First</p>
+              <p className="text-gray-700">
+                Your data is private and stored only on your device. Insights are generated locally - we never see your moods or personal information.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="card p-4 bg-purple-50 border border-purple-200">
+          <div className="flex items-center gap-3">
+            <Brain className="w-5 h-5 text-purple-600 flex-shrink-0" />
+            <div className="text-sm">
+              <p className="font-semibold text-gray-900 mb-1">When to Seek Professional Help</p>
+              <p className="text-gray-700">
+                If you're experiencing persistent low moods, anxiety, or thoughts of self-harm, please reach out to a mental health professional. 
+                These insights are educational tools, not a substitute for professional care.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-      </div>
+    </div>
     </SafeComponent>
   )
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { X, AlertCircle } from 'lucide-react'
+import { X, AlertCircle, Phone, Shield } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
+import Disclaimer from '../common/Disclaimer'
 
 const ASSESSMENTS = {
   phq9: {
@@ -176,23 +177,58 @@ function MentalHealthAssessments({ onClose }) {
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-surface rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="sticky top-0 bg-surface border-b border-border p-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Mental Health Assessments</h2>
+          <div>
+            <h2 className="text-2xl font-bold">Mental Health Assessments</h2>
+            <p className="text-sm text-text-secondary mt-1">Validated screening tools for self-assessment</p>
+          </div>
           <button onClick={onClose} className="p-2 hover:bg-hover rounded-lg">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="p-6 space-y-4">
-          {Object.entries(ASSESSMENTS).map(([key, assessment]) => (
-            <button
-              key={key}
-              onClick={() => startAssessment(key)}
-              className="card p-6 w-full text-left hover:scale-105 transition-transform"
-            >
-              <h3 className="text-xl font-semibold mb-2">{assessment.name}</h3>
-              <p className="text-text-secondary text-sm">{assessment.questions.length} questions • 2-3 minutes</p>
-            </button>
-          ))}
+        <div className="p-6">
+          <Disclaimer type="assessment" />
+          
+          {/* Crisis Warning */}
+          <div className="card p-4 bg-red-50 border border-red-200 mb-6">
+            <div className="flex gap-3">
+              <Phone className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <div className="text-sm">
+                <p className="font-semibold mb-1 text-gray-900">Crisis Support Available 24/7</p>
+                <p className="text-gray-700 mb-2">If you're having thoughts of self-harm or suicide, please call 988 immediately.</p>
+                <a href="tel:988" className="text-red-600 hover:text-red-700 font-medium">Call 988 - Suicide & Crisis Lifeline</a>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {Object.entries(ASSESSMENTS).map(([key, assessment]) => (
+              <button
+                key={key}
+                onClick={() => startAssessment(key)}
+                className="card p-6 w-full text-left hover:shadow-lg hover:-translate-y-1 transition-all"
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="text-xl font-semibold mb-2">{assessment.name}</h3>
+                    <p className="text-text-secondary text-sm mb-3">{assessment.questions.length} questions • 2-3 minutes</p>
+                    <div className="flex items-center gap-2 text-xs text-text-secondary">
+                      <Shield size={14} />
+                      <span>Clinically validated screening tool</span>
+                    </div>
+                  </div>
+                  <div className="text-primary text-2xl">→</div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Professional Help Notice */}
+          <div className="mt-6 p-4 bg-blue-50 rounded-xl">
+            <p className="text-sm text-gray-700">
+              <strong>Remember:</strong> These assessments are screening tools only. For diagnosis and treatment, please consult with a licensed mental health professional.
+            </p>
+          </div>
         </div>
       </div>
     </div>
