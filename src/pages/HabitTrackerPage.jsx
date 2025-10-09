@@ -1,16 +1,30 @@
 import { useState, useEffect } from 'react'
-import { Plus, CheckCircle2, Circle, TrendingUp } from 'lucide-react'
+import { Plus, CheckCircle2, Circle, TrendingUp, Crown } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
+import LimitWarningBanner from '../components/common/LimitWarningBanner'
+import { getPremiumStatus } from '../utils/premiumUtils'
 
 function HabitTrackerPage() {
+  const navigate = useNavigate()
   const [habits, setHabits] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [newHabit, setNewHabit] = useState({ name: '', icon: '🎯', color: 'blue', frequency: 'daily' })
+  const { isPremium } = getPremiumStatus()
+  const FREE_HABIT_LIMIT = 5
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('safespace_habits') || '[]')
     setHabits(saved)
   }, [])
+
+  const handleAddClick = () => {
+    if (!isPremium && habits.length >= FREE_HABIT_LIMIT) {
+      navigate('/premium')
+      return
+    }
+    setShowModal(true)
+  }
 
   const addHabit = () => {
     const habit = { ...newHabit, id: Date.now(), completions: {} }
@@ -52,20 +66,32 @@ function HabitTrackerPage() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Habit Tracker</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl font-bold">Habit Tracker</h1>
+            {isPremium && (
+              <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-xs font-medium">
+                <Crown size={12} />
+                Premium
+              </div>
+            )}
+          </div>
           <p className="text-text-secondary">Build better habits, one day at a time</p>
         </div>
-        <button onClick={() => setShowModal(true)} className="btn-primary">
+        <button onClick={handleAddClick} className="btn-primary">
           <Plus className="w-5 h-5" /> Add Habit
         </button>
       </div>
+
+      {!isPremium && habits.length >= FREE_HABIT_LIMIT && (
+        <LimitWarningBanner limit={FREE_HABIT_LIMIT} feature="habits" current={habits.length} />
+      )}
 
       {habits.length === 0 ? (
         <div className="card p-12 text-center">
           <TrendingUp className="w-16 h-16 text-text-secondary mx-auto mb-4 opacity-50" />
           <h3 className="text-xl font-semibold mb-2">Start Building Habits</h3>
           <p className="text-text-secondary mb-6">Track daily habits and build consistency</p>
-          <button onClick={() => setShowModal(true)} className="btn-primary">
+          <button onClick={handleAddClick} className="btn-primary">
             <Plus className="w-5 h-5" /> Create First Habit
           </button>
         </div>

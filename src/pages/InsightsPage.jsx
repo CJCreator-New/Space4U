@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Brain, TrendingUp, Calendar, Target, Award, Users, Clock, Heart, Zap, Book, Info, Shield } from 'lucide-react'
+import { Brain, TrendingUp, Calendar, Target, Award, Users, Clock, Heart, Zap, Book, Info, Shield, Crown } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
 import { CardSkeleton } from '../components/Skeleton'
 import { cacheManager as cache } from '../utils/cacheManager'
 import Disclaimer from '../components/common/Disclaimer'
+import PremiumPaywall from '../components/PremiumPaywall'
+import WellnessBreakdown from '../components/premium/WellnessBreakdown'
+import { getPremiumStatus } from '../utils/premiumUtils'
 import { 
   calculateAverageMood, 
   detectWeekdayPatterns, 
@@ -32,6 +35,7 @@ function InsightsPage() {
   const [moods, setMoods] = useState([])
   const [analysis, setAnalysis] = useState(null)
   const [loading, setLoading] = useState(true)
+  const { isPremium } = getPremiumStatus()
 
   useEffect(() => {
     loadMoodData()
@@ -224,9 +228,24 @@ function InsightsPage() {
         </div>
       ) : (
         <>
+          {/* Premium Wellness Breakdown */}
+          {isPremium && (
+            <div className="mb-6">
+              <WellnessBreakdown />
+            </div>
+          )}
+
           {/* Hero Summary Card */}
           <div className="card p-6 mb-6 hover:shadow-2xl transition-all">
-            <h2 className="text-xl font-semibold text-text-primary mb-4">{getPeriodLabel()} at a Glance</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-text-primary">{getPeriodLabel()} at a Glance</h2>
+              {isPremium && (
+                <div className="flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-sm font-medium">
+                  <Crown size={16} />
+                  Premium
+                </div>
+              )}
+            </div>
             
             <div className="grid md:grid-cols-3 gap-6">
               {/* Average Mood */}

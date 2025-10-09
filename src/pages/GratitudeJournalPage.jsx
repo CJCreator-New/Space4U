@@ -1,17 +1,23 @@
 import { useState, useEffect } from 'react'
-import { Heart, Plus, Calendar, TrendingUp, Sparkles, Info, BookOpen } from 'lucide-react'
+import { Heart, Plus, Calendar, TrendingUp, Sparkles, Info, BookOpen, Crown, Lock } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 import GratitudeEntryModal from '../components/gratitude/GratitudeEntryModal'
 import GratitudeCard from '../components/gratitude/GratitudeCard'
 import GratitudeStats from '../components/gratitude/GratitudeStats'
 import SafeComponent from '../components/SafeComponent'
+import { getPremiumStatus } from '../utils/premiumUtils'
+import { useNavigate } from 'react-router-dom'
 
 function GratitudeJournalPage() {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [entries, setEntries] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [selectedEntry, setSelectedEntry] = useState(null)
   const [streak, setStreak] = useState(0)
+  const { isPremium } = getPremiumStatus()
+  
+  const FREE_ENTRY_LIMIT = 10
 
   useEffect(() => {
     loadEntries()
@@ -50,6 +56,10 @@ function GratitudeJournalPage() {
     const saved = JSON.parse(localStorage.getItem('safespace_gratitude_entries') || '[]')
     const existing = saved.findIndex(e => e.date === entry.date)
     
+    if (!isPremium && existing < 0 && saved.length >= FREE_ENTRY_LIMIT) {
+      return
+    }
+    
     if (existing >= 0) saved[existing] = entry
     else saved.unshift(entry)
     
@@ -57,6 +67,14 @@ function GratitudeJournalPage() {
     loadEntries()
     setShowModal(false)
     setSelectedEntry(null)
+  }
+  
+  const handleAddClick = () => {
+    if (!isPremium && entries.length >= FREE_ENTRY_LIMIT && !todayEntry) {
+      navigate('/premium')
+      return
+    }
+    setShowModal(true)
   }
 
   const handleEdit = (entry) => {
@@ -99,10 +117,28 @@ function GratitudeJournalPage() {
               <p className="text-text-secondary">What are you grateful for today?</p>
             </div>
           </div>
-          <button onClick={() => setShowModal(true)} className="btn-primary">
+          <button onClick={handleAddClick} className="btn-primary">
             <Plus className="w-5 h-5" /> {todayEntry ? 'Edit Today' : 'Add Entry'}
           </button>
         </div>
+
+        {!isPremium && entries.length >= FREE_ENTRY_LIMIT && (
+          <div className="card p-4 bg-gradient-to-r from-yellow-50 to-orange-50 border border-orange-200 mb-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Lock className="w-5 h-5 text-orange-600" />
+                <div className="text-sm">
+                  <p className="font-semibold text-gray-900">Free Limit Reached</p>
+                  <p className="text-gray-700">You've reached {FREE_ENTRY_LIMIT} entries. Upgrade to Premium for unlimited gratitude journaling.</p>
+                </div>
+              </div>
+              <button onClick={() => navigate('/premium')} className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-xl font-medium hover:opacity-90 transition-opacity flex items-center gap-2 whitespace-nowrap">
+                <Crown size={16} />
+                Upgrade
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="card p-6">
@@ -153,7 +189,7 @@ function GratitudeJournalPage() {
               </ul>
             </div>
             
-            <button onClick={() => setShowModal(true)} className="btn-primary">
+            <button onClick={handleAddClick} className="btn-primary">
               <Plus className="w-5 h-5" /> Create First Entry
             </button>
           </div>

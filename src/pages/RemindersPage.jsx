@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Plus, Bell, BellOff, Trash2 } from 'lucide-react'
+import { Plus, Bell, BellOff, Trash2, Crown } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
+import LimitWarningBanner from '../components/common/LimitWarningBanner'
+import { getPremiumStatus } from '../utils/premiumUtils'
 
 const REMINDER_TYPES = [
   { value: 'mood_checkin', label: 'Mood Check-in', icon: '😊' },
@@ -13,6 +16,7 @@ const REMINDER_TYPES = [
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 function RemindersPage() {
+  const navigate = useNavigate()
   const [reminders, setReminders] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [newReminder, setNewReminder] = useState({
@@ -22,11 +26,21 @@ function RemindersPage() {
     days: [1, 2, 3, 4, 5],
     enabled: true
   })
+  const { isPremium } = getPremiumStatus()
+  const FREE_REMINDER_LIMIT = 5
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('safespace_reminders') || '[]')
     setReminders(saved)
   }, [])
+
+  const handleAddClick = () => {
+    if (!isPremium && reminders.length >= FREE_REMINDER_LIMIT) {
+      navigate('/premium')
+      return
+    }
+    setShowModal(true)
+  }
 
   const addReminder = () => {
     const reminder = { ...newReminder, id: Date.now() }
@@ -61,20 +75,32 @@ function RemindersPage() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Smart Reminders</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl font-bold">Smart Reminders</h1>
+            {isPremium && (
+              <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-xs font-medium">
+                <Crown size={12} />
+                Premium
+              </div>
+            )}
+          </div>
           <p className="text-text-secondary">Stay on track with your wellness routine</p>
         </div>
-        <button onClick={() => setShowModal(true)} className="btn-primary">
+        <button onClick={handleAddClick} className="btn-primary">
           <Plus className="w-5 h-5" /> Add Reminder
         </button>
       </div>
+
+      {!isPremium && reminders.length >= FREE_REMINDER_LIMIT && (
+        <LimitWarningBanner limit={FREE_REMINDER_LIMIT} feature="reminders" current={reminders.length} />
+      )}
 
       {reminders.length === 0 ? (
         <div className="card p-12 text-center">
           <Bell className="w-16 h-16 text-text-secondary mx-auto mb-4 opacity-50" />
           <h3 className="text-xl font-semibold mb-2">No Reminders Yet</h3>
           <p className="text-text-secondary mb-6">Create reminders to stay consistent</p>
-          <button onClick={() => setShowModal(true)} className="btn-primary">
+          <button onClick={handleAddClick} className="btn-primary">
             <Plus className="w-5 h-5" /> Create First Reminder
           </button>
         </div>

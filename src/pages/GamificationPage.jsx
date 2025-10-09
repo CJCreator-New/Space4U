@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Trophy, Target, Zap, Star, Calendar } from 'lucide-react'
+import { Trophy, Target, Zap, Star, Calendar, Crown, Lock } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
+import { getPremiumStatus } from '../utils/premiumUtils'
 
 const CHALLENGES = [
   { id: 1, title: '7-Day Mood Tracker', description: 'Track mood daily for 7 days', duration: 7, progress: 0, badge: '🎯' },
@@ -16,13 +18,19 @@ const QUESTS = [
 ]
 
 function GamificationPage() {
+  const navigate = useNavigate()
   const [userLevel, setUserLevel] = useState({ level: 1, xp: 0, badges: [] })
   const [streaks, setStreaks] = useState({ mood: 0, gratitude: 0, habits: 0 })
   const [activeTab, setActiveTab] = useState('challenges')
+  const [activeChallenges, setActiveChallenges] = useState([])
+  const { isPremium } = getPremiumStatus()
+  const FREE_CHALLENGE_LIMIT = 1
 
   useEffect(() => {
     const level = JSON.parse(localStorage.getItem('safespace_user_level') || '{"level":1,"xp":0,"badges":[]}')
     setUserLevel(level)
+    const active = JSON.parse(localStorage.getItem('safespace_active_challenges') || '[]')
+    setActiveChallenges(active)
     
     // Calculate streaks
     const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
@@ -66,14 +74,39 @@ function GamificationPage() {
     return streak
   }
 
+  const handleJoinChallenge = (challengeId) => {
+    if (!isPremium && activeChallenges.length >= FREE_CHALLENGE_LIMIT) {
+      navigate('/premium')
+      return
+    }
+    const updated = [...activeChallenges, challengeId]
+    setActiveChallenges(updated)
+    localStorage.setItem('safespace_active_challenges', JSON.stringify(updated))
+  }
+
+  const handleStartQuest = (quest) => {
+    if (quest.premium && !isPremium) {
+      navigate('/premium')
+      return
+    }
+  }
+
   const xpToNextLevel = userLevel.level * 100
 
   return (
     <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Gamification Hub</h1>
-        <p className="text-text-secondary">Level up your mental wellness journey</p>
+        <div className="flex items-center gap-3 mb-2">
+          <h1 className="text-3xl font-bold">Gamification Hub</h1>
+          {isPremium && (
+            <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-xs font-medium">
+              <Crown size={12} />
+              Premium
+            </div>
+          )}
+        </div>
+        <p className="text-text-secondary">Level up your mental wellness journey • {isPremium ? '3 active challenges' : '1 active challenge'}</p>
       </div>
 
       {/* User Level Card */}
@@ -166,7 +199,13 @@ function GamificationPage() {
                   <div className="h-full bg-primary" style={{ width: `${(challenge.progress / challenge.duration) * 100}%` }} />
                 </div>
               </div>
-              <button className="btn-primary w-full">Join Challenge</button>
+              <button 
+                onClick={() => handleJoinChallenge(challenge.id)}
+                disabled={activeChallenges.includes(challenge.id)}
+                className="btn-primary w-full"
+              >
+                {activeChallenges.includes(challenge.id) ? 'Active' : 'Join Challenge'}
+              </button>
             </div>
           ))}
         </div>
@@ -198,7 +237,13 @@ function GamificationPage() {
                   <div className="text-sm text-text-secondary">XP</div>
                 </div>
               </div>
-              <button className="btn-primary w-full mt-4">Start Quest</button>
+              <button 
+                onClick={() => handleStartQuest(quest)}
+                className="btn-primary w-full mt-4 flex items-center justify-center gap-2"
+              >
+                {quest.premium && !isPremium && <Lock size={16} />}
+                Start Quest
+              </button>
             </div>
           ))}
         </div>

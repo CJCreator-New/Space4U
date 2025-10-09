@@ -1,12 +1,15 @@
 import { useState } from 'react'
-import { BarChart3, Tag, Moon, BookOpen, Info, AlertTriangle } from 'lucide-react'
+import { BarChart3, Tag, Moon, BookOpen, Info, AlertTriangle, Crown } from 'lucide-react'
 import TagAnalytics from '../components/priority5/TagAnalytics'
 import SleepAnalytics from '../components/priority5/SleepAnalytics'
 import MoodPrediction from '../components/priority5/MoodPrediction'
 import SafeComponent from '../components/SafeComponent'
+import PremiumPaywall from '../components/PremiumPaywall'
+import { getPremiumStatus } from '../utils/premiumUtils'
 
 function AdvancedAnalyticsPage() {
   const [activeTab, setActiveTab] = useState('tags')
+  const { isPremium } = getPremiumStatus()
 
   const tabs = [
     { id: 'tags', label: 'Tag Analytics', icon: Tag },
@@ -109,7 +112,14 @@ function AdvancedAnalyticsPage() {
       <div>
         {activeTab === 'tags' && <TagAnalytics />}
         {activeTab === 'sleep' && <SleepAnalytics />}
-        {activeTab === 'prediction' && <MoodPrediction />}
+        {activeTab === 'prediction' && (
+          <PremiumPaywall
+            feature="Mood Prediction AI"
+            description="Unlock AI-powered mood forecasting and predictive insights with Premium. Get personalized alerts before mood dips."
+          >
+            <MoodPrediction />
+          </PremiumPaywall>
+        )}
       </div>
 
       {/* Research-Based Tips */}

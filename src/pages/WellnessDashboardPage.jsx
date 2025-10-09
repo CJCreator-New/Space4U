@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
-import { TrendingUp, Heart, Target, Brain, Smile } from 'lucide-react'
+import { TrendingUp, Heart, Target, Brain, Smile, Crown } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
+import PremiumPaywall from '../components/PremiumPaywall'
+import WellnessBreakdown from '../components/premium/WellnessBreakdown'
+import { getPremiumStatus } from '../utils/premiumUtils'
 
 function WellnessDashboardPage() {
   const [score, setScore] = useState(0)
@@ -11,6 +14,7 @@ function WellnessDashboardPage() {
     sleep: 0,
     emotions: 0
   })
+  const { isPremium } = getPremiumStatus()
 
   useEffect(() => {
     calculateWellnessScore()
@@ -86,7 +90,15 @@ function WellnessDashboardPage() {
     <SafeComponent>
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Wellness Dashboard</h1>
+        <div className="flex items-center gap-3 mb-2">
+          <h1 className="text-3xl font-bold">Wellness Dashboard</h1>
+          {isPremium && (
+            <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-xs font-medium">
+              <Crown size={12} />
+              Premium
+            </div>
+          )}
+        </div>
         <p className="text-text-secondary">Your comprehensive mental health overview</p>
       </div>
 
@@ -95,6 +107,21 @@ function WellnessDashboardPage() {
         <div className={`text-6xl font-bold mb-2 ${getScoreColor(score)}`}>{score}/100</div>
         <p className="text-xl font-medium">{getScoreLabel(score)}</p>
       </div>
+
+      {isPremium ? (
+        <div className="mb-8">
+          <WellnessBreakdown />
+        </div>
+      ) : (
+        <div className="mb-8">
+          <PremiumPaywall
+            feature="Detailed Wellness Breakdown"
+            description="Unlock comprehensive wellness analytics with 7-day trends, component breakdowns, and personalized recommendations."
+          >
+            <div className="h-96 bg-gray-100 rounded-2xl" />
+          </PremiumPaywall>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <div className="card p-6">

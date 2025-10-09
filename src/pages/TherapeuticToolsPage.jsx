@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Brain, Heart, Moon, Shield, ClipboardList, Wind, Activity, TrendingUp, Clock, Star } from 'lucide-react'
+import { Brain, Heart, Moon, Shield, ClipboardList, Wind, Activity, TrendingUp, Clock, Star, Crown, Lock } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import CBTThoughtRecord from '../components/therapeutic/CBTThoughtRecord'
 import DBTSkillsModule from '../components/therapeutic/DBTSkillsModule'
 import MindfulnessExercises from '../components/therapeutic/MindfulnessExercises'
@@ -7,31 +8,38 @@ import SleepHygieneTracker from '../components/therapeutic/SleepHygieneTracker'
 import CrisisSafetyPlan from '../components/therapeutic/CrisisSafetyPlan'
 import MentalHealthAssessments from '../components/therapeutic/MentalHealthAssessments'
 import SafeComponent from '../components/SafeComponent'
+import { getPremiumStatus } from '../utils/premiumUtils'
 
 const TOOLS = [
-  { id: 'cbt', name: 'CBT Thought Record', icon: Brain, gradient: 'from-blue-500 to-cyan-500', description: 'Challenge negative thought patterns', category: 'Cognitive' },
-  { id: 'dbt', name: 'DBT Skills', icon: Heart, gradient: 'from-pink-500 to-rose-500', description: 'Practice dialectical behavior therapy', category: 'Behavioral' },
-  { id: 'mindfulness', name: 'Mindfulness', icon: Wind, gradient: 'from-purple-500 to-indigo-500', description: 'Guided meditation exercises', category: 'Mindfulness' },
-  { id: 'sleep', name: 'Sleep Tracker', icon: Moon, gradient: 'from-indigo-500 to-blue-500', description: 'Monitor sleep patterns', category: 'Wellness' },
-  { id: 'crisis', name: 'Crisis Plan', icon: Shield, gradient: 'from-red-500 to-orange-500', description: 'Emergency safety planning', category: 'Safety' },
-  { id: 'assessments', name: 'Assessments', icon: ClipboardList, gradient: 'from-green-500 to-emerald-500', description: 'Mental health screening tools', category: 'Assessment' }
+  { id: 'cbt', name: 'CBT Thought Record', icon: Brain, gradient: 'from-blue-500 to-cyan-500', description: 'Challenge negative thought patterns', category: 'Cognitive', premium: false },
+  { id: 'dbt', name: 'DBT Skills', icon: Heart, gradient: 'from-pink-500 to-rose-500', description: 'Practice dialectical behavior therapy', category: 'Behavioral', premium: true },
+  { id: 'mindfulness', name: 'Mindfulness', icon: Wind, gradient: 'from-purple-500 to-indigo-500', description: 'Guided meditation exercises', category: 'Mindfulness', premium: false },
+  { id: 'sleep', name: 'Sleep Tracker', icon: Moon, gradient: 'from-indigo-500 to-blue-500', description: 'Monitor sleep patterns', category: 'Wellness', premium: true },
+  { id: 'crisis', name: 'Crisis Plan', icon: Shield, gradient: 'from-red-500 to-orange-500', description: 'Emergency safety planning', category: 'Safety', premium: false },
+  { id: 'assessments', name: 'Assessments', icon: ClipboardList, gradient: 'from-green-500 to-emerald-500', description: 'Mental health screening tools', category: 'Assessment', premium: false }
 ]
 
 function TherapeuticToolsPage() {
+  const navigate = useNavigate()
   const [activeTool, setActiveTool] = useState(null)
   const [toolStats, setToolStats] = useState({})
+  const { isPremium } = getPremiumStatus()
 
   useEffect(() => {
     const stats = JSON.parse(localStorage.getItem('safespace_tool_usage') || '{}')
     setToolStats(stats)
   }, [])
 
-  const trackToolUsage = (toolId) => {
+  const trackToolUsage = (tool) => {
+    if (tool.premium && !isPremium) {
+      navigate('/premium')
+      return
+    }
     const stats = JSON.parse(localStorage.getItem('safespace_tool_usage') || '{}')
-    stats[toolId] = (stats[toolId] || 0) + 1
+    stats[tool.id] = (stats[tool.id] || 0) + 1
     localStorage.setItem('safespace_tool_usage', JSON.stringify(stats))
     setToolStats(stats)
-    setActiveTool(toolId)
+    setActiveTool(tool.id)
   }
 
   const renderTool = () => {
@@ -62,6 +70,12 @@ function TherapeuticToolsPage() {
           <div className="flex items-center gap-3 mb-2">
             <Activity className="w-10 h-10 text-white" />
             <h1 className="text-4xl font-bold text-white drop-shadow-lg">Therapeutic Tools</h1>
+            {isPremium && (
+              <div className="flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium text-white">
+                <Crown size={16} />
+                Premium
+              </div>
+            )}
           </div>
           <p className="text-white/90 text-lg mb-4">Evidence-based tools to support your mental wellness journey</p>
           
@@ -94,8 +108,10 @@ function TherapeuticToolsPage() {
           return (
             <button
               key={tool.id}
-              onClick={() => trackToolUsage(tool.id)}
-              className="card p-6 text-left hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden"
+              onClick={() => trackToolUsage(tool)}
+              className={`card p-6 text-left hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden ${
+                tool.premium && !isPremium ? 'opacity-70' : ''
+              }`}
             >
               {/* Gradient Background on Hover */}
               <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-5 transition-opacity`}></div>
@@ -107,9 +123,17 @@ function TherapeuticToolsPage() {
                 </div>
                 
                 {/* Category Badge */}
-                <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full mb-3">
-                  {tool.category}
-                </span>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
+                    {tool.category}
+                  </span>
+                  {tool.premium && !isPremium && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-medium rounded-full">
+                      <Crown size={10} />
+                      Premium
+                    </span>
+                  )}
+                </div>
                 
                 <h3 className="text-xl font-bold mb-2 text-text-primary group-hover:text-primary transition-colors">{tool.name}</h3>
                 <p className="text-text-secondary text-sm mb-4">{tool.description}</p>

@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Plus, Heart } from 'lucide-react'
+import { Plus, Heart, Crown, BarChart3 } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
+import PremiumPaywall from '../components/PremiumPaywall'
+import { getPremiumStatus } from '../utils/premiumUtils'
 
 const EMOTIONS = {
   joy: { color: 'yellow', secondary: ['Optimistic', 'Proud', 'Content', 'Playful'] },
@@ -14,9 +17,11 @@ const EMOTIONS = {
 }
 
 function EmotionTrackerPage() {
+  const navigate = useNavigate()
   const [logs, setLogs] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [entry, setEntry] = useState({ primary_emotion: '', secondary_emotions: [], intensity: 5, trigger: '' })
+  const { isPremium } = getPremiumStatus()
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('safespace_emotion_logs') || '[]')
@@ -37,13 +42,75 @@ function EmotionTrackerPage() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Emotion Tracker</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl font-bold">Emotion Tracker</h1>
+            {isPremium && (
+              <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-xs font-medium">
+                <Crown size={12} />
+                Premium
+              </div>
+            )}
+          </div>
           <p className="text-text-secondary">Understand your emotional patterns</p>
         </div>
         <button onClick={() => setShowModal(true)} className="btn-primary">
           <Plus className="w-5 h-5" /> Log Emotion
         </button>
       </div>
+
+      {isPremium && logs.length > 0 && (
+        <div className="card p-6 mb-6 bg-gradient-to-r from-purple-50 to-pink-50">
+          <div className="flex items-center gap-3 mb-4">
+            <BarChart3 className="w-6 h-6 text-purple-600" />
+            <h3 className="font-semibold text-gray-900">Emotion Pattern Analytics</h3>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">{logs.length}</div>
+              <div className="text-sm text-gray-600">Total Logs</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">
+                {logs.length > 0 ? Math.round(logs.reduce((sum, l) => sum + l.intensity, 0) / logs.length) : 0}
+              </div>
+              <div className="text-sm text-gray-600">Avg Intensity</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600 capitalize">
+                {logs.length > 0 ? logs.reduce((acc, l) => {
+                  acc[l.primary_emotion] = (acc[l.primary_emotion] || 0) + 1
+                  return acc
+                }, {})[Object.keys(logs.reduce((acc, l) => {
+                  acc[l.primary_emotion] = (acc[l.primary_emotion] || 0) + 1
+                  return acc
+                }, {})).reduce((a, b) => logs.reduce((acc, l) => {
+                  acc[l.primary_emotion] = (acc[l.primary_emotion] || 0) + 1
+                  return acc
+                }, {})[a] > logs.reduce((acc, l) => {
+                  acc[l.primary_emotion] = (acc[l.primary_emotion] || 0) + 1
+                  return acc
+                }, {})[b] ? a : b)] && Object.keys(logs.reduce((acc, l) => {
+                  acc[l.primary_emotion] = (acc[l.primary_emotion] || 0) + 1
+                  return acc
+                }, {})).reduce((a, b) => logs.reduce((acc, l) => {
+                  acc[l.primary_emotion] = (acc[l.primary_emotion] || 0) + 1
+                  return acc
+                }, {})[a] > logs.reduce((acc, l) => {
+                  acc[l.primary_emotion] = (acc[l.primary_emotion] || 0) + 1
+                  return acc
+                }, {})[b] ? a : b) : 'N/A'}
+              </div>
+              <div className="text-sm text-gray-600">Most Common</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">
+                {logs.filter(l => new Date(l.created_at) > new Date(Date.now() - 7*24*60*60*1000)).length}
+              </div>
+              <div className="text-sm text-gray-600">This Week</div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {logs.length === 0 ? (
         <div className="card p-12 text-center">
@@ -56,7 +123,7 @@ function EmotionTrackerPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {logs.map(log => (
+          {(isPremium ? logs : logs.slice(0, 30)).map(log => (
             <div key={log.id} className="card p-6">
               <div className="flex items-start justify-between mb-3">
                 <div>
@@ -77,6 +144,14 @@ function EmotionTrackerPage() {
               {log.trigger && <p className="text-text-secondary">Trigger: {log.trigger}</p>}
             </div>
           ))}
+          {!isPremium && logs.length > 30 && (
+            <PremiumPaywall
+              feature="Full Emotion History"
+              description="Upgrade to Premium to access your complete emotion history and advanced analytics."
+            >
+              <div className="h-40" />
+            </PremiumPaywall>
+          )}
         </div>
       )}
 
