@@ -9,7 +9,11 @@ import ProtectedRoute from './components/ProtectedRoute'
 import PageLoader from './components/common/PageLoader'
 import LiveRegion from './components/common/LiveRegion'
 import KeyboardHelpModal from './components/common/KeyboardHelpModal'
+import GlobalSearch from './components/GlobalSearch'
+import QuickActions from './components/QuickActions'
+import OnboardingTour from './components/OnboardingTour'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
+import { initNotifications, requestNotificationPermission } from './utils/notifications'
 
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage'))
@@ -38,15 +42,30 @@ const ProfessionalPage = lazy(() => import('./pages/ProfessionalPage'))
 const TechnicalFeaturesPage = lazy(() => import('./pages/TechnicalFeaturesPage'))
 const PremiumManagePage = lazy(() => import('./pages/PremiumManagePage'))
 const PremiumFeaturesPage = lazy(() => import('./pages/PremiumFeaturesPage'))
+const BookmarksPage = lazy(() => import('./pages/BookmarksPage'))
 
 function App() {
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false)
+  const [showTour, setShowTour] = useState(false)
 
   useEffect(() => {
     const onboardingComplete = localStorage.getItem('safespace_onboarding_complete')
     setIsOnboardingComplete(onboardingComplete === 'true')
+    
+    // Check if tour should be shown
+    const tourCompleted = localStorage.getItem('safespace_tour_completed')
+    if (onboardingComplete === 'true' && !tourCompleted) {
+      setShowTour(true)
+    }
+    
+    // Initialize notifications
+    if (onboardingComplete === 'true') {
+      requestNotificationPermission()
+      initNotifications()
+    }
+    
     setIsLoading(false)
   }, [])
 
@@ -70,6 +89,7 @@ function App() {
     <ErrorBoundary>
       <AuthProvider>
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          {showTour && <OnboardingTour onComplete={() => setShowTour(false)} />}
           <AppContent showKeyboardHelp={showKeyboardHelp} setShowKeyboardHelp={setShowKeyboardHelp} />
         </BrowserRouter>
       </AuthProvider>
@@ -78,6 +98,7 @@ function App() {
 }
 
 function AppContent({ showKeyboardHelp, setShowKeyboardHelp }) {
+  const [showSearch, setShowSearch] = useState(false)
   useKeyboardShortcuts()
 
   useEffect(() => {
@@ -93,13 +114,35 @@ function AppContent({ showKeyboardHelp, setShowKeyboardHelp }) {
     // Listen for keyboard help trigger
     const handleShowHelp = () => setShowKeyboardHelp(true)
     window.addEventListener('showKeyboardHelp', handleShowHelp)
-    return () => window.removeEventListener('showKeyboardHelp', handleShowHelp)
+    
+    // Listen for global search trigger (Ctrl+K or Cmd+K or /)
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault()
+        setShowSearch(true)
+      }
+      if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(e.target.tagName)) {
+        e.preventDefault()
+        setShowSearch(true)
+      }
+      if (e.key === 'Escape') {
+        setShowSearch(false)
+      }
+    }
+    
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('showKeyboardHelp', handleShowHelp)
+      window.removeEventListener('keydown', handleKeyDown)
+    }
   }, [setShowKeyboardHelp])
 
   return (
     <>
       <LiveRegion />
       <MigrationStatus />
+      <GlobalSearch isOpen={showSearch} onClose={() => setShowSearch(false)} />
+      <QuickActions />
       <KeyboardHelpModal 
         isOpen={showKeyboardHelp} 
         onClose={() => setShowKeyboardHelp(false)} 
@@ -133,6 +176,7 @@ function AppContent({ showKeyboardHelp, setShowKeyboardHelp }) {
             <Route path="/analytics" element={<AdvancedAnalyticsPage />} />
             <Route path="/professional" element={<ProfessionalPage />} />
             <Route path="/technical" element={<TechnicalFeaturesPage />} />
+            <Route path="/bookmarks" element={<BookmarksPage />} />
           </Route>
         </Routes>
       </Suspense>

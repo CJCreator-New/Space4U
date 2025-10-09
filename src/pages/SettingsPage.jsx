@@ -3,9 +3,10 @@ import {
   Bell, Shield, Palette, Globe, Eye, User, HelpCircle, Info,
   Search, ChevronDown, ChevronRight, Download, Trash2, X, Check,
   Sun, Moon, Monitor, Type, Zap, Volume2, Mail, Smartphone,
-  ExternalLink, RotateCcw, Crown, Dot, Keyboard
+  ExternalLink, RotateCcw, Crown, Dot, Keyboard, Upload
 } from 'lucide-react'
 import { useTheme } from '../hooks/useTheme'
+import ExportImportModal from '../components/ExportImportModal'
 
 const DEFAULT_SETTINGS = {
   notifications: {
@@ -62,6 +63,7 @@ function SettingsPage() {
   const [deleteConfirm, setDeleteConfirm] = useState('')
   const [resetConfirm, setResetConfirm] = useState(false)
   const [isPremium, setIsPremium] = useState(false)
+  const [showExportModal, setShowExportModal] = useState(false)
 
   useEffect(() => {
     loadSettings()
@@ -433,12 +435,13 @@ function SettingsPage() {
                 </select>
               </SettingRow>
               
-              <SettingRow icon={Download} label="Download my data" description="Export all your data as JSON">
+              <SettingRow icon={Download} label="Export & Import" description="Backup or restore your data" isNew={true}>
                 <button
-                  onClick={exportData}
-                  className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors"
+                  onClick={() => setShowExportModal(true)}
+                  className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center gap-2"
                 >
-                  Export All Data
+                  <Upload size={16} />
+                  Manage Data
                 </button>
               </SettingRow>
               
@@ -868,6 +871,9 @@ function SettingsPage() {
           </div>
         </div>
       )}
+
+      {/* Export/Import Modal */}
+      <ExportImportModal isOpen={showExportModal} onClose={() => setShowExportModal(false)} />
 
       {/* Auto Delete Confirmation Modal */}
       {showAutoDeleteModal && (

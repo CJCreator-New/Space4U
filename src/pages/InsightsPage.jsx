@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Brain, TrendingUp, Calendar, Target, Award, Users, Clock, Heart, Zap, Book } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
+import { CardSkeleton } from '../components/Skeleton'
+import { cache } from '../utils/cache'
 import { 
   calculateAverageMood, 
   detectWeekdayPatterns, 
@@ -34,7 +36,16 @@ function InsightsPage() {
     loadMoodData()
   }, [period])
 
-  const loadMoodData = () => {
+  const loadMoodData = async () => {
+    const cacheKey = `insights_${period}`
+    const cached = cache.get(cacheKey)
+    
+    if (cached) {
+      setMoods(cached.moods)
+      setAnalysis(cached.analysis)
+      setLoading(false)
+      return
+    }
     const savedMoods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
     const moodEntries = Object.entries(savedMoods).map(([date, mood]) => ({
       date,
@@ -60,7 +71,8 @@ function InsightsPage() {
     setMoods(filteredMoods)
     
     if (filteredMoods.length >= 3) {
-      analyzeData(filteredMoods, moodEntries)
+      const analysisData = analyzeData(filteredMoods, moodEntries)
+      cache.set(cacheKey, { moods: filteredMoods, analysis: analysisData }, 300000)
     } else {
       setAnalysis(null)
     }
@@ -94,7 +106,7 @@ function InsightsPage() {
     const totalDays = period === 'week' ? 7 : period === 'month' ? 30 : allMoods.length
     const consistencyScore = calculateConsistencyScore(currentMoods, totalDays)
 
-    setAnalysis({
+    const analysisData = {
       averageMood,
       breakdown,
       weekdayPatterns,
@@ -107,7 +119,10 @@ function InsightsPage() {
       trend,
       consistencyScore,
       totalEntries: allMoods.length
-    })
+    }
+    
+    setAnalysis(analysisData)
+    return analysisData
   }
 
   const getPeriodLabel = () => {
@@ -131,48 +146,45 @@ function InsightsPage() {
 
   if (loading) {
     return (
-    <SafeComponent>
-      <div className="max-w-4xl mx-auto">
-        <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-gray-200 rounded w-64"></div>
-          <div className="card p-6">
-            <div className="h-32 bg-gray-200 rounded"></div>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {Array.from({ length: 4 }, (_, i) => (
-              <div key={i} className="card p-6">
-                <div className="h-20 bg-gray-200 rounded"></div>
-              </div>
-            ))}
+      <SafeComponent>
+        <div className="max-w-4xl mx-auto animate-fade-in">
+          <div className="space-y-6">
+            <div className="h-32 bg-gray-200 rounded-3xl animate-pulse"></div>
+            <CardSkeleton />
+            <div className="grid gap-4 md:grid-cols-2">
+              <CardSkeleton />
+              <CardSkeleton />
+            </div>
           </div>
         </div>
-      </div>
-    
-    </SafeComponent>
-  )
+      </SafeComponent>
+    )
   }
 
   const minData = getMinDataMessage()
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto animate-fade-in">
       {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-500 via-blue-500 to-indigo-600 p-8 mb-6 shadow-2xl">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent"></div>
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="relative z-10 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-text-primary mb-2">Your Insights</h1>
-            <p className="text-text-secondary">AI-powered patterns and suggestions</p>
+            <h1 className="text-3xl font-bold text-white drop-shadow-lg mb-2">Your Insights</h1>
+            <p className="text-white/90 text-lg">AI-powered patterns and suggestions</p>
           </div>
           <div className="flex gap-2">
             {['week', 'month', 'all'].map((p) => (
               <button
                 key={p}
                 onClick={() => setPeriod(p)}
-                className={`px-4 py-2 rounded-xl font-medium transition-colors ${
-                  period === p ? 'bg-primary text-white' : 'text-text-secondary hover:text-text-primary'
+                className={`px-4 py-2 rounded-xl font-medium transition-all ${
+                  period === p ? 'bg-white text-blue-600 shadow-lg scale-105' : 'bg-white/20 text-white hover:bg-white/30 hover:scale-105'
                 }`}
               >
-                {p === 'week' ? 'This Week' : p === 'month' ? 'This Month' : 'All Time'}
+                {p === 'week' ? 'Week' : p === 'month' ? 'Month' : 'All'}
               </button>
             ))}
           </div>
@@ -196,7 +208,7 @@ function InsightsPage() {
       ) : (
         <>
           {/* Hero Summary Card */}
-          <div className="card p-6 mb-6">
+          <div className="card p-6 mb-6 hover:shadow-2xl transition-all">
             <h2 className="text-xl font-semibold text-text-primary mb-4">{getPeriodLabel()} at a Glance</h2>
             
             <div className="grid md:grid-cols-3 gap-6">
@@ -262,10 +274,10 @@ function InsightsPage() {
           {/* Patterns We've Noticed */}
           {analysis.insights.length > 0 && (
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-text-primary mb-4">Patterns We've Noticed</h2>
+              <h2 className="text-xl font-semibold text-white drop-shadow-lg mb-4">Patterns We've Noticed</h2>
               <div className="grid gap-4 md:grid-cols-2">
                 {analysis.insights.map((insight, index) => (
-                  <div key={index} className="card p-4">
+                  <div key={index} className="card p-4 hover:scale-105 hover:shadow-2xl transition-all">
                     <div className="flex items-start gap-3">
                       <div className="text-2xl">{insight.icon}</div>
                       <div>
@@ -321,7 +333,7 @@ function InsightsPage() {
           {/* Personalized Suggestions */}
           {analysis.suggestions.length > 0 && (
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-text-primary mb-4">Try This Week</h2>
+              <h2 className="text-xl font-semibold text-white drop-shadow-lg mb-4">Try This Week</h2>
               <div className="grid gap-4 md:grid-cols-2">
                 {analysis.suggestions.map((suggestion, index) => (
                   <div key={index} className="card p-4">
