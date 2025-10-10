@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
 import LimitWarningBanner from '../components/common/LimitWarningBanner'
 import { getPremiumStatus } from '../utils/premiumUtils'
+import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import { disclaimers } from '../data/disclaimers'
 
 const REMINDER_TYPES = [
   { value: 'mood_checkin', label: 'Mood Check-in', icon: '😊' },
@@ -73,7 +75,7 @@ function RemindersPage() {
   return (
     <SafeComponent>
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-3xl font-bold">Smart Reminders</h1>
@@ -89,6 +91,10 @@ function RemindersPage() {
         <button onClick={handleAddClick} className="btn-primary">
           <Plus className="w-5 h-5" /> Add Reminder
         </button>
+      </div>
+
+      <div className="mb-8">
+        <DisclaimerBanner disclaimer={disclaimers.general} />
       </div>
 
       {!isPremium && reminders.length >= FREE_REMINDER_LIMIT && (

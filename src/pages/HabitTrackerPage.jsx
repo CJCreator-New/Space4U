@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
 import LimitWarningBanner from '../components/common/LimitWarningBanner'
 import { getPremiumStatus } from '../utils/premiumUtils'
+import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import ResearchCard from '../components/wellness/ResearchCard'
+import { disclaimers } from '../data/disclaimers'
+import { researchCitations } from '../data/researchCitations'
 
 function HabitTrackerPage() {
   const navigate = useNavigate()
@@ -64,7 +68,7 @@ function HabitTrackerPage() {
   return (
     <SafeComponent>
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-3xl font-bold">Habit Tracker</h1>
@@ -82,6 +86,14 @@ function HabitTrackerPage() {
         </button>
       </div>
 
+      <div className="mb-6">
+        <DisclaimerBanner disclaimer={disclaimers.habits} />
+      </div>
+
+      <div className="mb-6">
+        <ResearchCard citations={researchCitations.habits} title="The Science of Habit Formation" />
+      </div>
+
       {!isPremium && habits.length >= FREE_HABIT_LIMIT && (
         <LimitWarningBanner limit={FREE_HABIT_LIMIT} feature="habits" current={habits.length} />
       )}
@@ -90,7 +102,16 @@ function HabitTrackerPage() {
         <div className="card p-12 text-center">
           <TrendingUp className="w-16 h-16 text-text-secondary mx-auto mb-4 opacity-50" />
           <h3 className="text-xl font-semibold mb-2">Start Building Habits</h3>
-          <p className="text-text-secondary mb-6">Track daily habits and build consistency</p>
+          <p className="text-text-secondary mb-4">Research shows it takes an average of 66 days to form a new habit</p>
+          <div className="max-w-md mx-auto mb-6 text-left">
+            <p className="text-sm font-medium text-gray-700 mb-2">Keys to successful habit formation:</p>
+            <ul className="text-sm text-gray-600 space-y-1">
+              <li>• Start small and be consistent</li>
+              <li>• Stack new habits with existing ones</li>
+              <li>• Track your progress daily</li>
+              <li>• Be patient - habits take time to form</li>
+            </ul>
+          </div>
           <button onClick={handleAddClick} className="btn-primary">
             <Plus className="w-5 h-5" /> Create First Habit
           </button>

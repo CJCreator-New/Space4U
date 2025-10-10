@@ -7,6 +7,11 @@ import GratitudeStats from '../components/gratitude/GratitudeStats'
 import SafeComponent from '../components/SafeComponent'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import { useNavigate } from 'react-router-dom'
+import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import ResearchCard from '../components/wellness/ResearchCard'
+import CrisisResources from '../components/wellness/CrisisResources'
+import { disclaimers } from '../data/disclaimers'
+import { researchCitations } from '../data/researchCitations'
 
 function GratitudeJournalPage() {
   const { user } = useAuth()
@@ -94,18 +99,14 @@ function GratitudeJournalPage() {
   return (
     <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
-      {/* Educational Banner */}
-      <div className="card p-4 bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 mb-6">
-        <div className="flex gap-3">
-          <BookOpen className="w-5 h-5 text-pink-600 flex-shrink-0 mt-0.5" />
-          <div className="text-sm">
-            <p className="font-semibold mb-1 text-gray-900">The Science of Gratitude</p>
-            <p className="text-gray-700">
-              Research shows that regular gratitude practice can improve mental health, increase happiness, and reduce symptoms of depression. 
-              This journal is a tool to support your wellness journey, complementing professional care when needed.
-            </p>
-          </div>
-        </div>
+      {/* Disclaimer */}
+      <div className="mb-6">
+        <DisclaimerBanner disclaimer={disclaimers.gratitude} />
+      </div>
+
+      {/* Research Support */}
+      <div className="mb-6">
+        <ResearchCard citations={researchCitations.gratitude} title="Why Gratitude Works" />
       </div>
 
       <div className="mb-8">
@@ -213,35 +214,25 @@ function GratitudeJournalPage() {
         />
       )}
 
-      {/* Tips & Disclaimer */}
+      {/* Tips & Resources */}
       <div className="mt-8 space-y-4">
         <div className="card p-4 bg-blue-50 border border-blue-200">
           <div className="flex gap-3">
             <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div className="text-sm">
-              <p className="font-semibold mb-1 text-gray-900">Tips for Effective Gratitude Practice</p>
+              <p className="font-semibold mb-1 text-gray-900">Optimal Practice Guidelines</p>
               <ul className="text-gray-700 space-y-1">
-                <li>• Be specific - instead of "I'm grateful for my family," try "I'm grateful my sister called to check on me"</li>
-                <li>• Focus on people rather than things when possible</li>
+                <li>• Write 3-5 entries per session (Emmons & McCullough, 2003)</li>
+                <li>• Practice in the evening for better sleep quality</li>
+                <li>• Be specific - focus on details and people</li>
                 <li>• Reflect on surprises or unexpected positive moments</li>
-                <li>• Consider what your life would be like without certain blessings</li>
+                <li>• Vary your entries to prevent habituation</li>
               </ul>
             </div>
           </div>
         </div>
 
-        <div className="card p-4 bg-purple-50 border border-purple-200">
-          <div className="flex gap-3">
-            <Heart className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
-            <div className="text-sm">
-              <p className="font-semibold mb-1 text-gray-900">Remember</p>
-              <p className="text-gray-700">
-                While gratitude practice is beneficial, it's not a cure for mental health conditions. 
-                If you're struggling with depression, anxiety, or other mental health concerns, please seek support from a qualified mental health professional.
-              </p>
-            </div>
-          </div>
-        </div>
+        <CrisisResources compact />
       </div>
     </div>
   

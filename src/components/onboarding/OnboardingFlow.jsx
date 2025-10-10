@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
 import WelcomeScreen from './WelcomeScreen'
+import CountryStep from './CountryStep'
 import UsernameStep from './UsernameStep'
 import AvatarStep from './AvatarStep'
 import InterestStep from './InterestStep'
 import AgeConfirmationStep from './AgeConfirmationStep'
+import { saveUserCountry } from '../../data/countryData'
 
 function OnboardingFlow({ onComplete }) {
   const [currentStep, setCurrentStep] = useState(0)
   const [userData, setUserData] = useState({
+    country: 'US',
     username: '',
     avatar: '',
     interests: [],
@@ -16,6 +19,7 @@ function OnboardingFlow({ onComplete }) {
 
   const steps = [
     WelcomeScreen,
+    CountryStep,
     UsernameStep,
     AvatarStep,
     InterestStep,
@@ -45,6 +49,7 @@ function OnboardingFlow({ onComplete }) {
   }
 
   const completeOnboarding = (finalData) => {
+    saveUserCountry(finalData.country || 'US')
     localStorage.setItem('safespace_user', JSON.stringify(finalData))
     localStorage.setItem('safespace_onboarding_complete', 'true')
     onComplete()

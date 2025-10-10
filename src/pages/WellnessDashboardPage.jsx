@@ -4,6 +4,10 @@ import SafeComponent from '../components/SafeComponent'
 import PremiumPaywall from '../components/PremiumPaywall'
 import WellnessBreakdown from '../components/premium/WellnessBreakdown'
 import { getPremiumStatus } from '../utils/premiumUtils'
+import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import ResearchCard from '../components/wellness/ResearchCard'
+import { disclaimers } from '../data/disclaimers'
+import { researchCitations } from '../data/researchCitations'
 
 function WellnessDashboardPage() {
   const [score, setScore] = useState(0)
@@ -89,7 +93,7 @@ function WellnessDashboardPage() {
   return (
     <SafeComponent>
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
+      <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
           <h1 className="text-3xl font-bold">Wellness Dashboard</h1>
           {isPremium && (
@@ -102,10 +106,22 @@ function WellnessDashboardPage() {
         <p className="text-text-secondary">Your comprehensive mental health overview</p>
       </div>
 
+      <div className="mb-6">
+        <DisclaimerBanner disclaimer={disclaimers.wellness} />
+      </div>
+
+      <div className="mb-6">
+        <ResearchCard citations={researchCitations.wellness} title="How We Calculate Your Score" />
+      </div>
+
       <div className="card p-8 mb-8 text-center">
         <h2 className="text-lg font-medium text-text-secondary mb-2">Overall Wellness Score</h2>
         <div className={`text-6xl font-bold mb-2 ${getScoreColor(score)}`}>{score}/100</div>
-        <p className="text-xl font-medium">{getScoreLabel(score)}</p>
+        <p className="text-xl font-medium mb-3">{getScoreLabel(score)}</p>
+        <p className="text-sm text-text-secondary max-w-2xl mx-auto">
+          Based on 5 dimensions: Mood tracking, Habit completion, Gratitude practice, Sleep quality, and Emotion awareness. 
+          Scores reflect your activity over the past 7 days.
+        </p>
       </div>
 
       {isPremium ? (

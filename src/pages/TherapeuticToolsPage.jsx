@@ -9,6 +9,11 @@ import CrisisSafetyPlan from '../components/therapeutic/CrisisSafetyPlan'
 import MentalHealthAssessments from '../components/therapeutic/MentalHealthAssessments'
 import SafeComponent from '../components/SafeComponent'
 import { getPremiumStatus } from '../utils/premiumUtils'
+import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import ResearchCard from '../components/wellness/ResearchCard'
+import CrisisResources from '../components/wellness/CrisisResources'
+import { disclaimers } from '../data/disclaimers'
+import { researchCitations } from '../data/researchCitations'
 
 const TOOLS = [
   { id: 'cbt', name: 'CBT Thought Record', icon: Brain, gradient: 'from-blue-500 to-cyan-500', description: 'Challenge negative thought patterns', category: 'Cognitive', premium: false },
@@ -100,6 +105,18 @@ function TherapeuticToolsPage() {
         </div>
       </div>
 
+      {/* Clinical Disclaimer */}
+      <div className="mb-6">
+        <DisclaimerBanner disclaimer={disclaimers.therapeutic} collapsible={false} />
+      </div>
+
+      {/* Research Support */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <ResearchCard citations={researchCitations.cbt} title="CBT Research" />
+        <ResearchCard citations={researchCitations.dbt} title="DBT Research" />
+        <ResearchCard citations={researchCitations.mindfulness} title="Mindfulness Research" />
+      </div>
+
       {/* Tools Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {TOOLS.map(tool => {
@@ -151,20 +168,9 @@ function TherapeuticToolsPage() {
         })}
       </div>
 
-      {/* Info Banner */}
-      <div className="mt-8 card p-6 bg-gradient-to-r from-blue-50 to-purple-50">
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center flex-shrink-0">
-            <Brain className="text-primary" size={24} />
-          </div>
-          <div>
-            <h3 className="font-semibold text-text-primary mb-2">Professional Support</h3>
-            <p className="text-text-secondary text-sm">
-              These tools are designed to complement professional mental health care, not replace it. 
-              If you're experiencing a crisis, please contact a mental health professional or call your local emergency services.
-            </p>
-          </div>
-        </div>
+      {/* Crisis Resources */}
+      <div className="mt-8">
+        <CrisisResources />
       </div>
     </div>
   

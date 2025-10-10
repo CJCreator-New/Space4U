@@ -9,6 +9,9 @@ import TherapyPrep from '../components/priority2/TherapyPrep'
 import MedicationTracker from '../components/priority2/MedicationTracker'
 import SafeComponent from '../components/SafeComponent'
 import { getPremiumStatus } from '../utils/premiumUtils'
+import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import CrisisResources from '../components/wellness/CrisisResources'
+import { disclaimers } from '../data/disclaimers'
 
 const TOOLS = [
   { id: 'triggers', name: 'Trigger Tracker', icon: AlertTriangle, color: 'red', description: 'Identify mood triggers', premium: false },
@@ -49,7 +52,7 @@ function Priority2FeaturesPage() {
   return (
     <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8">
+      <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
           <h1 className="text-3xl font-bold">Advanced Wellness Tools</h1>
           {isPremium && (
@@ -60,6 +63,10 @@ function Priority2FeaturesPage() {
           )}
         </div>
         <p className="text-text-secondary">Additional tools for deeper mental health support</p>
+      </div>
+
+      <div className="mb-8">
+        <DisclaimerBanner disclaimer={disclaimers.general} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -84,6 +91,10 @@ function Priority2FeaturesPage() {
             </button>
           )
         })}
+      </div>
+
+      <div className="mt-8">
+        <CrisisResources compact />
       </div>
     </div>
   

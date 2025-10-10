@@ -1,5 +1,10 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
+import DisclaimerBanner from '../wellness/DisclaimerBanner'
+import ResearchCard from '../wellness/ResearchCard'
+import CrisisResources from '../wellness/CrisisResources'
+import { disclaimers } from '../../data/disclaimers'
+import { researchCitations } from '../../data/researchCitations'
 
 function MedicationTracker({ onClose }) {
   const [meds, setMeds] = useState(() => JSON.parse(localStorage.getItem('safespace_medications') || '[]'))
@@ -33,12 +38,20 @@ function MedicationTracker({ onClose }) {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Medication Tracker</h1>
         <div className="flex gap-2">
           <button onClick={() => setShowModal(true)} className="btn-primary"><Plus className="w-5 h-5" /> Add Medication</button>
           <button onClick={onClose} className="btn-secondary">Back</button>
         </div>
+      </div>
+
+      <div className="mb-6">
+        <DisclaimerBanner disclaimer={disclaimers.medication} collapsible={false} />
+      </div>
+
+      <div className="mb-8">
+        <ResearchCard citations={researchCitations.medication} title="Why Medication Adherence Matters" />
       </div>
 
       <div className="space-y-4">
@@ -56,6 +69,10 @@ function MedicationTracker({ onClose }) {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-8">
+        <CrisisResources compact />
       </div>
 
       {showModal && (

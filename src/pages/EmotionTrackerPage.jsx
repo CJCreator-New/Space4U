@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
 import PremiumPaywall from '../components/PremiumPaywall'
 import { getPremiumStatus } from '../utils/premiumUtils'
+import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import ResearchCard from '../components/wellness/ResearchCard'
+import { disclaimers } from '../data/disclaimers'
+import { researchCitations } from '../data/researchCitations'
 
 const EMOTIONS = {
   joy: { color: 'yellow', secondary: ['Optimistic', 'Proud', 'Content', 'Playful'] },
@@ -40,7 +44,7 @@ function EmotionTrackerPage() {
   return (
     <SafeComponent>
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-3xl font-bold">Emotion Tracker</h1>
@@ -56,6 +60,14 @@ function EmotionTrackerPage() {
         <button onClick={() => setShowModal(true)} className="btn-primary">
           <Plus className="w-5 h-5" /> Log Emotion
         </button>
+      </div>
+
+      <div className="mb-6">
+        <DisclaimerBanner disclaimer={disclaimers.emotions} />
+      </div>
+
+      <div className="mb-6">
+        <ResearchCard citations={researchCitations.emotions} title="Why Naming Emotions Helps" />
       </div>
 
       {isPremium && logs.length > 0 && (
@@ -116,7 +128,16 @@ function EmotionTrackerPage() {
         <div className="card p-12 text-center">
           <Heart className="w-16 h-16 text-text-secondary mx-auto mb-4 opacity-50" />
           <h3 className="text-xl font-semibold mb-2">Start Tracking Emotions</h3>
-          <p className="text-text-secondary mb-6">Gain deeper emotional awareness</p>
+          <p className="text-text-secondary mb-4">Research shows that naming specific emotions helps regulate them better</p>
+          <div className="max-w-md mx-auto mb-6 text-left">
+            <p className="text-sm font-medium text-gray-700 mb-2">Benefits of emotional granularity:</p>
+            <ul className="text-sm text-gray-600 space-y-1">
+              <li>• Better emotion regulation and coping</li>
+              <li>• Reduced emotional reactivity</li>
+              <li>• Improved mental health outcomes</li>
+              <li>• Enhanced self-awareness</li>
+            </ul>
+          </div>
           <button onClick={() => setShowModal(true)} className="btn-primary">
             <Plus className="w-5 h-5" /> Log First Emotion
           </button>

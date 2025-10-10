@@ -3,6 +3,8 @@ import { Trophy, Target, Zap, Star, Calendar, Crown, Lock } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
 import { getPremiumStatus } from '../utils/premiumUtils'
+import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import { disclaimers } from '../data/disclaimers'
 
 const CHALLENGES = [
   { id: 1, title: '7-Day Mood Tracker', description: 'Track mood daily for 7 days', duration: 7, progress: 0, badge: '🎯' },
@@ -96,7 +98,7 @@ function GamificationPage() {
   return (
     <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8">
+      <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
           <h1 className="text-3xl font-bold">Gamification Hub</h1>
           {isPremium && (
@@ -107,6 +109,10 @@ function GamificationPage() {
           )}
         </div>
         <p className="text-text-secondary">Level up your mental wellness journey • {isPremium ? '3 active challenges' : '1 active challenge'}</p>
+      </div>
+
+      <div className="mb-8">
+        <DisclaimerBanner disclaimer={disclaimers.general} />
       </div>
 
       {/* User Level Card */}

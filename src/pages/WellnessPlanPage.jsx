@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import LimitWarningBanner from '../components/common/LimitWarningBanner'
+import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import { disclaimers } from '../data/disclaimers'
 
 function WellnessPlanPage() {
   const navigate = useNavigate()
@@ -75,7 +77,7 @@ function WellnessPlanPage() {
   return (
     <SafeComponent>
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-3xl font-bold">Wellness Plan</h1>
@@ -92,6 +94,10 @@ function WellnessPlanPage() {
             <Plus className="w-5 h-5" /> Add Activity
           </button>
         )}
+      </div>
+
+      <div className="mb-8">
+        <DisclaimerBanner disclaimer={disclaimers.general} />
       </div>
 
       {!isPremium && activityCount >= FREE_ACTIVITY_LIMIT && (

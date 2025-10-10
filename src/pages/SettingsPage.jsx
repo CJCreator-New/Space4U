@@ -7,6 +7,9 @@ import {
 } from 'lucide-react'
 import { useTheme } from '../hooks/useTheme'
 import ExportImportModal from '../components/ExportImportModal'
+import SafeComponent from '../components/SafeComponent'
+import CountrySelector from '../components/CountrySelector'
+import { getUserCountry, getCountryData } from '../data/countryData'
 
 const DEFAULT_SETTINGS = {
   notifications: {
@@ -64,6 +67,7 @@ function SettingsPage() {
   const [resetConfirm, setResetConfirm] = useState(false)
   const [isPremium, setIsPremium] = useState(false)
   const [showExportModal, setShowExportModal] = useState(false)
+  const [userCountry, setUserCountry] = useState(getUserCountry())
 
   useEffect(() => {
     loadSettings()
@@ -203,8 +207,8 @@ function SettingsPage() {
   )
 
   const SettingRow = ({ icon: Icon, label, description, children, modified = false, premium = false, isNew = false }) => (
-    <div className="flex items-center justify-between py-4 px-4 hover:bg-gray-50 rounded-xl transition-colors">
-      <div className="flex items-center gap-3 flex-1">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-4 px-4 hover:bg-gray-50 rounded-xl transition-colors">
+      <div className="flex items-center gap-3 flex-1 min-w-0">
         <Icon className="text-text-secondary" size={20} />
         <div className="flex-1">
           <div className="flex items-center gap-2">
@@ -216,7 +220,7 @@ function SettingsPage() {
           {description && <p className="text-sm text-text-secondary">{description}</p>}
         </div>
       </div>
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 w-full sm:w-auto">
         {children}
       </div>
     </div>
@@ -236,7 +240,8 @@ function SettingsPage() {
   )
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <SafeComponent>
+    <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-text-primary mb-2">Settings</h1>
         <p className="text-text-secondary">Customize your Safespace experience</p>
@@ -533,16 +538,29 @@ function SettingsPage() {
           )}
         </div>
 
-        {/* Language */}
+        {/* Language & Region */}
         <div className="card">
           <SectionHeader
             icon={Globe}
-            title="Language"
+            title="Language & Region"
             expanded={expandedSections.language}
             onToggle={() => toggleSection('language')}
           />
           {expandedSections.language && (
             <div className="border-t border-gray-100">
+              <SettingRow
+                icon={Globe}
+                label="Country/Region"
+                description="Affects crisis helplines and emergency numbers"
+                isNew={true}
+              >
+                <CountrySelector onCountryChange={(code) => {
+                  setUserCountry(code)
+                  window.dispatchEvent(new Event('countryChanged'))
+                  showToast(`Country changed to ${getCountryData(code).name}`)
+                }} />
+              </SettingRow>
+              
               <SettingRow
                 icon={Globe}
                 label="App language"
@@ -912,6 +930,7 @@ function SettingsPage() {
         </div>
       )}
     </div>
+    </SafeComponent>
   )
 }
 

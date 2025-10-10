@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
+import DisclaimerBanner from '../wellness/DisclaimerBanner'
+import ResearchCard from '../wellness/ResearchCard'
+import { disclaimers } from '../../data/disclaimers'
+import { researchCitations } from '../../data/researchCitations'
 
 const FACTORS = ['Caffeine', 'Exercise', 'Stress', 'Screen Time', 'Alcohol', 'Late Meal', 'Nap']
 
@@ -60,6 +64,10 @@ function SleepHygieneTracker({ onClose }) {
         </div>
 
         <div className="p-6 space-y-6">
+          <DisclaimerBanner disclaimer={disclaimers.sleep} />
+          
+          <ResearchCard citations={researchCitations.sleep} title="Sleep & Mental Health" />
+
           <div>
             <label className="block text-sm font-medium mb-2">Date</label>
             <input

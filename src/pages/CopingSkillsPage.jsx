@@ -3,6 +3,11 @@ import { Search, Heart, Star, Crown, Lock } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
 import { getPremiumStatus } from '../utils/premiumUtils'
+import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import ResearchCard from '../components/wellness/ResearchCard'
+import CrisisResources from '../components/wellness/CrisisResources'
+import { disclaimers } from '../data/disclaimers'
+import { researchCitations } from '../data/researchCitations'
 
 const SKILLS = [
   { id: 1, name: 'Deep Breathing', category: 'relaxation', situation: ['anxiety', 'stress'], duration: 5, description: '4-7-8 breathing technique', premium: false },
@@ -58,7 +63,7 @@ function CopingSkillsPage() {
   return (
     <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8">
+      <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
           <h1 className="text-3xl font-bold">Coping Skills Library</h1>
           {isPremium && (
@@ -69,6 +74,14 @@ function CopingSkillsPage() {
           )}
         </div>
         <p className="text-text-secondary">Evidence-based strategies for managing difficult emotions • {isPremium ? '100+' : '50'} skills available</p>
+      </div>
+
+      <div className="mb-6">
+        <DisclaimerBanner disclaimer={disclaimers.coping} />
+      </div>
+
+      <div className="mb-8">
+        <ResearchCard citations={researchCitations.coping} title="Evidence-Based Coping" />
       </div>
 
       <div className="mb-6 space-y-4">
@@ -146,6 +159,10 @@ function CopingSkillsPage() {
           <p className="text-text-secondary">Try adjusting your search or filters</p>
         </div>
       )}
+
+      <div className="mt-8">
+        <CrisisResources compact />
+      </div>
     </div>
   
     </SafeComponent>

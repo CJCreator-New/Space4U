@@ -10,8 +10,7 @@ function ResourceLibraryPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false)
   const [bookmarks, setBookmarks] = useState([])
-  const [selectedExercise, setSelectedExercise] = useState(null)
-  const [showExercisePlayer, setShowExercisePlayer] = useState(false)
+
 
   useEffect(() => {
     const savedBookmarks = JSON.parse(localStorage.getItem('safespace_bookmarks') || '[]')
@@ -48,11 +47,6 @@ function ResourceLibraryPage() {
     }
 
     return filtered
-  }
-
-  const startBreathingExercise = (exercise) => {
-    setSelectedExercise(exercise)
-    setShowExercisePlayer(true)
   }
 
   const handleCallHelpline = (number) => {
@@ -256,7 +250,8 @@ function ResourceLibraryPage() {
   ]
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <SafeComponent>
+    <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-text-primary mb-2">Resource Library</h1>
@@ -316,16 +311,8 @@ function ResourceLibraryPage() {
         {activeTab === 'crisis' && renderCrisisResources()}
       </div>
 
-      {/* Breathing Exercise Player */}
-      <BreathingExercisePlayer
-        exercise={selectedExercise}
-        isOpen={showExercisePlayer}
-        onClose={() => {
-          setShowExercisePlayer(false)
-          setSelectedExercise(null)
-        }}
-      />
     </div>
+    </SafeComponent>
   )
 }
 

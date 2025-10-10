@@ -6,6 +6,8 @@ import PeerSupport from '../components/priority4/PeerSupport'
 import SupportRequests from '../components/priority4/SupportRequests'
 import MoodSuggestions from '../components/priority4/MoodSuggestions'
 import SafeComponent from '../components/SafeComponent'
+import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import { disclaimers } from '../data/disclaimers'
 
 function SocialHubPage() {
   const { isPremium } = getPremiumStatus()
@@ -27,6 +29,10 @@ function SocialHubPage() {
           {isPremium && <Crown className="w-6 h-6 text-yellow-500" />}
         </div>
         <p className="text-text-secondary">Connect, support, and grow together</p>
+      </div>
+
+      <div className="mb-6">
+        <DisclaimerBanner disclaimer={disclaimers.general} />
       </div>
 
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
