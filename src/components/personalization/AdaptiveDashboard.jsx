@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Sparkles, TrendingUp, Heart, Brain, Moon, Users, BookOpen, Target } from 'lucide-react'
 import { getMostUsedFeatures, getTimeBasedFeatures } from '../../utils/usageTracker'
-import { generateRecommendations, checkInactiveFeatures } from '../../utils/recommendationEngine'
+import { generateRecommendations, checkInactiveFeatures, dismissRecommendation } from '../../utils/recommendationEngine'
 import { isPersonalizationEnabled } from '../../utils/personalizationEngine'
+import SmartCard from './SmartCard'
+import InsightCard from './InsightCard'
 
 const FEATURE_CONFIG = {
   'gratitude': { name: 'Gratitude Journal', icon: Heart, path: '/gratitude', color: 'text-pink-500' },
@@ -61,20 +63,21 @@ function AdaptiveDashboard() {
 
       <div>
         <h3 className="text-lg font-bold mb-3">Your Top Tools</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {topFeatures.map(featureId => {
             const config = FEATURE_CONFIG[featureId]
             if (!config) return null
-            const Icon = config.icon
             return (
-              <button
+              <SmartCard
                 key={featureId}
-                onClick={() => navigate(config.path)}
-                className="card p-4 hover:shadow-lg transition-all text-left"
-              >
-                <Icon className={`w-8 h-8 ${config.color} mb-2`} />
-                <p className="font-medium text-sm">{config.name}</p>
-              </button>
+                feature={{
+                  name: config.name,
+                  icon: config.icon,
+                  path: config.path,
+                  gradient: 'from-primary to-purple-500'
+                }}
+                priority="medium"
+              />
             )
           })}
         </div>
@@ -83,24 +86,24 @@ function AdaptiveDashboard() {
       {recommendations.length > 0 && (
         <div>
           <h3 className="text-lg font-bold mb-3">Recommended for You</h3>
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {recommendations.map(rec => {
               const config = FEATURE_CONFIG[rec.featureId]
               if (!config) return null
-              const Icon = config.icon
               return (
-                <div key={rec.featureId} className="card p-4 bg-gradient-to-r from-primary/5 to-transparent">
-                  <div className="flex items-start gap-3">
-                    <Icon className={`w-6 h-6 ${config.color} flex-shrink-0`} />
-                    <div className="flex-1">
-                      <p className="font-medium mb-1">{config.name}</p>
-                      <p className="text-sm text-text-secondary">{rec.reason}</p>
-                    </div>
-                    <button onClick={() => navigate(config.path)} className="btn-primary text-sm">
-                      Try It
-                    </button>
-                  </div>
-                </div>
+                <SmartCard
+                  key={rec.featureId}
+                  feature={{
+                    name: config.name,
+                    icon: config.icon,
+                    path: config.path,
+                    description: rec.reason,
+                    gradient: 'from-primary to-purple-500'
+                  }}
+                  priority={rec.priority}
+                  isRecommended
+                  onDismiss={() => dismissRecommendation(rec.featureId)}
+                />
               )
             })}
           </div>

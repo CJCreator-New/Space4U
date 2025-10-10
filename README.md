@@ -9,7 +9,7 @@
 
 ## 🌟 Overview
 
-Space4U (Safespace) is a comprehensive mental health support web application that provides users with tools for mood tracking, community support, and mental wellness resources. Built with privacy-first principles, all data is stored locally on your device.
+Space4U is a comprehensive mental health support web application that provides users with tools for mood tracking, community support, and mental wellness resources. Built with privacy-first principles, all data is stored locally on your device.
 
 **🎯 46 Features Implemented** | **26 Pages** | **60+ Components** | **100% Privacy-First**
 
@@ -230,9 +230,9 @@ npm run build
 Create a `.env` file in the root directory:
 
 ```env
-VITE_APP_NAME=Safespace
+VITE_APP_NAME=Space4U
 VITE_APP_VERSION=1.0.0
-VITE_API_URL=https://api.safespace.com
+VITE_API_URL=https://api.space4u.com
 VITE_ANALYTICS_ID=your-analytics-id
 ```
 
