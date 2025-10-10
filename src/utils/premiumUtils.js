@@ -70,3 +70,21 @@ export const checkAndUpdatePremiumStatus = () => {
 
   return true
 }
+
+export const startFreeTrial = () => {
+  const now = new Date()
+  const trialEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000) // 7 days
+  const billingDate = new Date(trialEnd.getTime() + 1 * 24 * 60 * 60 * 1000) // 1 day after trial
+  
+  const premiumData = {
+    isPremium: true,
+    trialActive: true,
+    trialEndsAt: trialEnd.toISOString(),
+    planType: 'monthly',
+    nextBillingDate: billingDate.toISOString(),
+    startedAt: now.toISOString()
+  }
+  
+  localStorage.setItem('safespace_premium', JSON.stringify(premiumData))
+  return premiumData
+}

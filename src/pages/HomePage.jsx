@@ -5,7 +5,10 @@ import MoodTracker from '../components/MoodTracker'
 import MoodCalendar from '../components/MoodCalendar'
 import MoodTrends from '../components/MoodTrends'
 import SafeComponent from '../components/SafeComponent'
+import AdaptiveDashboard from '../components/personalization/AdaptiveDashboard'
 import { getPremiumStatus } from '../utils/premiumUtils'
+import { initPersonalization } from '../utils/personalizationEngine'
+import { trackFeatureUsage } from '../utils/usageTracker'
 
 function HomePage() {
   const [user, setUser] = useState(null)
@@ -19,6 +22,8 @@ function HomePage() {
       if (userData) {
         setUser(JSON.parse(userData))
       }
+      initPersonalization()
+      trackFeatureUsage('home', 0)
     } catch (err) {
       console.error('Error loading user data:', err)
       setError('Failed to load user data')
@@ -118,6 +123,12 @@ function HomePage() {
       <SafeComponent>
         <div className="mb-6">
           <MoodTrends key={refreshKey} />
+        </div>
+      </SafeComponent>
+
+      <SafeComponent>
+        <div className="mb-6">
+          <AdaptiveDashboard />
         </div>
       </SafeComponent>
       

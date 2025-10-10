@@ -43,6 +43,7 @@ const TechnicalFeaturesPage = lazy(() => import('./pages/TechnicalFeaturesPage')
 const PremiumManagePage = lazy(() => import('./pages/PremiumManagePage'))
 const PremiumFeaturesPage = lazy(() => import('./pages/PremiumFeaturesPage'))
 const BookmarksPage = lazy(() => import('./pages/BookmarksPage'))
+const PersonalizationPage = lazy(() => import('./pages/PersonalizationPage'))
 
 function App() {
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
@@ -177,6 +178,7 @@ function AppContent({ showKeyboardHelp, setShowKeyboardHelp }) {
             <Route path="/professional" element={<ProfessionalPage />} />
             <Route path="/technical" element={<TechnicalFeaturesPage />} />
             <Route path="/bookmarks" element={<BookmarksPage />} />
+            <Route path="/personalization" element={<PersonalizationPage />} />
           </Route>
         </Routes>
       </Suspense>

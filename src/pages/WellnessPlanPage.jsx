@@ -1,12 +1,21 @@
 import { useState, useEffect } from 'react'
-import { Plus, Clock, CheckCircle2, Circle } from 'lucide-react'
+import { Plus, Clock, CheckCircle2, Circle, Crown } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
+import { getPremiumStatus } from '../utils/premiumUtils'
+import LimitWarningBanner from '../components/common/LimitWarningBanner'
 
 function WellnessPlanPage() {
+  const navigate = useNavigate()
+  const { isPremium } = getPremiumStatus()
   const [plans, setPlans] = useState([])
   const [activePlan, setActivePlan] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [newActivity, setNewActivity] = useState({ title: '', time: '09:00', activity_type: 'morning_ritual', days: [1,2,3,4,5] })
+  
+  const FREE_ACTIVITY_LIMIT = 5
+  const activityCount = activePlan?.activities?.length || 0
+  const canAddActivity = isPremium || activityCount < FREE_ACTIVITY_LIMIT
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('safespace_wellness_plans') || '[]')
@@ -24,6 +33,10 @@ function WellnessPlanPage() {
 
   const addActivity = () => {
     if (!activePlan) return
+    if (!canAddActivity) {
+      navigate('/premium')
+      return
+    }
     const activity = { ...newActivity, id: Date.now(), completions: {} }
     const updated = plans.map(p => p.id === activePlan.id ? { ...p, activities: [...(p.activities || []), activity] } : p)
     localStorage.setItem('safespace_wellness_plans', JSON.stringify(updated))
@@ -64,7 +77,10 @@ function WellnessPlanPage() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Wellness Plan</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl font-bold">Wellness Plan</h1>
+            {isPremium && <Crown className="w-6 h-6 text-yellow-500" />}
+          </div>
           <p className="text-text-secondary">Your personalized daily routine</p>
         </div>
         {!activePlan ? (
@@ -72,11 +88,20 @@ function WellnessPlanPage() {
             <Plus className="w-5 h-5" /> Create Plan
           </button>
         ) : (
-          <button onClick={() => setShowModal(true)} className="btn-primary">
+          <button onClick={() => setShowModal(true)} disabled={!canAddActivity} className="btn-primary">
             <Plus className="w-5 h-5" /> Add Activity
           </button>
         )}
       </div>
+
+      {!isPremium && activityCount >= FREE_ACTIVITY_LIMIT && (
+        <LimitWarningBanner
+          current={activityCount}
+          limit={FREE_ACTIVITY_LIMIT}
+          itemName="activities"
+          featureName="Unlimited Activities"
+        />
+      )}
 
       {!activePlan ? (
         <div className="card p-12 text-center">

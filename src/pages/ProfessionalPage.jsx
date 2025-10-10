@@ -1,11 +1,14 @@
 import { useState } from 'react'
-import { UserCheck, Phone, Download } from 'lucide-react'
+import { UserCheck, Phone, Download, Crown } from 'lucide-react'
+import { getPremiumStatus } from '../utils/premiumUtils'
+import PremiumPaywall from '../components/PremiumPaywall'
 import TherapistPortal from '../components/priority6/TherapistPortal'
 import CrisisHotlines from '../components/priority6/CrisisHotlines'
 import DataExport from '../components/priority6/DataExport'
 import SafeComponent from '../components/SafeComponent'
 
 function ProfessionalPage() {
+  const { isPremium } = getPremiumStatus()
   const [activeTab, setActiveTab] = useState('therapist')
 
   const tabs = [
@@ -18,7 +21,10 @@ function ProfessionalPage() {
     <SafeComponent>
     <div className="max-w-6xl mx-auto p-4 pb-24">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-text-primary mb-2">Professional Integration</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-text-primary">Professional Integration</h1>
+          {isPremium && <Crown className="w-6 h-6 text-yellow-500" />}
+        </div>
         <p className="text-text-secondary">Connect with professionals and manage your data</p>
       </div>
 
@@ -44,7 +50,14 @@ function ProfessionalPage() {
       </div>
 
       <div>
-        {activeTab === 'therapist' && <TherapistPortal />}
+        {activeTab === 'therapist' && (
+          <PremiumPaywall
+            feature="Therapist Portal"
+            description="Share your mental health data securely with your therapist. Premium members can generate shareable reports and track therapy progress."
+          >
+            <TherapistPortal />
+          </PremiumPaywall>
+        )}
         {activeTab === 'crisis' && <CrisisHotlines />}
         {activeTab === 'export' && <DataExport />}
       </div>

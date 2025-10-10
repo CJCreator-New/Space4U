@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Users, MessageCircle, AlertCircle, Lightbulb } from 'lucide-react'
+import { Users, MessageCircle, AlertCircle, Lightbulb, Crown } from 'lucide-react'
+import { getPremiumStatus } from '../utils/premiumUtils'
 import AccountabilityPartner from '../components/priority4/AccountabilityPartner'
 import PeerSupport from '../components/priority4/PeerSupport'
 import SupportRequests from '../components/priority4/SupportRequests'
@@ -7,11 +8,12 @@ import MoodSuggestions from '../components/priority4/MoodSuggestions'
 import SafeComponent from '../components/SafeComponent'
 
 function SocialHubPage() {
+  const { isPremium } = getPremiumStatus()
   const [activeTab, setActiveTab] = useState('partner')
 
   const tabs = [
     { id: 'partner', label: 'Accountability', icon: Users },
-    { id: 'peer', label: 'Peer Support', icon: MessageCircle },
+    { id: 'peer', label: 'Peer Support', icon: MessageCircle, premium: true },
     { id: 'support', label: 'Support Requests', icon: AlertCircle },
     { id: 'suggestions', label: 'Suggestions', icon: Lightbulb }
   ]
@@ -20,7 +22,10 @@ function SocialHubPage() {
     <SafeComponent>
     <div className="max-w-6xl mx-auto p-4 pb-24">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-text-primary mb-2">Social & Community</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-text-primary">Social & Community</h1>
+          {isPremium && <Crown className="w-6 h-6 text-yellow-500" />}
+        </div>
         <p className="text-text-secondary">Connect, support, and grow together</p>
       </div>
 
