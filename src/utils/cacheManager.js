@@ -1,100 +1,59 @@
-// Advanced Cache Manager
-
 class CacheManager {
-  constructor() {
-    this.memoryCache = new Map()
-    this.maxMemoryCacheSize = 50 // Max items in memory
-    this.cacheExpiry = 5 * 60 * 1000 // 5 minutes default
+  constructor(maxSize = 50) {
+    this.cache = new Map()
+    this.maxSize = maxSize
   }
 
-  // Memory cache operations
-  set(key, value, ttl = this.cacheExpiry) {
-    if (this.memoryCache.size >= this.maxMemoryCacheSize) {
-      const firstKey = this.memoryCache.keys().next().value
-      this.memoryCache.delete(firstKey)
+  set(key, value, ttl = 300000) { // 5 min default
+    if (this.cache.size >= this.maxSize) {
+      const firstKey = this.cache.keys().next().value
+      this.cache.delete(firstKey)
     }
 
-    this.memoryCache.set(key, {
+    this.cache.set(key, {
       value,
       expiry: Date.now() + ttl
     })
   }
 
   get(key) {
-    const cached = this.memoryCache.get(key)
+    const item = this.cache.get(key)
     
-    if (!cached) return null
+    if (!item) return null
     
-    if (Date.now() > cached.expiry) {
-      this.memoryCache.delete(key)
+    if (Date.now() > item.expiry) {
+      this.cache.delete(key)
       return null
     }
     
-    return cached.value
+    return item.value
   }
 
   has(key) {
     return this.get(key) !== null
   }
 
-  delete(key) {
-    this.memoryCache.delete(key)
-  }
-
   clear() {
-    this.memoryCache.clear()
+    this.cache.clear()
   }
 
-  // Batch operations
-  setMany(entries) {
-    entries.forEach(([key, value, ttl]) => this.set(key, value, ttl))
+  delete(key) {
+    this.cache.delete(key)
   }
 
-  getMany(keys) {
-    return keys.map(key => this.get(key))
-  }
-
-  // Cache statistics
-  getStats() {
-    return {
-      size: this.memoryCache.size,
-      maxSize: this.maxMemoryCacheSize,
-      keys: Array.from(this.memoryCache.keys())
-    }
+  size() {
+    return this.cache.size
   }
 }
 
 export const cacheManager = new CacheManager()
 
-// Preload critical data
-export const preloadCriticalData = () => {
-  const keys = ['safespace_user', 'safespace_moods', 'safespace_settings']
-  
-  keys.forEach(key => {
-    const data = localStorage.getItem(key)
-    if (data) {
-      cacheManager.set(key, JSON.parse(data), 10 * 60 * 1000) // 10 min cache
-    }
-  })
-}
-
-// Get with fallback to localStorage
-export const getCached = (key, fallback = null) => {
+export const withCache = (key, fn, ttl) => {
   const cached = cacheManager.get(key)
-  if (cached) return cached
+  if (cached) return Promise.resolve(cached)
   
-  const stored = localStorage.getItem(key)
-  if (stored) {
-    const parsed = JSON.parse(stored)
-    cacheManager.set(key, parsed)
-    return parsed
-  }
-  
-  return fallback
-}
-
-// Set with cache and localStorage
-export const setCached = (key, value) => {
-  cacheManager.set(key, value)
-  localStorage.setItem(key, JSON.stringify(value))
+  return fn().then(result => {
+    cacheManager.set(key, result, ttl)
+    return result
+  })
 }

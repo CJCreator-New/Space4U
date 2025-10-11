@@ -1,62 +1,51 @@
 // Performance monitoring utilities
 
-export function measurePerformance(name, fn) {
+export const measurePerformance = (name, fn) => {
   const start = performance.now()
   const result = fn()
   const end = performance.now()
-  
-  if (import.meta.env.DEV) {
-    console.log(`⚡ ${name}: ${(end - start).toFixed(2)}ms`)
-  }
-  
+  console.log(`[Performance] ${name}: ${(end - start).toFixed(2)}ms`)
   return result
 }
 
-export async function measureAsyncPerformance(name, fn) {
+export const measureAsyncPerformance = async (name, fn) => {
   const start = performance.now()
   const result = await fn()
   const end = performance.now()
-  
-  if (import.meta.env.DEV) {
-    console.log(`⚡ ${name}: ${(end - start).toFixed(2)}ms`)
-  }
-  
+  console.log(`[Performance] ${name}: ${(end - start).toFixed(2)}ms`)
   return result
 }
 
-// Debounce function for performance
-export function debounce(fn, delay = 300) {
-  let timeoutId
-  
-  return function(...args) {
-    clearTimeout(timeoutId)
-    timeoutId = setTimeout(() => fn.apply(this, args), delay)
-  }
-}
-
-// Throttle function for performance
-export function throttle(fn, limit = 300) {
-  let inThrottle
-  
-  return function(...args) {
-    if (!inThrottle) {
-      fn.apply(this, args)
-      inThrottle = true
-      setTimeout(() => inThrottle = false, limit)
-    }
-  }
-}
-
-// Report Web Vitals
-export function reportWebVitals() {
-  if ('web-vital' in window) {
-    // Report Core Web Vitals
-    const observer = new PerformanceObserver((list) => {
-      for (const entry of list.getEntries()) {
-        console.log(`📊 ${entry.name}:`, entry.value)
-      }
+export const reportWebVitals = (onPerfEntry) => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry)
+      getFID(onPerfEntry)
+      getFCP(onPerfEntry)
+      getLCP(onPerfEntry)
+      getTTFB(onPerfEntry)
     })
-    
-    observer.observe({ entryTypes: ['measure', 'navigation', 'paint'] })
   }
+}
+
+export const memoizeFunction = (fn) => {
+  const cache = new Map()
+  
+  return (...args) => {
+    const key = JSON.stringify(args)
+    
+    if (cache.has(key)) {
+      return cache.get(key)
+    }
+    
+    const result = fn(...args)
+    cache.set(key, result)
+    return result
+  }
+}
+
+export const batchUpdates = (updates) => {
+  requestAnimationFrame(() => {
+    updates.forEach(update => update())
+  })
 }

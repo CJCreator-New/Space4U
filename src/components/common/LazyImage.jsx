@@ -1,43 +1,27 @@
-import { useState, useEffect, useRef } from 'react'
+import { useImageOptimization } from '../../hooks/useImageOptimization'
 
-function LazyImage({ src, alt, className, placeholder = 'blur' }) {
-  const [isLoaded, setIsLoaded] = useState(false)
-  const [isInView, setIsInView] = useState(false)
-  const imgRef = useRef(null)
+function LazyImage({ src, alt, placeholder, className = '', ...props }) {
+  const { imageSrc, isLoading, error } = useImageOptimization(src, { 
+    placeholder,
+    lazy: true 
+  })
 
-  useEffect(() => {
-    if (!imgRef.current) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true)
-          observer.disconnect()
-        }
-      },
-      { rootMargin: '50px' }
+  if (error) {
+    return (
+      <div className={`bg-gray-200 flex items-center justify-center ${className}`}>
+        <span className="text-gray-400 text-sm">Failed to load</span>
+      </div>
     )
-
-    observer.observe(imgRef.current)
-
-    return () => observer.disconnect()
-  }, [])
+  }
 
   return (
-    <div ref={imgRef} className={`relative ${className}`}>
-      {!isLoaded && (
-        <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse rounded" />
-      )}
-      {isInView && (
-        <img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          onLoad={() => setIsLoaded(true)}
-          className={`${className} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
-        />
-      )}
-    </div>
+    <img
+      src={imageSrc}
+      alt={alt}
+      className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'} ${className}`}
+      loading="lazy"
+      {...props}
+    />
   )
 }
 

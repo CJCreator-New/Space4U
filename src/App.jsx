@@ -47,6 +47,10 @@ const PremiumManagePage = lazy(() => import('./pages/PremiumManagePage'))
 const PremiumFeaturesPage = lazy(() => import('./pages/PremiumFeaturesPage'))
 const BookmarksPage = lazy(() => import('./pages/BookmarksPage'))
 const PersonalizationPage = lazy(() => import('./pages/PersonalizationPage'))
+const GesturesDemoPage = lazy(() => import('./pages/GesturesDemoPage'))
+const VisualDemoPage = lazy(() => import('./pages/VisualDemoPage'))
+const NativeDemoPage = lazy(() => import('./pages/NativeDemoPage'))
+const PerformanceDemoPage = lazy(() => import('./pages/PerformanceDemoPage'))
 
 function App() {
   return (
@@ -193,6 +197,10 @@ function AppContent() {
             <Route path="/technical" element={<TechnicalFeaturesPage />} />
             <Route path="/bookmarks" element={<BookmarksPage />} />
             <Route path="/personalization" element={<PersonalizationPage />} />
+            <Route path="/demo/gestures" element={<GesturesDemoPage />} />
+            <Route path="/demo/visual" element={<VisualDemoPage />} />
+            <Route path="/demo/native" element={<NativeDemoPage />} />
+            <Route path="/demo/performance" element={<PerformanceDemoPage />} />
           </Route>
         </Routes>
       </Suspense>
