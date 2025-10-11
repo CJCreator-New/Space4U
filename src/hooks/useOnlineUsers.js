@@ -7,7 +7,7 @@ export function useOnlineUsers(circleId) {
   const { user } = useSupabaseAuth()
 
   useEffect(() => {
-    if (!user || !circleId) return
+    if (!user || !circleId || !supabase) return
 
     const channel = supabase.channel(`circle:${circleId}:presence`, {
       config: { presence: { key: user.id } }

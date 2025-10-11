@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
+import { mockPosts } from '../data/mockPosts'
 
 export function useRealtimePosts(circleId) {
   const [posts, setPosts] = useState([])
@@ -7,6 +8,8 @@ export function useRealtimePosts(circleId) {
 
   useEffect(() => {
     fetchPosts()
+
+    if (!supabase) return
 
     const channel = supabase
       .channel(`posts:${circleId}`)
@@ -25,6 +28,14 @@ export function useRealtimePosts(circleId) {
 
   async function fetchPosts() {
     setLoading(true)
+    
+    if (!supabase) {
+      const circlePosts = mockPosts.filter(p => p.circleId === parseInt(circleId))
+      setPosts(circlePosts)
+      setLoading(false)
+      return
+    }
+
     const { data } = await supabase
       .from('posts')
       .select('*, profiles(username, avatar_url)')
