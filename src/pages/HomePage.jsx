@@ -1,19 +1,23 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Crown, Sparkles } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Crown, Sparkles, Smile, Heart, BookOpen } from 'lucide-react'
 import MoodTracker from '../components/MoodTracker'
 import MoodCalendar from '../components/MoodCalendar'
 import MoodTrends from '../components/MoodTrends'
 import SafeComponent from '../components/SafeComponent'
 import AdaptiveDashboard from '../components/personalization/AdaptiveDashboard'
+import FABMenu from '../components/common/FABMenu'
+import MicroInteraction from '../components/common/MicroInteraction'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import { initPersonalization } from '../utils/personalizationEngine'
 import { trackFeatureUsage } from '../utils/usageTracker'
 
 function HomePage() {
+  const navigate = useNavigate()
   const [user, setUser] = useState(null)
   const [refreshKey, setRefreshKey] = useState(0)
   const [error, setError] = useState(null)
+  const [showMoodTracker, setShowMoodTracker] = useState(false)
   const { isPremium, trialActive, daysLeft } = getPremiumStatus()
 
   useEffect(() => {
@@ -33,10 +37,32 @@ function HomePage() {
   const handleMoodLogged = () => {
     try {
       setRefreshKey(prev => prev + 1)
+      setShowMoodTracker(false)
     } catch (err) {
       console.error('Error refreshing mood data:', err)
     }
   }
+
+  const fabActions = [
+    {
+      icon: <Smile size={20} />,
+      label: 'Log Mood',
+      onClick: () => setShowMoodTracker(true),
+      color: 'from-indigo-500 to-purple-600'
+    },
+    {
+      icon: <Heart size={20} />,
+      label: 'Gratitude',
+      onClick: () => navigate('/gratitude'),
+      color: 'from-pink-500 to-red-600'
+    },
+    {
+      icon: <BookOpen size={20} />,
+      label: 'Journal',
+      onClick: () => navigate('/advanced-tools'),
+      color: 'from-blue-500 to-cyan-600'
+    }
+  ]
 
   if (error) {
     return (
@@ -108,11 +134,13 @@ function HomePage() {
       )}
       
       {/* Mood Tracking Section - Wrapped in SafeComponent */}
-      <SafeComponent>
-        <div className="mb-6">
-          <MoodTracker onMoodLogged={handleMoodLogged} />
-        </div>
-      </SafeComponent>
+      {showMoodTracker && (
+        <SafeComponent>
+          <div className="mb-6">
+            <MoodTracker onMoodLogged={handleMoodLogged} />
+          </div>
+        </SafeComponent>
+      )}
       
       <SafeComponent>
         <div className="mb-6">
@@ -135,29 +163,35 @@ function HomePage() {
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-4">Wellness Tools</h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <Link to="/gratitude" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <MicroInteraction type="lift">
+            <Link to="/gratitude" className="card p-6 hover:shadow-xl transition-all duration-300 group block">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">❤️</span>
               <h3 className="text-lg font-semibold">Gratitude</h3>
             </div>
             <p className="text-text-secondary text-sm">Daily gratitude practice</p>
-          </Link>
+            </Link>
+          </MicroInteraction>
           
-          <Link to="/habits" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <MicroInteraction type="lift">
+            <Link to="/habits" className="card p-6 hover:shadow-xl transition-all duration-300 group block">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🎯</span>
               <h3 className="text-lg font-semibold">Habits</h3>
             </div>
             <p className="text-text-secondary text-sm">Track daily habits</p>
-          </Link>
+            </Link>
+          </MicroInteraction>
           
-          <Link to="/emotions" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <MicroInteraction type="lift">
+            <Link to="/emotions" className="card p-6 hover:shadow-xl transition-all duration-300 group block">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">💭</span>
               <h3 className="text-lg font-semibold">Emotions</h3>
             </div>
             <p className="text-text-secondary text-sm">Understand your feelings</p>
-          </Link>
+            </Link>
+          </MicroInteraction>
           
           <Link to="/coping-skills" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
@@ -256,6 +290,9 @@ function HomePage() {
           </Link>
         </div>
       </div>
+
+      {/* FAB Menu for Quick Actions */}
+      <FABMenu actions={fabActions} />
     </div>
   )
 }

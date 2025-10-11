@@ -51,6 +51,7 @@ const GesturesDemoPage = lazy(() => import('./pages/GesturesDemoPage'))
 const VisualDemoPage = lazy(() => import('./pages/VisualDemoPage'))
 const NativeDemoPage = lazy(() => import('./pages/NativeDemoPage'))
 const PerformanceDemoPage = lazy(() => import('./pages/PerformanceDemoPage'))
+const DemoHubPage = lazy(() => import('./pages/DemoHubPage'))
 
 function App() {
   return (
@@ -201,6 +202,7 @@ function AppContent() {
             <Route path="/demo/visual" element={<VisualDemoPage />} />
             <Route path="/demo/native" element={<NativeDemoPage />} />
             <Route path="/demo/performance" element={<PerformanceDemoPage />} />
+            <Route path="/demo" element={<DemoHubPage />} />
           </Route>
         </Routes>
       </Suspense>

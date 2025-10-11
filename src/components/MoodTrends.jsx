@@ -245,6 +245,9 @@ function MoodTrends() {
               fill="url(#moodGradient)"
               dot={{ fill: '#4F46E5', strokeWidth: 2, r: 4 }}
               activeDot={{ r: 6, stroke: '#4F46E5', strokeWidth: 2 }}
+              animationDuration={1000}
+              animationEasing="ease-out"
+              isAnimationActive={true}
             />
           </AreaChart>
         </ResponsiveContainer>

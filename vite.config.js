@@ -13,6 +13,11 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      external: [
+        '@capacitor-community/biometric-auth',
+        '@capacitor/biometric-auth',
+        '@capacitor/biometric'
+      ],
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],

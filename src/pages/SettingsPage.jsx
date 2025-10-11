@@ -262,7 +262,7 @@ function SettingsPage() {
       {/* Developer Tools */}
       <div className="card mb-4 bg-yellow-50 border-2 border-yellow-200">
         <div className="p-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
               <Crown className="text-yellow-600" size={24} />
               <div>
@@ -272,6 +272,13 @@ function SettingsPage() {
             </div>
             <ToggleSwitch checked={isPremium} onChange={togglePremium} />
           </div>
+          <button
+            onClick={() => window.location.href = '/demo'}
+            className="w-full mt-3 px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+          >
+            <Zap size={16} />
+            View Demo Features
+          </button>
         </div>
       </div>
 

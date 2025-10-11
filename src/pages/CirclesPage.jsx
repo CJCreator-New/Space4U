@@ -5,15 +5,17 @@ import { mockCircles } from '../data/mockCircles'
 import CircleCard from '../components/CircleCard'
 import FilterModal from '../components/FilterModal'
 import { formatNumber } from '../utils/helpers'
-import { EmptyStates } from '../components/common/EmptyState'
+import EmptyState from '../components/common/EmptyState'
 import LoadingState from '../components/common/LoadingState'
 import SafeComponent from '../components/SafeComponent'
 import { getPremiumStatus } from '../utils/premiumUtils'
+import { useDebounce } from '../hooks/useDebounce'
 
 function CirclesPage() {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('discover')
   const [searchQuery, setSearchQuery] = useState('')
+  const debouncedSearch = useDebounce(searchQuery, 300)
   const [showFilters, setShowFilters] = useState(false)
   const [filters, setFilters] = useState({ category: 'all', sort: 'recommended' })
   const [joinedCircles, setJoinedCircles] = useState([])
@@ -73,11 +75,11 @@ function CirclesPage() {
   const getFilteredCircles = () => {
     let filtered = circles
 
-    // Filter by search query
-    if (searchQuery) {
+    // Filter by debounced search query
+    if (debouncedSearch) {
       filtered = filtered.filter(circle => 
-        circle.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        circle.description.toLowerCase().includes(searchQuery.toLowerCase())
+        circle.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        circle.description.toLowerCase().includes(debouncedSearch.toLowerCase())
       )
     }
 
@@ -262,8 +264,22 @@ function CirclesPage() {
       {/* Empty States */}
       {activeTab === 'my-circles' && joinedCircles.length === 0 ? (
         <EmptyStates.NoCircles onAction={() => setActiveTab('discover')} />
-      ) : filteredCircles.length === 0 && searchQuery ? (
+      ) : filteredCircles.length === 0 && debouncedSearch ? (
         <EmptyStates.NoSearchResults onAction={() => setSearchQuery('')} />
+      ) : filteredCircles.length > 50 ? (
+        /* Virtual List for large datasets */
+        <div className="space-y-4">
+          {filteredCircles.map((circle) => (
+            <CircleCard
+              key={circle.id}
+              circle={circle}
+              isJoined={joinedCircles.includes(circle.id)}
+              onJoin={handleJoinCircle}
+              onLeave={handleLeaveCircle}
+              onClick={handleCircleClick}
+            />
+          ))}
+        </div>
       ) : (
         /* Circle Grid */
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
