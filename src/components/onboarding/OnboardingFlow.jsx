@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSupabaseAuth } from '../../contexts/AuthContext'
 import WelcomeScreen from './WelcomeScreen'
 import CountryStep from './CountryStep'
 import UsernameStep from './UsernameStep'
@@ -8,6 +9,7 @@ import AgeConfirmationStep from './AgeConfirmationStep'
 import { saveUserCountry } from '../../data/countryData'
 
 function OnboardingFlow({ onComplete }) {
+  const { user } = useSupabaseAuth()
   const [currentStep, setCurrentStep] = useState(0)
   const [userData, setUserData] = useState({
     country: 'US',
@@ -49,9 +51,11 @@ function OnboardingFlow({ onComplete }) {
   }
 
   const completeOnboarding = (finalData) => {
+    if (!user) return
+    
     saveUserCountry(finalData.country || 'US')
-    localStorage.setItem('safespace_user', JSON.stringify(finalData))
-    localStorage.setItem('safespace_onboarding_complete', 'true')
+    localStorage.setItem(`safespace_user_${user.id}`, JSON.stringify(finalData))
+    localStorage.setItem(`safespace_onboarding_complete_${user.id}`, 'true')
     onComplete()
   }
 

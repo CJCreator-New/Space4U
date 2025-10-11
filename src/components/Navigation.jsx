@@ -22,44 +22,39 @@ function Navigation() {
   return (
     <>
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-surface dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 md:hidden z-50" aria-label="Mobile navigation">
-        <div className="flex justify-around py-2">
-          {navItems.slice(0, 6).map(({ path, icon: Icon, label }) => (
+      <nav className="fixed bottom-0 left-0 right-0 bg-surface dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 md:hidden z-50 safe-area-bottom" aria-label="Mobile navigation">
+        <div className="flex justify-around px-2 py-1">
+          {navItems.slice(0, 5).map(({ path, icon: Icon, label }) => (
             <NavLink
               key={path}
               to={path}
               aria-label={`Navigate to ${label} page`}
               className={({ isActive }) =>
-                `flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
+                `flex flex-col items-center justify-center min-w-[64px] min-h-[56px] px-2 py-1 rounded-lg transition-colors active:scale-95 ${
                   isActive
                     ? 'text-primary'
-                    : 'text-text-secondary hover:text-text-primary'
+                    : 'text-text-secondary'
                 }`
               }
             >
-              <Icon size={24} aria-hidden="true" />
-              <span className="text-xs mt-1">{label}</span>
+              <Icon size={24} aria-hidden="true" strokeWidth={2} />
+              <span className="text-[10px] mt-1 font-medium">{label}</span>
             </NavLink>
           ))}
-          {user ? (
-            <button
-              onClick={handleLogout}
-              aria-label="Logout"
-              className="flex flex-col items-center py-2 px-3 rounded-lg transition-colors text-text-secondary hover:text-text-primary"
-            >
-              <LogOut size={24} aria-hidden="true" />
-              <span className="text-xs mt-1">Logout</span>
-            </button>
-          ) : (
-            <NavLink
-              to="/auth"
-              aria-label="Login or Sign Up"
-              className="flex flex-col items-center py-2 px-3 rounded-lg transition-colors text-text-secondary hover:text-text-primary"
-            >
-              <LogIn size={24} aria-hidden="true" />
-              <span className="text-xs mt-1">Login</span>
-            </NavLink>
-          )}
+          <NavLink
+            to="/profile"
+            aria-label="Navigate to Profile page"
+            className={({ isActive }) =>
+              `flex flex-col items-center justify-center min-w-[64px] min-h-[56px] px-2 py-1 rounded-lg transition-colors active:scale-95 ${
+                isActive
+                  ? 'text-primary'
+                  : 'text-text-secondary'
+              }`
+            }
+          >
+            <User size={24} aria-hidden="true" strokeWidth={2} />
+            <span className="text-[10px] mt-1 font-medium">Profile</span>
+          </NavLink>
         </div>
       </nav>
 

@@ -41,6 +41,9 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  font-size: 16px;
 }
 
 .card {
@@ -59,12 +62,14 @@ body {
 .btn-primary {
   background: var(--gradient-primary);
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 0.875rem 1.5rem;
+  min-height: 48px;
   border-radius: 12px;
   font-weight: 600;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .btn-primary:hover {
@@ -72,6 +77,145 @@ body {
   box-shadow: var(--shadow-lg);
 }
 
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.input {
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  font-size: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.touch-target {
+  min-width: 48px;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .smooth-scroll {
   scroll-behavior: smooth;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 100%;
+}
+
+/* Semantic Colors */
+.text-info { color: #3B82F6; }
+.text-success { color: var(--success); }
+.text-warning { color: var(--warning); }
+.text-error { color: var(--danger); }
+
+.bg-info { background-color: #3B82F6; }
+.bg-success { background-color: var(--success); }
+.bg-warning { background-color: var(--warning); }
+.bg-error { background-color: var(--danger); }
+
+/* Form Validation */
+.input-error {
+  border-color: var(--danger);
+}
+
+.input-error:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.input-success {
+  border-color: var(--success);
+}
+
+.input-success:focus {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Hover Effects */
+.hover-lift {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Loading Spinner */
+.spinner {
+  border: 3px solid rgba(99, 102, 241, 0.1);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Pull to Refresh */
+.pull-to-refresh {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  transition: transform 0.3s;
+}
+
+@media (hover: none) {
+  .btn-primary:hover {
+    transform: none;
+  }
+  .hover-lift:hover {
+    transform: none;
+  }
 }

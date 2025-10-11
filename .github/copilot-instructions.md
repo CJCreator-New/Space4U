@@ -1,4 +1,6 @@
-# Space4U - AI Coding Guidelines
+git init
+git add .
+git commit -m "Initial commit"# Space4U - AI Coding Guidelines
 
 ## Project Overview
 Space4U is a comprehensive mental health support web application built with React, Vite, and Tailwind CSS. It features a local-first architecture with optional Supabase backend sync, focusing on privacy and user wellness.

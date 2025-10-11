@@ -10,7 +10,7 @@ function AuthPage() {
   const [username, setUsername] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const { signIn, signUp } = useSupabaseAuth()
+  const { signIn, signUp, error: authError } = useSupabaseAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -22,12 +22,10 @@ function AuthPage() {
       if (isLogin) {
         const { error } = await signIn(email, password)
         if (error) throw error
-        localStorage.setItem('safespace_auth_attempted', 'true')
         navigate('/')
       } else {
         const { error } = await signUp(email, password)
         if (error) throw error
-        localStorage.setItem('safespace_auth_attempted', 'true')
         setError('Check your email to confirm your account!')
       }
     } catch (err) {
@@ -44,6 +42,14 @@ function AuthPage() {
           <h1 className="text-4xl font-bold mb-2">Space4U</h1>
           <p className="text-text-secondary">Your mental wellness journey starts here</p>
         </div>
+
+        {authError && (
+          <div className="card p-6 mb-4 bg-red-50 border-2 border-red-200">
+            <h3 className="font-semibold text-red-800 mb-2">⚠️ Configuration Error</h3>
+            <p className="text-sm text-red-700">{authError}</p>
+            <p className="text-xs text-red-600 mt-2">Please contact the administrator or check your .env file.</p>
+          </div>
+        )}
 
         <div className="card p-8">
           <div className="flex gap-2 mb-6">
@@ -62,6 +68,11 @@ function AuthPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {authError && (
+              <div className="p-3 rounded-lg bg-yellow-50 border border-yellow-200 text-sm text-yellow-800">
+                Authentication is currently unavailable. Please try again later.
+              </div>
+            )}
             {!isLogin && (
               <div>
                 <label className="block text-sm font-medium mb-2">Username</label>
@@ -118,8 +129,8 @@ function AuthPage() {
 
             <button
               type="submit"
-              disabled={loading}
-              className="btn-primary w-full flex items-center justify-center gap-2"
+              disabled={loading || authError}
+              className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
