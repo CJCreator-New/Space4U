@@ -1,0 +1,100 @@
+{
+  "common": {
+    "home": "హోమ్",
+    "circles": "సర్కిల్స్",
+    "insights": "అంతర్దృష్టులు",
+    "profile": "ప్రొఫైల్",
+    "settings": "సెట్టింగ్స్",
+    "resources": "వనరులు",
+    "save": "సేవ్ చేయి",
+    "cancel": "రద్దు చేయి",
+    "delete": "తొలగించు",
+    "edit": "సవరించు",
+    "close": "మూసివేయి",
+    "loading": "లోడ్ అవుతోంది...",
+    "error": "లోపం",
+    "success": "విజయం"
+  },
+  "home": {
+    "title": "Space4U కు స్వాగతం",
+    "subtitle": "మీ మానసిక ఆరోగ్య సహచరుడు",
+    "logMood": "మూడ్ లాగ్ చేయండి",
+    "gratitude": "కృతజ్ఞత",
+    "journal": "జర్నల్",
+    "howAreYou": "ఈరోజు మీరు ఎలా అనుభూతి చెందుతున్నారు?",
+    "moodStreak": "రోజుల స్ట్రీక్",
+    "totalCheckIns": "మొత్తం చెక్-ఇన్లు"
+  },
+  "mood": {
+    "veryBad": "చాలా చెడ్డది",
+    "bad": "చెడ్డది",
+    "okay": "సరే",
+    "good": "మంచిది",
+    "great": "గొప్పది",
+    "addNote": "గమనిక జోడించండి (ఐచ్ఛికం)",
+    "logMood": "మూడ్ లాగ్ చేయండి",
+    "moodHistory": "మూడ్ చరిత్ర",
+    "averageMood": "సగటు మూడ్",
+    "consistency": "స్థిరత్వం"
+  },
+  "circles": {
+    "title": "మద్దతు సర్కిల్స్",
+    "joinCircle": "సర్కిల్‌లో చేరండి",
+    "myCircles": "నా సర్కిల్స్",
+    "exploreCircles": "సర్కిల్స్ అన్వేషించండి",
+    "members": "సభ్యులు",
+    "posts": "పోస్ట్‌లు",
+    "search": "సర్కిల్స్ శోధించండి..."
+  },
+  "insights": {
+    "title": "మీ అంతర్దృష్టులు",
+    "moodTrends": "మూడ్ ట్రెండ్స్",
+    "achievements": "విజయాలు",
+    "statistics": "గణాంకాలు",
+    "weeklyReport": "వారపు నివేదిక"
+  },
+  "profile": {
+    "title": "ప్రొఫైల్",
+    "editProfile": "ప్రొఫైల్ సవరించు",
+    "badges": "బ్యాడ్జ్‌లు",
+    "stats": "గణాంకాలు",
+    "joinedCircles": "చేరిన సర్కిల్స్",
+    "logout": "లాగ్అవుట్"
+  },
+  "settings": {
+    "title": "సెట్టింగ్స్",
+    "language": "భాష",
+    "notifications": "నోటిఫికేషన్లు",
+    "privacy": "గోప్యత",
+    "theme": "థీమ్",
+    "account": "ఖాతా",
+    "about": "గురించి",
+    "selectLanguage": "భాషను ఎంచుకోండి"
+  },
+  "resources": {
+    "title": "వనరులు",
+    "articles": "వ్యాసాలు",
+    "exercises": "వ్యాయామాలు",
+    "crisis": "సంక్షోభ మద్దతు",
+    "breathing": "శ్వాస వ్యాయామాలు",
+    "meditation": "ధ్యానం"
+  },
+  "gratitude": {
+    "title": "కృతజ్ఞత జర్నల్",
+    "whatAreYouGratefulFor": "ఈరోజు మీరు దేనికి కృతజ్ఞతతో ఉన్నారు?",
+    "addEntry": "ఎంట్రీ జోడించండి",
+    "entries": "ఎంట్రీలు"
+  },
+  "habits": {
+    "title": "అలవాటు ట్రాకర్",
+    "addHabit": "అలవాటు జోడించండి",
+    "streak": "స్ట్రీక్",
+    "completed": "పూర్తయింది"
+  },
+  "premium": {
+    "title": "ప్రీమియం ఫీచర్లు",
+    "upgrade": "ప్రీమియంకు అప్‌గ్రేడ్ చేయండి",
+    "features": "ప్రీమియం ఫీచర్లు",
+    "price": "ధర"
+  }
+}

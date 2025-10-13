@@ -1,0 +1,146 @@
+{
+  "common": {
+    "home": "Home",
+    "circles": "Circles",
+    "insights": "Insights",
+    "profile": "Profile",
+    "settings": "Settings",
+    "resources": "Resources",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "home": {
+    "title": "Welcome to Space4U",
+    "subtitle": "Your mental wellness companion",
+    "logMood": "Log Mood",
+    "gratitude": "Gratitude",
+    "journal": "Journal",
+    "howAreYou": "How are you feeling today?",
+    "moodStreak": "Day Streak",
+    "totalCheckIns": "Total Check-ins"
+  },
+  "mood": {
+    "veryBad": "Very Bad",
+    "bad": "Bad",
+    "okay": "Okay",
+    "good": "Good",
+    "great": "Great",
+    "addNote": "Add a note (optional)",
+    "logMood": "Log Mood",
+    "moodHistory": "Mood History",
+    "averageMood": "Average Mood",
+    "consistency": "Consistency"
+  },
+  "circles": {
+    "title": "Support Circles",
+    "joinCircle": "Join Circle",
+    "myCircles": "My Circles",
+    "exploreCircles": "Explore Circles",
+    "members": "members",
+    "posts": "posts",
+    "search": "Search circles..."
+  },
+  "insights": {
+    "title": "Your Insights",
+    "moodTrends": "Mood Trends",
+    "achievements": "Achievements",
+    "statistics": "Statistics",
+    "weeklyReport": "Weekly Report"
+  },
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit Profile",
+    "badges": "Badges",
+    "stats": "Stats",
+    "joinedCircles": "Joined Circles",
+    "logout": "Logout"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Customize your Safespace experience",
+    "language": "Language",
+    "notifications": "Notifications",
+    "privacy": "Privacy",
+    "theme": "Theme",
+    "account": "Account",
+    "about": "About",
+    "selectLanguage": "Select Language"
+  },
+  "resources": {
+    "title": "Resources",
+    "articles": "Articles",
+    "exercises": "Exercises",
+    "crisis": "Crisis Support",
+    "breathing": "Breathing Exercises",
+    "meditation": "Meditation"
+  },
+  "gratitude": {
+    "title": "Gratitude Journal",
+    "whatAreYouGratefulFor": "What are you grateful for today?",
+    "addEntry": "Add Entry",
+    "entries": "Entries"
+  },
+  "habits": {
+    "title": "Habit Tracker",
+    "addHabit": "Add Habit",
+    "streak": "Streak",
+    "completed": "Completed"
+  },
+  "premium": {
+    "title": "Premium Features",
+    "upgrade": "Upgrade to Premium",
+    "features": "Premium Features",
+    "price": "Price",
+    "unlockUnlimited": "Unlock unlimited features, custom themes, and advanced analytics",
+    "trialDaysLeft": "Trial: {{days}} days left"
+  },
+  "wellnessTools": {
+    "title": "Wellness Tools",
+    "gratitude": "Gratitude",
+    "gratitudeDesc": "Daily gratitude practice",
+    "habits": "Habits",
+    "habitsDesc": "Track daily habits",
+    "emotions": "Emotions",
+    "emotionsDesc": "Understand your feelings",
+    "copingSkills": "Coping Skills",
+    "copingSkillsDesc": "Strategies for tough times",
+    "reminders": "Reminders",
+    "remindersDesc": "Stay on track",
+    "therapyTools": "Therapy Tools",
+    "therapyToolsDesc": "CBT, DBT, and more",
+    "wellnessScore": "Wellness Score",
+    "wellnessScoreDesc": "Track overall progress",
+    "advancedTools": "Advanced Tools",
+    "advancedToolsDesc": "Triggers, journal, therapy",
+    "gamification": "Gamification",
+    "gamificationDesc": "Challenges, quests, streaks",
+    "wellnessPlan": "Wellness Plan",
+    "wellnessPlanDesc": "Daily routine builder",
+    "socialHub": "Social Hub",
+    "socialHubDesc": "Connect & support",
+    "analytics": "Analytics",
+    "analyticsDesc": "Deep insights",
+    "professional": "Professional",
+    "professionalDesc": "Therapist & crisis",
+    "technical": "Technical",
+    "technicalDesc": "Voice, offline, PWA",
+    "premiumFeatures": "Premium Features",
+    "premiumFeaturesDesc": "Exclusive tools"
+  },
+  "errors": {
+    "failedToLoad": "Failed to load user data",
+    "reloadPage": "Reload Page",
+    "somethingWentWrong": "Something went wrong",
+    "tryAgain": "Try Again"
+  },
+  "welcome": {
+    "back": "Welcome back",
+    "companion": "Your mental health support companion"
+  }
+}

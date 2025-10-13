@@ -1,0 +1,100 @@
+{
+  "common": {
+    "home": "ಮುಖಪುಟ",
+    "circles": "ವಲಯಗಳು",
+    "insights": "ಒಳನೋಟಗಳು",
+    "profile": "ಪ್ರೊಫೈಲ್",
+    "settings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+    "resources": "ಸಂಪನ್ಮೂಲಗಳು",
+    "save": "ಉಳಿಸಿ",
+    "cancel": "ರದ್ದುಮಾಡಿ",
+    "delete": "ಅಳಿಸಿ",
+    "edit": "ಸಂಪಾದಿಸಿ",
+    "close": "ಮುಚ್ಚಿ",
+    "loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
+    "error": "ದೋಷ",
+    "success": "ಯಶಸ್ಸು"
+  },
+  "home": {
+    "title": "Space4U ಗೆ ಸ್ವಾಗತ",
+    "subtitle": "ನಿಮ್ಮ ಮಾನಸಿಕ ಆರೋಗ್ಯ ಸಹಚರ",
+    "logMood": "ಮೂಡ್ ಲಾಗ್ ಮಾಡಿ",
+    "gratitude": "ಕೃತಜ್ಞತೆ",
+    "journal": "ಜರ್ನಲ್",
+    "howAreYou": "ಇಂದು ನೀವು ಹೇಗೆ ಭಾವಿಸುತ್ತೀರಿ?",
+    "moodStreak": "ದಿನಗಳ ಸರಣಿ",
+    "totalCheckIns": "ಒಟ್ಟು ಚೆಕ್-ಇನ್‌ಗಳು"
+  },
+  "mood": {
+    "veryBad": "ತುಂಬಾ ಕೆಟ್ಟದು",
+    "bad": "ಕೆಟ್ಟದು",
+    "okay": "ಸರಿ",
+    "good": "ಒಳ್ಳೆಯದು",
+    "great": "ಅದ್ಭುತ",
+    "addNote": "ಟಿಪ್ಪಣಿ ಸೇರಿಸಿ (ಐಚ್ಛಿಕ)",
+    "logMood": "ಮೂಡ್ ಲಾಗ್ ಮಾಡಿ",
+    "moodHistory": "ಮೂಡ್ ಇತಿಹಾಸ",
+    "averageMood": "ಸರಾಸರಿ ಮೂಡ್",
+    "consistency": "ಸ್ಥಿರತೆ"
+  },
+  "circles": {
+    "title": "ಬೆಂಬಲ ವಲಯಗಳು",
+    "joinCircle": "ವಲಯಕ್ಕೆ ಸೇರಿ",
+    "myCircles": "ನನ್ನ ವಲಯಗಳು",
+    "exploreCircles": "ವಲಯಗಳನ್ನು ಅನ್ವೇಷಿಸಿ",
+    "members": "ಸದಸ್ಯರು",
+    "posts": "ಪೋಸ್ಟ್‌ಗಳು",
+    "search": "ವಲಯಗಳನ್ನು ಹುಡುಕಿ..."
+  },
+  "insights": {
+    "title": "ನಿಮ್ಮ ಒಳನೋಟಗಳು",
+    "moodTrends": "ಮೂಡ್ ಟ್ರೆಂಡ್‌ಗಳು",
+    "achievements": "ಸಾಧನೆಗಳು",
+    "statistics": "ಅಂಕಿಅಂಶಗಳು",
+    "weeklyReport": "ವಾರದ ವರದಿ"
+  },
+  "profile": {
+    "title": "ಪ್ರೊಫೈಲ್",
+    "editProfile": "ಪ್ರೊಫೈಲ್ ಸಂಪಾದಿಸಿ",
+    "badges": "ಬ್ಯಾಡ್ಜ್‌ಗಳು",
+    "stats": "ಅಂಕಿಅಂಶಗಳು",
+    "joinedCircles": "ಸೇರಿದ ವಲಯಗಳು",
+    "logout": "ಲಾಗ್ಔಟ್"
+  },
+  "settings": {
+    "title": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+    "language": "ಭಾಷೆ",
+    "notifications": "ಅಧಿಸೂಚನೆಗಳು",
+    "privacy": "ಗೌಪ್ಯತೆ",
+    "theme": "ಥೀಮ್",
+    "account": "ಖಾತೆ",
+    "about": "ಬಗ್ಗೆ",
+    "selectLanguage": "ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ"
+  },
+  "resources": {
+    "title": "ಸಂಪನ್ಮೂಲಗಳು",
+    "articles": "ಲೇಖನಗಳು",
+    "exercises": "ವ್ಯಾಯಾಮಗಳು",
+    "crisis": "ಬಿಕ್ಕಟ್ಟು ಬೆಂಬಲ",
+    "breathing": "ಉಸಿರಾಟದ ವ್ಯಾಯಾಮಗಳು",
+    "meditation": "ಧ್ಯಾನ"
+  },
+  "gratitude": {
+    "title": "ಕೃತಜ್ಞತೆ ಜರ್ನಲ್",
+    "whatAreYouGratefulFor": "ಇಂದು ನೀವು ಯಾವುದಕ್ಕೆ ಕೃತಜ್ಞರಾಗಿದ್ದೀರಿ?",
+    "addEntry": "ನಮೂದು ಸೇರಿಸಿ",
+    "entries": "ನಮೂದುಗಳು"
+  },
+  "habits": {
+    "title": "ಅಭ್ಯಾಸ ಟ್ರ್ಯಾಕರ್",
+    "addHabit": "ಅಭ್ಯಾಸ ಸೇರಿಸಿ",
+    "streak": "ಸರಣಿ",
+    "completed": "ಪೂರ್ಣಗೊಂಡಿದೆ"
+  },
+  "premium": {
+    "title": "ಪ್ರೀಮಿಯಂ ವೈಶಿಷ್ಟ್ಯಗಳು",
+    "upgrade": "ಪ್ರೀಮಿಯಂಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ",
+    "features": "ಪ್ರೀಮಿಯಂ ವೈಶಿಷ್ಟ್ಯಗಳು",
+    "price": "ಬೆಲೆ"
+  }
+}

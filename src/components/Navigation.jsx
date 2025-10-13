@@ -1,20 +1,22 @@
 import { NavLink } from 'react-router-dom'
 import { Home, Users, Brain, User, Activity, Heart, Sparkles, Building2, LogOut, LogIn } from 'lucide-react'
 import { useSupabaseAuth } from '../contexts/AuthContext'
-
-const navItems = [
-  { path: '/', icon: Home, label: 'Home' },
-  { path: '/circles', icon: Users, label: 'Circles' },
-  { path: '/insights', icon: Brain, label: 'Insights' },
-  { path: '/gratitude', icon: Heart, label: 'Gratitude' },
-  { path: '/tools', icon: Activity, label: 'Tools' },
-  { path: '/analytics', icon: Sparkles, label: 'Analytics' },
-  { path: '/professional', icon: Building2, label: 'Professional' },
-  { path: '/profile', icon: User, label: 'Profile' },
-]
+import { useTranslation } from 'react-i18next'
 
 function Navigation() {
   const { user, signOut } = useSupabaseAuth()
+  const { t } = useTranslation()
+
+  const navItems = [
+    { path: '/', icon: Home, label: t('common.home') },
+    { path: '/circles', icon: Users, label: t('common.circles') },
+    { path: '/insights', icon: Brain, label: t('common.insights') },
+    { path: '/gratitude', icon: Heart, label: t('gratitude.title') },
+    { path: '/tools', icon: Activity, label: 'Tools' },
+    { path: '/analytics', icon: Sparkles, label: 'Analytics' },
+    { path: '/professional', icon: Building2, label: 'Professional' },
+    { path: '/profile', icon: User, label: t('common.profile') },
+  ]
 
   const handleLogout = async () => {
     await signOut()
@@ -53,7 +55,7 @@ function Navigation() {
             }
           >
             <User size={24} aria-hidden="true" strokeWidth={2} />
-            <span className="text-[10px] mt-1 font-medium">Profile</span>
+            <span className="text-[10px] mt-1 font-medium">{t('common.profile')}</span>
           </NavLink>
         </div>
       </nav>

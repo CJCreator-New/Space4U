@@ -1,0 +1,100 @@
+{
+  "common": {
+    "home": "Startseite",
+    "circles": "Kreise",
+    "insights": "Einblicke",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "resources": "Ressourcen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen",
+    "loading": "Wird geladen...",
+    "error": "Fehler",
+    "success": "Erfolg"
+  },
+  "home": {
+    "title": "Willkommen bei Space4U",
+    "subtitle": "Ihr mentaler Wellness-Begleiter",
+    "logMood": "Stimmung protokollieren",
+    "gratitude": "Dankbarkeit",
+    "journal": "Tagebuch",
+    "howAreYou": "Wie fühlen Sie sich heute?",
+    "moodStreak": "Tagessträhne",
+    "totalCheckIns": "Gesamte Check-ins"
+  },
+  "mood": {
+    "veryBad": "Sehr schlecht",
+    "bad": "Schlecht",
+    "okay": "Okay",
+    "good": "Gut",
+    "great": "Großartig",
+    "addNote": "Notiz hinzufügen (optional)",
+    "logMood": "Stimmung protokollieren",
+    "moodHistory": "Stimmungsverlauf",
+    "averageMood": "Durchschnittliche Stimmung",
+    "consistency": "Konsistenz"
+  },
+  "circles": {
+    "title": "Unterstützungskreise",
+    "joinCircle": "Kreis beitreten",
+    "myCircles": "Meine Kreise",
+    "exploreCircles": "Kreise erkunden",
+    "members": "Mitglieder",
+    "posts": "Beiträge",
+    "search": "Kreise suchen..."
+  },
+  "insights": {
+    "title": "Ihre Einblicke",
+    "moodTrends": "Stimmungstrends",
+    "achievements": "Erfolge",
+    "statistics": "Statistiken",
+    "weeklyReport": "Wochenbericht"
+  },
+  "profile": {
+    "title": "Profil",
+    "editProfile": "Profil bearbeiten",
+    "badges": "Abzeichen",
+    "stats": "Statistiken",
+    "joinedCircles": "Beigetretene Kreise",
+    "logout": "Abmelden"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "notifications": "Benachrichtigungen",
+    "privacy": "Datenschutz",
+    "theme": "Thema",
+    "account": "Konto",
+    "about": "Über",
+    "selectLanguage": "Sprache auswählen"
+  },
+  "resources": {
+    "title": "Ressourcen",
+    "articles": "Artikel",
+    "exercises": "Übungen",
+    "crisis": "Krisenunterstützung",
+    "breathing": "Atemübungen",
+    "meditation": "Meditation"
+  },
+  "gratitude": {
+    "title": "Dankbarkeitstagebuch",
+    "whatAreYouGratefulFor": "Wofür sind Sie heute dankbar?",
+    "addEntry": "Eintrag hinzufügen",
+    "entries": "Einträge"
+  },
+  "habits": {
+    "title": "Gewohnheitstracker",
+    "addHabit": "Gewohnheit hinzufügen",
+    "streak": "Strähne",
+    "completed": "Abgeschlossen"
+  },
+  "premium": {
+    "title": "Premium-Funktionen",
+    "upgrade": "Auf Premium upgraden",
+    "features": "Premium-Funktionen",
+    "price": "Preis"
+  }
+}

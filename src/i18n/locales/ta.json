@@ -1,0 +1,100 @@
+{
+  "common": {
+    "home": "முகப்பு",
+    "circles": "வட்டங்கள்",
+    "insights": "நுண்ணறிவு",
+    "profile": "சுயவிவரம்",
+    "settings": "அமைப்புகள்",
+    "resources": "வளங்கள்",
+    "save": "சேமி",
+    "cancel": "ரத்து செய்",
+    "delete": "நீக்கு",
+    "edit": "திருத்து",
+    "close": "மூடு",
+    "loading": "ஏற்றுகிறது...",
+    "error": "பிழை",
+    "success": "வெற்றி"
+  },
+  "home": {
+    "title": "Space4U க்கு வரவேற்கிறோம்",
+    "subtitle": "உங்கள் மன நல துணை",
+    "logMood": "மனநிலை பதிவு",
+    "gratitude": "நன்றி",
+    "journal": "நாட்குறிப்பு",
+    "howAreYou": "இன்று நீங்கள் எப்படி உணர்கிறீர்கள்?",
+    "moodStreak": "நாள் தொடர்",
+    "totalCheckIns": "மொத்த பதிவுகள்"
+  },
+  "mood": {
+    "veryBad": "மிகவும் மோசம்",
+    "bad": "மோசம்",
+    "okay": "சரி",
+    "good": "நல்லது",
+    "great": "அருமை",
+    "addNote": "குறிப்பு சேர் (விருப்பம்)",
+    "logMood": "மனநிலை பதிவு",
+    "moodHistory": "மனநிலை வரலாறு",
+    "averageMood": "சராசரி மனநிலை",
+    "consistency": "நிலைத்தன்மை"
+  },
+  "circles": {
+    "title": "ஆதரவு வட்டங்கள்",
+    "joinCircle": "வட்டத்தில் சேர",
+    "myCircles": "எனது வட்டங்கள்",
+    "exploreCircles": "வட்டங்களை ஆராய",
+    "members": "உறுப்பினர்கள்",
+    "posts": "இடுகைகள்",
+    "search": "வட்டங்களைத் தேடு..."
+  },
+  "insights": {
+    "title": "உங்கள் நுண்ணறிவு",
+    "moodTrends": "மனநிலை போக்குகள்",
+    "achievements": "சாதனைகள்",
+    "statistics": "புள்ளிவிவரங்கள்",
+    "weeklyReport": "வார அறிக்கை"
+  },
+  "profile": {
+    "title": "சுயவிவரம்",
+    "editProfile": "சுயவிவரத்தைத் திருத்து",
+    "badges": "பதக்கங்கள்",
+    "stats": "புள்ளிவிவரங்கள்",
+    "joinedCircles": "சேர்ந்த வட்டங்கள்",
+    "logout": "வெளியேறு"
+  },
+  "settings": {
+    "title": "அமைப்புகள்",
+    "language": "மொழி",
+    "notifications": "அறிவிப்புகள்",
+    "privacy": "தனியுரிமை",
+    "theme": "தீம்",
+    "account": "கணக்கு",
+    "about": "பற்றி",
+    "selectLanguage": "மொழியைத் தேர்ந்தெடு"
+  },
+  "resources": {
+    "title": "வளங்கள்",
+    "articles": "கட்டுரைகள்",
+    "exercises": "பயிற்சிகள்",
+    "crisis": "நெருக்கடி ஆதரவு",
+    "breathing": "சுவாச பயிற்சிகள்",
+    "meditation": "தியானம்"
+  },
+  "gratitude": {
+    "title": "நன்றி நாட்குறிப்பு",
+    "whatAreYouGratefulFor": "இன்று நீங்கள் எதற்கு நன்றியுள்ளவர்?",
+    "addEntry": "உள்ளீடு சேர்",
+    "entries": "உள்ளீடுகள்"
+  },
+  "habits": {
+    "title": "பழக்க கண்காணிப்பு",
+    "addHabit": "பழக்கம் சேர்",
+    "streak": "தொடர்",
+    "completed": "முடிந்தது"
+  },
+  "premium": {
+    "title": "பிரீமியம் அம்சங்கள்",
+    "upgrade": "பிரீமியத்திற்கு மேம்படுத்து",
+    "features": "பிரீமியம் அம்சங்கள்",
+    "price": "விலை"
+  }
+}

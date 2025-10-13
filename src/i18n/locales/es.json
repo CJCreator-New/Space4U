@@ -1,0 +1,100 @@
+{
+  "common": {
+    "home": "Inicio",
+    "circles": "Círculos",
+    "insights": "Perspectivas",
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "resources": "Recursos",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito"
+  },
+  "home": {
+    "title": "Bienvenido a Space4U",
+    "subtitle": "Tu compañero de bienestar mental",
+    "logMood": "Registrar Estado",
+    "gratitude": "Gratitud",
+    "journal": "Diario",
+    "howAreYou": "¿Cómo te sientes hoy?",
+    "moodStreak": "Racha de Días",
+    "totalCheckIns": "Registros Totales"
+  },
+  "mood": {
+    "veryBad": "Muy Mal",
+    "bad": "Mal",
+    "okay": "Regular",
+    "good": "Bien",
+    "great": "Excelente",
+    "addNote": "Agregar nota (opcional)",
+    "logMood": "Registrar Estado",
+    "moodHistory": "Historial de Estado",
+    "averageMood": "Estado Promedio",
+    "consistency": "Consistencia"
+  },
+  "circles": {
+    "title": "Círculos de Apoyo",
+    "joinCircle": "Unirse al Círculo",
+    "myCircles": "Mis Círculos",
+    "exploreCircles": "Explorar Círculos",
+    "members": "miembros",
+    "posts": "publicaciones",
+    "search": "Buscar círculos..."
+  },
+  "insights": {
+    "title": "Tus Perspectivas",
+    "moodTrends": "Tendencias de Estado",
+    "achievements": "Logros",
+    "statistics": "Estadísticas",
+    "weeklyReport": "Informe Semanal"
+  },
+  "profile": {
+    "title": "Perfil",
+    "editProfile": "Editar Perfil",
+    "badges": "Insignias",
+    "stats": "Estadísticas",
+    "joinedCircles": "Círculos Unidos",
+    "logout": "Cerrar Sesión"
+  },
+  "settings": {
+    "title": "Configuración",
+    "language": "Idioma",
+    "notifications": "Notificaciones",
+    "privacy": "Privacidad",
+    "theme": "Tema",
+    "account": "Cuenta",
+    "about": "Acerca de",
+    "selectLanguage": "Seleccionar Idioma"
+  },
+  "resources": {
+    "title": "Recursos",
+    "articles": "Artículos",
+    "exercises": "Ejercicios",
+    "crisis": "Apoyo en Crisis",
+    "breathing": "Ejercicios de Respiración",
+    "meditation": "Meditación"
+  },
+  "gratitude": {
+    "title": "Diario de Gratitud",
+    "whatAreYouGratefulFor": "¿Por qué estás agradecido hoy?",
+    "addEntry": "Agregar Entrada",
+    "entries": "Entradas"
+  },
+  "habits": {
+    "title": "Rastreador de Hábitos",
+    "addHabit": "Agregar Hábito",
+    "streak": "Racha",
+    "completed": "Completado"
+  },
+  "premium": {
+    "title": "Funciones Premium",
+    "upgrade": "Actualizar a Premium",
+    "features": "Funciones Premium",
+    "price": "Precio"
+  }
+}

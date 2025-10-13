@@ -1,0 +1,100 @@
+{
+  "common": {
+    "home": "الرئيسية",
+    "circles": "الدوائر",
+    "insights": "الرؤى",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "resources": "الموارد",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "close": "إغلاق",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجاح"
+  },
+  "home": {
+    "title": "مرحبًا بك في Space4U",
+    "subtitle": "رفيقك في الصحة النفسية",
+    "logMood": "تسجيل المزاج",
+    "gratitude": "الامتنان",
+    "journal": "اليوميات",
+    "howAreYou": "كيف تشعر اليوم؟",
+    "moodStreak": "سلسلة الأيام",
+    "totalCheckIns": "إجمالي التسجيلات"
+  },
+  "mood": {
+    "veryBad": "سيء جدًا",
+    "bad": "سيء",
+    "okay": "جيد",
+    "good": "جيد جدًا",
+    "great": "ممتاز",
+    "addNote": "إضافة ملاحظة (اختياري)",
+    "logMood": "تسجيل المزاج",
+    "moodHistory": "سجل المزاج",
+    "averageMood": "متوسط المزاج",
+    "consistency": "الاتساق"
+  },
+  "circles": {
+    "title": "دوائر الدعم",
+    "joinCircle": "انضم إلى الدائرة",
+    "myCircles": "دوائري",
+    "exploreCircles": "استكشف الدوائر",
+    "members": "أعضاء",
+    "posts": "منشورات",
+    "search": "البحث عن دوائر..."
+  },
+  "insights": {
+    "title": "رؤاك",
+    "moodTrends": "اتجاهات المزاج",
+    "achievements": "الإنجازات",
+    "statistics": "الإحصائيات",
+    "weeklyReport": "التقرير الأسبوعي"
+  },
+  "profile": {
+    "title": "الملف الشخصي",
+    "editProfile": "تعديل الملف الشخصي",
+    "badges": "الشارات",
+    "stats": "الإحصائيات",
+    "joinedCircles": "الدوائر المنضمة",
+    "logout": "تسجيل الخروج"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "language": "اللغة",
+    "notifications": "الإشعارات",
+    "privacy": "الخصوصية",
+    "theme": "المظهر",
+    "account": "الحساب",
+    "about": "حول",
+    "selectLanguage": "اختر اللغة"
+  },
+  "resources": {
+    "title": "الموارد",
+    "articles": "المقالات",
+    "exercises": "التمارين",
+    "crisis": "دعم الأزمات",
+    "breathing": "تمارين التنفس",
+    "meditation": "التأمل"
+  },
+  "gratitude": {
+    "title": "يوميات الامتنان",
+    "whatAreYouGratefulFor": "ما الذي تشعر بالامتنان له اليوم؟",
+    "addEntry": "إضافة إدخال",
+    "entries": "الإدخالات"
+  },
+  "habits": {
+    "title": "متتبع العادات",
+    "addHabit": "إضافة عادة",
+    "streak": "السلسلة",
+    "completed": "مكتمل"
+  },
+  "premium": {
+    "title": "الميزات المميزة",
+    "upgrade": "الترقية إلى المميز",
+    "features": "الميزات المميزة",
+    "price": "السعر"
+  }
+}
