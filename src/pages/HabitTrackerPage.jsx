@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Plus, CheckCircle2, Circle, TrendingUp, Crown } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import SafeComponent from '../components/SafeComponent'
 import LimitWarningBanner from '../components/common/LimitWarningBanner'
 import { getPremiumStatus } from '../utils/premiumUtils'
@@ -11,6 +12,7 @@ import { researchCitations } from '../data/researchCitations'
 
 function HabitTrackerPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [habits, setHabits] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [newHabit, setNewHabit] = useState({ name: '', icon: '🎯', color: 'blue', frequency: 'daily' })
@@ -71,18 +73,18 @@ function HabitTrackerPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-bold">Habit Tracker</h1>
+            <h1 className="text-3xl font-bold">{t('habits.title')}</h1>
             {isPremium && (
               <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-xs font-medium">
                 <Crown size={12} />
-                Premium
+                {t('common.premium')}
               </div>
             )}
           </div>
-          <p className="text-text-secondary">Build better habits, one day at a time</p>
+          <p className="text-text-secondary">{t('habits.subtitle')}</p>
         </div>
         <button onClick={handleAddClick} className="btn-primary">
-          <Plus className="w-5 h-5" /> Add Habit
+          <Plus className="w-5 h-5" /> {t('habits.addHabit')}
         </button>
       </div>
 
@@ -101,19 +103,19 @@ function HabitTrackerPage() {
       {habits.length === 0 ? (
         <div className="card p-12 text-center">
           <TrendingUp className="w-16 h-16 text-text-secondary mx-auto mb-4 opacity-50" />
-          <h3 className="text-xl font-semibold mb-2">Start Building Habits</h3>
-          <p className="text-text-secondary mb-4">Research shows it takes an average of 66 days to form a new habit</p>
+          <h3 className="text-xl font-semibold mb-2">{t('habits.empty.title')}</h3>
+          <p className="text-text-secondary mb-4">{t('habits.empty.description')}</p>
           <div className="max-w-md mx-auto mb-6 text-left">
-            <p className="text-sm font-medium text-gray-700 mb-2">Keys to successful habit formation:</p>
+            <p className="text-sm font-medium text-gray-700 mb-2">{t('habits.empty.keysTitle')}</p>
             <ul className="text-sm text-gray-600 space-y-1">
-              <li>• Start small and be consistent</li>
-              <li>• Stack new habits with existing ones</li>
-              <li>• Track your progress daily</li>
-              <li>• Be patient - habits take time to form</li>
+              <li>• {t('habits.empty.key1')}</li>
+              <li>• {t('habits.empty.key2')}</li>
+              <li>• {t('habits.empty.key3')}</li>
+              <li>• {t('habits.empty.key4')}</li>
             </ul>
           </div>
           <button onClick={handleAddClick} className="btn-primary">
-            <Plus className="w-5 h-5" /> Create First Habit
+            <Plus className="w-5 h-5" /> {t('habits.createFirst')}
           </button>
         </div>
       ) : (
@@ -138,7 +140,7 @@ function HabitTrackerPage() {
                       <h3 className="text-xl font-semibold">{habit.name}</h3>
                     </div>
                     <p className="text-text-secondary text-sm">
-                      {getStreak(habit)} day streak • {Object.values(habit.completions).filter(Boolean).length} total
+                      {t('habits.streakInfo', { streak: getStreak(habit), total: Object.values(habit.completions).filter(Boolean).length })}
                     </p>
                   </div>
                 </div>
@@ -151,19 +153,19 @@ function HabitTrackerPage() {
       {showModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-surface rounded-2xl max-w-md w-full p-6">
-            <h2 className="text-2xl font-bold mb-4">New Habit</h2>
+            <h2 className="text-2xl font-bold mb-4">{t('habits.modal.title')}</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Habit Name</label>
+                <label className="block text-sm font-medium mb-2">{t('habits.modal.nameLabel')}</label>
                 <input
                   value={newHabit.name}
                   onChange={(e) => setNewHabit({ ...newHabit, name: e.target.value })}
                   className="input w-full"
-                  placeholder="Exercise, Meditate, Read..."
+                  placeholder={t('habits.modal.namePlaceholder')}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Icon</label>
+                <label className="block text-sm font-medium mb-2">{t('habits.modal.iconLabel')}</label>
                 <div className="flex gap-2 flex-wrap">
                   {['🎯', '💪', '🧘', '📚', '💧', '🏃', '🎨', '🎵'].map(icon => (
                     <button
@@ -177,8 +179,8 @@ function HabitTrackerPage() {
                 </div>
               </div>
               <div className="flex gap-3">
-                <button onClick={() => setShowModal(false)} className="btn-secondary flex-1">Cancel</button>
-                <button onClick={addHabit} disabled={!newHabit.name} className="btn-primary flex-1">Create</button>
+                <button onClick={() => setShowModal(false)} className="btn-secondary flex-1">{t('common.cancel')}</button>
+                <button onClick={addHabit} disabled={!newHabit.name} className="btn-primary flex-1">{t('common.create')}</button>
               </div>
             </div>
           </div>

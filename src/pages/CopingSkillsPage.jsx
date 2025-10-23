@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Search, Heart, Star, Crown, Lock } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
@@ -28,6 +29,7 @@ const SKILLS = [
 ]
 
 function CopingSkillsPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('all')
@@ -65,7 +67,7 @@ function CopingSkillsPage() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-3xl font-bold">Coping Skills Library</h1>
+          <h1 className="text-3xl font-bold">{t('copingSkills.title')}</h1>
           {isPremium && (
             <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-xs font-medium">
               <Crown size={12} />
@@ -73,7 +75,7 @@ function CopingSkillsPage() {
             </div>
           )}
         </div>
-        <p className="text-text-secondary">Evidence-based strategies for managing difficult emotions • {isPremium ? '100+' : '50'} skills available</p>
+        <p className="text-text-secondary">{t('copingSkills.subtitle')} • {t('copingSkills.skillsAvailable', { count: isPremium ? 100 : 50 })}</p>
       </div>
 
       <div className="mb-6">
@@ -91,7 +93,7 @@ function CopingSkillsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="input w-full pl-10"
-            placeholder="Search coping skills..."
+            placeholder={t('copingSkills.searchSkills')}
           />
         </div>
 
@@ -100,7 +102,7 @@ function CopingSkillsPage() {
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-xl text-sm font-medium ${filter === 'all' ? 'bg-primary text-white' : 'bg-hover'}`}
           >
-            All
+            {t('copingSkills.all')}
           </button>
           {['anxiety', 'stress', 'sadness', 'anger', 'panic'].map(cat => (
             <button
@@ -108,7 +110,7 @@ function CopingSkillsPage() {
               onClick={() => setFilter(cat)}
               className={`px-4 py-2 rounded-xl text-sm font-medium capitalize ${filter === cat ? 'bg-primary text-white' : 'bg-hover'}`}
             >
-              {cat}
+              {t(`copingSkills.${cat}`)}
             </button>
           ))}
         </div>
@@ -145,7 +147,7 @@ function CopingSkillsPage() {
             {skill.premium && !isPremium && (
               <div className="mt-3 flex items-center gap-2 text-xs text-yellow-600 font-medium">
                 <Lock size={12} />
-                Premium Skill
+                {t('copingSkills.premiumSkill')}
               </div>
             )}
           </div>
@@ -155,8 +157,8 @@ function CopingSkillsPage() {
       {filtered.length === 0 && (
         <div className="card p-12 text-center">
           <Heart className="w-16 h-16 text-text-secondary mx-auto mb-4 opacity-50" />
-          <h3 className="text-xl font-semibold mb-2">No skills found</h3>
-          <p className="text-text-secondary">Try adjusting your search or filters</p>
+          <h3 className="text-xl font-semibold mb-2">{t('copingSkills.noSkills')}</h3>
+          <p className="text-text-secondary">{t('copingSkills.tryDifferentSearch')}</p>
         </div>
       )}
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Brain, Heart, Moon, Shield, ClipboardList, Wind, Activity, TrendingUp, Clock, Star, Crown, Lock } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import CBTThoughtRecord from '../components/therapeutic/CBTThoughtRecord'
 import DBTSkillsModule from '../components/therapeutic/DBTSkillsModule'
 import MindfulnessExercises from '../components/therapeutic/MindfulnessExercises'
@@ -15,20 +16,28 @@ import CrisisResources from '../components/wellness/CrisisResources'
 import { disclaimers } from '../data/disclaimers'
 import { researchCitations } from '../data/researchCitations'
 
-const TOOLS = [
-  { id: 'cbt', name: 'CBT Thought Record', icon: Brain, gradient: 'from-blue-500 to-cyan-500', description: 'Challenge negative thought patterns', category: 'Cognitive', premium: false },
-  { id: 'dbt', name: 'DBT Skills', icon: Heart, gradient: 'from-pink-500 to-rose-500', description: 'Practice dialectical behavior therapy', category: 'Behavioral', premium: true },
-  { id: 'mindfulness', name: 'Mindfulness', icon: Wind, gradient: 'from-purple-500 to-indigo-500', description: 'Guided meditation exercises', category: 'Mindfulness', premium: false },
-  { id: 'sleep', name: 'Sleep Tracker', icon: Moon, gradient: 'from-indigo-500 to-blue-500', description: 'Monitor sleep patterns', category: 'Wellness', premium: true },
-  { id: 'crisis', name: 'Crisis Plan', icon: Shield, gradient: 'from-red-500 to-orange-500', description: 'Emergency safety planning', category: 'Safety', premium: false },
-  { id: 'assessments', name: 'Assessments', icon: ClipboardList, gradient: 'from-green-500 to-emerald-500', description: 'Mental health screening tools', category: 'Assessment', premium: false }
+const TOOLS_CONFIG = [
+  { id: 'cbt', icon: Brain, gradient: 'from-blue-500 to-cyan-500', premium: false },
+  { id: 'dbt', icon: Heart, gradient: 'from-pink-500 to-rose-500', premium: true },
+  { id: 'mindfulness', icon: Wind, gradient: 'from-purple-500 to-indigo-500', premium: false },
+  { id: 'sleep', icon: Moon, gradient: 'from-indigo-500 to-blue-500', premium: true },
+  { id: 'crisis', icon: Shield, gradient: 'from-red-500 to-orange-500', premium: false },
+  { id: 'assessments', icon: ClipboardList, gradient: 'from-green-500 to-emerald-500', premium: false }
 ]
 
 function TherapeuticToolsPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [activeTool, setActiveTool] = useState(null)
   const [toolStats, setToolStats] = useState({})
   const { isPremium } = getPremiumStatus()
+
+  const TOOLS = TOOLS_CONFIG.map(tool => ({
+    ...tool,
+    name: t(`therapy.tools.${tool.id}.name`),
+    description: t(`therapy.tools.${tool.id}.description`),
+    category: t(`therapy.tools.${tool.id}.category`)
+  }))
 
   useEffect(() => {
     const stats = JSON.parse(localStorage.getItem('safespace_tool_usage') || '{}')
@@ -74,29 +83,29 @@ function TherapeuticToolsPage() {
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
             <Activity className="w-10 h-10 text-white" />
-            <h1 className="text-4xl font-bold text-white drop-shadow-lg">Therapeutic Tools</h1>
+            <h1 className="text-4xl font-bold text-white drop-shadow-lg">{t('therapy.title')}</h1>
             {isPremium && (
               <div className="flex items-center gap-2 px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium text-white">
                 <Crown size={16} />
-                Premium
+                {t('common.premium')}
               </div>
             )}
           </div>
-          <p className="text-white/90 text-lg mb-4">Evidence-based tools to support your mental wellness journey</p>
+          <p className="text-white/90 text-lg mb-4">{t('therapy.subtitle')}</p>
           
           {totalUsage > 0 && (
             <div className="flex gap-4 mt-4">
               <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
                 <div className="flex items-center gap-2 text-white">
                   <TrendingUp size={16} />
-                  <span className="text-sm font-medium">{totalUsage} sessions</span>
+                  <span className="text-sm font-medium">{t('therapy.sessions', { count: totalUsage })}</span>
                 </div>
               </div>
               {mostUsed && (
                 <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
                   <div className="flex items-center gap-2 text-white">
                     <Star size={16} />
-                    <span className="text-sm font-medium">Most used: {mostUsed.name}</span>
+                    <span className="text-sm font-medium">{t('therapy.mostUsed', { tool: mostUsed.name })}</span>
                   </div>
                 </div>
               )}
@@ -147,7 +156,7 @@ function TherapeuticToolsPage() {
                   {tool.premium && !isPremium && (
                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-medium rounded-full">
                       <Crown size={10} />
-                      Premium
+                      {t('common.premium')}
                     </span>
                   )}
                 </div>
@@ -159,7 +168,7 @@ function TherapeuticToolsPage() {
                 {usageCount > 0 && (
                   <div className="flex items-center gap-2 text-xs text-text-secondary">
                     <Clock size={14} />
-                    <span>Used {usageCount} time{usageCount !== 1 ? 's' : ''}</span>
+                    <span>{t('therapy.usedTimes', { count: usageCount })}</span>
                   </div>
                 )}
               </div>

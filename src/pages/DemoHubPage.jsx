@@ -1,38 +1,40 @@
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Smartphone, Zap, Palette, Fingerprint } from 'lucide-react'
 
 function DemoHubPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const demos = [
     {
       id: 'gestures',
-      title: 'Gesture Navigation',
-      description: 'Swipe gestures and interactions',
+      title: t('demo.gestures'),
+      description: t('demo.gesturesDesc'),
       icon: Smartphone,
       color: 'from-blue-500 to-cyan-600',
       path: '/demo/gestures'
     },
     {
       id: 'visual',
-      title: 'Visual Polish',
-      description: 'Animations and micro-interactions',
+      title: t('demo.visual'),
+      description: t('demo.visualDesc'),
       icon: Palette,
       color: 'from-purple-500 to-pink-600',
       path: '/demo/visual'
     },
     {
       id: 'native',
-      title: 'Native Features',
-      description: 'Biometric, share, status bar',
+      title: t('demo.native'),
+      description: t('demo.nativeDesc'),
       icon: Fingerprint,
       color: 'from-indigo-500 to-purple-600',
       path: '/demo/native'
     },
     {
       id: 'performance',
-      title: 'Performance',
-      description: 'Optimization techniques',
+      title: t('demo.performance'),
+      description: t('demo.performanceDesc'),
       icon: Zap,
       color: 'from-green-500 to-teal-600',
       path: '/demo/performance'
@@ -45,8 +47,8 @@ function DemoHubPage() {
         <button onClick={() => navigate(-1)} className="touch-target mb-4">
           <ArrowLeft size={24} />
         </button>
-        <h1 className="text-2xl font-bold">Demo Hub</h1>
-        <p className="text-indigo-100 mt-1">Explore new features</p>
+        <h1 className="text-2xl font-bold">{t('demo.title')}</h1>
+        <p className="text-indigo-100 mt-1">{t('demo.subtitle')}</p>
       </div>
 
       <div className="p-6 space-y-4">

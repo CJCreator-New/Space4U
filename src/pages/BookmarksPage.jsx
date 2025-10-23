@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Bookmark, Inbox } from 'lucide-react'
 import { getBookmarkedPosts } from '../utils/bookmarks'
 import PostCard from '../components/PostCard'
 
 function BookmarksPage() {
+  const { t } = useTranslation()
   const [bookmarkedPosts, setBookmarkedPosts] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -36,10 +38,10 @@ function BookmarksPage() {
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-text-primary dark:text-white mb-2 flex items-center gap-3">
           <Bookmark size={32} />
-          Bookmarked Posts
+          {t('bookmarks.title')}
         </h1>
         <p className="text-text-secondary dark:text-gray-400">
-          {bookmarkedPosts.length} saved {bookmarkedPosts.length === 1 ? 'post' : 'posts'}
+          {t('bookmarks.saved', { count: bookmarkedPosts.length })}
         </p>
       </div>
 
@@ -47,10 +49,10 @@ function BookmarksPage() {
         <div className="card p-12 text-center">
           <Inbox className="mx-auto text-gray-400 mb-4" size={64} />
           <h3 className="text-xl font-semibold text-text-primary dark:text-white mb-2">
-            No bookmarks yet
+            {t('bookmarks.noBookmarks')}
           </h3>
           <p className="text-text-secondary dark:text-gray-400">
-            Bookmark posts to save them for later
+            {t('bookmarks.bookmarkToSave')}
           </p>
         </div>
       ) : (

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Plus, Heart, Crown, BarChart3 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import SafeComponent from '../components/SafeComponent'
 import PremiumPaywall from '../components/PremiumPaywall'
 import { getPremiumStatus } from '../utils/premiumUtils'
@@ -22,6 +23,7 @@ const EMOTIONS = {
 
 function EmotionTrackerPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [logs, setLogs] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [entry, setEntry] = useState({ primary_emotion: '', secondary_emotions: [], intensity: 5, trigger: '' })
@@ -47,18 +49,18 @@ function EmotionTrackerPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-bold">Emotion Tracker</h1>
+            <h1 className="text-3xl font-bold">{t('emotions.title')}</h1>
             {isPremium && (
               <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-xs font-medium">
                 <Crown size={12} />
-                Premium
+                {t('common.premium')}
               </div>
             )}
           </div>
-          <p className="text-text-secondary">Understand your emotional patterns</p>
+          <p className="text-text-secondary">{t('emotions.subtitle')}</p>
         </div>
         <button onClick={() => setShowModal(true)} className="btn-primary">
-          <Plus className="w-5 h-5" /> Log Emotion
+          <Plus className="w-5 h-5" /> {t('emotions.logEmotion')}
         </button>
       </div>
 
@@ -74,18 +76,18 @@ function EmotionTrackerPage() {
         <div className="card p-6 mb-6 bg-gradient-to-r from-purple-50 to-pink-50">
           <div className="flex items-center gap-3 mb-4">
             <BarChart3 className="w-6 h-6 text-purple-600" />
-            <h3 className="font-semibold text-gray-900">Emotion Pattern Analytics</h3>
+            <h3 className="font-semibold text-gray-900">{t('emotions.analytics.title')}</h3>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">{logs.length}</div>
-              <div className="text-sm text-gray-600">Total Logs</div>
+              <div className="text-sm text-gray-600">{t('emotions.analytics.totalLogs')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">
                 {logs.length > 0 ? Math.round(logs.reduce((sum, l) => sum + l.intensity, 0) / logs.length) : 0}
               </div>
-              <div className="text-sm text-gray-600">Avg Intensity</div>
+              <div className="text-sm text-gray-600">{t('emotions.analytics.avgIntensity')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600 capitalize">
@@ -112,13 +114,13 @@ function EmotionTrackerPage() {
                   return acc
                 }, {})[b] ? a : b) : 'N/A'}
               </div>
-              <div className="text-sm text-gray-600">Most Common</div>
+              <div className="text-sm text-gray-600">{t('emotions.analytics.mostCommon')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">
                 {logs.filter(l => new Date(l.created_at) > new Date(Date.now() - 7*24*60*60*1000)).length}
               </div>
-              <div className="text-sm text-gray-600">This Week</div>
+              <div className="text-sm text-gray-600">{t('emotions.analytics.thisWeek')}</div>
             </div>
           </div>
         </div>
@@ -127,19 +129,19 @@ function EmotionTrackerPage() {
       {logs.length === 0 ? (
         <div className="card p-12 text-center">
           <Heart className="w-16 h-16 text-text-secondary mx-auto mb-4 opacity-50" />
-          <h3 className="text-xl font-semibold mb-2">Start Tracking Emotions</h3>
-          <p className="text-text-secondary mb-4">Research shows that naming specific emotions helps regulate them better</p>
+          <h3 className="text-xl font-semibold mb-2">{t('emotions.empty.title')}</h3>
+          <p className="text-text-secondary mb-4">{t('emotions.empty.description')}</p>
           <div className="max-w-md mx-auto mb-6 text-left">
-            <p className="text-sm font-medium text-gray-700 mb-2">Benefits of emotional granularity:</p>
+            <p className="text-sm font-medium text-gray-700 mb-2">{t('emotions.empty.benefitsTitle')}</p>
             <ul className="text-sm text-gray-600 space-y-1">
-              <li>• Better emotion regulation and coping</li>
-              <li>• Reduced emotional reactivity</li>
-              <li>• Improved mental health outcomes</li>
-              <li>• Enhanced self-awareness</li>
+              <li>• {t('emotions.empty.benefit1')}</li>
+              <li>• {t('emotions.empty.benefit2')}</li>
+              <li>• {t('emotions.empty.benefit3')}</li>
+              <li>• {t('emotions.empty.benefit4')}</li>
             </ul>
           </div>
           <button onClick={() => setShowModal(true)} className="btn-primary">
-            <Plus className="w-5 h-5" /> Log First Emotion
+            <Plus className="w-5 h-5" /> {t('emotions.logFirst')}
           </button>
         </div>
       ) : (
@@ -153,7 +155,7 @@ function EmotionTrackerPage() {
                     {new Date(log.created_at).toLocaleString()}
                   </p>
                 </div>
-                <span className="text-lg font-bold">Intensity: {log.intensity}/10</span>
+                <span className="text-lg font-bold">{t('emotions.intensityLabel', { value: log.intensity })}</span>
               </div>
               {log.secondary_emotions.length > 0 && (
                 <div className="flex gap-2 flex-wrap mb-3">
@@ -162,13 +164,13 @@ function EmotionTrackerPage() {
                   ))}
                 </div>
               )}
-              {log.trigger && <p className="text-text-secondary">Trigger: {log.trigger}</p>}
+              {log.trigger && <p className="text-text-secondary">{t('emotions.triggerLabel', { trigger: log.trigger })}</p>}
             </div>
           ))}
           {!isPremium && logs.length > 30 && (
             <PremiumPaywall
-              feature="Full Emotion History"
-              description="Upgrade to Premium to access your complete emotion history and advanced analytics."
+              feature={t('emotions.premium.feature')}
+              description={t('emotions.premium.description')}
             >
               <div className="h-40" />
             </PremiumPaywall>
@@ -179,10 +181,10 @@ function EmotionTrackerPage() {
       {showModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-surface rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
-            <h2 className="text-2xl font-bold mb-4">Log Emotion</h2>
+            <h2 className="text-2xl font-bold mb-4">{t('emotions.modal.title')}</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Primary Emotion</label>
+                <label className="block text-sm font-medium mb-2">{t('emotions.modal.primaryLabel')}</label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {Object.keys(EMOTIONS).map(emotion => (
                     <button
@@ -192,7 +194,7 @@ function EmotionTrackerPage() {
                         entry.primary_emotion === emotion ? 'bg-primary text-white' : 'bg-hover'
                       }`}
                     >
-                      {emotion}
+                      {t(`emotions.primary.${emotion}`)}
                     </button>
                   ))}
                 </div>
@@ -200,7 +202,7 @@ function EmotionTrackerPage() {
 
               {entry.primary_emotion && (
                 <div>
-                  <label className="block text-sm font-medium mb-2">Secondary Emotions</label>
+                  <label className="block text-sm font-medium mb-2">{t('emotions.modal.secondaryLabel')}</label>
                   <div className="flex gap-2 flex-wrap">
                     {EMOTIONS[entry.primary_emotion].secondary.map(sec => (
                       <button
@@ -223,7 +225,7 @@ function EmotionTrackerPage() {
               )}
 
               <div>
-                <label className="block text-sm font-medium mb-2">Intensity (1-10)</label>
+                <label className="block text-sm font-medium mb-2">{t('emotions.modal.intensityLabel')}</label>
                 <input
                   type="range"
                   min="1"
@@ -236,18 +238,18 @@ function EmotionTrackerPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">What triggered this? (Optional)</label>
+                <label className="block text-sm font-medium mb-2">{t('emotions.modal.triggerLabel')}</label>
                 <textarea
                   value={entry.trigger}
                   onChange={(e) => setEntry({ ...entry, trigger: e.target.value })}
                   className="input w-full h-24"
-                  placeholder="Describe the situation..."
+                  placeholder={t('emotions.modal.triggerPlaceholder')}
                 />
               </div>
 
               <div className="flex gap-3">
-                <button onClick={() => setShowModal(false)} className="btn-secondary flex-1">Cancel</button>
-                <button onClick={saveEntry} disabled={!entry.primary_emotion} className="btn-primary flex-1">Save</button>
+                <button onClick={() => setShowModal(false)} className="btn-secondary flex-1">{t('common.cancel')}</button>
+                <button onClick={saveEntry} disabled={!entry.primary_emotion} className="btn-primary flex-1">{t('common.save')}</button>
               </div>
             </div>
           </div>

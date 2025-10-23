@@ -12,9 +12,9 @@ function Navigation() {
     { path: '/circles', icon: Users, label: t('common.circles') },
     { path: '/insights', icon: Brain, label: t('common.insights') },
     { path: '/gratitude', icon: Heart, label: t('gratitude.title') },
-    { path: '/tools', icon: Activity, label: 'Tools' },
-    { path: '/analytics', icon: Sparkles, label: 'Analytics' },
-    { path: '/professional', icon: Building2, label: 'Professional' },
+    { path: '/tools', icon: Activity, label: t('common.tools') },
+    { path: '/analytics', icon: Sparkles, label: t('common.analytics') },
+    { path: '/professional', icon: Building2, label: t('common.professional') },
     { path: '/profile', icon: User, label: t('common.profile') },
   ]
 
@@ -89,7 +89,7 @@ function Navigation() {
                 aria-label="Logout"
               >
                 <LogOut size={20} aria-hidden="true" />
-                <span className="font-medium">Logout</span>
+                <span className="font-medium">{t('profile.logout')}</span>
               </button>
             ) : (
               <NavLink
@@ -98,7 +98,7 @@ function Navigation() {
                 aria-label="Login or Sign Up"
               >
                 <LogIn size={20} aria-hidden="true" />
-                <span className="font-medium">Login</span>
+                <span className="font-medium">{t('auth.login')}</span>
               </NavLink>
             )}
           </div>

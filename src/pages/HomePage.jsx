@@ -102,7 +102,7 @@ function HomePage() {
               <h1 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
                 {t('welcome.back')}{user?.username ? `, ${user.username}` : ''}! 👋
               </h1>
-              <p className="text-white/90 text-lg mt-1">{t('welcome.companion')}</p>
+              <p className="text-white/90 text-lg mt-1">{t('home.subtitle')}</p>
             </div>
           </div>
           {isPremium && (
@@ -163,7 +163,7 @@ function HomePage() {
       </SafeComponent>
       
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-4">{t('wellnessTools.title')}</h2>
+        <h2 className="text-2xl font-bold mb-4">{t('home.quickActions')}</h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <MicroInteraction type="lift">
             <Link to="/gratitude" className="card p-6 hover:shadow-xl transition-all duration-300 group block">
