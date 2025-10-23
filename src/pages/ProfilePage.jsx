@@ -6,6 +6,7 @@ import {
   Trash2, X, Check, Eye, Calendar, Target, Book, Settings, Crown
 } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
+import MicroInteraction from '../components/common/MicroInteraction'
 import { 
   BADGES, 
   LEVELS, 
@@ -284,12 +285,14 @@ function ProfilePage() {
               <p className="text-white/80">Member since Oct 2025</p>
             </div>
           </div>
-          <button 
-            onClick={() => setShowEditModal(true)}
-            className="bg-white/20 hover:bg-white/30 p-3 rounded-xl transition-colors"
-          >
-            <Edit size={20} />
-          </button>
+          <MicroInteraction type="scale">
+            <button 
+              onClick={() => setShowEditModal(true)}
+              className="bg-white/20 hover:bg-white/30 p-3 rounded-xl transition-colors"
+            >
+              <Edit size={20} />
+            </button>
+          </MicroInteraction>
         </div>
       </div>
 
@@ -315,12 +318,14 @@ function ProfilePage() {
               <p className="text-xl font-bold">{stats.avgMoodThisWeek.toFixed(1)} 🙂</p>
             </div>
           </div>
-          <button 
-            onClick={() => navigate('/insights')}
-            className="text-primary font-medium text-sm mt-4 hover:underline"
-          >
-            View Insights
-          </button>
+          <MicroInteraction type="press">
+            <button 
+              onClick={() => navigate('/insights')}
+              className="text-primary font-medium text-sm mt-4 hover:underline"
+            >
+              View Insights
+            </button>
+          </MicroInteraction>
         </div>
 
         {/* Community */}
@@ -343,12 +348,14 @@ function ProfilePage() {
               <p className="text-xl font-bold">{stats.heartsReceived}</p>
             </div>
           </div>
-          <button 
-            onClick={() => navigate('/circles')}
-            className="text-primary font-medium text-sm mt-4 hover:underline"
-          >
-            My Circles
-          </button>
+          <MicroInteraction type="press">
+            <button 
+              onClick={() => navigate('/circles')}
+              className="text-primary font-medium text-sm mt-4 hover:underline"
+            >
+              My Circles
+            </button>
+          </MicroInteraction>
         </div>
 
         {/* Achievements */}
@@ -432,12 +439,14 @@ function ProfilePage() {
             <Users className="mx-auto text-text-secondary mb-4" size={48} />
             <h4 className="text-lg font-semibold mb-2">Join your first circle</h4>
             <p className="text-text-secondary mb-4">Connect with others who understand your journey</p>
-            <button 
-              onClick={() => navigate('/circles')}
-              className="bg-primary text-white px-6 py-2 rounded-xl font-medium hover:bg-primary/90 transition-colors"
-            >
-              Explore Circles
-            </button>
+            <MicroInteraction type="scale">
+              <button 
+                onClick={() => navigate('/circles')}
+                className="bg-primary text-white px-6 py-2 rounded-xl font-medium hover:bg-primary/90 transition-colors"
+              >
+                Explore Circles
+              </button>
+            </MicroInteraction>
           </div>
         )}
       </div>

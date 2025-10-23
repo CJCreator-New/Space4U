@@ -3,9 +3,6 @@ import { useSupabaseAuth } from '../contexts/AuthContext'
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useSupabaseAuth()
-  
-  // Allow access if no auth attempt was made (local-only mode)
-  const hasAttemptedAuth = localStorage.getItem('safespace_auth_attempted')
 
   if (loading) {
     return (
@@ -15,8 +12,7 @@ function ProtectedRoute({ children }) {
     )
   }
 
-  // Only redirect if user attempted auth but is not signed in
-  if (!user && hasAttemptedAuth === 'true') {
+  if (!user) {
     return <Navigate to="/auth" replace />
   }
 

@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import Navigation from './Navigation'
+import LanguageSwitcher from './LanguageSwitcher'
 
 function Layout() {
   return (
@@ -16,6 +17,9 @@ function Layout() {
         <Navigation />
         <main id="main-content" className="flex-1 pb-20 md:pb-0 md:ml-64">
           <div className="p-4 md:p-6">
+            <div className="flex justify-end mb-4">
+              <LanguageSwitcher />
+            </div>
             <Outlet />
           </div>
         </main>

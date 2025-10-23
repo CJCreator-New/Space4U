@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Plus, Bell, BellOff, Trash2, Crown } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
@@ -7,17 +8,18 @@ import { getPremiumStatus } from '../utils/premiumUtils'
 import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
 import { disclaimers } from '../data/disclaimers'
 
-const REMINDER_TYPES = [
-  { value: 'mood_checkin', label: 'Mood Check-in', icon: '😊' },
-  { value: 'medication', label: 'Medication', icon: '💊' },
-  { value: 'therapy', label: 'Therapy', icon: '🧠' },
-  { value: 'habit', label: 'Habit', icon: '🎯' },
-  { value: 'custom', label: 'Custom', icon: '⏰' }
-]
-
-const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
 function RemindersPage() {
+  const { t } = useTranslation()
+  
+  const REMINDER_TYPES = [
+    { value: 'mood_checkin', label: t('reminders.moodCheckIn'), icon: '😊' },
+    { value: 'medication', label: t('reminders.medication'), icon: '💊' },
+    { value: 'therapy', label: t('reminders.therapy'), icon: '🧠' },
+    { value: 'habit', label: t('reminders.habit'), icon: '🎯' },
+    { value: 'custom', label: t('reminders.custom'), icon: '⏰' }
+  ]
+
+  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   const navigate = useNavigate()
   const [reminders, setReminders] = useState([])
   const [showModal, setShowModal] = useState(false)
@@ -78,18 +80,18 @@ function RemindersPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-bold">Smart Reminders</h1>
+            <h1 className="text-3xl font-bold">{t('reminders.title')}</h1>
             {isPremium && (
               <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-xs font-medium">
                 <Crown size={12} />
-                Premium
+                {t('premium.title')}
               </div>
             )}
           </div>
-          <p className="text-text-secondary">Stay on track with your wellness routine</p>
+          <p className="text-text-secondary">{t('reminders.subtitle')}</p>
         </div>
         <button onClick={handleAddClick} className="btn-primary">
-          <Plus className="w-5 h-5" /> Add Reminder
+          <Plus className="w-5 h-5" /> {t('reminders.addReminder')}
         </button>
       </div>
 
@@ -104,10 +106,10 @@ function RemindersPage() {
       {reminders.length === 0 ? (
         <div className="card p-12 text-center">
           <Bell className="w-16 h-16 text-text-secondary mx-auto mb-4 opacity-50" />
-          <h3 className="text-xl font-semibold mb-2">No Reminders Yet</h3>
-          <p className="text-text-secondary mb-6">Create reminders to stay consistent</p>
+          <h3 className="text-xl font-semibold mb-2">{t('reminders.noReminders')}</h3>
+          <p className="text-text-secondary mb-6">{t('reminders.createFirst')}</p>
           <button onClick={handleAddClick} className="btn-primary">
-            <Plus className="w-5 h-5" /> Create First Reminder
+            <Plus className="w-5 h-5" /> {t('reminders.createFirstReminder')}
           </button>
         </div>
       ) : (
@@ -154,10 +156,10 @@ function RemindersPage() {
       {showModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-surface rounded-2xl max-w-md w-full p-6">
-            <h2 className="text-2xl font-bold mb-4">New Reminder</h2>
+            <h2 className="text-2xl font-bold mb-4">{t('reminders.newReminder')}</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Type</label>
+                <label className="block text-sm font-medium mb-2">{t('reminders.type')}</label>
                 <select
                   value={newReminder.type}
                   onChange={(e) => setNewReminder({ ...newReminder, type: e.target.value })}
@@ -170,17 +172,17 @@ function RemindersPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Title (Optional)</label>
+                <label className="block text-sm font-medium mb-2">{t('reminders.titleOptional')}</label>
                 <input
                   value={newReminder.title}
                   onChange={(e) => setNewReminder({ ...newReminder, title: e.target.value })}
                   className="input w-full"
-                  placeholder="Custom reminder name..."
+                  placeholder={t('reminders.customReminderName')}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Time</label>
+                <label className="block text-sm font-medium mb-2">{t('reminders.time')}</label>
                 <input
                   type="time"
                   value={newReminder.time}
@@ -190,7 +192,7 @@ function RemindersPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Repeat On</label>
+                <label className="block text-sm font-medium mb-2">{t('reminders.repeatOn')}</label>
                 <div className="flex gap-2">
                   {DAYS.map((day, i) => (
                     <button
@@ -207,8 +209,8 @@ function RemindersPage() {
               </div>
 
               <div className="flex gap-3">
-                <button onClick={() => setShowModal(false)} className="btn-secondary flex-1">Cancel</button>
-                <button onClick={addReminder} disabled={newReminder.days.length === 0} className="btn-primary flex-1">Create</button>
+                <button onClick={() => setShowModal(false)} className="btn-secondary flex-1">{t('common.cancel')}</button>
+                <button onClick={addReminder} disabled={newReminder.days.length === 0} className="btn-primary flex-1">{t('common.create')}</button>
               </div>
             </div>
           </div>

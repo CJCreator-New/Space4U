@@ -4,17 +4,22 @@ import { mockResources } from '../data/mockResources'
 import BreathingExercise from '../components/resources/BreathingExercise'
 import { addPoints, POINT_VALUES } from '../utils/badgeSystem'
 import SafeComponent from '../components/SafeComponent'
+import { useDebounce } from '../hooks/useDebounce'
+import Skeleton from '../components/common/Skeleton'
 
 function ResourceLibraryPage() {
   const [activeTab, setActiveTab] = useState('breathing')
   const [searchQuery, setSearchQuery] = useState('')
+  const debouncedSearch = useDebounce(searchQuery, 300)
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false)
   const [bookmarks, setBookmarks] = useState([])
+  const [loading, setLoading] = useState(true)
 
 
   useEffect(() => {
     const savedBookmarks = JSON.parse(localStorage.getItem('safespace_bookmarks') || '[]')
     setBookmarks(savedBookmarks)
+    setTimeout(() => setLoading(false), 500)
   }, [])
 
   const toggleBookmark = (resourceId, category) => {
@@ -34,11 +39,11 @@ function ResourceLibraryPage() {
   const filterResources = (resources, category) => {
     let filtered = resources
 
-    if (searchQuery) {
+    if (debouncedSearch) {
       filtered = filtered.filter(resource =>
-        resource.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        resource.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        resource.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+        resource.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        resource.description?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        resource.tags?.some(tag => tag.toLowerCase().includes(debouncedSearch.toLowerCase()))
       )
     }
 
@@ -59,6 +64,21 @@ function ResourceLibraryPage() {
 
   const renderMeditations = () => {
     const meditations = filterResources(mockResources.meditations, 'meditation')
+
+    if (loading) {
+      return (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }, (_, i) => (
+            <div key={i} className="card p-6">
+              <Skeleton variant="title" className="mb-3" />
+              <Skeleton variant="text" width="80%" className="mb-2" />
+              <Skeleton variant="text" width="60%" className="mb-4" />
+              <Skeleton variant="rect" height="40px" />
+            </div>
+          ))}
+        </div>
+      )
+    }
 
     return (
     <SafeComponent>

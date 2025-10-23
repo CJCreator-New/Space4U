@@ -1,16 +1,18 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 import { Mail, Lock, User, Loader } from 'lucide-react'
 
 function AuthPage() {
+  const { t } = useTranslation()
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const { signIn, signUp } = useSupabaseAuth()
+  const { signIn, signUp, error: authError } = useSupabaseAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -22,13 +24,11 @@ function AuthPage() {
       if (isLogin) {
         const { error } = await signIn(email, password)
         if (error) throw error
-        localStorage.setItem('safespace_auth_attempted', 'true')
         navigate('/')
       } else {
         const { error } = await signUp(email, password)
         if (error) throw error
-        localStorage.setItem('safespace_auth_attempted', 'true')
-        setError('Check your email to confirm your account!')
+        setError(t('auth.checkEmail'))
       }
     } catch (err) {
       setError(err.message)
@@ -41,9 +41,17 @@ function AuthPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10 p-4">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2">Space4U</h1>
-          <p className="text-text-secondary">Your mental wellness journey starts here</p>
+          <h1 className="text-4xl font-bold mb-2">{t('auth.title')}</h1>
+          <p className="text-text-secondary">{t('auth.subtitle')}</p>
         </div>
+
+        {authError && (
+          <div className="card p-6 mb-4 bg-red-50 border-2 border-red-200">
+            <h3 className="font-semibold text-red-800 mb-2">{t('auth.configError')}</h3>
+            <p className="text-sm text-red-700">{authError}</p>
+            <p className="text-xs text-red-600 mt-2">{t('auth.contactAdmin')}</p>
+          </div>
+        )}
 
         <div className="card p-8">
           <div className="flex gap-2 mb-6">
@@ -51,20 +59,25 @@ function AuthPage() {
               onClick={() => setIsLogin(true)}
               className={`flex-1 py-2 rounded-lg font-medium ${isLogin ? 'bg-primary text-white' : 'bg-hover'}`}
             >
-              Login
+              {t('auth.login')}
             </button>
             <button
               onClick={() => setIsLogin(false)}
               className={`flex-1 py-2 rounded-lg font-medium ${!isLogin ? 'bg-primary text-white' : 'bg-hover'}`}
             >
-              Sign Up
+              {t('auth.signup')}
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {authError && (
+              <div className="p-3 rounded-lg bg-yellow-50 border border-yellow-200 text-sm text-yellow-800">
+                {t('auth.authUnavailable')}
+              </div>
+            )}
             {!isLogin && (
               <div>
-                <label className="block text-sm font-medium mb-2">Username</label>
+                <label className="block text-sm font-medium mb-2">{t('auth.username')}</label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={20} />
                   <input
@@ -72,7 +85,7 @@ function AuthPage() {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="input w-full pl-10"
-                    placeholder="Choose a username"
+                    placeholder={t('auth.usernamePlaceholder')}
                     required={!isLogin}
                   />
                 </div>
@@ -80,7 +93,7 @@ function AuthPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
+              <label className="block text-sm font-medium mb-2">{t('auth.email')}</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={20} />
                 <input
@@ -88,14 +101,14 @@ function AuthPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="input w-full pl-10"
-                  placeholder="your@email.com"
+                  placeholder={t('auth.emailPlaceholder')}
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Password</label>
+              <label className="block text-sm font-medium mb-2">{t('auth.password')}</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" size={20} />
                 <input
@@ -103,7 +116,7 @@ function AuthPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="input w-full pl-10"
-                  placeholder="••••••••"
+                  placeholder={t('auth.passwordPlaceholder')}
                   required
                   minLength={6}
                 />
@@ -118,23 +131,23 @@ function AuthPage() {
 
             <button
               type="submit"
-              disabled={loading}
-              className="btn-primary w-full flex items-center justify-center gap-2"
+              disabled={loading || authError}
+              className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
                   <Loader className="animate-spin" size={20} />
-                  {isLogin ? 'Logging in...' : 'Creating account...'}
+                  {isLogin ? t('auth.loggingIn') : t('auth.creatingAccount')}
                 </>
               ) : (
-                isLogin ? 'Login' : 'Create Account'
+                isLogin ? t('auth.login') : t('auth.createAccount')
               )}
             </button>
           </form>
 
           <div className="mt-6 text-center text-sm text-text-secondary">
-            <p>By continuing, you agree to our Terms & Privacy Policy</p>
-            <p className="mt-2">Account required to access all features</p>
+            <p>{t('auth.termsAgree')}</p>
+            <p className="mt-2">{t('auth.accountRequired')}</p>
           </div>
         </div>
       </div>

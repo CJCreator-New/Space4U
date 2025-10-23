@@ -1,0 +1,1 @@
+const e=()=>{const e=JSON.parse(localStorage.getItem("safespace_premium")||"{}");if(!e.isPremium)return{isPremium:!1,trialActive:!1,daysLeft:0};const t=new Date,i=new Date(e.trialEndsAt),a=Math.ceil((i-t)/864e5);return{isPremium:e.isPremium,trialActive:e.trialActive&&a>0,daysLeft:Math.max(0,a),planType:e.planType,nextBillingDate:e.nextBillingDate}};export{e as g};

@@ -1,6 +1,7 @@
 import { useState, useEffect, Suspense, lazy } from 'react'
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
-import { AuthProvider } from './contexts/AuthContext'
+import { Routes, Route, BrowserRouter, useNavigate, useLocation } from 'react-router-dom'
+import { AuthProvider, useSupabaseAuth } from './contexts/AuthContext'
+import { ThemeProvider } from './contexts/ThemeContext'
 import Layout from './components/Layout'
 import OnboardingFlow from './components/onboarding/OnboardingFlow'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -12,8 +13,10 @@ import KeyboardHelpModal from './components/common/KeyboardHelpModal'
 import GlobalSearch from './components/GlobalSearch'
 import QuickActions from './components/QuickActions'
 import OnboardingTour from './components/OnboardingTour'
+import SplashScreen from './components/SplashScreen'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { initNotifications, requestNotificationPermission } from './utils/notifications'
+import { safeStorage } from './utils/safeStorage'
 
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage'))
@@ -44,71 +47,74 @@ const PremiumManagePage = lazy(() => import('./pages/PremiumManagePage'))
 const PremiumFeaturesPage = lazy(() => import('./pages/PremiumFeaturesPage'))
 const BookmarksPage = lazy(() => import('./pages/BookmarksPage'))
 const PersonalizationPage = lazy(() => import('./pages/PersonalizationPage'))
+const GesturesDemoPage = lazy(() => import('./pages/GesturesDemoPage'))
+const VisualDemoPage = lazy(() => import('./pages/VisualDemoPage'))
+const NativeDemoPage = lazy(() => import('./pages/NativeDemoPage'))
+const PerformanceDemoPage = lazy(() => import('./pages/PerformanceDemoPage'))
+const DemoHubPage = lazy(() => import('./pages/DemoHubPage'))
 
 function App() {
-  const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [showKeyboardHelp, setShowKeyboardHelp] = useState(false)
-  const [showTour, setShowTour] = useState(false)
-
-  useEffect(() => {
-    const onboardingComplete = localStorage.getItem('safespace_onboarding_complete')
-    setIsOnboardingComplete(onboardingComplete === 'true')
-    
-    // Check if tour should be shown
-    const tourCompleted = localStorage.getItem('safespace_tour_completed')
-    if (onboardingComplete === 'true' && !tourCompleted) {
-      setShowTour(true)
-    }
-    
-    // Initialize notifications
-    if (onboardingComplete === 'true') {
-      requestNotificationPermission()
-      initNotifications()
-    }
-    
-    setIsLoading(false)
-  }, [])
-
-  const handleOnboardingComplete = () => {
-    setIsOnboardingComplete(true)
-  }
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-text-secondary">Loading...</div>
-      </div>
-    )
-  }
-
-  if (!isOnboardingComplete) {
-    return <OnboardingFlow onComplete={handleOnboardingComplete} />
-  }
-
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-          {showTour && <OnboardingTour onComplete={() => setShowTour(false)} />}
-          <AppContent showKeyboardHelp={showKeyboardHelp} setShowKeyboardHelp={setShowKeyboardHelp} />
-        </BrowserRouter>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <AppContent />
+          </BrowserRouter>
+        </AuthProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   )
 }
 
-function AppContent({ showKeyboardHelp, setShowKeyboardHelp }) {
+function AppContent() {
+  const [showSplash, setShowSplash] = useState(true)
   const [showSearch, setShowSearch] = useState(false)
+  const [showKeyboardHelp, setShowKeyboardHelp] = useState(false)
+  const [showTour, setShowTour] = useState(false)
+  const [isOnboardingComplete, setIsOnboardingComplete] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const { user, loading } = useSupabaseAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
   useKeyboardShortcuts()
 
   useEffect(() => {
+    if (!loading) {
+      if (!user && location.pathname !== '/auth') {
+        navigate('/auth', { replace: true })
+      } else if (user) {
+        const onboardingComplete = safeStorage.getItem(`safespace_onboarding_complete_${user.id}`)
+        setIsOnboardingComplete(onboardingComplete === 'true')
+        
+        const tourCompleted = safeStorage.getItem('safespace_tour_completed')
+        if (onboardingComplete === 'true' && !tourCompleted) {
+          setShowTour(true)
+        }
+        
+        if (onboardingComplete === 'true') {
+          requestNotificationPermission()
+          initNotifications()
+        }
+      }
+      setIsLoading(false)
+    }
+  }, [user, loading, navigate, location])
+
+  const handleOnboardingComplete = () => {
+    if (user) {
+      safeStorage.setItem(`safespace_onboarding_complete_${user.id}`, 'true')
+    }
+    setIsOnboardingComplete(true)
+  }
+
+  useEffect(() => {
     // Show keyboard help on first visit
-    const hasSeenHelp = localStorage.getItem('safespace_seen_keyboard_help')
+    const hasSeenHelp = safeStorage.getItem('safespace_seen_keyboard_help')
     if (!hasSeenHelp) {
       setTimeout(() => {
         setShowKeyboardHelp(true)
-        localStorage.setItem('safespace_seen_keyboard_help', 'true')
+        safeStorage.setItem('safespace_seen_keyboard_help', 'true')
       }, 2000)
     }
 
@@ -138,6 +144,18 @@ function AppContent({ showKeyboardHelp, setShowKeyboardHelp }) {
     }
   }, [setShowKeyboardHelp])
 
+  if (showSplash) {
+    return <SplashScreen onComplete={() => setShowSplash(false)} />
+  }
+
+  if (loading || isLoading) {
+    return <PageLoader message="Loading..." />
+  }
+
+  if (user && !isOnboardingComplete) {
+    return <OnboardingFlow onComplete={handleOnboardingComplete} />
+  }
+
   return (
     <>
       <LiveRegion />
@@ -148,6 +166,7 @@ function AppContent({ showKeyboardHelp, setShowKeyboardHelp }) {
         isOpen={showKeyboardHelp} 
         onClose={() => setShowKeyboardHelp(false)} 
       />
+      {showTour && <OnboardingTour onComplete={() => setShowTour(false)} />}
       <Suspense fallback={<PageLoader message="Loading page..." />}>
         <Routes>
           <Route path="/auth" element={<AuthPage />} />
@@ -179,6 +198,11 @@ function AppContent({ showKeyboardHelp, setShowKeyboardHelp }) {
             <Route path="/technical" element={<TechnicalFeaturesPage />} />
             <Route path="/bookmarks" element={<BookmarksPage />} />
             <Route path="/personalization" element={<PersonalizationPage />} />
+            <Route path="/demo/gestures" element={<GesturesDemoPage />} />
+            <Route path="/demo/visual" element={<VisualDemoPage />} />
+            <Route path="/demo/native" element={<NativeDemoPage />} />
+            <Route path="/demo/performance" element={<PerformanceDemoPage />} />
+            <Route path="/demo" element={<DemoHubPage />} />
           </Route>
         </Routes>
       </Suspense>

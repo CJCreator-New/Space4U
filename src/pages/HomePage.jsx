@@ -1,19 +1,25 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Crown, Sparkles } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { Crown, Sparkles, Smile, Heart, BookOpen } from 'lucide-react'
 import MoodTracker from '../components/MoodTracker'
 import MoodCalendar from '../components/MoodCalendar'
 import MoodTrends from '../components/MoodTrends'
 import SafeComponent from '../components/SafeComponent'
 import AdaptiveDashboard from '../components/personalization/AdaptiveDashboard'
+import FABMenu from '../components/common/FABMenu'
+import MicroInteraction from '../components/common/MicroInteraction'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import { initPersonalization } from '../utils/personalizationEngine'
 import { trackFeatureUsage } from '../utils/usageTracker'
 
 function HomePage() {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
   const [user, setUser] = useState(null)
   const [refreshKey, setRefreshKey] = useState(0)
   const [error, setError] = useState(null)
+  const [showMoodTracker, setShowMoodTracker] = useState(false)
   const { isPremium, trialActive, daysLeft } = getPremiumStatus()
 
   useEffect(() => {
@@ -26,17 +32,39 @@ function HomePage() {
       trackFeatureUsage('home', 0)
     } catch (err) {
       console.error('Error loading user data:', err)
-      setError('Failed to load user data')
+      setError(t('errors.failedToLoad'))
     }
   }, [])
 
   const handleMoodLogged = () => {
     try {
       setRefreshKey(prev => prev + 1)
+      setShowMoodTracker(false)
     } catch (err) {
       console.error('Error refreshing mood data:', err)
     }
   }
+
+  const fabActions = [
+    {
+      icon: <Smile size={20} />,
+      label: t('mood.logMood'),
+      onClick: () => setShowMoodTracker(true),
+      color: 'from-indigo-500 to-purple-600'
+    },
+    {
+      icon: <Heart size={20} />,
+      label: t('gratitude.title'),
+      onClick: () => navigate('/gratitude'),
+      color: 'from-pink-500 to-red-600'
+    },
+    {
+      icon: <BookOpen size={20} />,
+      label: t('home.journal'),
+      onClick: () => navigate('/advanced-tools'),
+      color: 'from-blue-500 to-cyan-600'
+    }
+  ]
 
   if (error) {
     return (
@@ -47,7 +75,7 @@ function HomePage() {
             onClick={() => window.location.reload()}
             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
           >
-            Reload Page
+            {t('errors.reloadPage')}
           </button>
         </div>
       </div>
@@ -72,16 +100,16 @@ function HomePage() {
             )}
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
-                Welcome back{user?.username ? `, ${user.username}` : ''}! 👋
+                {t('welcome.back')}{user?.username ? `, ${user.username}` : ''}! 👋
               </h1>
-              <p className="text-white/90 text-lg mt-1">Your mental health support companion</p>
+              <p className="text-white/90 text-lg mt-1">{t('home.subtitle')}</p>
             </div>
           </div>
           {isPremium && (
             <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
               <Crown size={18} className="text-yellow-300" />
               <span className="text-white font-medium">
-                {trialActive ? `Trial: ${daysLeft} days left` : 'Premium'}
+                {trialActive ? t('premium.trialDaysLeft', { days: daysLeft }) : t('premium.title')}
               </span>
             </div>
           )}
@@ -97,8 +125,8 @@ function HomePage() {
                   <Crown className="text-white" size={24} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">Upgrade to Premium</h3>
-                  <p className="text-sm text-gray-700">Unlock unlimited features, custom themes, and advanced analytics</p>
+                  <h3 className="text-lg font-bold text-gray-900">{t('premium.upgrade')}</h3>
+                  <p className="text-sm text-gray-700">{t('premium.unlockUnlimited')}</p>
                 </div>
               </div>
               <Sparkles className="text-yellow-500" size={24} />
@@ -108,11 +136,13 @@ function HomePage() {
       )}
       
       {/* Mood Tracking Section - Wrapped in SafeComponent */}
-      <SafeComponent>
-        <div className="mb-6">
-          <MoodTracker onMoodLogged={handleMoodLogged} />
-        </div>
-      </SafeComponent>
+      {showMoodTracker && (
+        <SafeComponent>
+          <div className="mb-6">
+            <MoodTracker onMoodLogged={handleMoodLogged} />
+          </div>
+        </SafeComponent>
+      )}
       
       <SafeComponent>
         <div className="mb-6">
@@ -133,129 +163,138 @@ function HomePage() {
       </SafeComponent>
       
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-4">Wellness Tools</h2>
+        <h2 className="text-2xl font-bold mb-4">{t('home.quickActions')}</h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <Link to="/gratitude" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <MicroInteraction type="lift">
+            <Link to="/gratitude" className="card p-6 hover:shadow-xl transition-all duration-300 group block">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">❤️</span>
-              <h3 className="text-lg font-semibold">Gratitude</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.gratitude')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Daily gratitude practice</p>
-          </Link>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.gratitudeDesc')}</p>
+            </Link>
+          </MicroInteraction>
           
-          <Link to="/habits" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <MicroInteraction type="lift">
+            <Link to="/habits" className="card p-6 hover:shadow-xl transition-all duration-300 group block">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🎯</span>
-              <h3 className="text-lg font-semibold">Habits</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.habits')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Track daily habits</p>
-          </Link>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.habitsDesc')}</p>
+            </Link>
+          </MicroInteraction>
           
-          <Link to="/emotions" className="card p-6 hover:shadow-xl transition-all duration-300 group">
+          <MicroInteraction type="lift">
+            <Link to="/emotions" className="card p-6 hover:shadow-xl transition-all duration-300 group block">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">💭</span>
-              <h3 className="text-lg font-semibold">Emotions</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.emotions')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Understand your feelings</p>
-          </Link>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.emotionsDesc')}</p>
+            </Link>
+          </MicroInteraction>
           
           <Link to="/coping-skills" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🛠️</span>
-              <h3 className="text-lg font-semibold">Coping Skills</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.copingSkills')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Strategies for tough times</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.copingSkillsDesc')}</p>
           </Link>
           
           <Link to="/reminders" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">⏰</span>
-              <h3 className="text-lg font-semibold">Reminders</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.reminders')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Stay on track</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.remindersDesc')}</p>
           </Link>
           
           <Link to="/tools" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🧰</span>
-              <h3 className="text-lg font-semibold">Therapy Tools</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.therapyTools')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">CBT, DBT, and more</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.therapyToolsDesc')}</p>
           </Link>
           
           <Link to="/wellness" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">📊</span>
-              <h3 className="text-lg font-semibold">Wellness Score</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.wellnessScore')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Track overall progress</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.wellnessScoreDesc')}</p>
           </Link>
           
           <Link to="/advanced-tools" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🚀</span>
-              <h3 className="text-lg font-semibold">Advanced Tools</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.advancedTools')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Triggers, journal, therapy</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.advancedToolsDesc')}</p>
           </Link>
           
           <Link to="/gamification" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🏆</span>
-              <h3 className="text-lg font-semibold">Gamification</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.gamification')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Challenges, quests, streaks</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.gamificationDesc')}</p>
           </Link>
           
           <Link to="/wellness-plan" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">📅</span>
-              <h3 className="text-lg font-semibold">Wellness Plan</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.wellnessPlan')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Daily routine builder</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.wellnessPlanDesc')}</p>
           </Link>
           
           <Link to="/social" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🤝</span>
-              <h3 className="text-lg font-semibold">Social Hub</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.socialHub')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Connect & support</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.socialHubDesc')}</p>
           </Link>
           
           <Link to="/analytics" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">📊</span>
-              <h3 className="text-lg font-semibold">Analytics</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.analytics')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Deep insights</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.analyticsDesc')}</p>
           </Link>
           
           <Link to="/professional" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">🏥</span>
-              <h3 className="text-lg font-semibold">Professional</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.professional')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Therapist & crisis</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.professionalDesc')}</p>
           </Link>
           
           <Link to="/technical" className="card p-6 hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">📡</span>
-              <h3 className="text-lg font-semibold">Technical</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.technical')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Voice, offline, PWA</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.technicalDesc')}</p>
           </Link>
           
           <Link to="/premium/features" className="card p-6 hover:shadow-xl transition-all duration-300 group border-2 border-yellow-400">
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">👑</span>
-              <h3 className="text-lg font-semibold">Premium Features</h3>
+              <h3 className="text-lg font-semibold">{t('wellnessTools.premiumFeatures')}</h3>
             </div>
-            <p className="text-text-secondary text-sm">Exclusive tools</p>
+            <p className="text-text-secondary text-sm">{t('wellnessTools.premiumFeaturesDesc')}</p>
           </Link>
         </div>
       </div>
+
+      {/* FAB Menu for Quick Actions */}
+      <FABMenu actions={fabActions} />
     </div>
   )
 }

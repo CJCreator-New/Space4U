@@ -7,6 +7,7 @@ import { cacheManager as cache } from '../utils/cacheManager'
 import Disclaimer from '../components/common/Disclaimer'
 import PremiumPaywall from '../components/PremiumPaywall'
 import WellnessBreakdown from '../components/premium/WellnessBreakdown'
+import AnimatedNumber from '../components/common/AnimatedNumber'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import { 
   calculateAverageMood, 
@@ -251,7 +252,10 @@ function InsightsPage() {
               {/* Average Mood */}
               <div className="text-center">
                 <div className="text-4xl mb-2">{moodLabels[Math.round(analysis.averageMood)]?.emoji}</div>
-                <div className="text-2xl font-bold text-text-primary mb-1">{analysis.averageMood.toFixed(1)}</div>
+                <div className="text-2xl font-bold text-text-primary mb-1">
+                  <AnimatedNumber value={parseFloat(analysis.averageMood.toFixed(1)) * 10} duration={1000} />
+                  <span className="text-lg">/50</span>
+                </div>
                 <div className="text-sm text-text-secondary">Average Mood</div>
                 {analysis.trend !== 0 && (
                   <div className={`text-sm mt-1 ${
@@ -291,15 +295,21 @@ function InsightsPage() {
                   <div className="flex items-center gap-2">
                     <span className="text-lg">🔥</span>
                     <div>
-                      <div className="font-medium text-text-primary">{analysis.streak.current} day streak</div>
+                      <div className="font-medium text-text-primary">
+                        <AnimatedNumber value={analysis.streak.current} duration={800} /> day streak
+                      </div>
                       <div className="text-xs text-text-secondary">Longest: {analysis.streak.longest} days</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-lg">📊</span>
                     <div>
-                      <div className="font-medium text-text-primary">{analysis.consistencyScore}% consistent</div>
-                      <div className="text-xs text-text-secondary">{analysis.totalEntries} total check-ins</div>
+                      <div className="font-medium text-text-primary">
+                        <AnimatedNumber value={analysis.consistencyScore} duration={800} />% consistent
+                      </div>
+                      <div className="text-xs text-text-secondary">
+                        <AnimatedNumber value={analysis.totalEntries} duration={1000} /> total check-ins
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Users, ChevronDown, Plus, Grid, List } from 'lucide-react'
 import { mockCircles } from '../data/mockCircles'
 import { mockPosts } from '../data/mockPosts'
@@ -12,6 +13,7 @@ import { useOnlineUsers } from '../hooks/useOnlineUsers'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 
 function CircleFeedPage() {
+  const { t } = useTranslation()
   const { circleId } = useParams()
   const navigate = useNavigate()
   const { user } = useSupabaseAuth()
@@ -123,7 +125,7 @@ function CircleFeedPage() {
   const handleSharePost = () => {
     // Show toast notification
     const toast = document.createElement('div')
-    toast.textContent = 'Link copied!'
+    toast.textContent = t('circles.linkCopied')
     toast.className = 'fixed top-4 right-4 bg-success text-white px-4 py-2 rounded-xl shadow-lg z-50'
     document.body.appendChild(toast)
     setTimeout(() => document.body.removeChild(toast), 2000)
@@ -187,7 +189,7 @@ function CircleFeedPage() {
                   <Users size={14} />
                   <span>{formatNumber(circle.members)} members</span>
                   {onlineCount > 0 && (
-                    <span className="ml-2 text-green-600">• {onlineCount} online</span>
+                    <span className="ml-2 text-green-600">• {t('circles.online', { count: onlineCount })}</span>
                   )}
                 </div>
               </div>
@@ -197,8 +199,8 @@ function CircleFeedPage() {
             onClick={handleLeaveCircle}
             className="px-4 py-2 text-danger border border-danger rounded-xl hover:bg-danger hover:text-white transition-colors"
           >
-            <span className="hidden sm:inline">Leave Circle</span>
-            <span className="sm:hidden">Leave</span>
+            <span className="hidden sm:inline">{t('circles.leaveCircle')}</span>
+            <span className="sm:hidden">{t('circles.leave')}</span>
           </button>
         </div>
 
@@ -224,9 +226,9 @@ function CircleFeedPage() {
               onChange={(e) => handleSortChange(e.target.value)}
               className="px-3 py-2 border border-gray-200 rounded-xl text-sm focus:border-primary outline-none"
             >
-              <option value="recent">Recent</option>
-              <option value="popular">Popular</option>
-              <option value="trending">Trending</option>
+              <option value="recent">{t('circles.recent')}</option>
+              <option value="popular">{t('circles.popular')}</option>
+              <option value="trending">{t('circles.trending')}</option>
             </select>
             
             <select
@@ -234,9 +236,9 @@ function CircleFeedPage() {
               onChange={(e) => handleFilterChange(e.target.value)}
               className="px-3 py-2 border border-gray-200 rounded-xl text-sm focus:border-primary outline-none"
             >
-              <option value="all">All Posts</option>
-              <option value="hearted">Posts I've Hearted</option>
-              <option value="commented">Posts I've Commented</option>
+              <option value="all">{t('circles.allPosts')}</option>
+              <option value="hearted">{t('circles.postsIveHearted')}</option>
+              <option value="commented">{t('circles.postsIveCommented')}</option>
             </select>
           </div>
 
@@ -262,17 +264,17 @@ function CircleFeedPage() {
         <div className="text-center py-12">
           <div className="text-4xl mb-4">{circle.icon}</div>
           <h3 className="text-xl font-semibold text-text-primary mb-2">
-            {filterBy === 'all' ? 'Be the first to start a conversation' : 'No posts match your filters'}
+            {filterBy === 'all' ? t('circles.beFirstToStart') : t('circles.noPostsMatch')}
           </h3>
           <p className="text-text-secondary mb-6">
-            {filterBy === 'all' ? 'Share what\'s on your mind' : 'Try adjusting your filters'}
+            {filterBy === 'all' ? t('circles.shareWhatsOnMind') : t('circles.tryAdjustingFilters')}
           </p>
           {filterBy !== 'all' && (
             <button
               onClick={() => handleFilterChange('all')}
               className="px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition-colors"
             >
-              Clear Filters
+              {t('circles.clearFilters')}
             </button>
           )}
         </div>
@@ -294,14 +296,14 @@ function CircleFeedPage() {
       {loadingMore && (
         <div className="text-center py-6">
           <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-          <p className="text-text-secondary text-sm mt-2">Loading more posts...</p>
+          <p className="text-text-secondary text-sm mt-2">{t('circles.loadingMore')}</p>
         </div>
       )}
 
       {/* End of Feed */}
       {!hasMore && posts.length > 0 && (
         <div className="text-center py-6">
-          <p className="text-text-secondary">You've caught up! 🎉</p>
+          <p className="text-text-secondary">{t('circles.caughtUp')}</p>
         </div>
       )}
 

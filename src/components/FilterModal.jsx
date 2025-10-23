@@ -1,7 +1,7 @@
 import { X } from 'lucide-react'
+import BottomSheet from './common/BottomSheet'
 
 function FilterModal({ isOpen, onClose, filters, onFiltersChange }) {
-  if (!isOpen) return null
 
   const categories = [
     { value: 'all', label: 'All' },
@@ -22,8 +22,8 @@ function FilterModal({ isOpen, onClose, filters, onFiltersChange }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-surface rounded-2xl p-6 max-w-sm w-full">
+    <BottomSheet isOpen={isOpen} onClose={onClose}>
+      <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-text-primary">Filter Circles</h3>
           <button
@@ -79,7 +79,7 @@ function FilterModal({ isOpen, onClose, filters, onFiltersChange }) {
           Apply Filters
         </button>
       </div>
-    </div>
+    </BottomSheet>
   )
 }
 

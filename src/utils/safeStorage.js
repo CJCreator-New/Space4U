@@ -24,6 +24,30 @@ export const safeStorage = {
     }
   },
   
+  getJSON: (key, defaultValue = null) => {
+    try {
+      const item = localStorage.getItem(key)
+      return item ? JSON.parse(item) : defaultValue
+    } catch (e) {
+      console.error('❌ Storage JSON parse error:', e)
+      return defaultValue
+    }
+  },
+  
+  setJSON: (key, value) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value))
+      return { success: true }
+    } catch (e) {
+      if (e.name === 'QuotaExceededError') {
+        console.error('❌ Storage quota exceeded')
+        return { success: false, error: 'QUOTA_EXCEEDED' }
+      }
+      console.error('❌ Storage error:', e)
+      return { success: false, error: e.message }
+    }
+  },
+  
   removeItem: (key) => {
     try {
       localStorage.removeItem(key)

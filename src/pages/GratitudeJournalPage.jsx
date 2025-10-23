@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Heart, Plus, Calendar, TrendingUp, Sparkles, Info, BookOpen, Crown, Lock } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
 import GratitudeEntryModal from '../components/gratitude/GratitudeEntryModal'
 import GratitudeCard from '../components/gratitude/GratitudeCard'
@@ -15,6 +16,7 @@ import { researchCitations } from '../data/researchCitations'
 
 function GratitudeJournalPage() {
   const { user } = useAuth()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [entries, setEntries] = useState([])
   const [showModal, setShowModal] = useState(false)
@@ -114,12 +116,12 @@ function GratitudeJournalPage() {
           <div className="flex items-center gap-3">
             <Heart className="w-8 h-8 text-pink-500" />
             <div>
-              <h1 className="text-3xl font-bold">Gratitude Journal</h1>
-              <p className="text-text-secondary">What are you grateful for today?</p>
+              <h1 className="text-3xl font-bold">{t('gratitude.title')}</h1>
+              <p className="text-text-secondary">{t('gratitude.subtitle')}</p>
             </div>
           </div>
           <button onClick={handleAddClick} className="btn-primary">
-            <Plus className="w-5 h-5" /> {todayEntry ? 'Edit Today' : 'Add Entry'}
+            <Plus className="w-5 h-5" /> {todayEntry ? t('gratitude.editToday') : t('gratitude.addEntry')}
           </button>
         </div>
 
@@ -129,13 +131,13 @@ function GratitudeJournalPage() {
               <div className="flex items-center gap-3">
                 <Lock className="w-5 h-5 text-orange-600" />
                 <div className="text-sm">
-                  <p className="font-semibold text-gray-900">Free Limit Reached</p>
-                  <p className="text-gray-700">You've reached {FREE_ENTRY_LIMIT} entries. Upgrade to Premium for unlimited gratitude journaling.</p>
+                  <p className="font-semibold text-gray-900">{t('gratitude.limitReached')}</p>
+                  <p className="text-gray-700">{t('gratitude.limitMessage', { limit: FREE_ENTRY_LIMIT })}</p>
                 </div>
               </div>
               <button onClick={() => navigate('/premium')} className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-xl font-medium hover:opacity-90 transition-opacity flex items-center gap-2 whitespace-nowrap">
                 <Crown size={16} />
-                Upgrade
+                {t('premium.upgrade')}
               </button>
             </div>
           </div>
@@ -145,15 +147,15 @@ function GratitudeJournalPage() {
           <div className="card p-6">
             <div className="flex items-center gap-3 mb-2">
               <Sparkles className="w-5 h-5 text-yellow-500" />
-              <span className="text-text-secondary">Current Streak</span>
+              <span className="text-text-secondary">{t('gratitude.currentStreak')}</span>
             </div>
-            <p className="text-3xl font-bold">{streak} days</p>
+            <p className="text-3xl font-bold">{t('gratitude.streakDays', { count: streak })}</p>
           </div>
           
           <div className="card p-6">
             <div className="flex items-center gap-3 mb-2">
               <Calendar className="w-5 h-5 text-blue-500" />
-              <span className="text-text-secondary">Total Entries</span>
+              <span className="text-text-secondary">{t('gratitude.totalEntries')}</span>
             </div>
             <p className="text-3xl font-bold">{entries.length}</p>
           </div>
@@ -161,7 +163,7 @@ function GratitudeJournalPage() {
           <div className="card p-6">
             <div className="flex items-center gap-3 mb-2">
               <TrendingUp className="w-5 h-5 text-green-500" />
-              <span className="text-text-secondary">This Month</span>
+              <span className="text-text-secondary">{t('gratitude.thisMonth')}</span>
             </div>
             <p className="text-3xl font-bold">
               {entries.filter(e => new Date(e.date).getMonth() === new Date().getMonth()).length}
@@ -176,22 +178,22 @@ function GratitudeJournalPage() {
         {entries.length === 0 ? (
           <div className="card p-12 text-center">
             <Heart className="w-16 h-16 text-text-secondary mx-auto mb-4 opacity-50" />
-            <h3 className="text-xl font-semibold mb-2">Start Your Gratitude Journey</h3>
-            <p className="text-text-secondary mb-4">Research shows that practicing gratitude can improve mental health and overall well-being.</p>
+            <h3 className="text-xl font-semibold mb-2">{t('gratitude.empty.title')}</h3>
+            <p className="text-text-secondary mb-4">{t('gratitude.empty.description')}</p>
             
             {/* Benefits List */}
             <div className="max-w-md mx-auto mb-6 text-left">
-              <p className="text-sm font-medium text-gray-700 mb-2">Daily gratitude practice can help you:</p>
+              <p className="text-sm font-medium text-gray-700 mb-2">{t('gratitude.empty.benefitsTitle')}</p>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li>• Increase positive emotions and life satisfaction</li>
-                <li>• Reduce stress and improve sleep quality</li>
-                <li>• Strengthen relationships and social connections</li>
-                <li>• Build resilience during challenging times</li>
+                <li>• {t('gratitude.empty.benefit1')}</li>
+                <li>• {t('gratitude.empty.benefit2')}</li>
+                <li>• {t('gratitude.empty.benefit3')}</li>
+                <li>• {t('gratitude.empty.benefit4')}</li>
               </ul>
             </div>
             
             <button onClick={handleAddClick} className="btn-primary">
-              <Plus className="w-5 h-5" /> Create First Entry
+              <Plus className="w-5 h-5" /> {t('gratitude.createFirst')}
             </button>
           </div>
         ) : (
@@ -220,13 +222,13 @@ function GratitudeJournalPage() {
           <div className="flex gap-3">
             <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div className="text-sm">
-              <p className="font-semibold mb-1 text-gray-900">Optimal Practice Guidelines</p>
+              <p className="font-semibold mb-1 text-gray-900">{t('gratitude.guidelines.title')}</p>
               <ul className="text-gray-700 space-y-1">
-                <li>• Write 3-5 entries per session (Emmons & McCullough, 2003)</li>
-                <li>• Practice in the evening for better sleep quality</li>
-                <li>• Be specific - focus on details and people</li>
-                <li>• Reflect on surprises or unexpected positive moments</li>
-                <li>• Vary your entries to prevent habituation</li>
+                <li>• {t('gratitude.guidelines.tip1')}</li>
+                <li>• {t('gratitude.guidelines.tip2')}</li>
+                <li>• {t('gratitude.guidelines.tip3')}</li>
+                <li>• {t('gratitude.guidelines.tip4')}</li>
+                <li>• {t('gratitude.guidelines.tip5')}</li>
               </ul>
             </div>
           </div>

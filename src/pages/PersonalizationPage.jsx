@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Sparkles, Settings, RotateCcw, Info, CheckCircle, XCircle } from 'lucide-react'
 import { getPersonalization, togglePersonalization, resetPersonalization, updatePersonalization } from '../utils/personalizationEngine'
 import SafeComponent from '../components/SafeComponent'
 
 function PersonalizationPage() {
+  const { t } = useTranslation()
   const [config, setConfig] = useState(getPersonalization())
 
   const handleToggle = () => {
@@ -12,7 +14,7 @@ function PersonalizationPage() {
   }
 
   const handleReset = () => {
-    if (confirm('Reset all personalization? Your core data will be kept.')) {
+    if (confirm(t('personalization.resetConfirm'))) {
       const updated = resetPersonalization()
       setConfig(updated)
     }
@@ -34,17 +36,17 @@ function PersonalizationPage() {
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
             <Sparkles className="w-8 h-8 text-primary" />
-            <h1 className="text-2xl font-bold">Personalization</h1>
+            <h1 className="text-2xl font-bold">{t('personalization.title')}</h1>
           </div>
-          <p className="text-text-secondary">Control how Space4U adapts to your needs</p>
+          <p className="text-text-secondary">{t('personalization.subtitle')}</p>
         </div>
 
         {/* Enable/Disable */}
         <div className="card p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="font-bold mb-1">Intelligent Personalization</h3>
-              <p className="text-sm text-text-secondary">Let Space4U learn your patterns and adapt to you</p>
+              <h3 className="font-bold mb-1">{t('personalization.intelligentPersonalization')}</h3>
+              <p className="text-sm text-text-secondary">{t('personalization.learnPatterns')}</p>
             </div>
             <button
               onClick={handleToggle}
@@ -61,11 +63,11 @@ function PersonalizationPage() {
             <div className="grid grid-cols-2 gap-4 pt-4 border-t">
               <div className="text-center">
                 <p className="text-2xl font-bold text-primary">{usageCount}</p>
-                <p className="text-xs text-text-secondary">Features Tracked</p>
+                <p className="text-xs text-text-secondary">{t('personalization.featuresTracked')}</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-primary">{recommendationCount}</p>
-                <p className="text-xs text-text-secondary">Active Recommendations</p>
+                <p className="text-xs text-text-secondary">{t('personalization.activeRecommendations')}</p>
               </div>
             </div>
           )}
@@ -77,45 +79,45 @@ function PersonalizationPage() {
             <div className="card p-6 mb-6">
               <h3 className="font-bold mb-4 flex items-center gap-2">
                 <Settings className="w-5 h-5" />
-                Preferences
+                {t('personalization.preferences')}
               </h3>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Dashboard Layout</label>
+                  <label className="block text-sm font-medium mb-2">{t('personalization.dashboardLayout')}</label>
                   <select
                     value={config.preferences?.dashboardLayout || 'adaptive'}
                     onChange={(e) => updatePreference('dashboardLayout', e.target.value)}
                     className="input w-full"
                   >
-                    <option value="adaptive">Adaptive (Recommended)</option>
-                    <option value="fixed">Fixed Layout</option>
+                    <option value="adaptive">{t('personalization.adaptive')}</option>
+                    <option value="fixed">{t('personalization.fixed')}</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Recommendation Frequency</label>
+                  <label className="block text-sm font-medium mb-2">{t('personalization.recommendationFrequency')}</label>
                   <select
                     value={config.preferences?.recommendationFrequency || 'medium'}
                     onChange={(e) => updatePreference('recommendationFrequency', e.target.value)}
                     className="input w-full"
                   >
-                    <option value="high">High (More suggestions)</option>
-                    <option value="medium">Medium (Balanced)</option>
-                    <option value="low">Low (Fewer suggestions)</option>
+                    <option value="high">{t('personalization.high')}</option>
+                    <option value="medium">{t('personalization.medium')}</option>
+                    <option value="low">{t('personalization.low')}</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Contextual Help</label>
+                  <label className="block text-sm font-medium mb-2">{t('personalization.contextualHelp')}</label>
                   <select
                     value={config.preferences?.helpLevel || 'full'}
                     onChange={(e) => updatePreference('helpLevel', e.target.value)}
                     className="input w-full"
                   >
-                    <option value="full">Full (All tooltips and guides)</option>
-                    <option value="minimal">Minimal (Essential only)</option>
-                    <option value="none">None (No help prompts)</option>
+                    <option value="full">{t('personalization.full')}</option>
+                    <option value="minimal">{t('personalization.minimal')}</option>
+                    <option value="none">{t('personalization.none')}</option>
                   </select>
                 </div>
               </div>
@@ -126,23 +128,23 @@ function PersonalizationPage() {
               <div className="flex gap-3">
                 <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                 <div className="text-sm">
-                  <p className="font-semibold mb-2 text-gray-900">Privacy-First Personalization</p>
+                  <p className="font-semibold mb-2 text-gray-900">{t('personalization.privacyFirst')}</p>
                   <ul className="space-y-1 text-gray-700">
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                      <span>All processing happens locally on your device</span>
+                      <span>{t('personalization.localProcessing')}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                      <span>No data transmitted to external servers</span>
+                      <span>{t('personalization.noDataTransmitted')}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-                      <span>Complete control over your data</span>
+                      <span>{t('personalization.completeControl')}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <XCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
-                      <span>No tracking or analytics sent anywhere</span>
+                      <span>{t('personalization.noTracking')}</span>
                     </li>
                   </ul>
                 </div>
@@ -152,7 +154,7 @@ function PersonalizationPage() {
             {/* Reset */}
             <button onClick={handleReset} className="btn-secondary w-full flex items-center justify-center gap-2">
               <RotateCcw className="w-5 h-5" />
-              Reset Personalization
+              {t('personalization.resetPersonalization')}
             </button>
           </>
         )}
