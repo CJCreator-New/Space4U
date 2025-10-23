@@ -17,13 +17,9 @@ export function useBiometric() {
 
         let pluginModule = null
         try {
-          pluginModule = await import('@capacitor-community/biometric-auth')
+          pluginModule = await import('@aparajita/capacitor-biometric-auth')
         } catch (e1) {
-          try {
-            pluginModule = await import('@capacitor/biometric-auth')
-          } catch (e2) {
-            console.warn('Biometric plugin not found')
-          }
+          console.warn('Biometric plugin not found')
         }
 
         if (!pluginModule) {

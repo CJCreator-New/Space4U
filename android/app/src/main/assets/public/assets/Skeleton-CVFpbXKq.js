@@ -1,1 +1,0 @@
-import{j as e}from"./index-Duv89VAf.js";function t({variant:t="text",width:d="100%",height:r,className:i=""}){return e.jsx("div",{className:`skeleton ${{text:"h-4 rounded",title:"h-6 rounded",circle:"rounded-full",rect:"rounded-lg",card:"h-32 rounded-xl"}[t]} ${i}`,style:{width:d,height:r}})}export{t as S};
