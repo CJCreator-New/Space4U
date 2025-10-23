@@ -2,8 +2,17 @@ import { NavLink } from 'react-router-dom'
 import { Home, Users, Brain, User, Activity, Heart, Sparkles, Building2, LogOut, LogIn } from 'lucide-react'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 import { useTranslation } from 'react-i18next'
+import { useFeatureFlag } from '../config/featureFlags'
+import { ModernNavigation } from './modern/ModernNavigation'
 
 function Navigation() {
+  const useModernUI = useFeatureFlag('ENABLE_MODERN_UI');
+
+  if (useModernUI) {
+    return <ModernNavigation />;
+  }
+
+  // Legacy implementation
   const { user, signOut } = useSupabaseAuth()
   const { t } = useTranslation()
 
