@@ -2,7 +2,9 @@ import { useState, useEffect, Suspense, lazy } from 'react'
 import { Routes, Route, BrowserRouter, useNavigate, useLocation } from 'react-router-dom'
 import { AuthProvider, useSupabaseAuth } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { ChakraProvider } from '@chakra-ui/react'
 import Layout from './components/Layout'
+import theme from './theme'
 import OnboardingFlow from './components/onboarding/OnboardingFlow'
 import ErrorBoundary from './components/ErrorBoundary'
 import MigrationStatus from './components/MigrationStatus'
@@ -56,13 +58,15 @@ const DemoHubPage = lazy(() => import('./pages/DemoHubPage'))
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider>
-        <AuthProvider>
-          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-            <AppContent />
-          </BrowserRouter>
-        </AuthProvider>
-      </ThemeProvider>
+      <ChakraProvider theme={theme}>
+        <ThemeProvider>
+          <AuthProvider>
+            <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+              <AppContent />
+            </BrowserRouter>
+          </AuthProvider>
+        </ThemeProvider>
+      </ChakraProvider>
     </ErrorBoundary>
   )
 }

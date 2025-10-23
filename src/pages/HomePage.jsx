@@ -2,6 +2,26 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Crown, Sparkles, Smile, Heart, BookOpen } from 'lucide-react'
+import { motion } from 'framer-motion'
+import {
+  Box,
+  Card,
+  CardBody,
+  Heading,
+  Text,
+  Button,
+  Avatar,
+  Badge,
+  SimpleGrid,
+  VStack,
+  HStack,
+  Icon,
+  useColorModeValue,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from '@chakra-ui/react'
 import MoodTracker from '../components/MoodTracker'
 import MoodCalendar from '../components/MoodCalendar'
 import MoodTrends from '../components/MoodTrends'
@@ -68,234 +88,359 @@ function HomePage() {
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto p-4">
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-          <p className="text-red-600 mb-4">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-          >
+      <Box maxW="4xl" mx="auto" p={4}>
+        <Card bg="red.50" borderColor="red.200" borderWidth={1} borderRadius="xl" p={6} textAlign="center">
+          <Text color="red.600" mb={4}>{error}</Text>
+          <Button colorScheme="red" onClick={() => window.location.reload()}>
             {t('errors.reloadPage')}
-          </button>
-        </div>
-      </div>
+          </Button>
+        </Card>
+      </Box>
     )
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-8 mb-6 shadow-xl">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative z-10 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            {user?.avatar && (
-              <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-3xl border-2 border-white/30 shadow-lg relative">
-                {user.avatar}
-                {isPremium && (
-                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
-                    <Crown size={14} className="text-white" />
-                  </div>
-                )}
-              </div>
+    <Box maxW="4xl" mx="auto">
+      <Box
+        as={motion.div}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        position="relative"
+        overflow="hidden"
+        borderRadius="2xl"
+        bgGradient="linear(135deg, primary.500, purple.500, pink.500)"
+        p={8}
+        mb={6}
+        shadow="xl"
+      >
+        <Box position="absolute" inset={0} bg="blackAlpha.100" />
+        <Box position="relative" zIndex={10}>
+          <HStack justify="space-between" align="center">
+            <HStack gap={4}>
+              {user?.avatar && (
+                <Avatar
+                  size="xl"
+                  bg="whiteAlpha.200"
+                  backdropFilter="blur(10px)"
+                  border="2px solid"
+                  borderColor="whiteAlpha.300"
+                  shadow="lg"
+                  position="relative"
+                >
+                  {user.avatar}
+                  {isPremium && (
+                    <Badge
+                      position="absolute"
+                      top={-1}
+                      right={-1}
+                      bgGradient="linear(to-r, yellow.400, orange.400)"
+                      color="white"
+                      borderRadius="full"
+                      w={6}
+                      h={6}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      <Icon as={Crown} w={3.5} h={3.5} />
+                    </Badge>
+                  )}
+                </Avatar>
+              )}
+              <Box>
+                <Heading
+                  size={{ base: "lg", md: "xl" }}
+                  color="white"
+                  textShadow="lg"
+                >
+                  {t('welcome.back')}{user?.username ? `, ${user.username}` : ''}! 👋
+                </Heading>
+                <Text color="whiteAlpha.900" fontSize="lg" mt={1}>
+                  {t('home.subtitle')}
+                </Text>
+              </Box>
+            </HStack>
+            {isPremium && (
+              <HStack
+                display={{ base: "none", md: "flex" }}
+                gap={2}
+                px={4}
+                py={2}
+                bg="whiteAlpha.200"
+                backdropFilter="blur(10px)"
+                borderRadius="full"
+                border="1px solid"
+                borderColor="whiteAlpha.300"
+              >
+                <Icon as={Crown} w={5} h={5} color="yellow.300" />
+                <Text color="white" fontWeight="medium">
+                  {trialActive ? t('premium.trialDaysLeft', { days: daysLeft }) : t('premium.title')}
+                </Text>
+              </HStack>
             )}
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
-                {t('welcome.back')}{user?.username ? `, ${user.username}` : ''}! 👋
-              </h1>
-              <p className="text-white/90 text-lg mt-1">{t('home.subtitle')}</p>
-            </div>
-          </div>
-          {isPremium && (
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
-              <Crown size={18} className="text-yellow-300" />
-              <span className="text-white font-medium">
-                {trialActive ? t('premium.trialDaysLeft', { days: daysLeft }) : t('premium.title')}
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
+          </HStack>
+        </Box>
+      </Box>
       
       {!isPremium && (
-        <Link to="/premium" className="block mb-6">
-          <div className="card p-6 bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300 hover:shadow-xl transition-all">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
-                  <Crown className="text-white" size={24} />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-gray-900">{t('premium.upgrade')}</h3>
-                  <p className="text-sm text-gray-700">{t('premium.unlockUnlimited')}</p>
-                </div>
-              </div>
-              <Sparkles className="text-yellow-500" size={24} />
-            </div>
-          </div>
+        <Link to="/premium" style={{ textDecoration: 'none' }}>
+          <Card
+            as={motion.div}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            mb={6}
+            bgGradient="linear(to-r, yellow.50, orange.50)"
+            border="2px solid"
+            borderColor="yellow.300"
+            _hover={{ shadow: "xl" }}
+            transition="all 0.3s"
+          >
+            <CardBody>
+              <HStack justify="space-between" align="center">
+                <HStack gap={4}>
+                  <Box
+                    w={12}
+                    h={12}
+                    bgGradient="linear(to-r, yellow.400, orange.400)"
+                    borderRadius="full"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Icon as={Crown} color="white" boxSize={6} />
+                  </Box>
+                  <Box>
+                    <Heading size="md" color="gray.900">
+                      {t('premium.upgrade')}
+                    </Heading>
+                    <Text fontSize="sm" color="gray.700">
+                      {t('premium.unlockUnlimited')}
+                    </Text>
+                  </Box>
+                </HStack>
+                <Icon as={Sparkles} color="yellow.500" boxSize={6} />
+              </HStack>
+            </CardBody>
+          </Card>
         </Link>
       )}
       
       {/* Mood Tracking Section - Wrapped in SafeComponent */}
       {showMoodTracker && (
         <SafeComponent>
-          <div className="mb-6">
+          <Box mb={6}>
             <MoodTracker onMoodLogged={handleMoodLogged} />
-          </div>
+          </Box>
         </SafeComponent>
       )}
       
       <SafeComponent>
-        <div className="mb-6">
+        <Box mb={6}>
           <MoodCalendar key={refreshKey} />
-        </div>
+        </Box>
       </SafeComponent>
       
       <SafeComponent>
-        <div className="mb-6">
+        <Box mb={6}>
           <MoodTrends key={refreshKey} />
-        </div>
+        </Box>
       </SafeComponent>
 
       <SafeComponent>
-        <div className="mb-6">
+        <Box mb={6}>
           <AdaptiveDashboard />
-        </div>
+        </Box>
       </SafeComponent>
       
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-4">{t('home.quickActions')}</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <Box mb={6}>
+        <Heading size="lg" mb={4}>{t('home.quickActions')}</Heading>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
           <MicroInteraction type="lift">
-            <Link to="/gratitude" className="card p-6 hover:shadow-xl transition-all duration-300 group block">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">❤️</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.gratitude')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.gratitudeDesc')}</p>
+            <Link to="/gratitude" style={{ textDecoration: 'none' }}>
+              <Card
+                p={6}
+                _hover={{ shadow: "xl" }}
+                transition="all 0.3s"
+                as={motion.div}
+                whileHover={{ y: -2 }}
+              >
+                <HStack gap={3} mb={2}>
+                  <Text fontSize="3xl">❤️</Text>
+                  <Heading size="md">{t('wellnessTools.gratitude')}</Heading>
+                </HStack>
+                <Text color="gray.600" fontSize="sm">{t('wellnessTools.gratitudeDesc')}</Text>
+              </Card>
             </Link>
           </MicroInteraction>
           
           <MicroInteraction type="lift">
-            <Link to="/habits" className="card p-6 hover:shadow-xl transition-all duration-300 group block">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">🎯</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.habits')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.habitsDesc')}</p>
+            <Link to="/habits" style={{ textDecoration: 'none' }}>
+              <Card
+                p={6}
+                _hover={{ shadow: "xl" }}
+                transition="all 0.3s"
+                as={motion.div}
+                whileHover={{ y: -2 }}
+              >
+                <HStack gap={3} mb={2}>
+                  <Text fontSize="3xl">🎯</Text>
+                  <Heading size="md">{t('wellnessTools.habits')}</Heading>
+                </HStack>
+                <Text color="gray.600" fontSize="sm">{t('wellnessTools.habitsDesc')}</Text>
+              </Card>
             </Link>
           </MicroInteraction>
           
           <MicroInteraction type="lift">
-            <Link to="/emotions" className="card p-6 hover:shadow-xl transition-all duration-300 group block">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">💭</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.emotions')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.emotionsDesc')}</p>
+            <Link to="/emotions" style={{ textDecoration: 'none' }}>
+              <Card
+                p={6}
+                _hover={{ shadow: "xl" }}
+                transition="all 0.3s"
+                as={motion.div}
+                whileHover={{ y: -2 }}
+              >
+                <HStack gap={3} mb={2}>
+                  <Text fontSize="3xl">💭</Text>
+                  <Heading size="md">{t('wellnessTools.emotions')}</Heading>
+                </HStack>
+                <Text color="gray.600" fontSize="sm">{t('wellnessTools.emotionsDesc')}</Text>
+              </Card>
             </Link>
           </MicroInteraction>
           
-          <Link to="/coping-skills" className="card p-6 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">🛠️</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.copingSkills')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.copingSkillsDesc')}</p>
+          <Link to="/coping-skills" style={{ textDecoration: 'none' }}>
+            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">🛠️</Text>
+                <Heading size="md">{t('wellnessTools.copingSkills')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.copingSkillsDesc')}</Text>
+            </Card>
           </Link>
           
-          <Link to="/reminders" className="card p-6 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">⏰</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.reminders')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.remindersDesc')}</p>
+          <Link to="/reminders" style={{ textDecoration: 'none' }}>
+            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">⏰</Text>
+                <Heading size="md">{t('wellnessTools.reminders')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.remindersDesc')}</Text>
+            </Card>
           </Link>
           
-          <Link to="/tools" className="card p-6 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">🧰</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.therapyTools')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.therapyToolsDesc')}</p>
+          <Link to="/tools" style={{ textDecoration: 'none' }}>
+            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">🧰</Text>
+                <Heading size="md">{t('wellnessTools.therapyTools')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.therapyToolsDesc')}</Text>
+            </Card>
           </Link>
           
-          <Link to="/wellness" className="card p-6 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">📊</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.wellnessScore')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.wellnessScoreDesc')}</p>
+          <Link to="/wellness" style={{ textDecoration: 'none' }}>
+            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">📊</Text>
+                <Heading size="md">{t('wellnessTools.wellnessScore')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.wellnessScoreDesc')}</Text>
+            </Card>
           </Link>
           
-          <Link to="/advanced-tools" className="card p-6 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">🚀</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.advancedTools')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.advancedToolsDesc')}</p>
+          <Link to="/advanced-tools" style={{ textDecoration: 'none' }}>
+            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">🚀</Text>
+                <Heading size="md">{t('wellnessTools.advancedTools')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.advancedToolsDesc')}</Text>
+            </Card>
           </Link>
           
-          <Link to="/gamification" className="card p-6 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">🏆</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.gamification')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.gamificationDesc')}</p>
+          <Link to="/gamification" style={{ textDecoration: 'none' }}>
+            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">🏆</Text>
+                <Heading size="md">{t('wellnessTools.gamification')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.gamificationDesc')}</Text>
+            </Card>
           </Link>
           
-          <Link to="/wellness-plan" className="card p-6 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">📅</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.wellnessPlan')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.wellnessPlanDesc')}</p>
+          <Link to="/wellness-plan" style={{ textDecoration: 'none' }}>
+            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">📅</Text>
+                <Heading size="md">{t('wellnessTools.wellnessPlan')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.wellnessPlanDesc')}</Text>
+            </Card>
           </Link>
           
-          <Link to="/social" className="card p-6 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">🤝</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.socialHub')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.socialHubDesc')}</p>
+          <Link to="/social" style={{ textDecoration: 'none' }}>
+            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">🤝</Text>
+                <Heading size="md">{t('wellnessTools.socialHub')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.socialHubDesc')}</Text>
+            </Card>
           </Link>
           
-          <Link to="/analytics" className="card p-6 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">📊</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.analytics')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.analyticsDesc')}</p>
+          <Link to="/analytics" style={{ textDecoration: 'none' }}>
+            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">📊</Text>
+                <Heading size="md">{t('wellnessTools.analytics')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.analyticsDesc')}</Text>
+            </Card>
           </Link>
           
-          <Link to="/professional" className="card p-6 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">🏥</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.professional')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.professionalDesc')}</p>
+          <Link to="/professional" style={{ textDecoration: 'none' }}>
+            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">🏥</Text>
+                <Heading size="md">{t('wellnessTools.professional')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.professionalDesc')}</Text>
+            </Card>
           </Link>
           
-          <Link to="/technical" className="card p-6 hover:shadow-xl transition-all duration-300 group">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">📡</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.technical')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.technicalDesc')}</p>
+          <Link to="/technical" style={{ textDecoration: 'none' }}>
+            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">📡</Text>
+                <Heading size="md">{t('wellnessTools.technical')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.technicalDesc')}</Text>
+            </Card>
           </Link>
           
-          <Link to="/premium/features" className="card p-6 hover:shadow-xl transition-all duration-300 group border-2 border-yellow-400">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">👑</span>
-              <h3 className="text-lg font-semibold">{t('wellnessTools.premiumFeatures')}</h3>
-            </div>
-            <p className="text-text-secondary text-sm">{t('wellnessTools.premiumFeaturesDesc')}</p>
+          <Link to="/premium/features" style={{ textDecoration: 'none' }}>
+            <Card
+              p={6}
+              _hover={{ shadow: "xl" }}
+              transition="all 0.3s"
+              border="2px solid"
+              borderColor="yellow.400"
+            >
+              <HStack gap={3} mb={2}>
+                <Text fontSize="3xl">👑</Text>
+                <Heading size="md">{t('wellnessTools.premiumFeatures')}</Heading>
+              </HStack>
+              <Text color="gray.600" fontSize="sm">{t('wellnessTools.premiumFeaturesDesc')}</Text>
+            </Card>
           </Link>
-        </div>
-      </div>
+        </SimpleGrid>
+      </Box>
 
       {/* FAB Menu for Quick Actions */}
       <FABMenu actions={fabActions} />
-    </div>
+    </Box>
   )
 }
 

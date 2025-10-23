@@ -1,11 +1,19 @@
 import { Outlet } from 'react-router-dom'
 import Navigation from './Navigation'
 import LanguageSwitcher from './LanguageSwitcher'
+import { useFeatureFlag } from '../config/featureFlags'
+import { ModernLayout } from './modern/ModernLayout'
 
 function Layout() {
+  const useModernUI = useFeatureFlag('ENABLE_MODERN_UI');
+
+  if (useModernUI) {
+    return <ModernLayout />;
+  }
+
+  // Legacy implementation
   return (
     <div className="min-h-screen bg-background dark:bg-gray-900 transition-colors">
-      {/* Skip to main content link for accessibility */}
       <a 
         href="#main-content" 
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:shadow-lg"
