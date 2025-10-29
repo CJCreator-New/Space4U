@@ -298,6 +298,33 @@ function Layout({ children }) {
 #### After (Modern)
 ```typescript
 // src/components/modern/Layout.tsx
+{% raw %}
+```tsx
+import { Box, Container } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+import { pageTransition } from '../../theme/animations';
+
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export const ModernLayout: React.FC<LayoutProps> = ({ children }) => {
+  return (
+    <Box minH="100vh" bg="gray.50">
+      <Container 
+        maxW="1200px" 
+        py={{ base: 4, md: 6 }} 
+        px={{ base: 4, md: 6 }}
+      >
+        <motion.div {...pageTransition}>
+          {children}
+        </motion.div>
+      </Container>
+    </Box>
+  );
+};
+```
+{% endraw %}
 import { Box, Container } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { pageTransition } from '../../theme/animations';
@@ -381,6 +408,147 @@ function Navigation({ user, onLogout }) {
 #### After (Modern)
 ```typescript
 // src/components/modern/Navigation.tsx
+{% raw %}
+```tsx
+import { 
+  Box, 
+  Flex, 
+  HStack, 
+  Button, 
+  Text, 
+  IconButton,
+  useDisclosure,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerBody,
+  VStack
+} from '@chakra-ui/react';
+import { Menu, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
+interface NavigationProps {
+  user: any;
+  onLogout: () => void;
+}
+
+export const ModernNavigation: React.FC<NavigationProps> = ({ user, onLogout }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const navItems = [
+    { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Mood', path: '/mood' },
+    { label: 'Insights', path: '/insights' },
+    { label: 'Resources', path: '/resources' }
+  ];
+
+  return (
+    <Box
+      as="nav"
+      role="navigation"
+      aria-label="Main navigation"
+      bg="white"
+      boxShadow="sm"
+      position="sticky"
+      top={0}
+      zIndex={1000}
+    >
+      <Flex
+        maxW="1200px"
+        mx="auto"
+        px={{ base: 4, md: 6 }}
+        py={4}
+        align="center"
+        justify="space-between"
+      >
+        {/* Logo */}
+        <Text
+          fontSize="2xl"
+          fontWeight="bold"
+          bgGradient="linear(to-r, primary.500, mindfulness.500)"
+          bgClip="text"
+        >
+          Space4U
+        </Text>
+
+        {/* Desktop Navigation */}
+        <HStack spacing={6} display={{ base: 'none', md: 'flex' }}>
+          {navItems.map((item) => (
+            <Button
+              key={item.path}
+              as={Link}
+              to={item.path}
+              variant="ghost"
+              minW="44px"
+              minH="44px"
+              _hover={{ bg: 'primary.50' }}
+            >
+              {item.label}
+            </Button>
+          ))}
+          <Button
+            onClick={onLogout}
+            colorScheme="primary"
+            minW="44px"
+            minH="44px"
+          >
+            Logout
+          </Button>
+        </HStack>
+
+        {/* Mobile Menu Button */}
+        <IconButton
+          aria-label="Open menu"
+          icon={<Menu />}
+          display={{ base: 'flex', md: 'none' }}
+          onClick={onOpen}
+          minW="44px"
+          minH="44px"
+        />
+      </Flex>
+
+      {/* Mobile Drawer */}
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton minW="44px" minH="44px" />
+          <DrawerBody pt={16}>
+            <VStack spacing={4} align="stretch">
+              {navItems.map((item) => (
+                <Button
+                  key={item.path}
+                  as={Link}
+                  to={item.path}
+                  variant="ghost"
+                  size="lg"
+                  onClick={onClose}
+                  minH="44px"
+                >
+                  {item.label}
+                </Button>
+              ))}
+              <Button
+                onClick={() => {
+                  onLogout();
+                  onClose();
+                }}
+                colorScheme="primary"
+                size="lg"
+                minH="44px"
+              >
+                Logout
+              </Button>
+            </VStack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </Box>
+  );
+};
+```
+{% endraw %}
 import { 
   Box, 
   Flex, 
@@ -718,6 +886,83 @@ function MoodCard({ mood, onClick }) {
 #### After (Modern)
 ```typescript
 // src/components/modern/MoodCard.tsx
+{% raw %}
+```typescript
+import { Box, Text, VStack, HStack, Badge } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+import { cardHover } from '../../theme/animations';
+import { format } from 'date-fns';
+
+interface MoodCardProps {
+  mood: {
+    id: string;
+    emoji: string;
+    date: Date;
+    note?: string;
+    value: number;
+  };
+  onClick: (id: string) => void;
+}
+
+export const ModernMoodCard: React.FC<MoodCardProps> = ({ mood, onClick }) => {
+  const moodColors = {
+    1: 'crisis.500',
+    2: 'caution.500',
+    3: 'gray.500',
+    4: 'primary.500',
+    5: 'growth.500'
+  };
+
+  return (
+    <Box
+      as={motion.div}
+      {...cardHover}
+      bg="white"
+      p={6}
+      borderRadius="xl"
+      boxShadow="md"
+      cursor="pointer"
+      onClick={() => onClick(mood.id)}
+      role="button"
+      tabIndex={0}
+      aria-label={`Mood entry from ${format(mood.date, 'PPP')}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick(mood.id);
+        }
+      }}
+      _focus={{
+        outline: '3px solid',
+        outlineColor: 'primary.500',
+        outlineOffset: '2px'
+      }}
+    >
+      <VStack align="start" spacing={3}>
+        <HStack justify="space-between" w="full">
+          <Text fontSize="4xl" role="img" aria-label="Mood emoji">
+            {mood.emoji}
+          </Text>
+          <Badge colorScheme={moodColors[mood.value]}>
+            {mood.value}/5
+          </Badge>
+        </HStack>
+        
+        <Text fontSize="sm" color="gray.600">
+          {format(mood.date, 'PPP')}
+        </Text>
+        
+        {mood.note && (
+          <Text fontSize="md" color="gray.700" noOfLines={2}>
+            {mood.note}
+          </Text>
+        )}
+      </VStack>
+    </Box>
+  );
+};
+```
+{% endraw %}
 import { Box, Text, VStack, HStack, Badge } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { cardHover } from '../../theme/animations';

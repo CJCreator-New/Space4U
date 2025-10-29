@@ -86,6 +86,7 @@ import { fadeInUp, scaleIn } from './utils/animations';
 ```
 
 ### 6. Staggered Children
+{% raw %}
 ```jsx
 import { motion } from 'framer-motion';
 import { staggerChildren, fadeInUp } from './utils/animations';
@@ -98,6 +99,7 @@ import { staggerChildren, fadeInUp } from './utils/animations';
   ))}
 </motion.div>
 ```
+{% endraw %}
 
 ## Step 4: Apply to Existing Components
 

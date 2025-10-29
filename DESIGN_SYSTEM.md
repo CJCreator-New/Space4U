@@ -256,6 +256,7 @@ smooth: config.smooth
 ```
 
 ### Usage
+{% raw %}
 ```jsx
 <Box 
   p={{ base: 4, md: 6, lg: 8 }}
@@ -264,6 +265,7 @@ smooth: config.smooth
   Responsive content
 </Box>
 ```
+{% endraw %}
 
 ---
 
@@ -299,6 +301,7 @@ smooth: config.smooth
 ## 11. Usage Examples
 
 ### Page Layout
+{% raw %}
 ```jsx
 import { Box, Container } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
@@ -317,6 +320,7 @@ function Page() {
   );
 }
 ```
+{% endraw %}
 
 ### Feature Card
 ```jsx

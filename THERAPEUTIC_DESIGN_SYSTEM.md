@@ -311,6 +311,56 @@ export const MoodScaleVisual: React.FC<MoodScaleProps> = ({
 
 ```typescript
 // components/progress/HopefulProgressBar.tsx
+{% raw %}
+```typescript
+export const HopefulProgressBar: React.FC<ProgressProps> = ({
+  value,
+  max = 100,
+  label,
+  showPercentage = false
+}) => {
+  const percentage = (value / max) * 100;
+  const springs = useSpring({
+    width: `${percentage}%`,
+    config: therapeuticAnimations.gentle
+  });
+
+  return (
+    <Box>
+      <HStack justify="space-between" mb={2}>
+        <Text fontSize="sm" fontWeight="medium">{label}</Text>
+        {showPercentage && (
+          <Text fontSize="sm" color="gray.500">
+            {Math.round(percentage)}%
+          </Text>
+        )}
+      </HStack>
+
+      <Box
+        h="8px"
+        bg="gray.100"
+        borderRadius="full"
+        overflow="hidden"
+        role="progressbar"
+        aria-valuenow={value}
+        aria-valuemin={0}
+        aria-valuemax={max}
+        aria-label={label}
+      >
+        <animated.div
+          style={{
+            ...springs,
+            height: '100%',
+            background: 'linear-gradient(90deg, #7FB069, #9BC285)',
+            borderRadius: '9999px'
+          }}
+        />
+      </Box>
+    </Box>
+  );
+};
+```
+{% endraw %}
 export const HopefulProgressBar: React.FC<ProgressProps> = ({
   value,
   max = 100,
