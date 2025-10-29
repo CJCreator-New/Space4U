@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { AlertTriangle, RefreshCw } from 'lucide-react'
+import { AlertTriangle, RefreshCw } from '../config/icons'
 
 export default function PageWrapper({ children }) {
   const [error, setError] = useState(null)

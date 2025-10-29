@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { CheckCircle, Upload, AlertCircle } from 'lucide-react'
+import { CheckCircle, Upload, AlertCircle } from '../config/icons'
 import { fullMigrationService } from '../services/fullMigrationService'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 

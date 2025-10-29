@@ -21,6 +21,11 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        primary: ['Inter', 'system-ui', 'sans-serif'],
+        secondary: ['Poppins', 'system-ui', 'sans-serif'],
+        accent: ['Nunito', 'system-ui', 'sans-serif'],
+        professional: ['Lato', 'system-ui', 'sans-serif'],
+        readable: ['Open Sans', 'system-ui', 'sans-serif'],
       },
     },
   },

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Crown, Lock, Sparkles } from 'lucide-react'
+import { HeroCrown, Lock, Sparkles } from '../config/icons'
 
 function PremiumPaywall({ feature, description, children }) {
   const navigate = useNavigate()
@@ -21,10 +21,10 @@ function PremiumPaywall({ feature, description, children }) {
       <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm">
         <div className="text-center p-8 max-w-md">
           <div className="w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Crown className="text-white" size={32} />
+            <HeroCrown className="text-white" size={32} />
           </div>
           
-          <h3 className="text-2xl font-bold text-text-primary mb-2">
+          <h3 className="text-2xl font-bold text-text-primary mb-2 font-secondary">
             Premium Feature
           </h3>
           

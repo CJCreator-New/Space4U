@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, X, Edit, Trash2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, X, Edit, Trash2 } from '../config/icons'
 import { useMoods } from '../hooks/useMoods'
 
 const moodColors = {

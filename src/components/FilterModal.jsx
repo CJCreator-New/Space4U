@@ -1,4 +1,4 @@
-import { X } from 'lucide-react'
+import { X } from '../config/icons'
 import BottomSheet from './common/BottomSheet'
 
 function FilterModal({ isOpen, onClose, filters, onFiltersChange }) {

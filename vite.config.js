@@ -14,9 +14,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       external: [
-        '@capacitor-community/biometric-auth',
-        '@capacitor/biometric-auth',
-        '@capacitor/biometric'
+        '@aparajita/capacitor-biometric-auth',
+        '@capacitor/biometric-auth'
       ],
       output: {
         manualChunks: {

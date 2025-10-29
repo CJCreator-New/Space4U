@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, Trash2, Bell, BellOff } from 'lucide-react'
+import { Plus, Trash2, Bell, BellOff } from '../config/icons'
 import { REMINDER_TYPES, getReminders, createReminder, deleteReminder, toggleReminder } from '../utils/customReminders'
 
 function ReminderManager() {

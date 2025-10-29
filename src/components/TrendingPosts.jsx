@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { TrendingUp, Flame } from 'lucide-react'
+import { TrendingUp, Flame } from '../config/icons'
 import { getTrendingPosts } from '../utils/trending'
 import { useNavigate } from 'react-router-dom'
 

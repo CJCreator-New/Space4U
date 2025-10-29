@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Heart, MessageCircle, Share, MoreHorizontal, Send } from 'lucide-react'
+import { MessageCircle, Share, MoreHorizontal, Send, FaHeart } from '../config/icons'
 import { formatRelativeTime, truncateText } from '../utils/helpers'
 import { addPoints, POINT_VALUES } from '../utils/badgeSystem'
 import { useRealtimeComments } from '../hooks/useRealtimeComments'
@@ -66,7 +66,7 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
 
       {/* Post Content */}
       <div className="mb-3">
-        <p className="text-text-primary leading-relaxed">
+        <p className="text-text-primary leading-relaxed font-readable">
           {shouldTruncate && !isExpanded 
             ? truncateText(post.content, 200)
             : post.content
@@ -106,7 +106,7 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
               : 'text-text-secondary hover:text-red-500 hover:bg-red-50'
           }`}
         >
-          <Heart 
+          <FaHeart 
             size={20} 
             className={`transition-transform duration-200 ${isHearted ? 'scale-110' : ''}`}
             fill={isHearted ? 'currentColor' : 'none'}
@@ -159,7 +159,7 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
                         Reply
                       </button>
                       <button className="flex items-center gap-1 text-xs text-text-secondary hover:text-red-500">
-                        <Heart size={12} />
+                        <FaHeart size={12} />
                         {comment.hearts}
                       </button>
                     </div>

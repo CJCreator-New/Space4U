@@ -1,7 +1,20 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { TrendingUp, Calendar, Target, Award } from 'lucide-react'
+import { TrendingUp, Calendar, Target, Award } from '../config/icons'
 import { useMoods } from '../hooks/useMoods'
+import {
+  Box,
+  Text,
+  VStack,
+  HStack,
+  SimpleGrid,
+  Card,
+  CardBody,
+  Icon,
+  useColorModeValue,
+  Skeleton,
+  Select,
+} from '@chakra-ui/react'
 
 const moodLabels = {
   5: { label: 'Amazing', emoji: '😊' },
@@ -118,19 +131,23 @@ function MoodTrends() {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
-        <div className="bg-surface dark:bg-gray-700 p-3 rounded-xl shadow-lg border dark:border-gray-600">
-          <p className="font-medium">{new Date(data.date).toLocaleDateString('en-US', { 
-            weekday: 'long', 
-            month: 'long', 
-            day: 'numeric' 
-          })}</p>
-          <p className="text-lg">{data.emoji} {data.label}</p>
-          {data.note && (
-            <p className="text-sm text-text-secondary mt-1 max-w-xs">
-              {data.note.length > 50 ? `${data.note.slice(0, 50)}...` : data.note}
-            </p>
-          )}
-        </div>
+        <Card bg={useColorModeValue('white', 'gray.700')} shadow="lg" borderRadius="xl">
+          <CardBody p={3}>
+            <Text fontWeight="medium">
+              {new Date(data.date).toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </Text>
+            <Text fontSize="lg">{data.emoji} {data.label}</Text>
+            {data.note && (
+              <Text fontSize="sm" color="gray.600" mt={1} maxW="xs">
+                {data.note.length > 50 ? `${data.note.slice(0, 50)}...` : data.note}
+              </Text>
+            )}
+          </CardBody>
+        </Card>
       )
     }
     return null
@@ -142,29 +159,42 @@ function MoodTrends() {
 
   if (loading) {
     return (
-      <div className="card p-6 mb-6 dark:bg-gray-800 dark:border-gray-700">
-        <div className="animate-pulse">
-          <div className="h-6 bg-gray-200 dark:bg-gray-600 rounded w-48 mb-4"></div>
-          <div className="h-64 bg-gray-200 dark:bg-gray-600 rounded"></div>
-        </div>
-      </div>
+      <Card mb={6}>
+        <CardBody p={6}>
+          <VStack spacing={4} align="stretch">
+            <Skeleton height="6" width="48" />
+            <Skeleton height="64" />
+          </VStack>
+        </CardBody>
+      </Card>
     )
   }
 
   if (chartData.length < 3) {
     return (
-      <div className="card p-6 mb-6 text-center dark:bg-gray-800 dark:border-gray-700">
-        <div className="text-4xl mb-4">📈</div>
-        <h3 className="text-xl font-semibold text-text-primary dark:text-white mb-2">Your Mood Trends</h3>
-        <p className="text-text-secondary dark:text-gray-300 mb-4">Keep logging to see trends</p>
-        <div className="bg-gray-100 dark:bg-gray-700 rounded-full h-2 mb-2">
-          <div 
-            className="bg-primary dark:bg-primary-light h-2 rounded-full transition-all duration-300"
-            style={{ width: `${(chartData.length / 3) * 100}%` }}
-          ></div>
-        </div>
-        <p className="text-sm text-text-secondary dark:text-gray-300">{chartData.length}/3 moods needed</p>
-      </div>
+      <Card mb={6} textAlign="center">
+        <CardBody p={6}>
+          <Text fontSize="4xl" mb={4}>📈</Text>
+          <Text fontSize="xl" fontWeight="semibold" mb={2}>Your Mood Trends</Text>
+          <Text color="gray.600" mb={4}>Keep logging to see trends</Text>
+          <Box
+            bg="gray.100"
+            borderRadius="full"
+            h={2}
+            mb={2}
+            position="relative"
+          >
+            <Box
+              bg="blue.500"
+              h={2}
+              borderRadius="full"
+              transition="all 0.3s"
+              width={`${(chartData.length / 3) * 100}%`}
+            />
+          </Box>
+          <Text fontSize="sm" color="gray.600">{chartData.length}/3 moods needed</Text>
+        </CardBody>
+      </Card>
     )
   }
 
@@ -175,126 +205,127 @@ function MoodTrends() {
   }), [])
 
   return (
-    <div className="card p-6 mb-6 dark:bg-gray-800 dark:border-gray-700">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-xl font-semibold text-text-primary dark:text-white">Your Mood Trends</h3>
-          <p className="text-text-secondary dark:text-gray-300 text-sm">{periodLabels[period]}</p>
-        </div>
-        <div className="flex gap-2">
-          {['7', '30', 'all'].map((p) => (
-            <button
-              key={p}
-              onClick={() => setPeriod(p)}
-              className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                period === p ? 'bg-primary dark:bg-primary-light text-white' : 'text-text-secondary dark:text-gray-300 hover:text-text-primary dark:hover:text-white'
-              }`}
-            >
-              {p === 'all' ? 'All time' : `${p} days`}
-            </button>
-          ))}
-        </div>
-      </div>
+    <Card mb={6}>
+      <CardBody p={6}>
+        <HStack justify="space-between" align="center" mb={6}>
+          <Box>
+            <Text fontSize="xl" fontWeight="semibold">Your Mood Trends</Text>
+            <Text fontSize="sm" color="gray.600">{periodLabels[period]}</Text>
+          </Box>
+          <HStack gap={2}>
+            {['7', '30', 'all'].map((p) => (
+              <Button
+                key={p}
+                size="sm"
+                variant={period === p ? 'solid' : 'ghost'}
+                colorScheme={period === p ? 'blue' : 'gray'}
+                onClick={() => setPeriod(p)}
+              >
+                {p === 'all' ? 'All time' : `${p} days`}
+              </Button>
+            ))}
+          </HStack>
+        </HStack>
 
-      {stats && (
-        <div className="mb-6 p-4 bg-primary/5 dark:bg-primary/10 rounded-xl">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-2xl">{moodLabels[Math.round(stats.average)]?.emoji}</span>
-            <span className="text-lg font-semibold">
-              Your average mood: {stats.average.toFixed(1)}
-            </span>
-          </div>
-          {stats.trend !== 0 && (
-            <p className="text-sm text-text-secondary">
-              {stats.trend > 0 ? '↑' : '↓'} {Math.abs(stats.trend).toFixed(1)} {stats.trend > 0 ? 'better' : 'lower'} than last period
-            </p>
-          )}
-        </div>
-      )}
+        {stats && (
+          <Box mb={6} p={4} bg="blue.50" borderRadius="xl">
+            <HStack gap={2} mb={2}>
+              <Text fontSize="2xl">{moodLabels[Math.round(stats.average)]?.emoji}</Text>
+              <Text fontSize="lg" fontWeight="semibold">
+                Your average mood: {stats.average.toFixed(1)}
+              </Text>
+            </HStack>
+            {stats.trend !== 0 && (
+              <Text fontSize="sm" color="gray.600">
+                {stats.trend > 0 ? '↑' : '↓'} {Math.abs(stats.trend).toFixed(1)} {stats.trend > 0 ? 'better' : 'lower'} than last period
+              </Text>
+            )}
+          </Box>
+        )}
 
-      <div className="h-64 md:h-80 mb-6">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData}>
-            <defs>
-              <linearGradient id="moodGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#4F46E5" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#4F46E5" stopOpacity={0}/>
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis 
-              dataKey="displayDate" 
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 12, fill: '#6B7280' }}
-            />
-            <YAxis 
-              domain={[1, 5]}
-              ticks={[1, 2, 3, 4, 5]}
-              tickFormatter={formatYAxisLabel}
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 16 }}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Area
-              type="monotone"
-              dataKey="mood"
-              stroke="#4F46E5"
-              strokeWidth={3}
-              fill="url(#moodGradient)"
-              dot={{ fill: '#4F46E5', strokeWidth: 2, r: 4 }}
-              activeDot={{ r: 6, stroke: '#4F46E5', strokeWidth: 2 }}
-              animationDuration={1000}
-              animationEasing="ease-out"
-              isAnimationActive={true}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
+        <Box h={{ base: "64", md: "80" }} mb={6}>
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={chartData}>
+              <defs>
+                <linearGradient id="moodGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#4F46E5" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#4F46E5" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+              <XAxis
+                dataKey="displayDate"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12, fill: '#6B7280' }}
+              />
+              <YAxis
+                domain={[1, 5]}
+                ticks={[1, 2, 3, 4, 5]}
+                tickFormatter={formatYAxisLabel}
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 16 }}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Area
+                type="monotone"
+                dataKey="mood"
+                stroke="#4F46E5"
+                strokeWidth={3}
+                fill="url(#moodGradient)"
+                dot={{ fill: '#4F46E5', strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6, stroke: '#4F46E5', strokeWidth: 2 }}
+                animationDuration={1000}
+                animationEasing="ease-out"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </Box>
 
-      {stats && (
-        <div className="grid gap-3 md:grid-cols-2">
-          <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-xl">
-            <Award className="text-primary dark:text-primary-light" size={20} />
-            <div>
-              <p className="text-sm font-medium dark:text-white">Best day</p>
-              <p className="text-xs text-text-secondary dark:text-gray-300">
-                {new Date(stats.bestDay.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - {stats.bestDay.emoji}
-              </p>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-xl">
-            <Target className="text-primary dark:text-primary-light" size={20} />
-            <div>
-              <p className="text-sm font-medium dark:text-white">Most common mood</p>
-              <p className="text-xs text-text-secondary dark:text-gray-300">
-                {moodLabels[stats.mostCommonMood]?.emoji} {moodLabels[stats.mostCommonMood]?.label}
-              </p>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-xl">
-            <TrendingUp className="text-primary dark:text-primary-light" size={20} />
-            <div>
-              <p className="text-sm font-medium dark:text-white">Good days</p>
-              <p className="text-xs text-text-secondary dark:text-gray-300">{stats.goodDaysPercent}% felt good or better</p>
-            </div>
-          </div>
-          
-          {stats.mostConsistentDay && (
-            <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-xl">
-              <Calendar className="text-primary dark:text-primary-light" size={20} />
-              <div>
-                <p className="text-sm font-medium dark:text-white">Most consistent</p>
-                <p className="text-xs text-text-secondary dark:text-gray-300">{stats.mostConsistentDay}s</p>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+        {stats && (
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={3}>
+            <HStack gap={3} p={3} bg="gray.50" borderRadius="xl">
+              <Icon as={Award} color="blue.500" boxSize={5} />
+              <Box>
+                <Text fontSize="sm" fontWeight="medium">Best day</Text>
+                <Text fontSize="xs" color="gray.600">
+                  {new Date(stats.bestDay.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - {stats.bestDay.emoji}
+                </Text>
+              </Box>
+            </HStack>
+
+            <HStack gap={3} p={3} bg="gray.50" borderRadius="xl">
+              <Icon as={Target} color="blue.500" boxSize={5} />
+              <Box>
+                <Text fontSize="sm" fontWeight="medium">Most common mood</Text>
+                <Text fontSize="xs" color="gray.600">
+                  {moodLabels[stats.mostCommonMood]?.emoji} {moodLabels[stats.mostCommonMood]?.label}
+                </Text>
+              </Box>
+            </HStack>
+
+            <HStack gap={3} p={3} bg="gray.50" borderRadius="xl">
+              <Icon as={TrendingUp} color="blue.500" boxSize={5} />
+              <Box>
+                <Text fontSize="sm" fontWeight="medium">Good days</Text>
+                <Text fontSize="xs" color="gray.600">{stats.goodDaysPercent}% felt good or better</Text>
+              </Box>
+            </HStack>
+
+            {stats.mostConsistentDay && (
+              <HStack gap={3} p={3} bg="gray.50" borderRadius="xl">
+                <Icon as={Calendar} color="blue.500" boxSize={5} />
+                <Box>
+                  <Text fontSize="sm" fontWeight="medium">Most consistent</Text>
+                  <Text fontSize="xs" color="gray.600">{stats.mostConsistentDay}s</Text>
+                </Box>
+              </HStack>
+            )}
+          </SimpleGrid>
+        )}
+      </CardBody>
+    </Card>
   )
 }
 

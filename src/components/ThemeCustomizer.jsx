@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Check, Palette } from 'lucide-react'
+import { Check, Palette } from '../config/icons'
 import { THEMES, getUserTheme, setUserTheme } from '../utils/themes'
 
 function ThemeCustomizer() {
@@ -13,7 +13,7 @@ function ThemeCustomizer() {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-lg font-semibold text-text-primary dark:text-white mb-2 flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-text-primary dark:text-white mb-2 flex items-center gap-2 font-secondary">
           <Palette size={20} />
           App Theme
         </h3>

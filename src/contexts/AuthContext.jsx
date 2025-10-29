@@ -16,15 +16,32 @@ export function AuthProvider({ children }) {
       return
     }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session }, error: sessionError }) => {
+      if (sessionError) {
+        console.warn('Session error:', sessionError.message)
+        // Clear invalid session
+        supabase.auth.signOut().catch(console.error)
+      }
       setUser(session?.user ?? null)
       if (session?.user && !fullMigrationService.isMigrationComplete()) {
         fullMigrationService.migrateAllData(session.user.id).catch(console.error)
       }
       setLoading(false)
+    }).catch(err => {
+      console.error('Failed to get session:', err)
+      setLoading(false)
     })
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('Auth state changed:', event)
+      
+      // Handle token refresh errors
+      if (event === 'TOKEN_REFRESHED' && !session) {
+        console.warn('Token refresh failed, signing out')
+        await supabase.auth.signOut().catch(console.error)
+      }
+      
       setUser(session?.user ?? null)
       if (event === 'SIGNED_IN' && session?.user && !fullMigrationService.isMigrationComplete()) {
         await fullMigrationService.migrateAllData(session.user.id).catch(console.error)
