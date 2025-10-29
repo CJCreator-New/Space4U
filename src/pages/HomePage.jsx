@@ -29,6 +29,8 @@ import SafeComponent from '../components/SafeComponent'
 import AdaptiveDashboard from '../components/personalization/AdaptiveDashboard'
 import FABMenu from '../components/common/FABMenu'
 import MicroInteraction from '../components/common/MicroInteraction'
+import NotificationTestPanel from '../components/NotificationTestPanel'
+import DashboardWidgets from '../components/dashboard/DashboardWidgets'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import { initPersonalization } from '../utils/personalizationEngine'
 import { trackFeatureUsage } from '../utils/usageTracker'
@@ -225,6 +227,11 @@ function HomePage() {
           </Card>
         </Link>
       )}
+      
+      {/* Dashboard Widgets - New Personalized Dashboard */}
+      <Box mb={6}>
+        <DashboardWidgets />
+      </Box>
       
       {/* Mood Tracking Section - Wrapped in SafeComponent */}
       {showMoodTracker && (
@@ -440,6 +447,9 @@ function HomePage() {
 
       {/* FAB Menu for Quick Actions */}
       <FABMenu actions={fabActions} />
+      
+      {/* Notification Test Panel - Remove after testing */}
+      <NotificationTestPanel />
     </Box>
   )
 }

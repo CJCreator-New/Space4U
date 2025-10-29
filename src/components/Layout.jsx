@@ -1,6 +1,8 @@
 import { Outlet } from 'react-router-dom'
 import Navigation from './Navigation'
 import LanguageSwitcher from './LanguageSwitcher'
+import NotificationCenter from './NotificationCenter'
+import CrisisSupport from './CrisisSupport'
 import { useFeatureFlag } from '../config/featureFlags'
 import { ModernLayout } from './modern/ModernLayout'
 
@@ -25,13 +27,17 @@ function Layout() {
         <Navigation />
         <main id="main-content" className="flex-1 pb-20 md:pb-0 md:ml-64">
           <div className="p-4 md:p-6">
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-end items-center gap-3 mb-4">
+              <NotificationCenter />
               <LanguageSwitcher />
             </div>
             <Outlet />
           </div>
         </main>
       </div>
+      
+      {/* Crisis Support - Always Available */}
+      <CrisisSupport />
     </div>
   )
 }
