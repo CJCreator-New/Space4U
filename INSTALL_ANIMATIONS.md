@@ -1,10 +1,13 @@
 # Animation System Installation & Usage
 
-## Step 1: Install Missing Library
+## Step 1: Install Icon Libraries
 
 ```bash
-npm install react-icons@^5.0.1
+npm install @heroicons/react@^2.1.1
 ```
+
+**Already Installed:**
+- lucide-react ✅
 
 ## Step 2: Already Installed ✅
 - Framer Motion ✅
@@ -34,13 +37,22 @@ import { AnimatedButton } from './components/common/AnimatedButton';
 </AnimatedButton>
 ```
 
-### 3. Icons with Animation
+### 3. Icons with Animation (Unified Library)
 ```jsx
-import { Icon } from './components/common/Icon';
-import { Heart, Star, Smile } from 'lucide-react';
+import { Icon, Icons } from './components/common/IconLibrary';
 
-<Icon icon={Heart} size={24} color="#EF4444" animate />
-<Icon icon={Star} size={20} />
+// Lucide icons
+<Icon name="Heart" library="lucide" size={24} color="#EF4444" animate />
+
+// Heroicons solid
+<Icon name="HeartIcon" library="hero-solid" size={24} color="#EF4444" animate />
+
+// Heroicons outline
+<Icon name="HeartIcon" library="hero-outline" size={24} color="#EF4444" animate />
+
+// Convenience exports
+<Icons.Heart size={24} color="#EF4444" animate />
+<Icons.HeartSolid size={24} color="#EF4444" animate />
 ```
 
 ### 4. React Spring Animations
