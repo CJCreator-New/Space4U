@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, AlertTriangle, Check } from 'lucide-react'
+import { X, AlertTriangle, Check } from '../config/icons'
 import { REPORT_REASONS, reportPost } from '../utils/moderation'
 
 function ReportModal({ isOpen, onClose, postId }) {

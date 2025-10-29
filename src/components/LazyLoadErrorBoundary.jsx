@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Box, Button, Heading, Text, VStack } from '@chakra-ui/react';
-import { AlertCircle, RefreshCw } from 'lucide-react';
+import { AlertCircle, RefreshCw } from '../config/icons';
 
 class LazyLoadErrorBoundary extends Component {
   constructor(props) {

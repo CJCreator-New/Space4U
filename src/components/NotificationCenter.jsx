@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Bell, Check, CheckCheck, Trash2, X, Settings } from 'lucide-react'
+import { Bell, Check, CheckCheck, Trash2, X, Settings } from '../config/icons'
 import { useNotifications } from '../contexts/NotificationContext'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -86,7 +86,7 @@ export default function NotificationCenter() {
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-              <h3 className="text-lg font-semibold text-text-primary dark:text-white">
+              <h3 className="text-lg font-semibold text-text-primary dark:text-white font-secondary">
                 Notifications
               </h3>
               <div className="flex items-center gap-2">

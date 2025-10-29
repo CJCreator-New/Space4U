@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { TrendingUp, Calendar, Target, Award } from 'lucide-react'
+import { TrendingUp, Calendar, Target, Award } from '../config/icons'
 import { useMoods } from '../hooks/useMoods'
 import {
   Box,

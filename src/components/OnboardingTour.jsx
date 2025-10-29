@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, ArrowRight, ArrowLeft, Check } from 'lucide-react'
+import { X, ArrowRight, ArrowLeft, Check } from '../config/icons'
 
 function OnboardingTour({ onComplete }) {
   const [step, setStep] = useState(0)
@@ -80,7 +80,7 @@ function OnboardingTour({ onComplete }) {
         {/* Content */}
         <div className="text-center mb-8">
           <div className="text-6xl mb-4">{currentStep.image}</div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 font-secondary">
             {currentStep.title}
           </h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
