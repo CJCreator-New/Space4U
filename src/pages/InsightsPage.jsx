@@ -8,6 +8,7 @@ import Disclaimer from '../components/common/Disclaimer'
 import PremiumPaywall from '../components/PremiumPaywall'
 import WellnessBreakdown from '../components/premium/WellnessBreakdown'
 import AnimatedNumber from '../components/common/AnimatedNumber'
+import OnboardingTip from '../components/common/OnboardingTip'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import { 
   calculateAverageMood, 
@@ -21,6 +22,8 @@ import {
   generateSuggestions,
   getMoodBreakdown
 } from '../utils/moodAnalysis'
+import TrackMood from '../components/TrackMood'
+import { motion } from 'framer-motion'
 
 const moodLabels = {
   5: { label: 'Amazing', emoji: '😊' },
@@ -41,6 +44,8 @@ function InsightsPage() {
   useEffect(() => {
     loadMoodData()
   }, [period])
+
+  // expose load for child components
 
   const loadMoodData = async () => {
     const cacheKey = `insights_${period}`
@@ -74,7 +79,7 @@ function InsightsPage() {
       filteredMoods = moodEntries.filter(m => new Date(m.date) >= monthAgo)
     }
 
-    setMoods(filteredMoods)
+  setMoods(filteredMoods)
     
     if (filteredMoods.length >= 3) {
       const analysisData = analyzeData(filteredMoods, moodEntries)
@@ -172,6 +177,11 @@ function InsightsPage() {
   return (
     <SafeComponent>
     <div className="max-w-4xl mx-auto animate-fade-in">
+      <OnboardingTip page="insights" />
+      
+      <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+        <TrackMood onSaved={loadMoodData} />
+      </motion.div>
       {/* Disclaimer Banner */}
       <div className="card p-4 bg-blue-50 border border-blue-200 mb-6">
         <div className="flex gap-3">

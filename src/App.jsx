@@ -30,6 +30,7 @@ const CircleFeedPage = lazy(() => import('./pages/CircleFeedPage'))
 const InsightsPage = lazy(() => import('./pages/InsightsPage'))
 const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const ResourceLibraryPage = lazy(() => import('./pages/ResourceLibraryPage'))
+const ResourceDetailPage = lazy(() => import('./pages/ResourceDetailPage'))
 const SettingsPage = lazy(() => import('./pages/SettingsPage'))
 const NotificationsPage = lazy(() => import('./pages/NotificationsPage'))
 const PremiumPage = lazy(() => import('./pages/PremiumPage'))
@@ -189,6 +190,7 @@ function AppContent() {
               <Route path="/insights" element={<InsightsPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/resources" element={<ResourceLibraryPage />} />
+              <Route path="/resources/:id" element={<ResourceDetailPage />} />
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/notifications" element={<NotificationsPage />} />
               <Route path="/premium" element={<PremiumPage />} />

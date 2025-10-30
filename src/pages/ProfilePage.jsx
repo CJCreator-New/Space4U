@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
 import MicroInteraction from '../components/common/MicroInteraction'
+import OnboardingTip from '../components/common/OnboardingTip'
 import { 
   BADGES, 
   LEVELS, 
@@ -234,6 +235,8 @@ function ProfilePage() {
 
   return (
     <div className="max-w-4xl mx-auto">
+      <OnboardingTip page="profile" />
+      
       {/* Premium Banner */}
       {showPremiumBanner && (
         <div className="bg-gradient-to-r from-primary to-primary-light text-white p-4 rounded-xl mb-6 relative">

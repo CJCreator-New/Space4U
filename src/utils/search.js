@@ -21,10 +21,20 @@ export const searchAll = (query) => {
     }
   })
   
-  // Search circles
-  const circles = JSON.parse(localStorage.getItem('safespace_user_circles') || '[]')
-  circles.forEach(circle => {
-    if (circle.name?.toLowerCase().includes(lowerQuery) || circle.description?.toLowerCase().includes(lowerQuery)) {
+  // Search circles (be tolerant of stored shapes: either array of ids or array of circle objects)
+  const rawUserCircles = JSON.parse(localStorage.getItem('safespace_user_circles') || '[]')
+  let userCircles = []
+  if (rawUserCircles.length > 0 && typeof rawUserCircles[0] === 'number') {
+    // If stored as ids, map to full objects using global circle list
+    const allCircles = JSON.parse(localStorage.getItem('safespace_circles') || '[]')
+    userCircles = rawUserCircles.map(id => allCircles.find(c => c.id === id)).filter(Boolean)
+  } else {
+    userCircles = rawUserCircles
+  }
+
+  userCircles.forEach(circle => {
+    if (!circle) return
+    if ((circle.name && circle.name.toLowerCase().includes(lowerQuery)) || (circle.description && circle.description.toLowerCase().includes(lowerQuery))) {
       results.push({
         type: 'circle',
         title: circle.name,

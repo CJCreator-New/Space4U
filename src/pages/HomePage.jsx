@@ -31,6 +31,13 @@ import FABMenu from '../components/common/FABMenu'
 import MicroInteraction from '../components/common/MicroInteraction'
 import NotificationTestPanel from '../components/NotificationTestPanel'
 import DashboardWidgets from '../components/dashboard/DashboardWidgets'
+import HeroSection from '../components/home/HeroSection'
+import QuickMoodCheckIn from '../components/home/QuickMoodCheckIn'
+import DailyTipWidget from '../components/home/DailyTipWidget'
+import TrendingContent from '../components/home/TrendingContent'
+import AnnouncementBanner from '../components/home/AnnouncementBanner'
+import OnboardingTip from '../components/common/OnboardingTip'
+import NavigationMap from '../components/common/NavigationMap'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import { initPersonalization } from '../utils/personalizationEngine'
 import { trackFeatureUsage } from '../utils/usageTracker'
@@ -42,6 +49,7 @@ function HomePage() {
   const [refreshKey, setRefreshKey] = useState(0)
   const [error, setError] = useState(null)
   const [showMoodTracker, setShowMoodTracker] = useState(false)
+  const [showNavMap, setShowNavMap] = useState(false)
   const { isPremium, trialActive, daysLeft } = getPremiumStatus()
 
   useEffect(() => {
@@ -102,88 +110,13 @@ function HomePage() {
   }
 
   return (
-    <Box maxW="4xl" mx="auto">
-      <Box
-        as={motion.div}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        position="relative"
-        overflow="hidden"
-        borderRadius="2xl"
-        bgGradient="linear(135deg, primary.500, purple.500, pink.500)"
-        p={8}
-        mb={6}
-        shadow="xl"
-      >
-        <Box position="absolute" inset={0} bg="blackAlpha.100" />
-        <Box position="relative" zIndex={10}>
-          <HStack justify="space-between" align="center">
-            <HStack gap={4}>
-              {user?.avatar && (
-                <Avatar
-                  size="xl"
-                  bg="whiteAlpha.200"
-                  backdropFilter="blur(10px)"
-                  border="2px solid"
-                  borderColor="whiteAlpha.300"
-                  shadow="lg"
-                  position="relative"
-                >
-                  {user.avatar}
-                  {isPremium && (
-                    <Badge
-                      position="absolute"
-                      top={-1}
-                      right={-1}
-                      bgGradient="linear(to-r, yellow.400, orange.400)"
-                      color="white"
-                      borderRadius="full"
-                      w={6}
-                      h={6}
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      <Icon as={Crown} w={3.5} h={3.5} />
-                    </Badge>
-                  )}
-                </Avatar>
-              )}
-              <Box>
-                <Heading
-                  size={{ base: "lg", md: "xl" }}
-                  color="white"
-                  textShadow="lg"
-                >
-                  {t('welcome.back')}{user?.username ? `, ${user.username}` : ''}! 👋
-                </Heading>
-                <Text color="whiteAlpha.900" fontSize="lg" mt={1}>
-                  {t('home.subtitle')}
-                </Text>
-              </Box>
-            </HStack>
-            {isPremium && (
-              <HStack
-                display={{ base: "none", md: "flex" }}
-                gap={2}
-                px={4}
-                py={2}
-                bg="whiteAlpha.200"
-                backdropFilter="blur(10px)"
-                borderRadius="full"
-                border="1px solid"
-                borderColor="whiteAlpha.300"
-              >
-                <Icon as={Crown} w={5} h={5} color="yellow.300" />
-                <Text color="white" fontWeight="medium">
-                  {trialActive ? t('premium.trialDaysLeft', { days: daysLeft }) : t('premium.title')}
-                </Text>
-              </HStack>
-            )}
-          </HStack>
-        </Box>
-      </Box>
+    <Box maxW="4xl" mx="auto" as="main" role="main" aria-label="Home page">
+      <OnboardingTip page="home" />
+      <NavigationMap isOpen={showNavMap} onClose={() => setShowNavMap(false)} />
+      
+      <HeroSection user={user} />
+      
+      <AnnouncementBanner />
       
       {!isPremium && (
         <Link to="/premium" style={{ textDecoration: 'none' }}>
@@ -228,19 +161,17 @@ function HomePage() {
         </Link>
       )}
       
-      {/* Dashboard Widgets - New Personalized Dashboard */}
+      <QuickMoodCheckIn />
+      
+      <Box mb={6}>
+        <DailyTipWidget />
+      </Box>
+      
+      <TrendingContent />
+      
       <Box mb={6}>
         <DashboardWidgets />
       </Box>
-      
-      {/* Mood Tracking Section - Wrapped in SafeComponent */}
-      {showMoodTracker && (
-        <SafeComponent>
-          <Box mb={6}>
-            <MoodTracker onMoodLogged={handleMoodLogged} />
-          </Box>
-        </SafeComponent>
-      )}
       
       <SafeComponent>
         <Box mb={6}>
@@ -253,203 +184,38 @@ function HomePage() {
           <MoodTrends key={refreshKey} />
         </Box>
       </SafeComponent>
-
-      <SafeComponent>
-        <Box mb={6}>
-          <AdaptiveDashboard />
-        </Box>
-      </SafeComponent>
       
-      <Box mb={6}>
+      <Box mb={6} as="section" aria-label="Wellness tools">
         <Heading size="lg" mb={4}>{t('home.quickActions')}</Heading>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
-          <MicroInteraction type="lift">
-            <Link to="/gratitude" style={{ textDecoration: 'none' }}>
+          {[
+            { path: '/circles', emoji: '🤝', key: 'circles' },
+            { path: '/resources', emoji: '📚', key: 'resources' },
+            { path: '/wellness', emoji: '📊', key: 'wellnessScore' },
+            { path: '/gamification', emoji: '🏆', key: 'gamification' },
+            { path: '/social', emoji: '💬', key: 'socialHub' },
+            { path: '/analytics', emoji: '📈', key: 'analytics' },
+          ].map(({ path, emoji, key }) => (
+            <Link key={path} to={path} style={{ textDecoration: 'none' }}>
               <Card
-                p={6}
-                _hover={{ shadow: "xl" }}
-                transition="all 0.3s"
                 as={motion.div}
-                whileHover={{ y: -2 }}
+                whileHover={{ y: -4, shadow: 'xl' }}
+                p={6}
+                transition="all 0.3s"
+                cursor="pointer"
               >
                 <HStack gap={3} mb={2}>
-                  <Text fontSize="3xl">❤️</Text>
-                  <Heading size="md">{t('wellnessTools.gratitude')}</Heading>
+                  <Text fontSize="3xl">{emoji}</Text>
+                  <Heading size="md">{t(`wellnessTools.${key}`)}</Heading>
                 </HStack>
-                <Text color="gray.600" fontSize="sm">{t('wellnessTools.gratitudeDesc')}</Text>
+                <Text color="gray.600" fontSize="sm">{t(`wellnessTools.${key}Desc`)}</Text>
               </Card>
             </Link>
-          </MicroInteraction>
-          
-          <MicroInteraction type="lift">
-            <Link to="/habits" style={{ textDecoration: 'none' }}>
-              <Card
-                p={6}
-                _hover={{ shadow: "xl" }}
-                transition="all 0.3s"
-                as={motion.div}
-                whileHover={{ y: -2 }}
-              >
-                <HStack gap={3} mb={2}>
-                  <Text fontSize="3xl">🎯</Text>
-                  <Heading size="md">{t('wellnessTools.habits')}</Heading>
-                </HStack>
-                <Text color="gray.600" fontSize="sm">{t('wellnessTools.habitsDesc')}</Text>
-              </Card>
-            </Link>
-          </MicroInteraction>
-          
-          <MicroInteraction type="lift">
-            <Link to="/emotions" style={{ textDecoration: 'none' }}>
-              <Card
-                p={6}
-                _hover={{ shadow: "xl" }}
-                transition="all 0.3s"
-                as={motion.div}
-                whileHover={{ y: -2 }}
-              >
-                <HStack gap={3} mb={2}>
-                  <Text fontSize="3xl">💭</Text>
-                  <Heading size="md">{t('wellnessTools.emotions')}</Heading>
-                </HStack>
-                <Text color="gray.600" fontSize="sm">{t('wellnessTools.emotionsDesc')}</Text>
-              </Card>
-            </Link>
-          </MicroInteraction>
-          
-          <Link to="/coping-skills" style={{ textDecoration: 'none' }}>
-            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">🛠️</Text>
-                <Heading size="md">{t('wellnessTools.copingSkills')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.copingSkillsDesc')}</Text>
-            </Card>
-          </Link>
-          
-          <Link to="/reminders" style={{ textDecoration: 'none' }}>
-            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">⏰</Text>
-                <Heading size="md">{t('wellnessTools.reminders')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.remindersDesc')}</Text>
-            </Card>
-          </Link>
-          
-          <Link to="/tools" style={{ textDecoration: 'none' }}>
-            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">🧰</Text>
-                <Heading size="md">{t('wellnessTools.therapyTools')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.therapyToolsDesc')}</Text>
-            </Card>
-          </Link>
-          
-          <Link to="/wellness" style={{ textDecoration: 'none' }}>
-            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">📊</Text>
-                <Heading size="md">{t('wellnessTools.wellnessScore')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.wellnessScoreDesc')}</Text>
-            </Card>
-          </Link>
-          
-          <Link to="/advanced-tools" style={{ textDecoration: 'none' }}>
-            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">🚀</Text>
-                <Heading size="md">{t('wellnessTools.advancedTools')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.advancedToolsDesc')}</Text>
-            </Card>
-          </Link>
-          
-          <Link to="/gamification" style={{ textDecoration: 'none' }}>
-            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">🏆</Text>
-                <Heading size="md">{t('wellnessTools.gamification')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.gamificationDesc')}</Text>
-            </Card>
-          </Link>
-          
-          <Link to="/wellness-plan" style={{ textDecoration: 'none' }}>
-            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">📅</Text>
-                <Heading size="md">{t('wellnessTools.wellnessPlan')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.wellnessPlanDesc')}</Text>
-            </Card>
-          </Link>
-          
-          <Link to="/social" style={{ textDecoration: 'none' }}>
-            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">🤝</Text>
-                <Heading size="md">{t('wellnessTools.socialHub')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.socialHubDesc')}</Text>
-            </Card>
-          </Link>
-          
-          <Link to="/analytics" style={{ textDecoration: 'none' }}>
-            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">📊</Text>
-                <Heading size="md">{t('wellnessTools.analytics')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.analyticsDesc')}</Text>
-            </Card>
-          </Link>
-          
-          <Link to="/professional" style={{ textDecoration: 'none' }}>
-            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">🏥</Text>
-                <Heading size="md">{t('wellnessTools.professional')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.professionalDesc')}</Text>
-            </Card>
-          </Link>
-          
-          <Link to="/technical" style={{ textDecoration: 'none' }}>
-            <Card p={6} _hover={{ shadow: "xl" }} transition="all 0.3s">
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">📡</Text>
-                <Heading size="md">{t('wellnessTools.technical')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.technicalDesc')}</Text>
-            </Card>
-          </Link>
-          
-          <Link to="/premium/features" style={{ textDecoration: 'none' }}>
-            <Card
-              p={6}
-              _hover={{ shadow: "xl" }}
-              transition="all 0.3s"
-              border="2px solid"
-              borderColor="yellow.400"
-            >
-              <HStack gap={3} mb={2}>
-                <Text fontSize="3xl">👑</Text>
-                <Heading size="md">{t('wellnessTools.premiumFeatures')}</Heading>
-              </HStack>
-              <Text color="gray.600" fontSize="sm">{t('wellnessTools.premiumFeaturesDesc')}</Text>
-            </Card>
-          </Link>
+          ))}
         </SimpleGrid>
       </Box>
 
-      {/* FAB Menu for Quick Actions */}
       <FABMenu actions={fabActions} />
-      
-      {/* Notification Test Panel - Remove after testing */}
-      <NotificationTestPanel />
     </Box>
   )
 }

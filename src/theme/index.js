@@ -2,72 +2,72 @@ import { extendTheme } from '@chakra-ui/react';
 
 export const therapeuticColors = {
   primary: {
-    50: '#E3F2FD',
-    100: '#BBDEFB',
-    200: '#90CAF9',
-    300: '#64B5F6',
-    400: '#42A5F5',
-    500: '#4A90C2',
-    600: '#3A7AA2',
-    700: '#2A6482',
-    800: '#1A4E62',
-    900: '#0A3842'
+    50: '#F0F8FF',
+    100: '#E6F2FF',
+    200: '#CCE9FF',
+    300: '#B3E0FF',
+    400: '#99D6FF',
+    500: '#7FCBFF',
+    600: '#66C2E6',
+    700: '#4DA8CC',
+    800: '#338FAD',
+    900: '#1A718F'
   },
   growth: {
-    50: '#F1F8E9',
-    100: '#DCEDC8',
-    200: '#C5E1A5',
-    300: '#AED581',
-    400: '#9CCC65',
-    500: '#7FB069',
-    600: '#6A9A57',
-    700: '#558445',
-    800: '#406E33',
-    900: '#2B5821'
+    50: '#F6FFF2',
+    100: '#ECFFEA',
+    200: '#DFFFD2',
+    300: '#CFFFB9',
+    400: '#BFFFA0',
+    500: '#A7EFA0',
+    600: '#8FDC8A',
+    700: '#77C774',
+    800: '#5FB25D',
+    900: '#479D46'
   },
   mindfulness: {
-    50: '#F3E5F5',
-    100: '#E1BEE7',
-    200: '#CE93D8',
-    300: '#BA68C8',
-    400: '#AB47BC',
-    500: '#8E7CC3',
-    600: '#7565AB',
-    700: '#5C4E93',
-    800: '#43377B',
-    900: '#2A2063'
+    50: '#FFF6FF',
+    100: '#FCEBFF',
+    200: '#F8D9FF',
+    300: '#F4C7FF',
+    400: '#F0B5FF',
+    500: '#E8A3FF',
+    600: '#D591E6',
+    700: '#BE7FCD',
+    800: '#A86DAA',
+    900: '#8F4E87'
   },
   caution: {
-    50: '#FFF8E1',
-    100: '#FFECB3',
-    200: '#FFE082',
-    300: '#FFD54F',
-    400: '#FFCA28',
-    500: '#F5B041',
-    600: '#E09B2A',
-    700: '#CB8613',
-    800: '#B67100',
-    900: '#A15C00'
+    50: '#FFF9F0',
+    100: '#FFF3E6',
+    200: '#FFE6CC',
+    300: '#FFD9B3',
+    400: '#FFCCA6',
+    500: '#FFC199',
+    600: '#E6A680',
+    700: '#CC8B66',
+    800: '#B3704C',
+    900: '#995833'
   },
   crisis: {
-    50: '#FFEBEE',
-    100: '#FFCDD2',
-    200: '#EF9A9A',
-    300: '#E57373',
-    400: '#EF5350',
-    500: '#D64545',
-    600: '#B83838',
-    700: '#9A2B2B',
-    800: '#7C1E1E',
-    900: '#5E1111'
+    50: '#FFF2F2',
+    100: '#FFEAEB',
+    200: '#FFD7D9',
+    300: '#FFC4C7',
+    400: '#FFB0B3',
+    500: '#FF9BA0',
+    600: '#E68488',
+    700: '#CC6D71',
+    800: '#B3565A',
+    900: '#993F44'
   }
 };
 
 export const theme = extendTheme({
   colors: therapeuticColors,
   fonts: {
-    heading: 'Inter, system-ui, sans-serif',
-    body: 'Inter, system-ui, sans-serif'
+    heading: 'Poppins, system-ui, sans-serif',
+    body: 'Nunito, system-ui, sans-serif'
   },
   fontSizes: {
     xs: '14px',
@@ -118,15 +118,15 @@ export const theme = extendTheme({
       },
       variants: {
         solid: {
-          bg: 'primary.500',
-          color: 'white',
+          bg: 'primary.300',
+          color: 'primary.900',
           _hover: {
-            bg: 'primary.600',
+            bg: 'primary.200',
             transform: 'translateY(-2px)',
             boxShadow: 'md'
           },
           _active: {
-            bg: 'primary.700',
+            bg: 'primary.400',
             transform: 'translateY(0)'
           }
         }

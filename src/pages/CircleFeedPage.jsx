@@ -58,6 +58,17 @@ function CircleFeedPage() {
   const loadCircleData = () => {
     const foundCircle = mockCircles.find(c => c.id === parseInt(circleId))
     setCircle(foundCircle)
+    setLoading(false)
+    if (!foundCircle) {
+      // If circle not found locally, navigate back to circles with a helpful message
+      const toast = document.createElement('div')
+      toast.textContent = 'Circle not found'
+      toast.className = 'fixed top-4 right-4 bg-warning text-white px-4 py-2 rounded-xl shadow-lg z-50'
+      document.body.appendChild(toast)
+      setTimeout(() => document.body.removeChild(toast), 1800)
+      // gently navigate back after short delay
+      setTimeout(() => navigate('/circles'), 900)
+    }
   }
 
 
@@ -108,9 +119,9 @@ function CircleFeedPage() {
   }
 
   const handleLeaveCircle = () => {
-    const joinedCircles = JSON.parse(localStorage.getItem('safespace_circles') || '[]')
+    const joinedCircles = JSON.parse(localStorage.getItem('safespace_user_circles') || '[]')
     const updatedCircles = joinedCircles.filter(id => id !== parseInt(circleId))
-    localStorage.setItem('safespace_circles', JSON.stringify(updatedCircles))
+    localStorage.setItem('safespace_user_circles', JSON.stringify(updatedCircles))
     navigate('/circles')
   }
 

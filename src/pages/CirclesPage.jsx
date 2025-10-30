@@ -8,6 +8,7 @@ import { formatNumber } from '../utils/helpers'
 import EmptyState from '../components/common/EmptyState'
 import LoadingState from '../components/common/LoadingState'
 import SafeComponent from '../components/SafeComponent'
+import OnboardingTip from '../components/common/OnboardingTip'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import { useDebounce } from '../hooks/useDebounce'
 
@@ -30,9 +31,14 @@ function CirclesPage() {
   }, [])
 
   const loadData = () => {
-    const savedCircles = localStorage.getItem('safespace_circles')
-    const joined = savedCircles ? JSON.parse(savedCircles) : []
-    setJoinedCircles(joined)
+    // Ensure global circles list exists in localStorage
+    const existingAll = JSON.parse(localStorage.getItem('safespace_circles') || 'null')
+    if (!existingAll) localStorage.setItem('safespace_circles', JSON.stringify(mockCircles))
+
+    // User's joined circles are stored as an array of ids under safespace_user_circles
+    const savedJoined = JSON.parse(localStorage.getItem('safespace_user_circles') || '[]')
+    setJoinedCircles(savedJoined)
+
     setCircles(mockCircles)
     setLoading(false)
   }
@@ -42,30 +48,50 @@ function CirclesPage() {
       navigate('/premium')
       return
     }
-    
-    const newJoined = [...joinedCircles, circleId]
-    setJoinedCircles(newJoined)
-    localStorage.setItem('safespace_circles', JSON.stringify(newJoined))
-    
-    // Update member count
-    setCircles(prev => prev.map(circle => 
-      circle.id === circleId 
-        ? { ...circle, members: circle.members + 1, isJoined: true }
-        : circle
-    ))
+    try {
+      if (joinedCircles.includes(circleId)) return
+      const newJoined = [...joinedCircles, circleId]
+      setJoinedCircles(newJoined)
+      localStorage.setItem('safespace_user_circles', JSON.stringify(newJoined))
+
+      // Update member count safely
+      setCircles(prev => prev.map(circle => 
+        circle.id === circleId 
+          ? { ...circle, members: (Number(circle.members) || 0) + 1, isJoined: true }
+          : circle
+      ))
+
+      // Feedback
+      const toast = document.createElement('div')
+      toast.textContent = 'Joined circle'
+      toast.className = 'fixed top-4 right-4 bg-success text-white px-4 py-2 rounded-xl shadow-lg z-50'
+      document.body.appendChild(toast)
+      setTimeout(() => document.body.removeChild(toast), 1600)
+    } catch (err) {
+      console.error('Failed to join circle', err)
+    }
   }
 
   const handleLeaveCircle = (circleId) => {
-    const newJoined = joinedCircles.filter(id => id !== circleId)
-    setJoinedCircles(newJoined)
-    localStorage.setItem('safespace_circles', JSON.stringify(newJoined))
-    
-    // Update member count
-    setCircles(prev => prev.map(circle => 
-      circle.id === circleId 
-        ? { ...circle, members: circle.members - 1, isJoined: false }
-        : circle
-    ))
+    try {
+      const newJoined = joinedCircles.filter(id => id !== circleId)
+      setJoinedCircles(newJoined)
+      localStorage.setItem('safespace_user_circles', JSON.stringify(newJoined))
+
+      setCircles(prev => prev.map(circle => 
+        circle.id === circleId 
+          ? { ...circle, members: Math.max(0, (Number(circle.members) || 0) - 1), isJoined: false }
+          : circle
+      ))
+
+      const toast = document.createElement('div')
+      toast.textContent = 'Left circle'
+      toast.className = 'fixed top-4 right-4 bg-warning text-white px-4 py-2 rounded-xl shadow-lg z-50'
+      document.body.appendChild(toast)
+      setTimeout(() => document.body.removeChild(toast), 1600)
+    } catch (err) {
+      console.error('Failed to leave circle', err)
+    }
   }
 
   const handleCircleClick = (circleId) => {
@@ -149,6 +175,8 @@ function CirclesPage() {
   return (
     <SafeComponent>
     <div className="max-w-6xl mx-auto">
+      <OnboardingTip page="circles" />
+      
       {/* Community Guidelines Banner */}
       <div className="card p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 mb-6">
         <div className="flex gap-3">
