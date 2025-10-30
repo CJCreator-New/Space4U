@@ -22,7 +22,7 @@ export function ThemeProvider({ children }) {
   }, [theme])
 
   const updateStatusBar = async (currentTheme) => {
-    if (window.Capacitor) {
+    if (window.Capacitor && window.Capacitor.isNativePlatform()) {
       try {
         const { StatusBar, Style } = await import('@capacitor/status-bar')
         const bgColor = currentTheme === 'dark' ? '#1F2937' : '#FFFFFF'
@@ -31,7 +31,7 @@ export function ThemeProvider({ children }) {
         await StatusBar.setBackgroundColor({ color: bgColor })
         await StatusBar.setStyle({ style })
       } catch (error) {
-        console.log('StatusBar not available:', error)
+        // Silently fail on web
       }
     }
   }
