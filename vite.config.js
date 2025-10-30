@@ -9,6 +9,10 @@ export default defineConfig({
     hmr: {
       protocol: 'ws',
       host: 'localhost',
+    },
+    headers: {
+      'X-Content-Type-Options': 'nosniff',
+      'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0'
     }
   },
   build: {
