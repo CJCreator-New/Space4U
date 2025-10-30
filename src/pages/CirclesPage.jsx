@@ -263,23 +263,27 @@ function CirclesPage() {
 
       {/* Empty States */}
       {activeTab === 'my-circles' && joinedCircles.length === 0 ? (
-        <EmptyStates.NoCircles onAction={() => setActiveTab('discover')} />
+        <EmptyState
+          icon="🌐"
+          title="No Circles Yet"
+          description="Join circles to connect with supportive communities and share your journey"
+          action={() => setActiveTab('discover')}
+          actionLabel="Discover Circles"
+        />
       ) : filteredCircles.length === 0 && debouncedSearch ? (
-        <EmptyStates.NoSearchResults onAction={() => setSearchQuery('')} />
-      ) : filteredCircles.length > 50 ? (
-        /* Virtual List for large datasets */
-        <div className="space-y-4">
-          {filteredCircles.map((circle) => (
-            <CircleCard
-              key={circle.id}
-              circle={circle}
-              isJoined={joinedCircles.includes(circle.id)}
-              onJoin={handleJoinCircle}
-              onLeave={handleLeaveCircle}
-              onClick={handleCircleClick}
-            />
-          ))}
-        </div>
+        <EmptyState
+          icon="🔍"
+          title="No Results Found"
+          description={`No circles match "${debouncedSearch}". Try different keywords or browse all circles.`}
+          action={() => setSearchQuery('')}
+          actionLabel="Clear Search"
+        />
+      ) : filteredCircles.length === 0 ? (
+        <EmptyState
+          icon="🌟"
+          title="No Circles Available"
+          description="Check back soon for new support circles"
+        />
       ) : (
         /* Circle Grid */
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

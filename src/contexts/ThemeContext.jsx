@@ -22,16 +22,19 @@ export function ThemeProvider({ children }) {
   }, [theme])
 
   const updateStatusBar = async (currentTheme) => {
-    if (window.Capacitor) {
+    // Only attempt to use the Capacitor StatusBar on native platforms.
+    // On web the plugin isn't implemented and will throw - skip silently.
+    if (typeof window !== 'undefined' && window.Capacitor && window.Capacitor.platform && window.Capacitor.platform !== 'web') {
       try {
         const { StatusBar, Style } = await import('@capacitor/status-bar')
         const bgColor = currentTheme === 'dark' ? '#1F2937' : '#FFFFFF'
         const style = currentTheme === 'dark' ? Style.Light : Style.Dark
-        
+
         await StatusBar.setBackgroundColor({ color: bgColor })
         await StatusBar.setStyle({ style })
       } catch (error) {
-        console.log('StatusBar not available:', error)
+        // Keep this low-noise; native platforms will rarely hit this.
+        console.debug('StatusBar not available (native check passed):', error)
       }
     }
   }

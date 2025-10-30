@@ -30,7 +30,7 @@ export default function ProgressOverviewWidget() {
 
       // Fetch mood streak
       const { data: moodData } = await supabase
-        .from('mood_logs')
+        .from('emotion_logs')
         .select('created_at')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
@@ -56,15 +56,31 @@ export default function ProgressOverviewWidget() {
       }
 
       // Fetch gratitude entries this month
-      const { data: gratitudeData, count: gratitudeCount } = await supabase
-        .from('gratitude_entries')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id)
-        .gte('created_at', monthStart.toISOString())
+      // Gratitude entries may not exist in the remote schema for some
+      // deployments. If the table is missing, fall back to localStorage.
+      let gratitudeCount = 0
+      try {
+        const res = await supabase
+          .from('gratitude_entries')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+          .gte('created_at', monthStart.toISOString())
+        if (res && res.count !== undefined) {
+          gratitudeCount = res.count
+        }
+      } catch (err) {
+        // If table doesn't exist (PGRST205) use localStorage fallback
+        if (err && err.code === 'PGRST205') {
+          const saved = JSON.parse(localStorage.getItem('safespace_gratitude_entries') || '[]')
+          gratitudeCount = saved.filter(e => new Date(e.date) >= monthStart).length
+        } else {
+          console.error('Error fetching gratitude entries:', err)
+        }
+      }
 
       // Calculate active days this month
       const { data: activityData } = await supabase
-        .from('mood_logs')
+        .from('emotion_logs')
         .select('created_at')
         .eq('user_id', user.id)
         .gte('created_at', monthStart.toISOString())

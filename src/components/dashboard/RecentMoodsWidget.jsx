@@ -26,7 +26,7 @@ export default function RecentMoodsWidget() {
       const weekEnd = endOfWeek(new Date())
 
       const { data, error } = await supabase
-        .from('mood_logs')
+        .from('emotion_logs')
         .select('*')
         .eq('user_id', user.id)
         .gte('created_at', weekStart.toISOString())
