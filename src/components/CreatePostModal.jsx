@@ -1,5 +1,5 @@
-﻿import { useState, useEffect, useRef } from 'react'
-import { X, Tag, AlertTriangle, FileText, Check, Loader } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import Icon from './Icon'
 import { circleService } from '../services/circleService'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 
@@ -27,7 +27,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
 
   const textareaRef = useRef(null)
   const { user } = useSupabaseAuth()
-  const localUser = JSON.parse(localStorage.getItem('space4u_user_profile') || '{}')
+  const localUser = JSON.parse(localStorage.getItem('safespace_user_profile') || '{}')
 
   useEffect(() => {
     if (isOpen) {
@@ -57,7 +57,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
   }, [isOpen, content])
 
   const loadDrafts = () => {
-    const savedDrafts = JSON.parse(localStorage.getItem('space4u_drafts') || '[]')
+    const savedDrafts = JSON.parse(localStorage.getItem('safespace_drafts') || '[]')
     const circleDrafts = savedDrafts.filter(draft => draft.circleId === circle?.id)
     setDrafts(circleDrafts)
   }
@@ -76,9 +76,9 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
       timestamp: new Date().toISOString()
     }
 
-    const savedDrafts = JSON.parse(localStorage.getItem('space4u_drafts') || '[]')
+    const savedDrafts = JSON.parse(localStorage.getItem('safespace_drafts') || '[]')
     const updatedDrafts = [...savedDrafts, draft]
-    localStorage.setItem('space4u_drafts', JSON.stringify(updatedDrafts))
+    localStorage.setItem('safespace_drafts', JSON.stringify(updatedDrafts))
     
     resetForm()
     onClose()
@@ -92,16 +92,16 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
     setShowDrafts(false)
     
     // Remove draft from storage
-    const savedDrafts = JSON.parse(localStorage.getItem('space4u_drafts') || '[]')
+    const savedDrafts = JSON.parse(localStorage.getItem('safespace_drafts') || '[]')
     const updatedDrafts = savedDrafts.filter(d => d.id !== draft.id)
-    localStorage.setItem('space4u_drafts', JSON.stringify(updatedDrafts))
+    localStorage.setItem('safespace_drafts', JSON.stringify(updatedDrafts))
     loadDrafts()
   }
 
   const deleteDraft = (draftId) => {
-    const savedDrafts = JSON.parse(localStorage.getItem('space4u_drafts') || '[]')
+    const savedDrafts = JSON.parse(localStorage.getItem('safespace_drafts') || '[]')
     const updatedDrafts = savedDrafts.filter(d => d.id !== draftId)
-    localStorage.setItem('space4u_drafts', JSON.stringify(updatedDrafts))
+    localStorage.setItem('safespace_drafts', JSON.stringify(updatedDrafts))
     loadDrafts()
   }
 
@@ -188,10 +188,10 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
         {showSuccess ? (
           <div className="p-8 text-center">
             <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="text-success" size={32} />
+              <Icon name="check" size={32} className="text-success" />
             </div>
             <h3 className="text-xl font-semibold text-text-primary mb-2">Posted!</h3>
-            <p className="text-text-secondary">Your voice matters â¤ï¸</p>
+            <p className="text-text-secondary">Your voice matters ❤️</p>
           </div>
         ) : (
           <>
@@ -206,7 +206,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                     onClick={() => setShowDrafts(!showDrafts)}
                     className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full text-sm text-text-secondary hover:bg-gray-200 transition-colors"
                   >
-                    <FileText size={14} />
+                    <Icon name="file-text" size={14} />
                     Drafts ({drafts.length})
                   </button>
                 )}
@@ -215,7 +215,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                 onClick={handleClose}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
-                <X size={20} />
+                <Icon name="x" size={20} />
               </button>
             </div>
 
@@ -223,7 +223,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
             <div className="px-5 md:px-8 py-4 bg-gray-50">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-lg">
-                  {localUser.avatar || 'ðŸ»'}
+                  {localUser.avatar || '🐻'}
                 </div>
                 <div>
                   <p className="font-medium text-text-primary">{localUser.username || 'Anonymous'}</p>
@@ -249,7 +249,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                         onClick={() => deleteDraft(draft.id)}
                         className="p-1 text-text-secondary hover:text-danger transition-colors"
                       >
-                        <X size={16} />
+                        <Icon name="x" size={16} />
                       </button>
                     </div>
                   ))}
@@ -275,7 +275,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                       onClick={() => setShowTagSelector(!showTagSelector)}
                       className="flex items-center gap-2 px-3 py-2 text-text-secondary hover:text-primary hover:bg-primary/10 rounded-xl transition-colors"
                     >
-                      <Tag size={16} />
+                      <Icon name="tag" size={16} />
                       Add tags
                     </button>
                     <button
@@ -286,7 +286,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                           : 'text-text-secondary hover:text-warning hover:bg-warning/10'
                       }`}
                     >
-                      <AlertTriangle size={16} />
+                      <Icon name="alert-triangle" size={16} />
                       Trigger warning
                     </button>
                   </div>
@@ -364,7 +364,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                           onClick={() => removeTag(tag)}
                           className="hover:bg-white/20 rounded-full p-0.5 transition-colors"
                         >
-                          <X size={12} />
+                          <Icon name="x" size={12} />
                         </button>
                       </span>
                     ))}
@@ -394,7 +394,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                 >
                   {isPosting ? (
                     <div className="flex items-center justify-center gap-2">
-                      <Loader className="animate-spin" size={16} />
+                      <Icon name="loader" size={16} className="animate-spin" />
                       Posting...
                     </div>
                   ) : (
@@ -416,7 +416,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                 </button>
               </div>
               <p className="text-xs text-text-secondary text-center">
-                Remember: Be kind, supportive, and respectful â€¢{' '}
+                Remember: Be kind, supportive, and respectful •{' '}
                 <button className="text-primary hover:underline">Community Guidelines</button>
               </p>
             </div>
