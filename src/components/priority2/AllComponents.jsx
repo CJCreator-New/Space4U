@@ -1,4 +1,4 @@
-// JournalingPrompts.jsx
+﻿// JournalingPrompts.jsx
 import { useState } from 'react'
 import { X } from 'lucide-react'
 
@@ -18,12 +18,12 @@ const PROMPTS = [
 export function JournalingPrompts({ onClose }) {
   const [selectedPrompt, setSelectedPrompt] = useState(null)
   const [entry, setEntry] = useState('')
-  const [entries, setEntries] = useState(() => JSON.parse(localStorage.getItem('safespace_journal_entries') || '[]'))
+  const [entries, setEntries] = useState(() => JSON.parse(localStorage.getItem('space4u_journal_entries') || '[]'))
 
   const saveEntry = () => {
     const newEntry = { id: Date.now(), prompt: selectedPrompt.prompt, entry, created_at: new Date().toISOString() }
     const updated = [newEntry, ...entries]
-    localStorage.setItem('safespace_journal_entries', JSON.stringify(updated))
+    localStorage.setItem('space4u_journal_entries', JSON.stringify(updated))
     setEntries(updated)
     setSelectedPrompt(null)
     setEntry('')
@@ -73,21 +73,21 @@ export function JournalingPrompts({ onClose }) {
 
 // WorryScheduler.jsx
 export function WorryScheduler({ onClose }) {
-  const [worries, setWorries] = useState(() => JSON.parse(localStorage.getItem('safespace_worry_logs') || '[]'))
+  const [worries, setWorries] = useState(() => JSON.parse(localStorage.getItem('space4u_worry_logs') || '[]'))
   const [newWorry, setNewWorry] = useState('')
   const [worryTime, setWorryTime] = useState('18:00')
 
   const addWorry = () => {
     const worry = { id: Date.now(), worry: newWorry, scheduled_time: worryTime, addressed: false, created_at: new Date().toISOString() }
     const updated = [worry, ...worries]
-    localStorage.setItem('safespace_worry_logs', JSON.stringify(updated))
+    localStorage.setItem('space4u_worry_logs', JSON.stringify(updated))
     setWorries(updated)
     setNewWorry('')
   }
 
   const toggleAddressed = (id) => {
     const updated = worries.map(w => w.id === id ? { ...w, addressed: !w.addressed } : w)
-    localStorage.setItem('safespace_worry_logs', JSON.stringify(updated))
+    localStorage.setItem('space4u_worry_logs', JSON.stringify(updated))
     setWorries(updated)
   }
 
@@ -146,7 +146,7 @@ export function WorryScheduler({ onClose }) {
 export function SelfCompassion({ onClose }) {
   const [type, setType] = useState('prompt')
   const [content, setContent] = useState('')
-  const [logs, setLogs] = useState(() => JSON.parse(localStorage.getItem('safespace_self_compassion') || '[]'))
+  const [logs, setLogs] = useState(() => JSON.parse(localStorage.getItem('space4u_self_compassion') || '[]'))
 
   const PROMPTS = [
     'Write a letter to yourself as if you were your best friend',
@@ -158,7 +158,7 @@ export function SelfCompassion({ onClose }) {
   const saveLog = () => {
     const log = { id: Date.now(), exercise_type: type, content, created_at: new Date().toISOString() }
     const updated = [log, ...logs]
-    localStorage.setItem('safespace_self_compassion', JSON.stringify(updated))
+    localStorage.setItem('space4u_self_compassion', JSON.stringify(updated))
     setLogs(updated)
     setContent('')
   }
@@ -206,14 +206,14 @@ export function SelfCompassion({ onClose }) {
 
 // TherapyPrep.jsx
 export function TherapyPrep({ onClose }) {
-  const [sessions, setSessions] = useState(() => JSON.parse(localStorage.getItem('safespace_therapy_sessions') || '[]'))
+  const [sessions, setSessions] = useState(() => JSON.parse(localStorage.getItem('space4u_therapy_sessions') || '[]'))
   const [showModal, setShowModal] = useState(false)
   const [newSession, setNewSession] = useState({ session_date: '', topics_to_discuss: [''], goals: [''] })
 
   const addSession = () => {
     const session = { ...newSession, id: Date.now() }
     const updated = [session, ...sessions]
-    localStorage.setItem('safespace_therapy_sessions', JSON.stringify(updated))
+    localStorage.setItem('space4u_therapy_sessions', JSON.stringify(updated))
     setSessions(updated)
     setShowModal(false)
     setNewSession({ session_date: '', topics_to_discuss: [''], goals: [''] })
@@ -295,14 +295,14 @@ export function TherapyPrep({ onClose }) {
 
 // MedicationTracker.jsx
 export function MedicationTracker({ onClose }) {
-  const [meds, setMeds] = useState(() => JSON.parse(localStorage.getItem('safespace_medications') || '[]'))
+  const [meds, setMeds] = useState(() => JSON.parse(localStorage.getItem('space4u_medications') || '[]'))
   const [showModal, setShowModal] = useState(false)
   const [newMed, setNewMed] = useState({ name: '', dosage: '', frequency: 'daily', times: ['09:00'] })
 
   const addMed = () => {
     const med = { ...newMed, id: Date.now(), logs: {} }
     const updated = [...meds, med]
-    localStorage.setItem('safespace_medications', JSON.stringify(updated))
+    localStorage.setItem('space4u_medications', JSON.stringify(updated))
     setMeds(updated)
     setShowModal(false)
     setNewMed({ name: '', dosage: '', frequency: 'daily', times: ['09:00'] })
@@ -318,7 +318,7 @@ export function MedicationTracker({ onClose }) {
       }
       return m
     })
-    localStorage.setItem('safespace_medications', JSON.stringify(updated))
+    localStorage.setItem('space4u_medications', JSON.stringify(updated))
     setMeds(updated)
   }
 
@@ -340,7 +340,7 @@ export function MedicationTracker({ onClose }) {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xl font-semibold">{med.name}</h3>
-                <p className="text-text-secondary">{med.dosage} • {med.frequency}</p>
+                <p className="text-text-secondary">{med.dosage} â€¢ {med.frequency}</p>
                 <p className="text-sm text-text-secondary">Times: {med.times.join(', ')}</p>
               </div>
               <button
@@ -349,7 +349,7 @@ export function MedicationTracker({ onClose }) {
                   med.logs[today] ? 'bg-green-500 text-white' : 'bg-hover'
                 }`}
               >
-                {med.logs[today] ? '✓ Taken' : 'Mark Taken'}
+                {med.logs[today] ? 'âœ“ Taken' : 'Mark Taken'}
               </button>
             </div>
           </div>
@@ -403,3 +403,4 @@ export function MedicationTracker({ onClose }) {
     </div>
   )
 }
+

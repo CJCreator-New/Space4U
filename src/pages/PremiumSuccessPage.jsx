@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Crown, Sparkles, Check } from 'lucide-react'
@@ -13,7 +13,7 @@ function PremiumSuccessPage() {
     setTimeout(() => setShowConfetti(false), 3000)
   }, [])
 
-  const premiumData = JSON.parse(localStorage.getItem('safespace_premium') || '{}')
+  const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
   const trialEndDate = premiumData.trialEndsAt 
     ? new Date(premiumData.trialEndsAt).toLocaleDateString('en-IN', { 
         day: 'numeric', 
@@ -38,7 +38,7 @@ function PremiumSuccessPage() {
                 animationDuration: `${2 + Math.random() * 2}s`
               }}
             >
-              {['🎉', '✨', '🌟', '💫', '⭐'][Math.floor(Math.random() * 5)]}
+              {['ðŸŽ‰', 'âœ¨', 'ðŸŒŸ', 'ðŸ’«', 'â­'][Math.floor(Math.random() * 5)]}
             </div>
           ))}
         </div>
@@ -102,3 +102,4 @@ function PremiumSuccessPage() {
 }
 
 export default PremiumSuccessPage
+

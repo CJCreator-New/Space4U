@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Shield, Zap, CheckCircle } from 'lucide-react'
 
 function StreakInsurance() {
   const [freezes, setFreezes] = useState({ used: 0, total: 2 })
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('safespace_streak_freezes') || '{"used":0,"total":2}')
+    const saved = JSON.parse(localStorage.getItem('space4u_streak_freezes') || '{"used":0,"total":2}')
     setFreezes(saved)
   }, [])
 
   const useFreeze = () => {
     if (freezes.used >= freezes.total) return
     const updated = { ...freezes, used: freezes.used + 1 }
-    localStorage.setItem('safespace_streak_freezes', JSON.stringify(updated))
+    localStorage.setItem('space4u_streak_freezes', JSON.stringify(updated))
     setFreezes(updated)
   }
 
@@ -54,10 +54,10 @@ function StreakInsurance() {
       <div className="card p-6 bg-blue-50">
         <h3 className="font-bold mb-2">How It Works</h3>
         <ul className="space-y-2 text-sm text-gray-700">
-          <li>• Miss a day? Use a freeze to protect your streak</li>
-          <li>• Get 2 freezes per month as a premium member</li>
-          <li>• Freezes reset on the 1st of each month</li>
-          <li>• Use them wisely for unexpected situations</li>
+          <li>â€¢ Miss a day? Use a freeze to protect your streak</li>
+          <li>â€¢ Get 2 freezes per month as a premium member</li>
+          <li>â€¢ Freezes reset on the 1st of each month</li>
+          <li>â€¢ Use them wisely for unexpected situations</li>
         </ul>
       </div>
     </div>
@@ -65,3 +65,4 @@ function StreakInsurance() {
 }
 
 export default StreakInsurance
+

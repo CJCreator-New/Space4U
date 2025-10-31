@@ -1,7 +1,7 @@
-# Space4U - Mental Health Support Platform
+﻿# Space4U - Mental Health Support Platform
 
 ## Project Overview
-Space4U (internally named "Safespace") is a comprehensive mental health support web application designed to provide users with tools for mood tracking, community support, and mental wellness resources. The platform creates a safe digital space where users can monitor their emotional well-being, connect with supportive communities, and access mental health resources.
+Space4U (internally named "space4u") is a comprehensive mental health support web application designed to provide users with tools for mood tracking, community support, and mental wellness resources. The platform creates a safe digital space where users can monitor their emotional well-being, connect with supportive communities, and access mental health resources.
 
 ## Core Value Proposition
 - **Personal Mental Health Dashboard**: Centralized platform for tracking mood patterns and mental health insights

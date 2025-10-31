@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { X, Tag, AlertTriangle, FileText, Check, Loader } from 'lucide-react'
 import { circleService } from '../services/circleService'
 import { useSupabaseAuth } from '../contexts/AuthContext'
@@ -27,7 +27,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
 
   const textareaRef = useRef(null)
   const { user } = useSupabaseAuth()
-  const localUser = JSON.parse(localStorage.getItem('safespace_user_profile') || '{}')
+  const localUser = JSON.parse(localStorage.getItem('space4u_user_profile') || '{}')
 
   useEffect(() => {
     if (isOpen) {
@@ -57,7 +57,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
   }, [isOpen, content])
 
   const loadDrafts = () => {
-    const savedDrafts = JSON.parse(localStorage.getItem('safespace_drafts') || '[]')
+    const savedDrafts = JSON.parse(localStorage.getItem('space4u_drafts') || '[]')
     const circleDrafts = savedDrafts.filter(draft => draft.circleId === circle?.id)
     setDrafts(circleDrafts)
   }
@@ -76,9 +76,9 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
       timestamp: new Date().toISOString()
     }
 
-    const savedDrafts = JSON.parse(localStorage.getItem('safespace_drafts') || '[]')
+    const savedDrafts = JSON.parse(localStorage.getItem('space4u_drafts') || '[]')
     const updatedDrafts = [...savedDrafts, draft]
-    localStorage.setItem('safespace_drafts', JSON.stringify(updatedDrafts))
+    localStorage.setItem('space4u_drafts', JSON.stringify(updatedDrafts))
     
     resetForm()
     onClose()
@@ -92,16 +92,16 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
     setShowDrafts(false)
     
     // Remove draft from storage
-    const savedDrafts = JSON.parse(localStorage.getItem('safespace_drafts') || '[]')
+    const savedDrafts = JSON.parse(localStorage.getItem('space4u_drafts') || '[]')
     const updatedDrafts = savedDrafts.filter(d => d.id !== draft.id)
-    localStorage.setItem('safespace_drafts', JSON.stringify(updatedDrafts))
+    localStorage.setItem('space4u_drafts', JSON.stringify(updatedDrafts))
     loadDrafts()
   }
 
   const deleteDraft = (draftId) => {
-    const savedDrafts = JSON.parse(localStorage.getItem('safespace_drafts') || '[]')
+    const savedDrafts = JSON.parse(localStorage.getItem('space4u_drafts') || '[]')
     const updatedDrafts = savedDrafts.filter(d => d.id !== draftId)
-    localStorage.setItem('safespace_drafts', JSON.stringify(updatedDrafts))
+    localStorage.setItem('space4u_drafts', JSON.stringify(updatedDrafts))
     loadDrafts()
   }
 
@@ -191,7 +191,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
               <Check className="text-success" size={32} />
             </div>
             <h3 className="text-xl font-semibold text-text-primary mb-2">Posted!</h3>
-            <p className="text-text-secondary">Your voice matters ❤️</p>
+            <p className="text-text-secondary">Your voice matters â¤ï¸</p>
           </div>
         ) : (
           <>
@@ -223,7 +223,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
             <div className="px-5 md:px-8 py-4 bg-gray-50">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-lg">
-                  {localUser.avatar || '🐻'}
+                  {localUser.avatar || 'ðŸ»'}
                 </div>
                 <div>
                   <p className="font-medium text-text-primary">{localUser.username || 'Anonymous'}</p>
@@ -416,7 +416,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                 </button>
               </div>
               <p className="text-xs text-text-secondary text-center">
-                Remember: Be kind, supportive, and respectful •{' '}
+                Remember: Be kind, supportive, and respectful â€¢{' '}
                 <button className="text-primary hover:underline">Community Guidelines</button>
               </p>
             </div>

@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "home": "Home",
     "circles": "Circles",
@@ -124,7 +124,7 @@
     "tryAdjustingFilters": "Try adjusting your filters",
     "clearFilters": "Clear Filters",
     "loadingMore": "Loading more posts...",
-    "caughtUp": "You've caught up! 🎉",
+    "caughtUp": "You've caught up! ðŸŽ‰",
     "linkCopied": "Link copied!"
   },
   "insights": {
@@ -179,7 +179,7 @@
   },
   "settings": {
     "title": "Settings",
-    "subtitle": "Customize your Safespace experience",
+    "subtitle": "Customize your space4u experience",
     "general": "General",
     "language": "Language",
     "selectLanguage": "Select Language",
@@ -314,7 +314,7 @@
     "subtitle": "Build better habits, one day at a time",
     "addHabit": "Add Habit",
     "createFirst": "Create First Habit",
-    "streakInfo": "{{streak}} day streak • {{total}} total",
+    "streakInfo": "{{streak}} day streak â€¢ {{total}} total",
     "empty": {
       "title": "Start Building Habits",
       "description": "Research shows it takes an average of 66 days to form a new habit",
@@ -338,7 +338,7 @@
     "price": "Price",
     "unlockUnlimited": "Unlock unlimited features, custom themes, and advanced analytics",
     "trialDaysLeft": "Trial: {{days}} days left",
-    "welcomeToPremium": "Welcome to Premium! 🎉",
+    "welcomeToPremium": "Welcome to Premium! ðŸŽ‰",
     "trialEndsOn": "Your trial ends on {{date}}",
     "reminderBeforeCharge": "We'll send a reminder before charging",
     "accessTo": "You now have access to:",
@@ -810,11 +810,12 @@
     "loggingIn": "Logging in...",
     "creatingAccount": "Creating account...",
     "emailPlaceholder": "your@email.com",
-    "passwordPlaceholder": "••••••••",
+    "passwordPlaceholder": "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢",
     "usernamePlaceholder": "Choose a username",
-    "configError": "⚠️ Configuration Error",
+    "configError": "âš ï¸ Configuration Error",
     "contactAdmin": "Please contact the administrator or check your .env file.",
     "authUnavailable": "Authentication is currently unavailable. Please try again later.",
     "checkEmail": "Check your email to confirm your account!"
   }
 }
+

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, Heart, Play, Book, Phone, AlertTriangle, Clock, User, Bookmark } from 'lucide-react'
 import RequestHelpModal from '../components/resources/RequestHelpModal'
@@ -23,12 +23,12 @@ function ResourceLibraryPage() {
 
 
   useEffect(() => {
-    const savedBookmarks = JSON.parse(localStorage.getItem('safespace_bookmarks') || '[]')
+    const savedBookmarks = JSON.parse(localStorage.getItem('space4u_bookmarks') || '[]')
     setBookmarks(savedBookmarks)
     setTimeout(() => setLoading(false), 500)
 
     // build recommendations from user interests
-    const user = JSON.parse(localStorage.getItem('safespace_user') || '{}')
+    const user = JSON.parse(localStorage.getItem('space4u_user') || '{}')
     const interests = user.interests || []
     if (interests.length > 0) {
       const all = [
@@ -49,7 +49,7 @@ function ResourceLibraryPage() {
       : [...bookmarks, bookmarkId]
     
     setBookmarks(newBookmarks)
-    localStorage.setItem('safespace_bookmarks', JSON.stringify(newBookmarks))
+    localStorage.setItem('space4u_bookmarks', JSON.stringify(newBookmarks))
   }
 
   const isBookmarked = (resourceId, category) => {
@@ -287,10 +287,10 @@ function ResourceLibraryPage() {
   }
 
   const tabs = [
-    { id: 'breathing', label: 'Breathing Exercises', icon: '🫁' },
-    { id: 'meditation', label: 'Guided Meditations', icon: '🧘' },
-    { id: 'articles', label: 'Articles & Tips', icon: '📚' },
-    { id: 'crisis', label: 'Crisis Resources', icon: '🆘' }
+    { id: 'breathing', label: 'Breathing Exercises', icon: 'ðŸ«' },
+    { id: 'meditation', label: 'Guided Meditations', icon: 'ðŸ§˜' },
+    { id: 'articles', label: 'Articles & Tips', icon: 'ðŸ“š' },
+    { id: 'crisis', label: 'Crisis Resources', icon: 'ðŸ†˜' }
   ]
 
   return (

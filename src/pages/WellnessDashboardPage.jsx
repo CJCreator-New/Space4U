@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { TrendingUp, Heart, Target, Brain, Smile, Crown } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
 import PremiumPaywall from '../components/PremiumPaywall'
@@ -25,11 +25,11 @@ function WellnessDashboardPage() {
   }, [])
 
   const calculateWellnessScore = () => {
-    const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
-    const habits = JSON.parse(localStorage.getItem('safespace_habits') || '[]')
-    const gratitude = JSON.parse(localStorage.getItem('safespace_gratitude_entries') || '[]')
-    const sleep = JSON.parse(localStorage.getItem('safespace_sleep_logs') || '[]')
-    const emotions = JSON.parse(localStorage.getItem('safespace_emotion_logs') || '[]')
+    const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
+    const habits = JSON.parse(localStorage.getItem('space4u_habits') || '[]')
+    const gratitude = JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]')
+    const sleep = JSON.parse(localStorage.getItem('space4u_sleep_logs') || '[]')
+    const emotions = JSON.parse(localStorage.getItem('space4u_emotion_logs') || '[]')
 
     const last7Days = [...Array(7)].map((_, i) => {
       const d = new Date()
@@ -232,3 +232,4 @@ function WellnessDashboardPage() {
 }
 
 export default WellnessDashboardPage
+

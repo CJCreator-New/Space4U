@@ -1,4 +1,4 @@
-// Mood analysis utility functions
+﻿// Mood analysis utility functions
 
 export const calculateAverageMood = (moods, dateRange) => {
   if (moods.length === 0) return 0
@@ -150,7 +150,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
     const percentage = Math.round((goodDays / moods.length) * 100)
     insights.push({
       type: 'positive',
-      icon: '🎉',
+      icon: 'ðŸŽ‰',
       title: 'You had a great week!',
       description: `Your mood was positive or better ${percentage}% of the time. That's wonderful!`,
       color: 'success'
@@ -161,7 +161,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
   if (averageMood < 2.5) {
     insights.push({
       type: 'support',
-      icon: '🤗',
+      icon: 'ðŸ¤—',
       title: 'This week was challenging',
       description: 'Remember that tough times don\'t last, but resilient people like you do. Consider reaching out for support.',
       color: 'warning'
@@ -172,7 +172,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
   if (weekdayPatterns.Monday && typeof weekdayPatterns.Monday.average === 'number' && weekdayPatterns.Monday.average < averageMood - 0.5) {
     insights.push({
       type: 'pattern',
-      icon: '📅',
+      icon: 'ðŸ“…',
       title: 'Monday blues detected',
       description: 'Your mood tends to dip on Mondays. Consider starting your week with something you enjoy.',
       color: 'primary'
@@ -183,7 +183,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
   if (streak.current >= 7) {
     insights.push({
       type: 'habit',
-      icon: '✨',
+      icon: 'âœ¨',
       title: 'You\'re building a healthy habit',
       description: 'Consistent tracking helps identify patterns. Keep it up!',
       color: 'success'
@@ -202,7 +202,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
     if (weekendAvg > averageMood + 0.5) {
       insights.push({
         type: 'pattern',
-        icon: '🌅',
+        icon: 'ðŸŒ…',
         title: 'Weekends recharge you',
         description: 'Your mood consistently improves on weekends. Make sure to prioritize rest and activities you enjoy.',
         color: 'secondary'
@@ -218,13 +218,13 @@ export const generateSuggestions = (moods, userData = {}, circleActivity = []) =
   const averageMood = calculateAverageMood(moods)
   const streak = calculateStreak(moods)
   // Joined circles should be the user's joined circle IDs
-  const joinedCircles = JSON.parse(localStorage.getItem('safespace_user_circles') || '[]')
+  const joinedCircles = JSON.parse(localStorage.getItem('space4u_user_circles') || '[]')
   const userInterests = userData.interests || []
 
   // Circle suggestions based on interests
   if (userInterests.includes('anxiety') && !joinedCircles.includes(1)) {
     suggestions.push({
-      icon: '🌊',
+      icon: 'ðŸŒŠ',
       title: 'Join the Anxiety Support circle',
       description: 'Connect with others who understand your experience',
       action: 'Join Circle',
@@ -235,7 +235,7 @@ export const generateSuggestions = (moods, userData = {}, circleActivity = []) =
   // Consistency suggestions
   if (streak.current < 3) {
     suggestions.push({
-      icon: '⏰',
+      icon: 'â°',
       title: 'Set a morning mood reminder',
       description: 'Daily check-ins help build awareness and track progress',
       action: 'Set Reminder',
@@ -246,7 +246,7 @@ export const generateSuggestions = (moods, userData = {}, circleActivity = []) =
   // Stress management
   if (averageMood < 3.5) {
     suggestions.push({
-      icon: '🫁',
+      icon: 'ðŸ«',
       title: 'Try the 5-minute breathing exercise',
       description: 'Deep breathing can help reduce stress and improve mood',
       action: 'Start Exercise',
@@ -257,7 +257,7 @@ export const generateSuggestions = (moods, userData = {}, circleActivity = []) =
   // Community engagement
   if (averageMood >= 4.0 && !joinedCircles.includes(8)) {
     suggestions.push({
-      icon: '✨',
+      icon: 'âœ¨',
       title: 'Share your wins in General Wellness',
       description: 'Your positive energy could inspire others in the community',
       action: 'Share Story',

@@ -1,4 +1,4 @@
-# Technology Stack & Development Setup
+﻿# Technology Stack & Development Setup
 
 ## Core Technologies
 
@@ -127,11 +127,11 @@ npm install -D <package-name>
 ### **Data Structure**
 ```javascript
 // Example localStorage keys
-safespace_onboarding_complete: "true"
-safespace_user_profile: "{...}"
-safespace_moods: "{...}"
-safespace_badges: "{...}"
-safespace_settings: "{...}"
+space4u_onboarding_complete: "true"
+space4u_user_profile: "{...}"
+space4u_moods: "{...}"
+space4u_badges: "{...}"
+space4u_settings: "{...}"
 ```
 
 ## Security Considerations

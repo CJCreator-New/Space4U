@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense, lazy } from 'react'
+﻿import { useState, useEffect, Suspense, lazy } from 'react'
 import { Routes, Route, BrowserRouter, useNavigate, useLocation } from 'react-router-dom'
 import { AuthProvider, useSupabaseAuth } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
@@ -95,10 +95,10 @@ function AppContent() {
       if (!user && location.pathname !== '/auth') {
         navigate('/auth', { replace: true })
       } else if (user) {
-        const onboardingComplete = safeStorage.getItem(`safespace_onboarding_complete_${user.id}`)
+        const onboardingComplete = safeStorage.getItem(`space4u_onboarding_complete_${user.id}`)
         setIsOnboardingComplete(onboardingComplete === 'true')
         
-        const tourCompleted = safeStorage.getItem('safespace_tour_completed')
+        const tourCompleted = safeStorage.getItem('space4u_tour_completed')
         if (onboardingComplete === 'true' && !tourCompleted) {
           setShowTour(true)
         }
@@ -114,18 +114,18 @@ function AppContent() {
 
   const handleOnboardingComplete = () => {
     if (user) {
-      safeStorage.setItem(`safespace_onboarding_complete_${user.id}`, 'true')
+      safeStorage.setItem(`space4u_onboarding_complete_${user.id}`, 'true')
     }
     setIsOnboardingComplete(true)
   }
 
   useEffect(() => {
     // Show keyboard help on first visit
-    const hasSeenHelp = safeStorage.getItem('safespace_seen_keyboard_help')
+    const hasSeenHelp = safeStorage.getItem('space4u_seen_keyboard_help')
     if (!hasSeenHelp) {
       setTimeout(() => {
         setShowKeyboardHelp(true)
-        safeStorage.setItem('safespace_seen_keyboard_help', 'true')
+        safeStorage.setItem('space4u_seen_keyboard_help', 'true')
       }, 2000)
     }
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Search, Heart, Star, Crown, Lock } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -34,7 +34,7 @@ function CopingSkillsPage() {
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('all')
   const [favorites, setFavorites] = useState(() => {
-    const saved = localStorage.getItem('safespace_favorite_coping_skills')
+    const saved = localStorage.getItem('space4u_favorite_coping_skills')
     return saved ? JSON.parse(saved) : []
   })
   const { isPremium } = getPremiumStatus()
@@ -47,7 +47,7 @@ function CopingSkillsPage() {
     }
     const updated = favorites.includes(id) ? favorites.filter(f => f !== id) : [...favorites, id]
     setFavorites(updated)
-    localStorage.setItem('safespace_favorite_coping_skills', JSON.stringify(updated))
+    localStorage.setItem('space4u_favorite_coping_skills', JSON.stringify(updated))
   }
 
   const handleSkillClick = (skill) => {
@@ -75,7 +75,7 @@ function CopingSkillsPage() {
             </div>
           )}
         </div>
-        <p className="text-text-secondary">{t('copingSkills.subtitle')} • {t('copingSkills.skillsAvailable', { count: isPremium ? 100 : 50 })}</p>
+        <p className="text-text-secondary">{t('copingSkills.subtitle')} â€¢ {t('copingSkills.skillsAvailable', { count: isPremium ? 100 : 50 })}</p>
       </div>
 
       <div className="mb-6">
@@ -172,3 +172,4 @@ function CopingSkillsPage() {
 }
 
 export default CopingSkillsPage
+

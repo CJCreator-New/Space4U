@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { MessageCircle, Send } from 'lucide-react'
 
 function PeerSupport() {
@@ -7,7 +7,7 @@ function PeerSupport() {
   const [message, setMessage] = useState('')
 
   useEffect(() => {
-    const saved = localStorage.getItem('safespace_peer_matches')
+    const saved = localStorage.getItem('space4u_peer_matches')
     if (saved) setMatches(JSON.parse(saved))
   }, [])
 
@@ -21,7 +21,7 @@ function PeerSupport() {
     }
     const updated = [...matches, newMatch]
     setMatches(updated)
-    localStorage.setItem('safespace_peer_matches', JSON.stringify(updated))
+    localStorage.setItem('space4u_peer_matches', JSON.stringify(updated))
     setActiveMatch(newMatch.id)
   }
 
@@ -43,7 +43,7 @@ function PeerSupport() {
       return m
     })
     setMatches(updated)
-    localStorage.setItem('safespace_peer_matches', JSON.stringify(updated))
+    localStorage.setItem('space4u_peer_matches', JSON.stringify(updated))
     setMessage('')
   }
 
@@ -144,7 +144,7 @@ function PeerSupport() {
                 <div>
                   <p className="font-medium text-text-primary">Peer Support Match</p>
                   <p className="text-sm text-text-secondary">
-                    {match.messages.length} messages • {match.matchScore}% match
+                    {match.messages.length} messages â€¢ {match.matchScore}% match
                   </p>
                 </div>
                 <MessageCircle className="text-primary" size={20} />
@@ -158,3 +158,4 @@ function PeerSupport() {
 }
 
 export default PeerSupport
+

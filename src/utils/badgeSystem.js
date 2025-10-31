@@ -1,4 +1,4 @@
-// Badge definitions and achievement system
+﻿// Badge definitions and achievement system
 import { memoize } from './memoize'
 
 export const BADGES = {
@@ -7,7 +7,7 @@ export const BADGES = {
     id: 'first-steps',
     name: 'First Steps',
     description: 'Log your first mood',
-    emoji: '🌱',
+    emoji: 'ðŸŒ±',
     category: 'consistency',
     points: 10,
     requirement: 1,
@@ -17,7 +17,7 @@ export const BADGES = {
     id: 'week-warrior',
     name: 'Week Warrior',
     description: '7-day logging streak',
-    emoji: '🔥',
+    emoji: 'ðŸ”¥',
     category: 'consistency',
     points: 25,
     requirement: 7,
@@ -27,7 +27,7 @@ export const BADGES = {
     id: 'month-master',
     name: 'Month Master',
     description: '30-day logging streak',
-    emoji: '⭐',
+    emoji: 'â­',
     category: 'consistency',
     points: 100,
     requirement: 30,
@@ -37,7 +37,7 @@ export const BADGES = {
     id: 'century-club',
     name: 'Century Club',
     description: '100 total mood logs',
-    emoji: '🏆',
+    emoji: 'ðŸ†',
     category: 'consistency',
     points: 150,
     requirement: 100,
@@ -47,7 +47,7 @@ export const BADGES = {
     id: 'consistent-champion',
     name: 'Consistent Champion',
     description: 'Never missed a day for 30 days',
-    emoji: '💎',
+    emoji: 'ðŸ’Ž',
     category: 'consistency',
     points: 200,
     requirement: 30,
@@ -59,7 +59,7 @@ export const BADGES = {
     id: 'conversation-starter',
     name: 'Conversation Starter',
     description: 'Make your first post',
-    emoji: '💬',
+    emoji: 'ðŸ’¬',
     category: 'community',
     points: 15,
     requirement: 1,
@@ -69,7 +69,7 @@ export const BADGES = {
     id: 'voice-heard',
     name: 'Voice Heard',
     description: 'Post in 3 different circles',
-    emoji: '🎤',
+    emoji: 'ðŸŽ¤',
     category: 'community',
     points: 30,
     requirement: 3,
@@ -79,7 +79,7 @@ export const BADGES = {
     id: 'supporting-soul',
     name: 'Supporting Soul',
     description: 'Receive 10 hearts on posts',
-    emoji: '❤️',
+    emoji: 'â¤ï¸',
     category: 'community',
     points: 50,
     requirement: 10,
@@ -89,7 +89,7 @@ export const BADGES = {
     id: 'circle-builder',
     name: 'Circle Builder',
     description: 'Join 5 circles',
-    emoji: '🤝',
+    emoji: 'ðŸ¤',
     category: 'community',
     points: 40,
     requirement: 5,
@@ -99,7 +99,7 @@ export const BADGES = {
     id: 'community-hero',
     name: 'Community Hero',
     description: '50 helpful comments',
-    emoji: '🌟',
+    emoji: 'ðŸŒŸ',
     category: 'community',
     points: 75,
     requirement: 50,
@@ -111,7 +111,7 @@ export const BADGES = {
     id: 'mindful-moment',
     name: 'Mindful Moment',
     description: 'Complete a breathing exercise',
-    emoji: '🧘',
+    emoji: 'ðŸ§˜',
     category: 'wellness',
     points: 20,
     requirement: 1,
@@ -121,7 +121,7 @@ export const BADGES = {
     id: 'positive-vibes',
     name: 'Positive Vibes',
     description: 'Log 7 consecutive happy moods',
-    emoji: '🌈',
+    emoji: 'ðŸŒˆ',
     category: 'wellness',
     points: 60,
     requirement: 7,
@@ -131,7 +131,7 @@ export const BADGES = {
     id: 'resilience',
     name: 'Resilience',
     description: 'Log mood on a tough day',
-    emoji: '💪',
+    emoji: 'ðŸ’ª',
     category: 'wellness',
     points: 25,
     requirement: 1,
@@ -142,8 +142,8 @@ export const BADGES = {
   'one-month-strong': {
     id: 'one-month-strong',
     name: 'One Month Strong',
-    description: '30 days on Safespace',
-    emoji: '🎂',
+    description: '30 days on space4u',
+    emoji: 'ðŸŽ‚',
     category: 'milestone',
     points: 50,
     requirement: 30,
@@ -152,8 +152,8 @@ export const BADGES = {
   'three-month-journey': {
     id: 'three-month-journey',
     name: 'Three Month Journey',
-    description: '90 days on Safespace',
-    emoji: '🎉',
+    description: '90 days on space4u',
+    emoji: 'ðŸŽ‰',
     category: 'milestone',
     points: 100,
     requirement: 90,
@@ -162,10 +162,10 @@ export const BADGES = {
 }
 
 export const LEVELS = {
-  beginner: { name: 'Beginner', emoji: '🌱', min: 0, max: 50 },
-  regular: { name: 'Regular', emoji: '⭐', min: 51, max: 150 },
-  champion: { name: 'Champion', emoji: '🏆', min: 151, max: 500 },
-  legend: { name: 'Legend', emoji: '👑', min: 501, max: Infinity }
+  beginner: { name: 'Beginner', emoji: 'ðŸŒ±', min: 0, max: 50 },
+  regular: { name: 'Regular', emoji: 'â­', min: 51, max: 150 },
+  champion: { name: 'Champion', emoji: 'ðŸ†', min: 151, max: 500 },
+  legend: { name: 'Legend', emoji: 'ðŸ‘‘', min: 501, max: Infinity }
 }
 
 export const POINT_VALUES = {
@@ -178,7 +178,7 @@ export const POINT_VALUES = {
 }
 
 export const initializeBadgeSystem = () => {
-  const existing = localStorage.getItem('safespace_badges')
+  const existing = localStorage.getItem('space4u_badges')
   if (!existing) {
     const initialData = {
       badges: Object.values(BADGES).map(badge => ({
@@ -192,7 +192,7 @@ export const initializeBadgeSystem = () => {
       totalPoints: 0,
       level: 'beginner'
     }
-    localStorage.setItem('safespace_badges', JSON.stringify(initialData))
+    localStorage.setItem('space4u_badges', JSON.stringify(initialData))
     return initialData
   }
   return JSON.parse(existing)
@@ -226,7 +226,7 @@ export const getProgressToNextLevel = memoize((points) => {
 })
 
 export const checkBadgeProgress = (badgeId, currentProgress) => {
-  const badgeData = JSON.parse(localStorage.getItem('safespace_badges'))
+  const badgeData = JSON.parse(localStorage.getItem('space4u_badges'))
   const badge = badgeData.badges.find(b => b.id === badgeId)
   
   if (!badge || badge.unlocked) return null
@@ -243,7 +243,7 @@ export const checkBadgeProgress = (badgeId, currentProgress) => {
     unlocked = true
   }
   
-  localStorage.setItem('safespace_badges', JSON.stringify(badgeData))
+  localStorage.setItem('space4u_badges', JSON.stringify(badgeData))
   
   return {
     badge: BADGES[badgeId],
@@ -254,16 +254,16 @@ export const checkBadgeProgress = (badgeId, currentProgress) => {
 }
 
 export const addPoints = (points, reason) => {
-  const badgeData = JSON.parse(localStorage.getItem('safespace_badges'))
+  const badgeData = JSON.parse(localStorage.getItem('space4u_badges'))
   badgeData.totalPoints += points
   badgeData.level = calculateUserLevel(badgeData.totalPoints)
-  localStorage.setItem('safespace_badges', JSON.stringify(badgeData))
+  localStorage.setItem('space4u_badges', JSON.stringify(badgeData))
   
   return badgeData.totalPoints
 }
 
 export const checkMoodLogBadges = () => {
-  const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+  const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
   const moodCount = Object.keys(moods).length
   
   const results = []
@@ -328,9 +328,9 @@ export const checkMoodLogBadges = () => {
 }
 
 export const checkCommunityBadges = () => {
-  const posts = JSON.parse(localStorage.getItem('safespace_user_posts') || '[]')
-  const circles = JSON.parse(localStorage.getItem('safespace_circles') || '[]')
-  const hearted = JSON.parse(localStorage.getItem('safespace_hearted') || '[]')
+  const posts = JSON.parse(localStorage.getItem('space4u_user_posts') || '[]')
+  const circles = JSON.parse(localStorage.getItem('space4u_circles') || '[]')
+  const hearted = JSON.parse(localStorage.getItem('space4u_hearted') || '[]')
   
   const results = []
   

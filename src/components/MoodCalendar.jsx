@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, X, Edit, Trash2 } from '../config/icons'
 import { useMoods } from '../hooks/useMoods'
 
@@ -99,7 +99,7 @@ function MoodCalendar() {
       // TODO: Add delete functionality to useMoods hook
       const updatedMoods = { ...moods }
       delete updatedMoods[dateKey]
-      localStorage.setItem('safespace_moods', JSON.stringify(updatedMoods))
+      localStorage.setItem('space4u_moods', JSON.stringify(updatedMoods))
       setShowModal(false)
     }
   }
@@ -135,7 +135,7 @@ function MoodCalendar() {
   if (!hasAnyMoods) {
     return (
       <div className="card p-6 mb-6 text-center dark:bg-gray-800 dark:border-gray-700">
-        <div className="text-4xl mb-4">📊</div>
+        <div className="text-4xl mb-4">ðŸ“Š</div>
         <h3 className="text-xl font-semibold text-text-primary dark:text-white mb-2">Your Mood History</h3>
         <p className="text-text-secondary dark:text-gray-300 mb-4">Start tracking your mood to see patterns over time</p>
         <button 

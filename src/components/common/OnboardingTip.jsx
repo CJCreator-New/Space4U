@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Lightbulb } from 'lucide-react'
 
@@ -35,7 +35,7 @@ export default function OnboardingTip({ page }) {
   const [isDismissed, setIsDismissed] = useState(false)
 
   useEffect(() => {
-    const dismissed = JSON.parse(localStorage.getItem('safespace_tips_dismissed') || '{}')
+    const dismissed = JSON.parse(localStorage.getItem('space4u_tips_dismissed') || '{}')
     if (!dismissed[page]) {
       setTimeout(() => setIsVisible(true), 1000)
     } else {
@@ -44,9 +44,9 @@ export default function OnboardingTip({ page }) {
   }, [page])
 
   const handleDismiss = () => {
-    const dismissed = JSON.parse(localStorage.getItem('safespace_tips_dismissed') || '{}')
+    const dismissed = JSON.parse(localStorage.getItem('space4u_tips_dismissed') || '{}')
     dismissed[page] = true
-    localStorage.setItem('safespace_tips_dismissed', JSON.stringify(dismissed))
+    localStorage.setItem('space4u_tips_dismissed', JSON.stringify(dismissed))
     setIsVisible(false)
     setIsDismissed(true)
   }
@@ -90,3 +90,4 @@ export default function OnboardingTip({ page }) {
     </AnimatePresence>
   )
 }
+

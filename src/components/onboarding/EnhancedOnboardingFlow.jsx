@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSupabaseAuth } from '../../contexts/AuthContext'
 import EnhancedWelcomeScreen from './EnhancedWelcomeScreen'
@@ -47,7 +47,7 @@ function EnhancedOnboardingFlow({ onComplete }) {
   const handleSkip = () => {
     const defaultData = {
       username: `user_${Date.now()}`,
-      avatar: '🐻',
+      avatar: 'ðŸ»',
       interests: ['General Wellness']
     }
     completeOnboarding({ ...userData, ...defaultData })
@@ -57,8 +57,8 @@ function EnhancedOnboardingFlow({ onComplete }) {
     if (!user) return
     
     saveUserCountry(finalData.country || 'US')
-    localStorage.setItem(`safespace_user_${user.id}`, JSON.stringify(finalData))
-    localStorage.setItem(`safespace_onboarding_complete_${user.id}`, 'true')
+    localStorage.setItem(`space4u_user_${user.id}`, JSON.stringify(finalData))
+    localStorage.setItem(`space4u_onboarding_complete_${user.id}`, 'true')
     setShowCompletion(true)
   }
 
@@ -100,3 +100,4 @@ function EnhancedOnboardingFlow({ onComplete }) {
 }
 
 export default EnhancedOnboardingFlow
+

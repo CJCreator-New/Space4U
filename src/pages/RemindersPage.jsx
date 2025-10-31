@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Plus, Bell, BellOff, Trash2, Crown } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -12,11 +12,11 @@ function RemindersPage() {
   const { t } = useTranslation()
   
   const REMINDER_TYPES = [
-    { value: 'mood_checkin', label: t('reminders.moodCheckIn'), icon: '😊' },
-    { value: 'medication', label: t('reminders.medication'), icon: '💊' },
-    { value: 'therapy', label: t('reminders.therapy'), icon: '🧠' },
-    { value: 'habit', label: t('reminders.habit'), icon: '🎯' },
-    { value: 'custom', label: t('reminders.custom'), icon: '⏰' }
+    { value: 'mood_checkin', label: t('reminders.moodCheckIn'), icon: 'ðŸ˜Š' },
+    { value: 'medication', label: t('reminders.medication'), icon: 'ðŸ’Š' },
+    { value: 'therapy', label: t('reminders.therapy'), icon: 'ðŸ§ ' },
+    { value: 'habit', label: t('reminders.habit'), icon: 'ðŸŽ¯' },
+    { value: 'custom', label: t('reminders.custom'), icon: 'â°' }
   ]
 
   const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -34,7 +34,7 @@ function RemindersPage() {
   const FREE_REMINDER_LIMIT = 5
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('safespace_reminders') || '[]')
+    const saved = JSON.parse(localStorage.getItem('space4u_reminders') || '[]')
     setReminders(saved)
   }, [])
 
@@ -49,7 +49,7 @@ function RemindersPage() {
   const addReminder = () => {
     const reminder = { ...newReminder, id: Date.now() }
     const updated = [...reminders, reminder]
-    localStorage.setItem('safespace_reminders', JSON.stringify(updated))
+    localStorage.setItem('space4u_reminders', JSON.stringify(updated))
     setReminders(updated)
     setShowModal(false)
     setNewReminder({ type: 'mood_checkin', title: '', time: '09:00', days: [1, 2, 3, 4, 5], enabled: true })
@@ -57,13 +57,13 @@ function RemindersPage() {
 
   const toggleReminder = (id) => {
     const updated = reminders.map(r => r.id === id ? { ...r, enabled: !r.enabled } : r)
-    localStorage.setItem('safespace_reminders', JSON.stringify(updated))
+    localStorage.setItem('space4u_reminders', JSON.stringify(updated))
     setReminders(updated)
   }
 
   const deleteReminder = (id) => {
     const updated = reminders.filter(r => r.id !== id)
-    localStorage.setItem('safespace_reminders', JSON.stringify(updated))
+    localStorage.setItem('space4u_reminders', JSON.stringify(updated))
     setReminders(updated)
   }
 
@@ -124,7 +124,7 @@ function RemindersPage() {
                     <div>
                       <h3 className="text-lg font-semibold">{reminder.title || type?.label}</h3>
                       <p className="text-text-secondary text-sm">
-                        {reminder.time} • {reminder.days.map(d => DAYS[d]).join(', ')}
+                        {reminder.time} â€¢ {reminder.days.map(d => DAYS[d]).join(', ')}
                       </p>
                     </div>
                   </div>
@@ -223,3 +223,4 @@ function RemindersPage() {
 }
 
 export default RemindersPage
+

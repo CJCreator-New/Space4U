@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+﻿import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, Filter, Users, Shield, Heart, AlertTriangle, Info, Crown, Lock } from 'lucide-react'
+import { Search, Filter, Users, Shield, Heart, AlertTriangle, Info, Crown, Lock, Sparkles, Activity, TrendingUp, ArrowRight } from 'lucide-react'
 import { mockCircles } from '../data/mockCircles'
 import CircleCard from '../components/CircleCard'
 import FilterModal from '../components/FilterModal'
@@ -11,6 +11,134 @@ import SafeComponent from '../components/SafeComponent'
 import OnboardingTip from '../components/common/OnboardingTip'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import { useDebounce } from '../hooks/useDebounce'
+import { trackEvent, EVENTS, trackPageView } from '../utils/analytics'
+import { api } from '../utils/supabase'
+
+const COLOR_PALETTE = ['#6366F1', '#8B5CF6', '#3B82F6', '#EC4899', '#F59E0B', '#EF4444', '#10B981', '#14B8A6']
+
+const normalizeTagList = (value) => {
+  if (Array.isArray(value)) {
+    return value.filter(Boolean)
+  }
+  if (typeof value === 'string') {
+    return value
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter(Boolean)
+  }
+  if (value && typeof value === 'object') {
+    return Object.values(value).filter(Boolean)
+  }
+  return []
+}
+
+const ensureNumber = (value, fallback = 0) => {
+  const numeric = Number(value)
+  return Number.isFinite(numeric) ? numeric : fallback
+}
+
+const formatRelativeTime = (value) => {
+  if (!value) return ''
+  if (typeof value === 'string' && /ago$/i.test(value.trim())) {
+    return value
+  }
+
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) {
+    return value
+  }
+
+  const diffMs = Date.now() - date.getTime()
+  if (diffMs <= 60000) {
+    return 'Active now'
+  }
+  const minutes = Math.round(diffMs / 60000)
+  if (minutes < 60) {
+    return `Active ${minutes}m ago`
+  }
+  const hours = Math.round(minutes / 60)
+  if (hours < 24) {
+    return `Active ${hours}h ago`
+  }
+  const days = Math.round(hours / 24)
+  if (days < 7) {
+    return `Active ${days}d ago`
+  }
+  const weeks = Math.round(days / 7)
+  if (weeks < 4) {
+    return `Active ${weeks}w ago`
+  }
+  const months = Math.round(days / 30)
+  if (months < 12) {
+    return `Active ${months}mo ago`
+  }
+  const years = Math.round(days / 365)
+  return `Active ${years}y ago`
+}
+
+const buildFeaturedPost = (circle) => {
+  if (circle?.featuredPost?.title) {
+    return circle.featuredPost
+  }
+
+  const raw = circle?.featured_post || circle?.latest_post
+  if (raw && raw.title) {
+    return {
+      title: raw.title,
+      author: raw.author || raw.username || raw.owner || 'Community member',
+      timeAgo: raw.timeAgo || raw.relative_time || raw.time_ago || ''
+    }
+  }
+
+  if (circle?.latest_post_title) {
+    return {
+      title: circle.latest_post_title,
+      author: circle.latest_post_author || 'Community member',
+      timeAgo: circle.latest_post_timeAgo || circle.latest_post_time_ago || ''
+    }
+  }
+
+  return undefined
+}
+
+const extractCirclesFromResponse = (response) => {
+  if (!response) return []
+  if (Array.isArray(response)) return response
+  if (Array.isArray(response?.data)) return response.data
+  if (Array.isArray(response?.circles)) return response.circles
+  if (Array.isArray(response?.data?.circles)) return response.data.circles
+  return []
+}
+
+const normalizeCircleRecord = (circle, index, joinedLookup) => {
+  const resolvedId = circle?.id ?? circle?.circle_id ?? circle?.uuid ?? circle?.slug ?? `circle-${index}`
+  const idString = String(resolvedId)
+  const tags = normalizeTagList(circle?.tags ?? circle?.topics)
+  const members = ensureNumber(circle?.members ?? circle?.member_count ?? circle?.total_members)
+  const posts = ensureNumber(circle?.posts ?? circle?.post_count ?? circle?.total_posts)
+  const unreadCount = ensureNumber(circle?.unreadCount ?? circle?.unread_count ?? circle?.new_posts)
+  const icon = circle?.icon ?? circle?.emoji ?? 'ðŸ«‚'
+  const color = circle?.color ?? circle?.theme_color ?? COLOR_PALETTE[index % COLOR_PALETTE.length]
+  const lastActiveRaw = circle?.lastActive ?? circle?.last_active ?? circle?.last_active_at ?? circle?.last_active_label ?? circle?.last_active_humanized
+  const highlight = circle?.highlight ?? circle?.highlight_text ?? circle?.tagline ?? circle?.purpose ?? ''
+
+  return {
+    id: resolvedId,
+    name: circle?.name ?? circle?.title ?? 'Circle',
+    description: circle?.description ?? circle?.summary ?? 'Connect with peers in a supportive space.',
+    icon,
+    color,
+    category: circle?.category ?? circle?.category_slug ?? circle?.topic ?? 'support',
+    tags,
+    members,
+    posts,
+    unreadCount,
+    lastActive: lastActiveRaw ? formatRelativeTime(lastActiveRaw) : '',
+    highlight: highlight || undefined,
+    featuredPost: buildFeaturedPost(circle),
+    isJoined: joinedLookup.has(idString)
+  }
+}
 
 function CirclesPage() {
   const navigate = useNavigate()
@@ -22,84 +150,169 @@ function CirclesPage() {
   const [joinedCircles, setJoinedCircles] = useState([])
   const [circles, setCircles] = useState([])
   const [loading, setLoading] = useState(true)
+  const [feedback, setFeedback] = useState(null)
+  const feedbackTimerRef = useRef(null)
+  const isMountedRef = useRef(true)
+  const [joinCelebration, setJoinCelebration] = useState(null)
   const { isPremium } = getPremiumStatus()
   
   const FREE_CIRCLE_LIMIT = 3
 
   useEffect(() => {
-    loadData()
+    isMountedRef.current = true
+    return () => {
+      isMountedRef.current = false
+      if (feedbackTimerRef.current) {
+        clearTimeout(feedbackTimerRef.current)
+      }
+    }
   }, [])
 
-  const loadData = () => {
-    // Ensure global circles list exists in localStorage
-    const existingAll = JSON.parse(localStorage.getItem('safespace_circles') || 'null')
-    if (!existingAll) localStorage.setItem('safespace_circles', JSON.stringify(mockCircles))
-
-    // User's joined circles are stored as an array of ids under safespace_user_circles
-    const savedJoined = JSON.parse(localStorage.getItem('safespace_user_circles') || '[]')
-    setJoinedCircles(savedJoined)
-
-    setCircles(mockCircles)
-    setLoading(false)
+  const showFeedback = (message, tone = 'success') => {
+    if (feedbackTimerRef.current) {
+      clearTimeout(feedbackTimerRef.current)
+    }
+    setFeedback({ message, tone })
+    feedbackTimerRef.current = setTimeout(() => setFeedback(null), 2400)
   }
 
+  const loadData = useCallback(async ({ showLoading = false } = {}) => {
+    try {
+      if (showLoading) {
+        setLoading(true)
+      }
+
+      let savedJoinedRaw
+      try {
+        savedJoinedRaw = JSON.parse(localStorage.getItem('space4u_user_circles') || '[]')
+      } catch (parseError) {
+        console.warn('Unable to parse joined circles cache, resetting', parseError)
+        savedJoinedRaw = []
+      }
+      const normalizedJoined = Array.isArray(savedJoinedRaw)
+        ? savedJoinedRaw.map((id) => String(id))
+        : []
+      if (!isMountedRef.current) {
+        return
+      }
+      setJoinedCircles(normalizedJoined)
+      const joinedLookup = new Set(normalizedJoined)
+
+      let storedFallback
+      try {
+        storedFallback = JSON.parse(localStorage.getItem('space4u_circles') || 'null')
+      } catch (fallbackParseError) {
+        console.warn('Unable to parse circles cache, falling back to defaults', fallbackParseError)
+        storedFallback = null
+      }
+      const fallbackCircles = Array.isArray(storedFallback) ? storedFallback : mockCircles
+
+      try {
+        const response = await api.getCircles()
+        const remoteCircles = extractCirclesFromResponse(response)
+        const sourceCircles = remoteCircles.length ? remoteCircles : fallbackCircles
+        const processedCircles = sourceCircles.map((circle, index) =>
+          normalizeCircleRecord(circle, index, joinedLookup)
+        )
+        if (!isMountedRef.current) {
+          return
+        }
+        setCircles(processedCircles)
+        localStorage.setItem('space4u_circles', JSON.stringify(processedCircles))
+      } catch (fetchError) {
+        console.error('Failed to load circles', fetchError)
+        const processedCircles = fallbackCircles.map((circle, index) =>
+          normalizeCircleRecord(circle, index, joinedLookup)
+        )
+        if (!isMountedRef.current) {
+          return
+        }
+        setCircles(processedCircles)
+      }
+    } finally {
+      if (isMountedRef.current) {
+        setLoading(false)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    loadData({ showLoading: true })
+    trackPageView('circles')
+  }, [loadData])
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      loadData()
+    }, 60000)
+
+    return () => clearInterval(intervalId)
+  }, [loadData])
+
   const handleJoinCircle = (circleId) => {
+    const idKey = String(circleId)
     if (!isPremium && joinedCircles.length >= FREE_CIRCLE_LIMIT) {
       navigate('/premium')
       return
     }
     try {
-      if (joinedCircles.includes(circleId)) return
-      const newJoined = [...joinedCircles, circleId]
-      setJoinedCircles(newJoined)
-      localStorage.setItem('safespace_user_circles', JSON.stringify(newJoined))
+      if (joinedCircles.includes(idKey)) return
+      trackEvent(EVENTS.CIRCLE_JOINED, { circleId: idKey, source: 'circle_card' })
 
-      // Update member count safely
+      const targetCircle = circles.find(circle => String(circle.id) === idKey)
+      const newJoined = [...joinedCircles, idKey]
+      setJoinedCircles(newJoined)
+      localStorage.setItem('space4u_user_circles', JSON.stringify(newJoined))
+
       setCircles(prev => prev.map(circle => 
-        circle.id === circleId 
+        String(circle.id) === idKey 
           ? { ...circle, members: (Number(circle.members) || 0) + 1, isJoined: true }
           : circle
       ))
 
-      // Feedback
-      const toast = document.createElement('div')
-      toast.textContent = 'Joined circle'
-      toast.className = 'fixed top-4 right-4 bg-success text-white px-4 py-2 rounded-xl shadow-lg z-50'
-      document.body.appendChild(toast)
-      setTimeout(() => document.body.removeChild(toast), 1600)
+      showFeedback('Joined circle', 'success')
+      setJoinCelebration({
+        id: idKey,
+        name: targetCircle?.name ?? 'circle',
+        highlight: targetCircle?.highlight,
+        featuredPost: targetCircle?.featuredPost
+      })
+      trackEvent(EVENTS.CIRCLE_JOIN_CTA_SHOWN, { circleId: idKey })
     } catch (err) {
       console.error('Failed to join circle', err)
     }
   }
 
   const handleLeaveCircle = (circleId) => {
+    const idKey = String(circleId)
     try {
-      const newJoined = joinedCircles.filter(id => id !== circleId)
+      trackEvent(EVENTS.CIRCLE_LEFT, { circleId: idKey })
+      const newJoined = joinedCircles.filter(id => id !== idKey)
       setJoinedCircles(newJoined)
-      localStorage.setItem('safespace_user_circles', JSON.stringify(newJoined))
+      localStorage.setItem('space4u_user_circles', JSON.stringify(newJoined))
 
       setCircles(prev => prev.map(circle => 
-        circle.id === circleId 
+        String(circle.id) === idKey 
           ? { ...circle, members: Math.max(0, (Number(circle.members) || 0) - 1), isJoined: false }
           : circle
       ))
 
-      const toast = document.createElement('div')
-      toast.textContent = 'Left circle'
-      toast.className = 'fixed top-4 right-4 bg-warning text-white px-4 py-2 rounded-xl shadow-lg z-50'
-      document.body.appendChild(toast)
-      setTimeout(() => document.body.removeChild(toast), 1600)
+      showFeedback('Left circle', 'warning')
+      setJoinCelebration((current) => (current?.id === idKey ? null : current))
     } catch (err) {
       console.error('Failed to leave circle', err)
     }
   }
 
-  const handleCircleClick = (circleId) => {
-    navigate(`/circles/${circleId}`)
+  const handleCircleClick = (circleId, source = 'card') => {
+    const idKey = String(circleId)
+    trackEvent(EVENTS.CIRCLE_VIEWED, { circleId: idKey, source })
+    setJoinCelebration(null)
+    navigate(`/circles/${idKey}`)
   }
 
   const getFilteredCircles = () => {
-    let filtered = circles
+    let filtered = [...circles]
 
     // Filter by debounced search query
     if (debouncedSearch) {
@@ -116,19 +329,19 @@ function CirclesPage() {
 
     // Filter by tab
     if (activeTab === 'my-circles') {
-      filtered = filtered.filter(circle => joinedCircles.includes(circle.id))
+      filtered = filtered.filter(circle => joinedCircles.includes(String(circle.id)))
     }
 
     // Sort
     switch (filters.sort) {
       case 'members':
-        filtered.sort((a, b) => b.members - a.members)
+        filtered = [...filtered].sort((a, b) => (b.members || 0) - (a.members || 0))
         break
       case 'active':
-        filtered.sort((a, b) => b.posts - a.posts)
+        filtered = [...filtered].sort((a, b) => (b.unreadCount || 0) - (a.unreadCount || 0))
         break
-      case 'recent':
-        filtered = filtered.filter(circle => joinedCircles.includes(circle.id))
+      case 'growth':
+        filtered = [...filtered].sort((a, b) => (b.posts || 0) - (a.posts || 0))
         break
       default: // recommended
         break
@@ -138,20 +351,45 @@ function CirclesPage() {
   }
 
   const getRecommendedCircles = () => {
-    const user = JSON.parse(localStorage.getItem('safespace_user') || '{}')
+    const user = JSON.parse(localStorage.getItem('space4u_user') || '{}')
     const userInterests = user.interests || []
     
-    return circles.filter(circle => {
+    const matched = circles.filter(circle => {
       if (userInterests.includes('anxiety') && circle.name.includes('Anxiety')) return true
       if (userInterests.includes('depression') && circle.name.includes('Depression')) return true
       if (userInterests.includes('work') && circle.name.includes('Work')) return true
       if (userInterests.includes('wellness') && circle.name.includes('Wellness')) return true
       return false
-    }).slice(0, 4)
+    })
+
+    if (matched.length > 0) {
+      return matched.slice(0, 4)
+    }
+
+    return [...circles]
+      .sort((a, b) => (b.unreadCount || 0) - (a.unreadCount || 0))
+      .slice(0, 4)
   }
 
   const filteredCircles = getFilteredCircles()
   const recommendedCircles = getRecommendedCircles()
+  const circleStats = useMemo(() => {
+    const totalMembers = circles.reduce((acc, circle) => acc + (Number(circle.members) || 0), 0)
+    const activeCircles = circles.filter(circle => (circle.unreadCount || 0) > 0).length
+    const joinedCount = joinedCircles.length
+
+    return {
+      totalMembers,
+      activeCircles,
+      joinedCount
+    }
+  }, [circles, joinedCircles])
+  const sortShortcuts = [
+    { id: 'recommended', label: 'Recommended' },
+    { id: 'active', label: 'Active now' },
+    { id: 'members', label: 'Largest circles' },
+    { id: 'growth', label: 'Growing fast' }
+  ]
 
   if (loading) {
     return (
@@ -174,9 +412,77 @@ function CirclesPage() {
 
   return (
     <SafeComponent>
+    <div aria-live="polite" aria-atomic="true" className="sr-only">
+      {feedback?.message}
+    </div>
+    {feedback && (
+      <div
+        className={`fixed top-6 right-6 z-50 rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-xl transition-all ${
+          feedback.tone === 'warning' ? 'bg-warning' : 'bg-success'
+        }`}
+      >
+        {feedback.message}
+      </div>
+    )}
     <div className="max-w-6xl mx-auto">
       <OnboardingTip page="circles" />
       
+      {/* Hero */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 p-8 mb-6 shadow-2xl text-white">
+        <div className="absolute inset-0 bg-black/15"></div>
+        <div className="absolute -top-24 -right-16 h-64 w-64 rounded-full bg-white/20 blur-3xl"></div>
+        <div className="relative z-10 grid gap-6 lg:grid-cols-[1.6fr,1fr] items-start">
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <Users className="h-10 w-10" aria-hidden />
+              <h1 className="text-4xl font-bold tracking-tight drop-shadow-lg">Find Your Space</h1>
+            </div>
+            <p className="max-w-2xl text-lg text-white/90">
+              Join peer-led circles to share, listen, and grow together. Track the communities that match your goals and step into conversations that feel safe and supportive.
+            </p>
+            <ul className="mt-5 space-y-2 text-sm text-white/90">
+              <li className="flex items-start gap-2">
+                <Sparkles className="mt-0.5 h-4 w-4" aria-hidden />
+                <span>Daily prompts help break the ice and spark meaningful check-ins.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <Activity className="mt-0.5 h-4 w-4" aria-hidden />
+                <span>See which circles are active right now so you can jump in when support is flowing.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <TrendingUp className="mt-0.5 h-4 w-4" aria-hidden />
+                <span>Personalized recommendations grow with you as your needs evolve.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="rounded-2xl bg-white/15 p-5 backdrop-blur-sm shadow-inner">
+            <p className="text-xs font-semibold uppercase tracking-wide text-white/80">Today's pulse</p>
+            <div className="mt-4 space-y-3 text-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-white/80">Circles you're in</span>
+                <span className="text-lg font-semibold">{circleStats.joinedCount}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-white/80">Active circles right now</span>
+                <span className="text-lg font-semibold">{circleStats.activeCircles}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-white/80">Community members</span>
+                <span className="text-lg font-semibold">{formatNumber(circleStats.totalMembers)}</span>
+              </div>
+            </div>
+            <button
+              onClick={() => setActiveTab('discover')}
+              className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-white/90 px-4 py-2 text-sm font-semibold text-purple-600 transition hover:bg-white"
+            >
+              Discover circles
+              <Filter size={16} aria-hidden />
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Community Guidelines Banner */}
       <div className="card p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 mb-6">
         <div className="flex gap-3">
@@ -191,18 +497,47 @@ function CirclesPage() {
         </div>
       </div>
 
-      {/* Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 p-8 mb-6 shadow-2xl">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-2">
-            <Users className="w-10 h-10 text-white" />
-            <h1 className="text-4xl font-bold text-white drop-shadow-lg">Support Circles</h1>
+      {joinCelebration && (
+        <div className="card mb-6 border border-primary/20 bg-primary/5 p-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex items-start gap-3">
+              <Sparkles className="h-5 w-5 text-primary mt-0.5" aria-hidden />
+              <div>
+                <p className="font-semibold text-text-primary">You're in! {joinCelebration.name} is ready for you.</p>
+                {joinCelebration.highlight && (
+                  <p className="mt-1 text-sm text-text-secondary">{joinCelebration.highlight}</p>
+                )}
+                {joinCelebration.featuredPost && (
+                  <p className="mt-2 text-xs text-text-secondary">
+                    Latest highlight: <span className="font-medium text-text-primary">{joinCelebration.featuredPost.title}</span>
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+              <button
+                onClick={() => {
+                  trackEvent(EVENTS.CIRCLE_JOIN_CTA_CLICKED, { circleId: joinCelebration.id })
+                  handleCircleClick(joinCelebration.id, 'join_celebration_cta')
+                }}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
+              >
+                Enter circle
+                <ArrowRight size={16} aria-hidden />
+              </button>
+              <button
+                onClick={() => {
+                  trackEvent(EVENTS.CIRCLE_JOIN_CTA_DISMISSED, { circleId: joinCelebration.id })
+                  setJoinCelebration(null)
+                }}
+                className="inline-flex items-center justify-center rounded-xl border border-primary/40 px-3 py-2 text-xs font-semibold text-primary transition hover:bg-primary/10"
+              >
+                Maybe later
+              </button>
+            </div>
           </div>
-          <p className="text-white/90 text-lg">Find your community, share your journey, support others</p>
         </div>
-      </div>
+      )}
 
       <div className="mb-6">
         {/* Premium Limit Warning */}
@@ -233,15 +568,41 @@ function CirclesPage() {
               placeholder="Search circles..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search circles"
               className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary outline-none transition-colors"
             />
           </div>
           <button
             onClick={() => setShowFilters(true)}
+            aria-label="Open filters"
             className="px-4 py-3 border-2 border-gray-200 rounded-xl hover:border-primary transition-colors"
           >
             <Filter size={20} />
           </button>
+        </div>
+
+        <div className="mb-6 flex flex-wrap items-center gap-2" role="group" aria-label="Sort circles">
+          {sortShortcuts.map((option) => {
+            const isActive = filters.sort === option.id
+            return (
+              <button
+                key={option.id}
+                type="button"
+                aria-pressed={isActive}
+                className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                  isActive
+                    ? 'border-primary bg-primary/10 text-primary shadow-sm'
+                    : 'border-transparent bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
+                onClick={() => {
+                  trackEvent(EVENTS.CIRCLE_SORT_SELECTED, { sort: option.id, isActive })
+                  setFilters((prev) => ({ ...prev, sort: option.id }))
+                }}
+              >
+                {option.label}
+              </button>
+            )
+          })}
         </div>
 
         {/* Tab Navigation */}
@@ -278,10 +639,10 @@ function CirclesPage() {
               <div key={circle.id} className="flex-shrink-0 w-64">
                 <CircleCard
                   circle={circle}
-                  isJoined={joinedCircles.includes(circle.id)}
+                  isJoined={joinedCircles.includes(String(circle.id))}
                   onJoin={handleJoinCircle}
                   onLeave={handleLeaveCircle}
-                  onClick={handleCircleClick}
+                  onClick={(id) => handleCircleClick(id, 'recommended_carousel')}
                 />
               </div>
             ))}
@@ -292,7 +653,7 @@ function CirclesPage() {
       {/* Empty States */}
       {activeTab === 'my-circles' && joinedCircles.length === 0 ? (
         <EmptyState
-          icon="🌐"
+          icon="ðŸŒ"
           title="No Circles Yet"
           description="Join circles to connect with supportive communities and share your journey"
           action={() => setActiveTab('discover')}
@@ -300,7 +661,7 @@ function CirclesPage() {
         />
       ) : filteredCircles.length === 0 && debouncedSearch ? (
         <EmptyState
-          icon="🔍"
+          icon="ðŸ”"
           title="No Results Found"
           description={`No circles match "${debouncedSearch}". Try different keywords or browse all circles.`}
           action={() => setSearchQuery('')}
@@ -308,7 +669,7 @@ function CirclesPage() {
         />
       ) : filteredCircles.length === 0 ? (
         <EmptyState
-          icon="🌟"
+          icon="ðŸŒŸ"
           title="No Circles Available"
           description="Check back soon for new support circles"
         />
@@ -319,10 +680,10 @@ function CirclesPage() {
             <div key={circle.id} className="stagger-item" style={{ animationDelay: `${index * 50}ms` }}>
               <CircleCard
                 circle={circle}
-                isJoined={joinedCircles.includes(circle.id)}
+                isJoined={joinedCircles.includes(String(circle.id))}
                 onJoin={handleJoinCircle}
                 onLeave={handleLeaveCircle}
-                onClick={handleCircleClick}
+                onClick={(id) => handleCircleClick(id, 'grid_card')}
               />
             </div>
           ))}
@@ -345,11 +706,11 @@ function CirclesPage() {
             <div className="text-sm">
               <p className="font-semibold mb-1 text-gray-900">Community Guidelines</p>
               <ul className="text-gray-700 space-y-1">
-                <li>• Be respectful and supportive - everyone's journey is unique</li>
-                <li>• Share your experiences, not medical advice</li>
-                <li>• Respect privacy - what's shared here stays here</li>
-                <li>• Report harmful content using the report button</li>
-                <li>• Remember: peer support complements, doesn't replace professional care</li>
+                <li>â€¢ Be respectful and supportive - everyone's journey is unique</li>
+                <li>â€¢ Share your experiences, not medical advice</li>
+                <li>â€¢ Respect privacy - what's shared here stays here</li>
+                <li>â€¢ Report harmful content using the report button</li>
+                <li>â€¢ Remember: peer support complements, doesn't replace professional care</li>
               </ul>
             </div>
           </div>
@@ -365,10 +726,10 @@ function CirclesPage() {
                 Seek professional help if you're experiencing:
               </p>
               <ul className="text-gray-700 space-y-1">
-                <li>• Persistent feelings of sadness, anxiety, or hopelessness</li>
-                <li>• Thoughts of self-harm or suicide</li>
-                <li>• Difficulty functioning in daily life</li>
-                <li>• Substance abuse issues</li>
+                <li>â€¢ Persistent feelings of sadness, anxiety, or hopelessness</li>
+                <li>â€¢ Thoughts of self-harm or suicide</li>
+                <li>â€¢ Difficulty functioning in daily life</li>
+                <li>â€¢ Substance abuse issues</li>
               </ul>
               <p className="text-gray-700 mt-2 font-medium">
                 Crisis support: Call 988 (Suicide & Crisis Lifeline) - Available 24/7

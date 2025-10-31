@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Plus, CheckCircle2, Circle, TrendingUp, Crown } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -15,12 +15,12 @@ function HabitTrackerPage() {
   const { t } = useTranslation()
   const [habits, setHabits] = useState([])
   const [showModal, setShowModal] = useState(false)
-  const [newHabit, setNewHabit] = useState({ name: '', icon: '🎯', color: 'blue', frequency: 'daily' })
+  const [newHabit, setNewHabit] = useState({ name: '', icon: 'ðŸŽ¯', color: 'blue', frequency: 'daily' })
   const { isPremium } = getPremiumStatus()
   const FREE_HABIT_LIMIT = 5
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('safespace_habits') || '[]')
+    const saved = JSON.parse(localStorage.getItem('space4u_habits') || '[]')
     setHabits(saved)
   }, [])
 
@@ -35,10 +35,10 @@ function HabitTrackerPage() {
   const addHabit = () => {
     const habit = { ...newHabit, id: Date.now(), completions: {} }
     const updated = [...habits, habit]
-    localStorage.setItem('safespace_habits', JSON.stringify(updated))
+    localStorage.setItem('space4u_habits', JSON.stringify(updated))
     setHabits(updated)
     setShowModal(false)
-    setNewHabit({ name: '', icon: '🎯', color: 'blue', frequency: 'daily' })
+    setNewHabit({ name: '', icon: 'ðŸŽ¯', color: 'blue', frequency: 'daily' })
   }
 
   const toggleCompletion = (habitId) => {
@@ -51,7 +51,7 @@ function HabitTrackerPage() {
       }
       return h
     })
-    localStorage.setItem('safespace_habits', JSON.stringify(updated))
+    localStorage.setItem('space4u_habits', JSON.stringify(updated))
     setHabits(updated)
   }
 
@@ -108,10 +108,10 @@ function HabitTrackerPage() {
           <div className="max-w-md mx-auto mb-6 text-left">
             <p className="text-sm font-medium text-gray-700 mb-2">{t('habits.empty.keysTitle')}</p>
             <ul className="text-sm text-gray-600 space-y-1">
-              <li>• {t('habits.empty.key1')}</li>
-              <li>• {t('habits.empty.key2')}</li>
-              <li>• {t('habits.empty.key3')}</li>
-              <li>• {t('habits.empty.key4')}</li>
+              <li>â€¢ {t('habits.empty.key1')}</li>
+              <li>â€¢ {t('habits.empty.key2')}</li>
+              <li>â€¢ {t('habits.empty.key3')}</li>
+              <li>â€¢ {t('habits.empty.key4')}</li>
             </ul>
           </div>
           <button onClick={handleAddClick} className="btn-primary">
@@ -167,7 +167,7 @@ function HabitTrackerPage() {
               <div>
                 <label className="block text-sm font-medium mb-2">{t('habits.modal.iconLabel')}</label>
                 <div className="flex gap-2 flex-wrap">
-                  {['🎯', '💪', '🧘', '📚', '💧', '🏃', '🎨', '🎵'].map(icon => (
+                  {['ðŸŽ¯', 'ðŸ’ª', 'ðŸ§˜', 'ðŸ“š', 'ðŸ’§', 'ðŸƒ', 'ðŸŽ¨', 'ðŸŽµ'].map(icon => (
                     <button
                       key={icon}
                       onClick={() => setNewHabit({ ...newHabit, icon })}
@@ -193,3 +193,4 @@ function HabitTrackerPage() {
 }
 
 export default HabitTrackerPage
+

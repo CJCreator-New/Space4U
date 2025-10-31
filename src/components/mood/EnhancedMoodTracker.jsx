@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import * as RadixTooltip from '@radix-ui/react-tooltip'
 import * as RadixSwitch from '@radix-ui/react-switch'
@@ -13,11 +13,11 @@ import TagSelector from './TagSelector'
 const MotionDiv = motion.div
 
 const moods = [
-  { emoji: '😊', label: 'Amazing', value: 5, color: '#10B981' },
-  { emoji: '🙂', label: 'Good', value: 4, color: '#84CC16' },
-  { emoji: '😐', label: 'Okay', value: 3, color: '#F59E0B' },
-  { emoji: '😢', label: 'Low', value: 2, color: '#F97316' },
-  { emoji: '😰', label: 'Struggling', value: 1, color: '#EF4444' },
+  { emoji: 'ðŸ˜Š', label: 'Amazing', value: 5, color: '#10B981' },
+  { emoji: 'ðŸ™‚', label: 'Good', value: 4, color: '#84CC16' },
+  { emoji: 'ðŸ˜', label: 'Okay', value: 3, color: '#F59E0B' },
+  { emoji: 'ðŸ˜¢', label: 'Low', value: 2, color: '#F97316' },
+  { emoji: 'ðŸ˜°', label: 'Struggling', value: 1, color: '#EF4444' },
 ]
 
 function EnhancedMoodTracker({ onMoodLogged }) {
@@ -49,7 +49,7 @@ function EnhancedMoodTracker({ onMoodLogged }) {
     }
     calculateStreak(moodsData)
     
-    const hasLoggedBefore = localStorage.getItem('safespace_has_logged_mood')
+    const hasLoggedBefore = localStorage.getItem('space4u_has_logged_mood')
     if (!hasLoggedBefore) {
       setIsFirstTime(true)
     }
@@ -95,7 +95,7 @@ function EnhancedMoodTracker({ onMoodLogged }) {
     calculateStreak({ ...moodsData, [today]: moodData })
     announce('Mood logged successfully!')
     
-    localStorage.setItem('safespace_has_logged_mood', 'true')
+    localStorage.setItem('space4u_has_logged_mood', 'true')
     
     setTimeout(() => {
       setShowSuccess(false)
@@ -112,11 +112,11 @@ function EnhancedMoodTracker({ onMoodLogged }) {
         animate={{ opacity: 1, scale: 1 }}
         className="card p-6 mb-6 text-center"
       >
-        <div className="text-4xl mb-4">🎉</div>
+        <div className="text-4xl mb-4">ðŸŽ‰</div>
         <h3 className="text-xl font-semibold mb-2">Mood logged!</h3>
         {streak > 1 && (
           <p className="text-gray-600">
-            {streak} day streak! Keep it up 🔥
+            {streak} day streak! Keep it up ðŸ”¥
           </p>
         )}
       </MotionDiv>
@@ -168,7 +168,7 @@ function EnhancedMoodTracker({ onMoodLogged }) {
               className="mb-4 p-4 bg-blue-50 rounded-xl"
             >
               <p className="text-sm text-blue-700">
-                👋 Welcome! Track your mood daily to unlock insights and build healthy habits.
+                ðŸ‘‹ Welcome! Track your mood daily to unlock insights and build healthy habits.
               </p>
             </MotionDiv>
           </AnimatePresence>
@@ -307,7 +307,7 @@ function EnhancedMoodTracker({ onMoodLogged }) {
               </div>
               {streak > 0 && (
                 <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">
-                  🔥 {streak} day streak
+                  ðŸ”¥ {streak} day streak
                 </span>
               )}
             </div>
@@ -327,3 +327,4 @@ function EnhancedMoodTracker({ onMoodLogged }) {
 }
 
 export default EnhancedMoodTracker
+

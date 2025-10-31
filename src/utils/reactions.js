@@ -1,16 +1,16 @@
-// Post Reaction System
+﻿// Post Reaction System
 
 export const REACTIONS = {
-  heart: { emoji: '❤️', label: 'Heart' },
-  like: { emoji: '👍', label: 'Like' },
-  support: { emoji: '🙏', label: 'Support' },
-  strength: { emoji: '💪', label: 'Strength' },
-  hug: { emoji: '🤗', label: 'Hug' },
-  celebrate: { emoji: '🎉', label: 'Celebrate' }
+  heart: { emoji: 'â¤ï¸', label: 'Heart' },
+  like: { emoji: 'ðŸ‘', label: 'Like' },
+  support: { emoji: 'ðŸ™', label: 'Support' },
+  strength: { emoji: 'ðŸ’ª', label: 'Strength' },
+  hug: { emoji: 'ðŸ¤—', label: 'Hug' },
+  celebrate: { emoji: 'ðŸŽ‰', label: 'Celebrate' }
 }
 
 export const addReaction = (postId, reactionType, userId) => {
-  const reactions = JSON.parse(localStorage.getItem('safespace_reactions') || '{}')
+  const reactions = JSON.parse(localStorage.getItem('space4u_reactions') || '{}')
   
   if (!reactions[postId]) {
     reactions[postId] = {}
@@ -24,12 +24,12 @@ export const addReaction = (postId, reactionType, userId) => {
     reactions[postId][reactionType].push(userId)
   }
   
-  localStorage.setItem('safespace_reactions', JSON.stringify(reactions))
+  localStorage.setItem('space4u_reactions', JSON.stringify(reactions))
   return reactions[postId]
 }
 
 export const removeReaction = (postId, reactionType, userId) => {
-  const reactions = JSON.parse(localStorage.getItem('safespace_reactions') || '{}')
+  const reactions = JSON.parse(localStorage.getItem('space4u_reactions') || '{}')
   
   if (reactions[postId]?.[reactionType]) {
     reactions[postId][reactionType] = reactions[postId][reactionType].filter(id => id !== userId)
@@ -39,7 +39,7 @@ export const removeReaction = (postId, reactionType, userId) => {
     }
   }
   
-  localStorage.setItem('safespace_reactions', JSON.stringify(reactions))
+  localStorage.setItem('space4u_reactions', JSON.stringify(reactions))
   return reactions[postId] || {}
 }
 
@@ -55,7 +55,7 @@ export const toggleReaction = (postId, reactionType, userId) => {
 }
 
 export const getPostReactions = (postId) => {
-  const reactions = JSON.parse(localStorage.getItem('safespace_reactions') || '{}')
+  const reactions = JSON.parse(localStorage.getItem('space4u_reactions') || '{}')
   return reactions[postId] || {}
 }
 
@@ -71,3 +71,4 @@ export const getUserReaction = (postId, userId) => {
   }
   return null
 }
+

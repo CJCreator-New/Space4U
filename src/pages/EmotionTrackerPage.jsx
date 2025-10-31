@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Plus, Heart, Crown, BarChart3 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -30,14 +30,14 @@ function EmotionTrackerPage() {
   const { isPremium } = getPremiumStatus()
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('safespace_emotion_logs') || '[]')
+    const saved = JSON.parse(localStorage.getItem('space4u_emotion_logs') || '[]')
     setLogs(saved)
   }, [])
 
   const saveEntry = () => {
     const newEntry = { ...entry, id: Date.now(), created_at: new Date().toISOString() }
     const updated = [newEntry, ...logs]
-    localStorage.setItem('safespace_emotion_logs', JSON.stringify(updated))
+    localStorage.setItem('space4u_emotion_logs', JSON.stringify(updated))
     setLogs(updated)
     setShowModal(false)
     setEntry({ primary_emotion: '', secondary_emotions: [], intensity: 5, trigger: '' })
@@ -134,10 +134,10 @@ function EmotionTrackerPage() {
           <div className="max-w-md mx-auto mb-6 text-left">
             <p className="text-sm font-medium text-gray-700 mb-2">{t('emotions.empty.benefitsTitle')}</p>
             <ul className="text-sm text-gray-600 space-y-1">
-              <li>• {t('emotions.empty.benefit1')}</li>
-              <li>• {t('emotions.empty.benefit2')}</li>
-              <li>• {t('emotions.empty.benefit3')}</li>
-              <li>• {t('emotions.empty.benefit4')}</li>
+              <li>â€¢ {t('emotions.empty.benefit1')}</li>
+              <li>â€¢ {t('emotions.empty.benefit2')}</li>
+              <li>â€¢ {t('emotions.empty.benefit3')}</li>
+              <li>â€¢ {t('emotions.empty.benefit4')}</li>
             </ul>
           </div>
           <button onClick={() => setShowModal(true)} className="btn-primary">
@@ -262,3 +262,4 @@ function EmotionTrackerPage() {
 }
 
 export default EmotionTrackerPage
+

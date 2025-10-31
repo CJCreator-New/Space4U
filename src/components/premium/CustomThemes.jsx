@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Palette, Check } from 'lucide-react'
 
 function CustomThemes() {
@@ -17,7 +17,7 @@ function CustomThemes() {
 
   const applyTheme = (themeId) => {
     setActiveTheme(themeId)
-    localStorage.setItem('safespace_theme', themeId)
+    localStorage.setItem('space4u_theme', themeId)
   }
 
   return (
@@ -57,10 +57,10 @@ function CustomThemes() {
       <div className="card p-6 bg-purple-50">
         <h3 className="font-bold mb-2">Theme Benefits</h3>
         <ul className="space-y-2 text-sm text-gray-700">
-          <li>• Choose colors that match your mood</li>
-          <li>• Reduce eye strain with darker themes</li>
-          <li>• Make the app feel truly yours</li>
-          <li>• Switch themes anytime</li>
+          <li>â€¢ Choose colors that match your mood</li>
+          <li>â€¢ Reduce eye strain with darker themes</li>
+          <li>â€¢ Make the app feel truly yours</li>
+          <li>â€¢ Switch themes anytime</li>
         </ul>
       </div>
     </div>
@@ -68,3 +68,4 @@ function CustomThemes() {
 }
 
 export default CustomThemes
+

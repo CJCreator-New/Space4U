@@ -8,7 +8,16 @@ export const mockCircles = [
     posts: 892,
     color: "#6366F1",
     isJoined: false,
-    category: "mental-health"
+    category: "mental-health",
+    tags: ["Breathing", "Mindfulness", "CBT"],
+    unreadCount: 6,
+    featuredPost: {
+      title: "Grounding techniques that calm my anxiety in 5 minutes",
+      author: "CalmCurrent",
+      timeAgo: "2h ago"
+    },
+    lastActive: "Active now",
+    highlight: "Focus on quick coping strategies"
   },
   {
     id: 2,
@@ -19,7 +28,16 @@ export const mockCircles = [
     posts: 1204,
     color: "#8B5CF6",
     isJoined: false,
-    category: "mental-health"
+    category: "mental-health",
+    tags: ["Daily Wins", "Motivation", "Peer Support"],
+    unreadCount: 3,
+    featuredPost: {
+      title: "What helped me move through a hard week",
+      author: "BrightTomorrow",
+      timeAgo: "5h ago"
+    },
+    lastActive: "Active 12m ago",
+    highlight: "Gentle check-ins and weekly reflection prompts"
   },
   {
     id: 3,
@@ -30,7 +48,16 @@ export const mockCircles = [
     posts: 567,
     color: "#3B82F6",
     isJoined: false,
-    category: "lifestyle"
+    category: "lifestyle",
+    tags: ["Burnout", "Boundaries", "Productivity"],
+    unreadCount: 4,
+    featuredPost: {
+      title: "Script I used to ask for a mental health day",
+      author: "CareerCompass",
+      timeAgo: "1d ago"
+    },
+    lastActive: "Active 7m ago",
+    highlight: "Office-hours style Q&A every Thursday"
   },
   {
     id: 4,
@@ -41,7 +68,16 @@ export const mockCircles = [
     posts: 1345,
     color: "#EC4899",
     isJoined: false,
-    category: "support"
+    category: "support",
+    tags: ["Communication", "Conflict", "Boundaries"],
+    unreadCount: 8,
+    featuredPost: {
+      title: "How we built a weekly check-in ritual",
+      author: "HeartHues",
+      timeAgo: "45m ago"
+    },
+    lastActive: "Active now",
+    highlight: "Weekly connection prompts and guided discussions"
   },
   {
     id: 5,
@@ -52,7 +88,16 @@ export const mockCircles = [
     posts: 423,
     color: "#F59E0B",
     isJoined: false,
-    category: "lifestyle"
+    category: "lifestyle",
+    tags: ["Study Tips", "Isolation", "Dorm Life"],
+    unreadCount: 2,
+    featuredPost: {
+      title: "Balancing finals with self-care",
+      author: "CampusComet",
+      timeAgo: "3h ago"
+    },
+    lastActive: "Active 30m ago",
+    highlight: "Pomodoro study rooms open nightly"
   },
   {
     id: 6,
@@ -63,7 +108,16 @@ export const mockCircles = [
     posts: 789,
     color: "#EF4444",
     isJoined: false,
-    category: "support"
+    category: "support",
+    tags: ["Identity", "Community", "Joy"],
+    unreadCount: 5,
+    featuredPost: {
+      title: "Celebrating small wins while transitioning",
+      author: "OpenSkies",
+      timeAgo: "6h ago"
+    },
+    lastActive: "Active 4m ago",
+    highlight: "Peer-led affirmation sessions every weekend"
   },
   {
     id: 7,
@@ -74,7 +128,16 @@ export const mockCircles = [
     posts: 334,
     color: "#10B981",
     isJoined: false,
-    category: "lifestyle"
+    category: "lifestyle",
+    tags: ["Sleep", "Feeding", "Support"],
+    unreadCount: 1,
+    featuredPost: {
+      title: "Night feeds: what finally helped us rest",
+      author: "MoonbeamMom",
+      timeAgo: "8h ago"
+    },
+    lastActive: "Active 1h ago",
+    highlight: "Swap stories during live check-ins on Tuesdays"
   },
   {
     id: 8,
@@ -85,6 +148,15 @@ export const mockCircles = [
     posts: 987,
     color: "#14B8A6",
     isJoined: false,
-    category: "mental-health"
+    category: "mental-health",
+    tags: ["Routines", "Mindset", "Gratitude"],
+    unreadCount: 9,
+    featuredPost: {
+      title: "Creating a Sunday reset ritual that sticks",
+      author: "WellnessWeaver",
+      timeAgo: "1h ago"
+    },
+    lastActive: "Active now",
+    highlight: "Daily gentle check-ins and resource swaps"
   }
 ]

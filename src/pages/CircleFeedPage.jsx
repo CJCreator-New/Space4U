@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+﻿import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Users, ChevronDown, Plus, Grid, List } from 'lucide-react'
@@ -105,8 +105,8 @@ function CircleFeedPage() {
   }
 
   const filterPosts = (posts, filter) => {
-    const heartedPosts = JSON.parse(localStorage.getItem('safespace_hearted') || '[]')
-    const userPosts = JSON.parse(localStorage.getItem('safespace_user_posts') || '[]')
+    const heartedPosts = JSON.parse(localStorage.getItem('space4u_hearted') || '[]')
+    const userPosts = JSON.parse(localStorage.getItem('space4u_user_posts') || '[]')
     
     switch (filter) {
       case 'hearted':
@@ -119,18 +119,18 @@ function CircleFeedPage() {
   }
 
   const handleLeaveCircle = () => {
-    const joinedCircles = JSON.parse(localStorage.getItem('safespace_user_circles') || '[]')
+    const joinedCircles = JSON.parse(localStorage.getItem('space4u_user_circles') || '[]')
     const updatedCircles = joinedCircles.filter(id => id !== parseInt(circleId))
-    localStorage.setItem('safespace_user_circles', JSON.stringify(updatedCircles))
+    localStorage.setItem('space4u_user_circles', JSON.stringify(updatedCircles))
     navigate('/circles')
   }
 
   const handleHeartPost = (postId, isHearted) => {
-    const heartedPosts = JSON.parse(localStorage.getItem('safespace_hearted') || '[]')
+    const heartedPosts = JSON.parse(localStorage.getItem('space4u_hearted') || '[]')
     const updatedHearted = isHearted 
       ? [...heartedPosts, postId]
       : heartedPosts.filter(id => id !== postId)
-    localStorage.setItem('safespace_hearted', JSON.stringify(updatedHearted))
+    localStorage.setItem('space4u_hearted', JSON.stringify(updatedHearted))
   }
 
   const handleSharePost = () => {
@@ -200,7 +200,7 @@ function CircleFeedPage() {
                   <Users size={14} />
                   <span>{formatNumber(circle.members)} members</span>
                   {onlineCount > 0 && (
-                    <span className="ml-2 text-green-600">• {t('circles.online', { count: onlineCount })}</span>
+                    <span className="ml-2 text-green-600">â€¢ {t('circles.online', { count: onlineCount })}</span>
                   )}
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Target, TrendingUp, Award, Calendar as CalendarIcon } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
@@ -71,7 +71,7 @@ export default function ProgressOverviewWidget() {
       } catch (err) {
         // If table doesn't exist (PGRST205) use localStorage fallback
         if (err && err.code === 'PGRST205') {
-          const saved = JSON.parse(localStorage.getItem('safespace_gratitude_entries') || '[]')
+          const saved = JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]')
           gratitudeCount = saved.filter(e => new Date(e.date) >= monthStart).length
         } else {
           console.error('Error fetching gratitude entries:', err)
@@ -186,7 +186,7 @@ export default function ProgressOverviewWidget() {
                   className="opacity-0 group-hover:opacity-100 transition-opacity"
                   whileHover={{ x: 3 }}
                 >
-                  <span className={`text-sm ${stat.color}`}>→</span>
+                  <span className={`text-sm ${stat.color}`}>â†’</span>
                 </motion.div>
               </div>
               
@@ -218,7 +218,7 @@ export default function ProgressOverviewWidget() {
           className="mt-4 p-3 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border border-green-200 dark:border-green-800"
         >
           <p className="text-sm text-text-primary dark:text-white">
-            🎉 <strong>Great job!</strong> You're on a {stats.moodStreak}-day streak! Keep it up!
+            ðŸŽ‰ <strong>Great job!</strong> You're on a {stats.moodStreak}-day streak! Keep it up!
           </p>
         </motion.div>
       )}
@@ -231,10 +231,11 @@ export default function ProgressOverviewWidget() {
           className="mt-4 p-3 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg border border-purple-200 dark:border-purple-800"
         >
           <p className="text-sm text-text-primary dark:text-white">
-            💪 <strong>Start today!</strong> Log your mood to begin building your streak.
+            ðŸ’ª <strong>Start today!</strong> Log your mood to begin building your streak.
           </p>
         </motion.div>
       )}
     </motion.div>
   )
 }
+

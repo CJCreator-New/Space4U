@@ -1,4 +1,4 @@
-# Space4U - Mental Health Support Platform
+﻿# Space4U - Mental Health Support Platform
 
 > Your mind matters. Find support, track wellness, and connect with others who understand your journey.
 
@@ -7,84 +7,84 @@
 [![Vite](https://img.shields.io/badge/Vite-7.1.7-646CFF.svg)](https://vitejs.dev/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-## 🌟 Overview
+## ðŸŒŸ Overview
 
 Space4U is a comprehensive mental health support web application that provides users with tools for mood tracking, community support, and mental wellness resources. Built with privacy-first principles, all data is stored locally on your device.
 
-**🎯 46 Features Implemented** | **26 Pages** | **60+ Components** | **100% Privacy-First**
+**ðŸŽ¯ 46 Features Implemented** | **26 Pages** | **60+ Components** | **100% Privacy-First**
 
-## ✨ Features
+## âœ¨ Features
 
-### 🎯 Phase 1 - Core Features (16 Features)
-- ✅ **Daily Mood Tracking** - Emoji-based 5-point scale with notes
-- ✅ **Mood Calendar** - Visual calendar view of mood history
-- ✅ **Mood Trends** - Interactive charts and analytics
-- ✅ **Support Circles** - Topic-based communities (8 categories)
-- ✅ **Post Creation** - Anonymous or identified posting
-- ✅ **Resource Library** - Breathing exercises, articles, crisis resources
-- ✅ **Achievement System** - 20+ unlockable badges
-- ✅ **Profile Management** - Avatar customization, stats tracking
-- ✅ **Settings** - Comprehensive preferences and controls
-- ✅ **Premium System** - Subscription management and paywall
-- ✅ **Onboarding Flow** - 5-step personalized setup
-- ✅ **Therapeutic Tools** - CBT, DBT, Mindfulness, Sleep tracking
-- ✅ **Crisis Safety Plan** - Emergency support planning
-- ✅ **Mental Health Assessments** - PHQ-9, GAD-7 screening
-- ✅ **Navigation** - 8-item responsive navigation
-- ✅ **Responsive Design** - Mobile-first, 320px-1920px
+### ðŸŽ¯ Phase 1 - Core Features (16 Features)
+- âœ… **Daily Mood Tracking** - Emoji-based 5-point scale with notes
+- âœ… **Mood Calendar** - Visual calendar view of mood history
+- âœ… **Mood Trends** - Interactive charts and analytics
+- âœ… **Support Circles** - Topic-based communities (8 categories)
+- âœ… **Post Creation** - Anonymous or identified posting
+- âœ… **Resource Library** - Breathing exercises, articles, crisis resources
+- âœ… **Achievement System** - 20+ unlockable badges
+- âœ… **Profile Management** - Avatar customization, stats tracking
+- âœ… **Settings** - Comprehensive preferences and controls
+- âœ… **Premium System** - Subscription management and paywall
+- âœ… **Onboarding Flow** - 5-step personalized setup
+- âœ… **Therapeutic Tools** - CBT, DBT, Mindfulness, Sleep tracking
+- âœ… **Crisis Safety Plan** - Emergency support planning
+- âœ… **Mental Health Assessments** - PHQ-9, GAD-7 screening
+- âœ… **Navigation** - 8-item responsive navigation
+- âœ… **Responsive Design** - Mobile-first, 320px-1920px
 
-### 🏆 Priority 1 - Quick Wins (5 Features)
-- ✅ **Gratitude Journal** - Daily gratitude entries with mood correlation
-- ✅ **Habit Tracker** - Custom habits with streak tracking
-- ✅ **Emotion Wheel** - Plutchik's emotion wheel for deeper awareness
-- ✅ **Coping Skills Library** - 100+ searchable coping strategies
-- ✅ **Smart Reminders** - Customizable mood and wellness reminders
+### ðŸ† Priority 1 - Quick Wins (5 Features)
+- âœ… **Gratitude Journal** - Daily gratitude entries with mood correlation
+- âœ… **Habit Tracker** - Custom habits with streak tracking
+- âœ… **Emotion Wheel** - Plutchik's emotion wheel for deeper awareness
+- âœ… **Coping Skills Library** - 100+ searchable coping strategies
+- âœ… **Smart Reminders** - Customizable mood and wellness reminders
 
-### 🎯 Priority 2 - Core Enhancements (7 Features)
-- ✅ **Wellness Score Dashboard** - Composite wellness metrics
-- ✅ **Journaling Prompts** - 500+ therapeutic prompts
-- ✅ **Trigger Tracker** - Identify and manage mood triggers
-- ✅ **Medication Tracker** - Schedule, side effects, effectiveness
-- ✅ **Therapy Session Prep** - Pre-session planning and notes
-- ✅ **Self-Compassion Exercises** - Guided practices
-- ✅ **Worry Time Scheduler** - CBT worry management
+### ðŸŽ¯ Priority 2 - Core Enhancements (7 Features)
+- âœ… **Wellness Score Dashboard** - Composite wellness metrics
+- âœ… **Journaling Prompts** - 500+ therapeutic prompts
+- âœ… **Trigger Tracker** - Identify and manage mood triggers
+- âœ… **Medication Tracker** - Schedule, side effects, effectiveness
+- âœ… **Therapy Session Prep** - Pre-session planning and notes
+- âœ… **Self-Compassion Exercises** - Guided practices
+- âœ… **Worry Time Scheduler** - CBT worry management
 
-### 🎮 Priority 3 - Gamification (5 Features)
-- ✅ **Wellness Challenges** - 7-day and 30-day challenges
-- ✅ **Streak Rewards** - Milestone celebrations
-- ✅ **Mental Health Quests** - Gamified wellness journey
-- ✅ **Custom Mood Scales** - Personalized tracking
-- ✅ **Wellness Plan Builder** - Daily routine templates
+### ðŸŽ® Priority 3 - Gamification (5 Features)
+- âœ… **Wellness Challenges** - 7-day and 30-day challenges
+- âœ… **Streak Rewards** - Milestone celebrations
+- âœ… **Mental Health Quests** - Gamified wellness journey
+- âœ… **Custom Mood Scales** - Personalized tracking
+- âœ… **Wellness Plan Builder** - Daily routine templates
 
-### 🤝 Priority 4 - Social & Community (4 Features)
-- ✅ **Accountability Partner** - Peer support pairing
-- ✅ **Peer Support Matching** - 1-on-1 moderated chat
-- ✅ **Support Request System** - Quick support access
-- ✅ **Mood-Based Suggestions** - Context-aware recommendations
+### ðŸ¤ Priority 4 - Social & Community (4 Features)
+- âœ… **Accountability Partner** - Peer support pairing
+- âœ… **Peer Support Matching** - 1-on-1 moderated chat
+- âœ… **Support Request System** - Quick support access
+- âœ… **Mood-Based Suggestions** - Context-aware recommendations
 
-### 🔬 Priority 5 - Advanced Analytics (3 Features)
-- ✅ **Mood Prediction AI** - ML-based forecasting
-- ✅ **Tag Analytics** - Deep dive into mood tags
-- ✅ **Sleep Pattern Analytics** - Advanced sleep insights
+### ðŸ”¬ Priority 5 - Advanced Analytics (3 Features)
+- âœ… **Mood Prediction AI** - ML-based forecasting
+- âœ… **Tag Analytics** - Deep dive into mood tags
+- âœ… **Sleep Pattern Analytics** - Advanced sleep insights
 
-### 🏥 Priority 6 - Professional Integration (3 Features)
-- ✅ **Therapist Portal** - Share data with therapist (opt-in)
-- ✅ **Crisis Hotline Integration** - One-tap emergency support
-- ✅ **Data Export & Portability** - PDF/CSV export
+### ðŸ¥ Priority 6 - Professional Integration (3 Features)
+- âœ… **Therapist Portal** - Share data with therapist (opt-in)
+- âœ… **Crisis Hotline Integration** - One-tap emergency support
+- âœ… **Data Export & Portability** - PDF/CSV export
 
-### 📱 Priority 7 - Technical Enhancements (3 Features)
-- ✅ **Voice Journaling** - Voice-to-text mood entries
-- ✅ **Offline Mode** - Full offline functionality
-- ✅ **PWA Enhancement** - Install prompts, push notifications
+### ðŸ“± Priority 7 - Technical Enhancements (3 Features)
+- âœ… **Voice Journaling** - Voice-to-text mood entries
+- âœ… **Offline Mode** - Full offline functionality
+- âœ… **PWA Enhancement** - Install prompts, push notifications
 
-### 👑 Premium Features (5 New)
-- ✅ **Streak Insurance** - 2 free streak freezes/month
-- ✅ **Custom Themes** - 8 beautiful color themes
-- ✅ **Wellness Breakdown** - Detailed analytics
-- ✅ **Predictive Alerts** - AI mood forecasting
-- ✅ **Private Groups** - Invite-only circles
+### ðŸ‘‘ Premium Features (5 New)
+- âœ… **Streak Insurance** - 2 free streak freezes/month
+- âœ… **Custom Themes** - 8 beautiful color themes
+- âœ… **Wellness Breakdown** - Detailed analytics
+- âœ… **Predictive Alerts** - AI mood forecasting
+- âœ… **Private Groups** - Invite-only circles
 
-### 🔒 Privacy & Security
+### ðŸ”’ Privacy & Security
 - **Local Storage Only** - All data stays on your device
 - **Anonymous by Default** - No personal information required
 - **Data Export** - Download your data anytime
@@ -92,7 +92,7 @@ Space4U is a comprehensive mental health support web application that provides u
 - **No External Tracking** - Zero analytics or tracking
 - **HIPAA-Compliant Design** - Healthcare data standards
 
-## 🛠 Tech Stack
+## ðŸ›  Tech Stack
 
 ### Frontend
 - **React 18.2.0** - Modern React with hooks and concurrent features
@@ -121,7 +121,7 @@ Space4U is a comprehensive mental health support web application that provides u
 - **Local-First** - Offline-capable with localStorage
 - **PWA-Ready** - Progressive Web App features
 
-## 🚀 Quick Start
+## ðŸš€ Quick Start
 
 ### Prerequisites
 - Node.js 16+ 
@@ -146,7 +146,7 @@ Visit `http://localhost:5173` to see the app running.
 ### First Time Setup
 
 1. **Complete Onboarding** - 5-step personalized setup
-2. **Enable Premium (Dev Mode)** - Go to Settings → Toggle Developer Mode
+2. **Enable Premium (Dev Mode)** - Go to Settings â†’ Toggle Developer Mode
 3. **Explore Features** - Visit all 15 wellness tool cards on homepage
 
 ### Quick Access URLs
@@ -170,7 +170,7 @@ Technical:          http://localhost:5173/technical
 Premium Features:   http://localhost:5173/premium/features
 ```
 
-## 📜 Available Scripts
+## ðŸ“œ Available Scripts
 
 ```bash
 # Development
@@ -188,7 +188,7 @@ npm test -- --watch     # Run tests in watch mode
 npm run deploy       # Deploy to production (configure as needed)
 ```
 
-## 🏗 Build for Production
+## ðŸ— Build for Production
 
 ```bash
 # Create optimized production build
@@ -198,7 +198,7 @@ npm run build
 # These files are ready to be served by any static hosting service
 ```
 
-## 🌐 Deployment
+## ðŸŒ Deployment
 
 ### Option A: Vercel (Recommended)
 1. Connect your GitHub repository to Vercel
@@ -225,7 +225,7 @@ npm run build
    ```
 3. Run: `npm run deploy`
 
-## 🔧 Environment Variables
+## ðŸ”§ Environment Variables
 
 Create a `.env` file in the root directory:
 
@@ -236,7 +236,7 @@ VITE_API_URL=https://api.space4u.com
 VITE_ANALYTICS_ID=your-analytics-id
 ```
 
-## 📱 Progressive Web App (PWA)
+## ðŸ“± Progressive Web App (PWA)
 
 Space4U is PWA-ready with:
 - Offline functionality
@@ -244,7 +244,7 @@ Space4U is PWA-ready with:
 - App-like experience on mobile devices
 - Service worker for caching
 
-## 🧪 Testing
+## ðŸ§ª Testing
 
 ### Unit Tests
 
@@ -307,10 +307,10 @@ npm test -- --coverage
 - [ ] Desktop (1024px-1920px)
 
 ### Browser Testing
-- ✅ Chrome 90+
-- ✅ Firefox 88+
-- ✅ Safari 14+
-- ✅ Edge 90+
+- âœ… Chrome 90+
+- âœ… Firefox 88+
+- âœ… Safari 14+
+- âœ… Edge 90+
 
 ### Accessibility Testing
 - [ ] Keyboard navigation
@@ -319,7 +319,7 @@ npm test -- --coverage
 - [ ] Focus indicators
 - [ ] ARIA labels
 
-## 📊 Performance
+## ðŸ“Š Performance
 
 - **Lighthouse Score**: 95+ (Performance, Accessibility, Best Practices, SEO)
 - **Bundle Size**: < 500KB gzipped
@@ -330,62 +330,62 @@ npm test -- --coverage
 - **Total Components**: 60+
 - **Total Routes**: 20+
 
-## 📁 Project Structure
+## ðŸ“ Project Structure
 
 ```
 Space4U/
-├── src/
-│   ├── components/          # Reusable UI components
-│   │   ├── common/         # Shared components
-│   │   ├── gratitude/      # Gratitude journal components
-│   │   ├── mood/           # Mood tracking components
-│   │   ├── onboarding/     # Onboarding flow
-│   │   ├── premium/        # Premium feature components
-│   │   ├── priority2/      # Priority 2 feature components
-│   │   ├── priority4/      # Social & community components
-│   │   ├── priority5/      # Advanced analytics components
-│   │   ├── priority6/      # Professional integration components
-│   │   ├── priority7/      # Technical enhancement components
-│   │   ├── resources/      # Resource library components
-│   │   └── therapeutic/    # Therapeutic tools components
-│   ├── pages/              # Route-based page components (26 pages)
-│   ├── data/               # Mock data and static content
-│   ├── utils/              # Utility functions and helpers
-│   ├── hooks/              # Custom React hooks
-│   ├── App.jsx             # Main application component
-│   ├── main.jsx            # React entry point
-│   └── index.css           # Global styles
-├── public/                 # Static assets
-├── backend/                # Optional backend (Supabase/Express)
-│   ├── supabase/          # Database schemas and migrations
-│   └── server.js          # Express API server
-├── tests/                  # Test files
-│   ├── unit/              # Unit tests
-│   ├── integration/       # Integration tests
-│   └── e2e/               # End-to-end tests
-├── docs/                   # Documentation
-│   ├── TESTING_PLAN.md    # Comprehensive testing strategy
-│   ├── FEATURE_ROADMAP.md # Feature implementation status
-│   ├── QUICK_START.md     # Quick start guide
-│   └── TROUBLESHOOTING.md # Common issues and solutions
-└── package.json           # Dependencies and scripts
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ components/          # Reusable UI components
+â”‚   â”‚   â”œâ”€â”€ common/         # Shared components
+â”‚   â”‚   â”œâ”€â”€ gratitude/      # Gratitude journal components
+â”‚   â”‚   â”œâ”€â”€ mood/           # Mood tracking components
+â”‚   â”‚   â”œâ”€â”€ onboarding/     # Onboarding flow
+â”‚   â”‚   â”œâ”€â”€ premium/        # Premium feature components
+â”‚   â”‚   â”œâ”€â”€ priority2/      # Priority 2 feature components
+â”‚   â”‚   â”œâ”€â”€ priority4/      # Social & community components
+â”‚   â”‚   â”œâ”€â”€ priority5/      # Advanced analytics components
+â”‚   â”‚   â”œâ”€â”€ priority6/      # Professional integration components
+â”‚   â”‚   â”œâ”€â”€ priority7/      # Technical enhancement components
+â”‚   â”‚   â”œâ”€â”€ resources/      # Resource library components
+â”‚   â”‚   â””â”€â”€ therapeutic/    # Therapeutic tools components
+â”‚   â”œâ”€â”€ pages/              # Route-based page components (26 pages)
+â”‚   â”œâ”€â”€ data/               # Mock data and static content
+â”‚   â”œâ”€â”€ utils/              # Utility functions and helpers
+â”‚   â”œâ”€â”€ hooks/              # Custom React hooks
+â”‚   â”œâ”€â”€ App.jsx             # Main application component
+â”‚   â”œâ”€â”€ main.jsx            # React entry point
+â”‚   â””â”€â”€ index.css           # Global styles
+â”œâ”€â”€ public/                 # Static assets
+â”œâ”€â”€ backend/                # Optional backend (Supabase/Express)
+â”‚   â”œâ”€â”€ supabase/          # Database schemas and migrations
+â”‚   â””â”€â”€ server.js          # Express API server
+â”œâ”€â”€ tests/                  # Test files
+â”‚   â”œâ”€â”€ unit/              # Unit tests
+â”‚   â”œâ”€â”€ integration/       # Integration tests
+â”‚   â””â”€â”€ e2e/               # End-to-end tests
+â”œâ”€â”€ docs/                   # Documentation
+â”‚   â”œâ”€â”€ TESTING_PLAN.md    # Comprehensive testing strategy
+â”‚   â”œâ”€â”€ FEATURE_ROADMAP.md # Feature implementation status
+â”‚   â”œâ”€â”€ QUICK_START.md     # Quick start guide
+â”‚   â””â”€â”€ TROUBLESHOOTING.md # Common issues and solutions
+â””â”€â”€ package.json           # Dependencies and scripts
 ```
 
-## 🔧 Configuration Files
+## ðŸ”§ Configuration Files
 
 - `vite.config.js` - Vite build configuration with HMR settings
 - `tailwind.config.js` - Tailwind CSS customization
 - `postcss.config.js` - PostCSS plugins
 - `.env` - Environment variables (create from .env.example)
 
-## 🐛 Troubleshooting
+## ðŸ› Troubleshooting
 
 See `TROUBLESHOOTING.md` for detailed solutions.
 
 ### Common Issues
 
 **Issue: Premium features not showing**
-- Solution: Go to Settings → Toggle Developer Mode
+- Solution: Go to Settings â†’ Toggle Developer Mode
 
 **Issue: App crashes on navigation**
 - Solution: All pages have error boundaries - check console for details
@@ -410,11 +410,11 @@ location.reload()
 
 # Enable premium for testing
 # In browser console:
-localStorage.setItem('safespace_premium', JSON.stringify({isPremium: true}))
+localStorage.setItem('space4u_premium', JSON.stringify({isPremium: true}))
 location.reload()
 ```
 
-## 🤝 Contributing
+## ðŸ¤ Contributing
 
 We welcome contributions! Please follow these guidelines:
 
@@ -448,11 +448,11 @@ We welcome contributions! Please follow these guidelines:
 - [ ] Accessibility checked
 - [ ] Error boundaries in place
 
-## 📄 License
+## ðŸ“„ License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📚 Documentation
+## ðŸ“š Documentation
 
 - **README.md** - This file (overview and setup)
 - **TESTING_PLAN.md** - Comprehensive testing strategy
@@ -463,14 +463,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **FEATURE_STATUS.md** - Detailed feature implementation status
 - **.amazonq/rules/memory-bank/** - Development guidelines
 
-## 🆘 Support
+## ðŸ†˜ Support
 
 - **Documentation**: Check docs/ folder for detailed guides
 - **Issues**: Report bugs on [GitHub Issues](https://github.com/yourusername/space4u/issues)
 - **Discussions**: Join our [GitHub Discussions](https://github.com/yourusername/space4u/discussions)
 - **Email**: support@space4u.com (for urgent issues)
 
-## 🙏 Acknowledgments
+## ðŸ™ Acknowledgments
 
 - Mental health professionals who provided guidance
 - Open source community for amazing tools
@@ -479,7 +479,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - React, Vite, and Tailwind CSS teams
 - Lucide icons and Recharts contributors
 
-## 📈 Project Stats
+## ðŸ“ˆ Project Stats
 
 - **Total Features**: 46 (100% complete)
 - **Total Pages**: 26
@@ -489,9 +489,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Development Time**: 3 months
 - **Test Coverage Goal**: 75%+
 
-## 🗺️ Roadmap
+## ðŸ—ºï¸ Roadmap
 
-### Completed ✅
+### Completed âœ…
 - Phase 1: Core Features (16)
 - Priority 1: Quick Wins (5)
 - Priority 2: Core Enhancements (7)
@@ -502,7 +502,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Priority 7: Technical Enhancements (3)
 - Premium Features (5 new)
 
-### Future Enhancements 🚀
+### Future Enhancements ðŸš€
 - Mobile app (React Native)
 - Real-time chat with therapists
 - AI-powered journaling insights
@@ -512,26 +512,26 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Voice commands
 - Biometric authentication
 
-## 🌍 Community
+## ðŸŒ Community
 
 - **Discord**: [Join our community](https://discord.gg/space4u)
 - **Twitter**: [@Space4U_App](https://twitter.com/space4u_app)
 - **Blog**: [blog.space4u.com](https://blog.space4u.com)
 
-## 📊 Analytics & Privacy
+## ðŸ“Š Analytics & Privacy
 
 **We respect your privacy:**
-- ❌ No Google Analytics
-- ❌ No Facebook Pixel
-- ❌ No third-party tracking
-- ✅ 100% local storage
-- ✅ Optional anonymous usage stats
-- ✅ GDPR compliant
-- ✅ HIPAA-compliant design
+- âŒ No Google Analytics
+- âŒ No Facebook Pixel
+- âŒ No third-party tracking
+- âœ… 100% local storage
+- âœ… Optional anonymous usage stats
+- âœ… GDPR compliant
+- âœ… HIPAA-compliant design
 
 ---
 
-**Made with ❤️ for mental health**
+**Made with â¤ï¸ for mental health**
 
 *If you're struggling with mental health, please reach out to a professional or crisis helpline in your area.*
 
@@ -545,4 +545,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Version**: 1.0.0  
 **Last Updated**: January 2025  
-**Status**: Production Ready ✅
+**Status**: Production Ready âœ…

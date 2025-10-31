@@ -1,10 +1,10 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+﻿import { createContext, useContext, useState, useEffect } from 'react'
 
 const ThemeContext = createContext()
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('safespace_theme')
+    const saved = localStorage.getItem('space4u_theme')
     return saved || 'light'
   })
 
@@ -15,7 +15,7 @@ export function ThemeProvider({ children }) {
     } else {
       root.classList.remove('dark')
     }
-    localStorage.setItem('safespace_theme', theme)
+    localStorage.setItem('space4u_theme', theme)
     
     // Update status bar on theme change
     updateStatusBar(theme)
@@ -57,3 +57,4 @@ export const useTheme = () => {
   }
   return context
 }
+

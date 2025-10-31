@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Brain, TrendingUp, Calendar, Target, Award, Users, Clock, Heart, Zap, Book, Info, Shield, Crown } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
@@ -9,7 +9,9 @@ import PremiumPaywall from '../components/PremiumPaywall'
 import WellnessBreakdown from '../components/premium/WellnessBreakdown'
 import AnimatedNumber from '../components/common/AnimatedNumber'
 import OnboardingTip from '../components/common/OnboardingTip'
+import InfoTooltip from '../components/common/InfoTooltip'
 import { getPremiumStatus } from '../utils/premiumUtils'
+import { trackEvent, EVENTS, trackPageView } from '../utils/analytics'
 import { 
   calculateAverageMood, 
   detectWeekdayPatterns, 
@@ -26,11 +28,11 @@ import TrackMood from '../components/TrackMood'
 import { motion } from 'framer-motion'
 
 const moodLabels = {
-  5: { label: 'Amazing', emoji: '😊' },
-  4: { label: 'Good', emoji: '🙂' },
-  3: { label: 'Okay', emoji: '😐' },
-  2: { label: 'Low', emoji: '😢' },
-  1: { label: 'Struggling', emoji: '😰' }
+  5: { label: 'Amazing', emoji: 'ðŸ˜Š' },
+  4: { label: 'Good', emoji: 'ðŸ™‚' },
+  3: { label: 'Okay', emoji: 'ðŸ˜' },
+  2: { label: 'Low', emoji: 'ðŸ˜¢' },
+  1: { label: 'Struggling', emoji: 'ðŸ˜°' }
 }
 
 function InsightsPage() {
@@ -43,6 +45,7 @@ function InsightsPage() {
 
   useEffect(() => {
     loadMoodData()
+    trackPageView('insights')
   }, [period])
 
   // expose load for child components
@@ -57,7 +60,7 @@ function InsightsPage() {
       setLoading(false)
       return
     }
-    const savedMoods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+    const savedMoods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
     const moodEntries = Object.entries(savedMoods).map(([date, mood]) => ({
       date,
       mood: mood.mood,
@@ -92,8 +95,8 @@ function InsightsPage() {
   }
 
   const analyzeData = (currentMoods, allMoods) => {
-    const userData = JSON.parse(localStorage.getItem('safespace_user') || '{}')
-    const circleActivity = JSON.parse(localStorage.getItem('safespace_user_posts') || '[]')
+    const userData = JSON.parse(localStorage.getItem('space4u_user') || '{}')
+    const circleActivity = JSON.parse(localStorage.getItem('space4u_user_posts') || '[]')
     
     const averageMood = calculateAverageMood(currentMoods)
     const breakdown = getMoodBreakdown(currentMoods)
@@ -266,19 +269,25 @@ function InsightsPage() {
                   <AnimatedNumber value={parseFloat(analysis.averageMood.toFixed(1)) * 10} duration={1000} />
                   <span className="text-lg">/50</span>
                 </div>
-                <div className="text-sm text-text-secondary">Average Mood</div>
+                <div className="text-sm text-text-secondary flex items-center justify-center gap-1">
+                  Average Mood
+                  <InfoTooltip content="Your average mood score across all logged entries. Higher scores indicate better overall mood." />
+                </div>
                 {analysis.trend !== 0 && (
                   <div className={`text-sm mt-1 ${
                     analysis.trend > 0 ? 'text-success' : 'text-warning'
                   }`}>
-                    {analysis.trend > 0 ? '↑' : '↓'} {Math.abs(analysis.trend).toFixed(1)} from last {period}
+                    {analysis.trend > 0 ? 'â†‘' : 'â†“'} {Math.abs(analysis.trend).toFixed(1)} from last {period}
                   </div>
                 )}
               </div>
 
               {/* Mood Breakdown */}
               <div>
-                <h4 className="font-medium text-text-primary mb-3">Mood Distribution</h4>
+                <h4 className="font-medium text-text-primary mb-3 flex items-center gap-2">
+                  Mood Distribution
+                  <InfoTooltip content="Shows how often you experienced each mood level. This helps identify patterns in your emotional well-being." />
+                </h4>
                 <div className="space-y-2">
                   {Object.entries(analysis.breakdown).reverse().map(([mood, count]) => {
                     const percentage = (count / moods.length) * 100
@@ -300,10 +309,13 @@ function InsightsPage() {
 
               {/* Streak & Consistency */}
               <div>
-                <h4 className="font-medium text-text-primary mb-3">Your Progress</h4>
+                <h4 className="font-medium text-text-primary mb-3 flex items-center gap-2">
+                  Your Progress
+                  <InfoTooltip content="Tracking consistency builds self-awareness. Regular check-ins help you understand your emotional patterns better." />
+                </h4>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-lg">🔥</span>
+                    <span className="text-lg">ðŸ”¥</span>
                     <div>
                       <div className="font-medium text-text-primary">
                         <AnimatedNumber value={analysis.streak.current} duration={800} /> day streak
@@ -312,7 +324,7 @@ function InsightsPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-lg">📊</span>
+                    <span className="text-lg">ðŸ“Š</span>
                     <div>
                       <div className="font-medium text-text-primary">
                         <AnimatedNumber value={analysis.consistencyScore} duration={800} />% consistent
@@ -334,12 +346,32 @@ function InsightsPage() {
               <div className="grid gap-4 md:grid-cols-2">
                 {analysis.insights.map((insight, index) => (
                   <div key={index} className="card p-4 hover:scale-105 hover:shadow-2xl transition-all">
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-3 mb-3">
                       <div className="text-2xl">{insight.icon}</div>
-                      <div>
+                      <div className="flex-1">
                         <h3 className="font-semibold text-text-primary mb-1">{insight.title}</h3>
                         <p className="text-sm text-text-secondary">{insight.description}</p>
                       </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => {
+                          trackEvent(EVENTS.INSIGHT_EXPLORE_TOOLS, { insightType: insight.title })
+                          navigate('/resources')
+                        }}
+                        className="flex-1 text-xs py-2 px-3 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors font-medium"
+                      >
+                        Explore Tools
+                      </button>
+                      <button 
+                        onClick={() => {
+                          trackEvent(EVENTS.INSIGHT_FIND_SUPPORT, { insightType: insight.title })
+                          navigate('/circles')
+                        }}
+                        className="flex-1 text-xs py-2 px-3 bg-secondary/10 text-secondary rounded-lg hover:bg-secondary/20 transition-colors font-medium"
+                      >
+                        Find Support
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -351,7 +383,7 @@ function InsightsPage() {
           <div className="grid md:grid-cols-2 gap-6 mb-6">
             <div className="card p-6">
               <h3 className="font-semibold text-text-primary mb-4 flex items-center gap-2">
-                <span className="text-lg">😢</span>
+                <span className="text-lg">ðŸ˜¢</span>
                 When you feel down
               </h3>
               {analysis.triggers.negative.length > 0 ? (
@@ -369,7 +401,7 @@ function InsightsPage() {
 
             <div className="card p-6">
               <h3 className="font-semibold text-text-primary mb-4 flex items-center gap-2">
-                <span className="text-lg">😊</span>
+                <span className="text-lg">ðŸ˜Š</span>
                 What lifts you up
               </h3>
               {analysis.triggers.positive.length > 0 ? (
@@ -411,7 +443,7 @@ function InsightsPage() {
                 {/* Resource Library Suggestion */}
                 <div className="card p-4 cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/resources')}>
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="text-2xl">📚</div>
+                    <div className="text-2xl">ðŸ“š</div>
                     <div>
                       <h3 className="font-semibold text-text-primary mb-1">Explore Resources</h3>
                       <p className="text-sm text-text-secondary mb-3">Access breathing exercises, articles, and wellness tools</p>
@@ -468,7 +500,7 @@ function InsightsPage() {
                       })}
                     </div>
                     <div className="text-sm text-text-secondary mt-1">
-                      Remember: tough days don't last, but you do 💪
+                      Remember: tough days don't last, but you do ðŸ’ª
                     </div>
                   </div>
                 </div>

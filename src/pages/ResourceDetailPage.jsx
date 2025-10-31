@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { mockResources } from '../data/mockResources'
 import RequestHelpModal from '../components/resources/RequestHelpModal'
@@ -52,15 +52,15 @@ function ResourceDetailPage() {
 
     // bookmark state (matches ResourceLibraryPage key format)
     const bookmarkKey = `${cat}-${rawId}`
-    const saved = JSON.parse(localStorage.getItem('safespace_bookmarks') || '[]')
+    const saved = JSON.parse(localStorage.getItem('space4u_bookmarks') || '[]')
     setBookmarked(saved.includes(bookmarkKey))
   }, [id])
 
   const toggleBookmark = () => {
-    const saved = JSON.parse(localStorage.getItem('safespace_bookmarks') || '[]')
+    const saved = JSON.parse(localStorage.getItem('space4u_bookmarks') || '[]')
     const key = `${category}-${id?.split('-').slice(1).join('-')}`
     const newSaved = saved.includes(key) ? saved.filter(k => k !== key) : [...saved, key]
-    localStorage.setItem('safespace_bookmarks', JSON.stringify(newSaved))
+    localStorage.setItem('space4u_bookmarks', JSON.stringify(newSaved))
     setBookmarked(newSaved.includes(key))
   }
 
@@ -118,7 +118,7 @@ function ResourceDetailPage() {
           )}
 
           {resource.readTime && (
-            <button onClick={() => alert('Marked as read — + points')} className="px-4 py-2 bg-success text-white rounded-xl flex items-center gap-2">
+            <button onClick={() => alert('Marked as read â€” + points')} className="px-4 py-2 bg-success text-white rounded-xl flex items-center gap-2">
               <Book size={16} />
               Read ({resource.readTime} min)
             </button>
@@ -133,3 +133,4 @@ function ResourceDetailPage() {
 }
 
 export default ResourceDetailPage
+

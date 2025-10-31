@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { X, Play, Pause, RotateCcw } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 
@@ -37,9 +37,9 @@ function MindfulnessExercises({ onClose }) {
     if (user) {
       console.log('Saving to database:', data)
     } else {
-      const saved = JSON.parse(localStorage.getItem('safespace_mindfulness_sessions') || '[]')
+      const saved = JSON.parse(localStorage.getItem('space4u_mindfulness_sessions') || '[]')
       saved.push({ ...data, id: Date.now(), created_at: new Date().toISOString() })
-      localStorage.setItem('safespace_mindfulness_sessions', JSON.stringify(saved))
+      localStorage.setItem('space4u_mindfulness_sessions', JSON.stringify(saved))
     }
     onClose()
   }
@@ -141,3 +141,4 @@ function MindfulnessExercises({ onClose }) {
 }
 
 export default MindfulnessExercises
+

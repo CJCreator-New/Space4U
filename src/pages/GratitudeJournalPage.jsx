@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react'
-import { Heart, Plus, Calendar, TrendingUp, Sparkles, Info, BookOpen, Crown, Lock } from 'lucide-react'
+﻿import { useState, useEffect } from 'react'
+import { Heart, Plus, Calendar, TrendingUp, Sparkles, Info, BookOpen, Crown, Lock, RefreshCw } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
 import GratitudeEntryModal from '../components/gratitude/GratitudeEntryModal'
 import GratitudeCard from '../components/gratitude/GratitudeCard'
 import GratitudeStats from '../components/gratitude/GratitudeStats'
+import StreakDisplay from '../components/gratitude/StreakDisplay'
+import WeeklySummary from '../components/gratitude/WeeklySummary'
 import SafeComponent from '../components/SafeComponent'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import { useNavigate } from 'react-router-dom'
@@ -13,6 +15,8 @@ import ResearchCard from '../components/wellness/ResearchCard'
 import CrisisResources from '../components/wellness/CrisisResources'
 import { disclaimers } from '../data/disclaimers'
 import { researchCitations } from '../data/researchCitations'
+import { getDailyPrompt, getRandomPrompt } from '../data/gratitudePrompts'
+import { trackEvent, EVENTS, trackPageView } from '../utils/analytics'
 import {
   Box,
   Container,
@@ -44,16 +48,20 @@ function GratitudeJournalPage() {
   const [showModal, setShowModal] = useState(false)
   const [selectedEntry, setSelectedEntry] = useState(null)
   const [streak, setStreak] = useState(0)
+  const [longestStreak, setLongestStreak] = useState(0)
+  const [dailyPrompt, setDailyPrompt] = useState('')
   const { isPremium } = getPremiumStatus()
   
   const FREE_ENTRY_LIMIT = 10
 
   useEffect(() => {
     loadEntries()
+    setDailyPrompt(getDailyPrompt())
+    trackPageView('gratitude_journal')
   }, [user])
 
   const loadEntries = () => {
-    const saved = localStorage.getItem('safespace_gratitude_entries')
+    const saved = localStorage.getItem('space4u_gratitude_entries')
     if (saved) {
       const parsed = JSON.parse(saved)
       setEntries(parsed)
@@ -62,9 +70,16 @@ function GratitudeJournalPage() {
   }
 
   const calculateStreak = (entries) => {
-    if (!entries.length) return setStreak(0)
+    if (!entries.length) {
+      setStreak(0)
+      setLongestStreak(0)
+      return
+    }
+    
     const sorted = [...entries].sort((a, b) => new Date(b.date) - new Date(a.date))
-    let count = 0
+    let current = 0
+    let longest = 0
+    let tempStreak = 0
     let currentDate = new Date()
     currentDate.setHours(0, 0, 0, 0)
     
@@ -73,16 +88,34 @@ function GratitudeJournalPage() {
       entryDate.setHours(0, 0, 0, 0)
       const diffDays = Math.floor((currentDate - entryDate) / (1000 * 60 * 60 * 24))
       
-      if (diffDays === count) {
-        count++
+      if (diffDays === current) {
+        current++
+        tempStreak++
         currentDate.setDate(currentDate.getDate() - 1)
       } else break
     }
-    setStreak(count)
+    
+    // Calculate longest streak
+    const dates = sorted.map(e => new Date(e.date).setHours(0, 0, 0, 0))
+    let maxStreak = 0
+    let currentStreak = 1
+    
+    for (let i = 1; i < dates.length; i++) {
+      const diff = (dates[i - 1] - dates[i]) / (1000 * 60 * 60 * 24)
+      if (diff === 1) {
+        currentStreak++
+        maxStreak = Math.max(maxStreak, currentStreak)
+      } else {
+        currentStreak = 1
+      }
+    }
+    
+    setStreak(tempStreak)
+    setLongestStreak(Math.max(maxStreak, tempStreak))
   }
 
   const handleSave = (entry) => {
-    const saved = JSON.parse(localStorage.getItem('safespace_gratitude_entries') || '[]')
+    const saved = JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]')
     const existing = saved.findIndex(e => e.date === entry.date)
     
     if (!isPremium && existing < 0 && saved.length >= FREE_ENTRY_LIMIT) {
@@ -92,7 +125,8 @@ function GratitudeJournalPage() {
     if (existing >= 0) saved[existing] = entry
     else saved.unshift(entry)
     
-    localStorage.setItem('safespace_gratitude_entries', JSON.stringify(saved))
+    localStorage.setItem('space4u_gratitude_entries', JSON.stringify(saved))
+    trackEvent(EVENTS.FEATURE_USED, { feature: 'gratitude_entry_saved', isNew: existing < 0 })
     loadEntries()
     setShowModal(false)
     setSelectedEntry(null)
@@ -112,9 +146,9 @@ function GratitudeJournalPage() {
   }
 
   const handleDelete = (date) => {
-    const saved = JSON.parse(localStorage.getItem('safespace_gratitude_entries') || '[]')
+    const saved = JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]')
     const filtered = saved.filter(e => e.date !== date)
-    localStorage.setItem('safespace_gratitude_entries', JSON.stringify(filtered))
+    localStorage.setItem('space4u_gratitude_entries', JSON.stringify(filtered))
     loadEntries()
   }
 
@@ -180,6 +214,32 @@ function GratitudeJournalPage() {
                 </Button>
               </Alert>
             )}
+
+            {/* Daily Prompt */}
+            <Card bg="gradient-to-br from-purple-50 to-pink-50" borderWidth={1} borderColor="purple.200" borderRadius="xl" shadow="lg">
+              <CardBody>
+                <HStack justify="space-between" mb={3}>
+                  <HStack>
+                    <Icon as={Sparkles} w={5} h={5} color="purple.500" />
+                    <Text fontWeight="semibold" color="gray.900">Today's Prompt</Text>
+                  </HStack>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setDailyPrompt(getRandomPrompt())}
+                    leftIcon={<RefreshCw size={14} />}
+                  >
+                    New
+                  </Button>
+                </HStack>
+                <Text fontSize="lg" color="gray.700" fontStyle="italic">"{dailyPrompt}"</Text>
+              </CardBody>
+            </Card>
+
+            {/* Streak Display */}
+            <Box mb={6}>
+              <StreakDisplay current={streak} longest={longestStreak} />
+            </Box>
 
             <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={4}>
               <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl" shadow="lg">
@@ -263,9 +323,14 @@ function GratitudeJournalPage() {
             </VStack>
 
             {entries.length > 0 && (
-              <Box>
-                <GratitudeStats entries={entries} />
-              </Box>
+              <>
+                <Box>
+                  <WeeklySummary entries={Object.fromEntries(entries.map(e => [e.date, e]))} />
+                </Box>
+                <Box>
+                  <GratitudeStats entries={entries} />
+                </Box>
+              </>
             )}
           </VStack>
         </motion.div>
@@ -286,3 +351,4 @@ function GratitudeJournalPage() {
 }
 
 export default GratitudeJournalPage
+

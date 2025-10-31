@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card, CardBody, Stack, IconButton } from '@chakra-ui/react'
 import { X, ArrowRight, Sparkles } from 'lucide-react'
 
 const steps = [
   {
-    title: 'Welcome to Space4U! 🎉',
+    title: 'Welcome to Space4U! ðŸŽ‰',
     desc: 'Your personal mental wellness companion',
     action: 'Get Started'
   },
   {
-    title: 'Track Your Mood 😊',
+    title: 'Track Your Mood ðŸ˜Š',
     desc: 'Log daily moods and see patterns over time',
     action: 'Next'
   },
   {
-    title: 'Join Circles 🤝',
+    title: 'Join Circles ðŸ¤',
     desc: 'Connect with supportive communities',
     action: 'Next'
   },
   {
-    title: 'View Insights 📊',
+    title: 'View Insights ðŸ“Š',
     desc: 'Get personalized wellness analytics',
     action: 'Finish'
   }
@@ -31,7 +31,7 @@ function DashboardOnboarding({ onComplete }) {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    const completed = localStorage.getItem('safespace_dashboard_onboarding')
+    const completed = localStorage.getItem('space4u_dashboard_onboarding')
     if (!completed) {
       setTimeout(() => setShow(true), 500)
     }
@@ -46,7 +46,7 @@ function DashboardOnboarding({ onComplete }) {
   }
 
   const handleComplete = () => {
-    localStorage.setItem('safespace_dashboard_onboarding', 'true')
+    localStorage.setItem('space4u_dashboard_onboarding', 'true')
     setShow(false)
     onComplete?.()
   }
@@ -135,3 +135,4 @@ function DashboardOnboarding({ onComplete }) {
 }
 
 export default DashboardOnboarding
+

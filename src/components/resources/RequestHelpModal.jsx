@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Phone, MessageSquare, Mail } from 'lucide-react'
 
 function RequestHelpModal({ isOpen, onClose, defaultNumber = '988' }) {
@@ -9,9 +9,9 @@ function RequestHelpModal({ isOpen, onClose, defaultNumber = '988' }) {
 
   const submitRequest = () => {
     // Simple local persistence for demo; real implementation should POST to backend
-    const requests = JSON.parse(localStorage.getItem('safespace_help_requests') || '[]')
+    const requests = JSON.parse(localStorage.getItem('space4u_help_requests') || '[]')
     requests.unshift({ method: contactMethod, notes, createdAt: new Date().toISOString() })
-    localStorage.setItem('safespace_help_requests', JSON.stringify(requests))
+    localStorage.setItem('space4u_help_requests', JSON.stringify(requests))
 
     // If call, open dialer
     if (contactMethod === 'call') {
@@ -60,3 +60,4 @@ function RequestHelpModal({ isOpen, onClose, defaultNumber = '988' }) {
 }
 
 export default RequestHelpModal
+

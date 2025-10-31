@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { FaGlobe } from '../config/icons'
+import { FaGlobe } from '../config/IconLibrary'
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇬🇧' },

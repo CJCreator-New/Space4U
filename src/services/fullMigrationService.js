@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase'
+﻿import { supabase } from '../lib/supabase'
 
 export const fullMigrationService = {
   async migrateAllData(userId) {
@@ -28,7 +28,7 @@ export const fullMigrationService = {
       // Settings
       results.settings = await this.migrateSettings(userId)
       
-      localStorage.setItem('safespace_migration_complete', 'true')
+      localStorage.setItem('space4u_migration_complete', 'true')
       return results
     } catch (error) {
       console.error('Migration error:', error)
@@ -37,7 +37,7 @@ export const fullMigrationService = {
   },
 
   async migrateMoods(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+    const data = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
     const entries = Object.entries(data).map(([date, mood]) => ({
       user_id: userId,
       date,
@@ -51,7 +51,7 @@ export const fullMigrationService = {
   },
 
   async migrateProfile(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_user_profile') || '{}')
+    const data = JSON.parse(localStorage.getItem('space4u_user_profile') || '{}')
     if (!data.username) return { count: 0 }
     await supabase.from('profiles').upsert({
       id: userId,
@@ -64,7 +64,7 @@ export const fullMigrationService = {
   },
 
   async migrateBadges(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_badges') || '{}')
+    const data = JSON.parse(localStorage.getItem('space4u_badges') || '{}')
     const entries = Object.entries(data)
       .filter(([_, badge]) => badge.unlocked)
       .map(([badgeId, badge]) => ({
@@ -79,7 +79,7 @@ export const fullMigrationService = {
   },
 
   async migrateGratitude(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_gratitude') || '[]')
+    const data = JSON.parse(localStorage.getItem('space4u_gratitude') || '[]')
     if (data.length === 0) return { count: 0 }
     const entries = data.map(entry => ({ user_id: userId, ...entry }))
     await supabase.from('gratitude_entries').insert(entries)
@@ -87,7 +87,7 @@ export const fullMigrationService = {
   },
 
   async migrateHabits(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_habits') || '[]')
+    const data = JSON.parse(localStorage.getItem('space4u_habits') || '[]')
     if (data.length === 0) return { count: 0 }
     const entries = data.map(habit => ({ user_id: userId, ...habit }))
     await supabase.from('habits').insert(entries)
@@ -95,7 +95,7 @@ export const fullMigrationService = {
   },
 
   async migrateEmotions(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_emotions') || '[]')
+    const data = JSON.parse(localStorage.getItem('space4u_emotions') || '[]')
     if (data.length === 0) return { count: 0 }
     const entries = data.map(emotion => ({ user_id: userId, ...emotion }))
     await supabase.from('emotion_logs').insert(entries)
@@ -103,7 +103,7 @@ export const fullMigrationService = {
   },
 
   async migrateReminders(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_reminders') || '[]')
+    const data = JSON.parse(localStorage.getItem('space4u_reminders') || '[]')
     if (data.length === 0) return { count: 0 }
     const entries = data.map(reminder => ({ user_id: userId, ...reminder }))
     await supabase.from('reminders').insert(entries)
@@ -111,7 +111,7 @@ export const fullMigrationService = {
   },
 
   async migrateTriggers(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_triggers') || '[]')
+    const data = JSON.parse(localStorage.getItem('space4u_triggers') || '[]')
     if (data.length === 0) return { count: 0 }
     const entries = data.map(trigger => ({ user_id: userId, ...trigger }))
     await supabase.from('triggers').insert(entries)
@@ -119,7 +119,7 @@ export const fullMigrationService = {
   },
 
   async migrateMedications(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_medications') || '[]')
+    const data = JSON.parse(localStorage.getItem('space4u_medications') || '[]')
     if (data.length === 0) return { count: 0 }
     const entries = data.map(med => ({ user_id: userId, ...med }))
     await supabase.from('medications').insert(entries)
@@ -127,7 +127,7 @@ export const fullMigrationService = {
   },
 
   async migrateTherapySessions(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_therapy_sessions') || '[]')
+    const data = JSON.parse(localStorage.getItem('space4u_therapy_sessions') || '[]')
     if (data.length === 0) return { count: 0 }
     const entries = data.map(session => ({ user_id: userId, ...session }))
     await supabase.from('therapy_sessions').insert(entries)
@@ -135,7 +135,7 @@ export const fullMigrationService = {
   },
 
   async migrateChallenges(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_challenges') || '[]')
+    const data = JSON.parse(localStorage.getItem('space4u_challenges') || '[]')
     if (data.length === 0) return { count: 0 }
     const entries = data.map(challenge => ({ user_id: userId, ...challenge }))
     await supabase.from('user_challenges').insert(entries)
@@ -143,20 +143,21 @@ export const fullMigrationService = {
   },
 
   async migrateStreaks(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_streaks') || '{}')
+    const data = JSON.parse(localStorage.getItem('space4u_streaks') || '{}')
     if (Object.keys(data).length === 0) return { count: 0 }
     await supabase.from('user_streaks').upsert({ user_id: userId, ...data })
     return { count: 1 }
   },
 
   async migrateSettings(userId) {
-    const data = JSON.parse(localStorage.getItem('safespace_settings') || '{}')
+    const data = JSON.parse(localStorage.getItem('space4u_settings') || '{}')
     if (Object.keys(data).length === 0) return { count: 0 }
     await supabase.from('user_settings').upsert({ user_id: userId, settings: data })
     return { count: 1 }
   },
 
   isMigrationComplete() {
-    return localStorage.getItem('safespace_migration_complete') === 'true'
+    return localStorage.getItem('space4u_migration_complete') === 'true'
   }
 }
+

@@ -1,9 +1,9 @@
-import { useNavigate } from 'react-router-dom'
+﻿import { useNavigate } from 'react-router-dom'
 import { HeroCrown, Lock, Sparkles } from '../config/icons'
 
 function PremiumPaywall({ feature, description, children }) {
   const navigate = useNavigate()
-  const premiumData = JSON.parse(localStorage.getItem('safespace_premium') || '{}')
+  const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
   const isPremium = premiumData.isPremium || false
 
   if (isPremium) {
@@ -46,3 +46,4 @@ function PremiumPaywall({ feature, description, children }) {
 }
 
 export default PremiumPaywall
+

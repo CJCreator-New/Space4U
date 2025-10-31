@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Box, Card, CardBody, Stack, IconButton, Collapse, useDisclosure } from '@chakra-ui/react'
@@ -20,36 +20,36 @@ const featureGroups = [
     title: 'Daily Wellness',
     icon: Heart,
     items: [
-      { icon: '❤️', label: 'Gratitude Journal', path: '/gratitude', desc: 'Daily gratitude practice' },
-      { icon: '🎯', label: 'Habit Tracker', path: '/habits', desc: 'Build healthy habits' },
-      { icon: '💭', label: 'Emotion Wheel', path: '/emotions', desc: 'Explore your emotions' }
+      { icon: 'â¤ï¸', label: 'Gratitude Journal', path: '/gratitude', desc: 'Daily gratitude practice' },
+      { icon: 'ðŸŽ¯', label: 'Habit Tracker', path: '/habits', desc: 'Build healthy habits' },
+      { icon: 'ðŸ’­', label: 'Emotion Wheel', path: '/emotions', desc: 'Explore your emotions' }
     ]
   },
   {
     title: 'Tools & Resources',
     icon: Brain,
     items: [
-      { icon: '🛠️', label: 'Coping Skills', path: '/coping-skills', desc: '100+ strategies' },
-      { icon: '⏰', label: 'Reminders', path: '/reminders', desc: 'Stay on track' },
-      { icon: '🧰', label: 'Therapy Tools', path: '/tools', desc: 'CBT, DBT, Mindfulness' }
+      { icon: 'ðŸ› ï¸', label: 'Coping Skills', path: '/coping-skills', desc: '100+ strategies' },
+      { icon: 'â°', label: 'Reminders', path: '/reminders', desc: 'Stay on track' },
+      { icon: 'ðŸ§°', label: 'Therapy Tools', path: '/tools', desc: 'CBT, DBT, Mindfulness' }
     ]
   },
   {
     title: 'Insights & Growth',
     icon: TrendingUp,
     items: [
-      { icon: '📊', label: 'Wellness Score', path: '/wellness', desc: 'Track your progress' },
-      { icon: '🚀', label: 'Advanced Tools', path: '/advanced-tools', desc: 'Deep dive features' },
-      { icon: '🏆', label: 'Challenges', path: '/gamification', desc: 'Gamified wellness' }
+      { icon: 'ðŸ“Š', label: 'Wellness Score', path: '/wellness', desc: 'Track your progress' },
+      { icon: 'ðŸš€', label: 'Advanced Tools', path: '/advanced-tools', desc: 'Deep dive features' },
+      { icon: 'ðŸ†', label: 'Challenges', path: '/gamification', desc: 'Gamified wellness' }
     ]
   },
   {
     title: 'Community & Support',
     icon: Users,
     items: [
-      { icon: '🤝', label: 'Social Hub', path: '/social', desc: 'Connect with others' },
-      { icon: '📊', label: 'Analytics', path: '/analytics', desc: 'Deep insights' },
-      { icon: '🏥', label: 'Professional', path: '/professional', desc: 'Therapist integration' }
+      { icon: 'ðŸ¤', label: 'Social Hub', path: '/social', desc: 'Connect with others' },
+      { icon: 'ðŸ“Š', label: 'Analytics', path: '/analytics', desc: 'Deep insights' },
+      { icon: 'ðŸ¥', label: 'Professional', path: '/professional', desc: 'Therapist integration' }
     ]
   }
 ]
@@ -63,7 +63,7 @@ function EnhancedHomePage() {
   const { isPremium, trialActive, daysLeft } = getPremiumStatus()
 
   useEffect(() => {
-    const userData = localStorage.getItem('safespace_user')
+    const userData = localStorage.getItem('space4u_user')
     if (userData) setUser(JSON.parse(userData))
   }, [])
 
@@ -130,7 +130,7 @@ function EnhancedHomePage() {
                     transition={{ delay: 0.2 }}
                     style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}
                   >
-                    Welcome back{user?.username ? `, ${user.username}` : ''}! 👋
+                    Welcome back{user?.username ? `, ${user.username}` : ''}! ðŸ‘‹
                   </motion.h1>
                   <p style={{ opacity: 0.9 }}>Your mind matters. Let's check in today.</p>
                 </Box>
@@ -347,3 +347,4 @@ function EnhancedHomePage() {
 }
 
 export default EnhancedHomePage
+

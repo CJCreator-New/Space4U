@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Bookmark, Inbox } from 'lucide-react'
 import { getBookmarkedPosts } from '../utils/bookmarks'
@@ -14,8 +14,8 @@ function BookmarksPage() {
   }, [])
 
   const loadBookmarks = () => {
-    const userId = JSON.parse(localStorage.getItem('safespace_user') || '{}').username || 'anonymous'
-    const allPosts = JSON.parse(localStorage.getItem('safespace_user_posts') || '[]')
+    const userId = JSON.parse(localStorage.getItem('space4u_user') || '{}').username || 'anonymous'
+    const allPosts = JSON.parse(localStorage.getItem('space4u_user_posts') || '[]')
     const bookmarks = getBookmarkedPosts(userId, allPosts)
     setBookmarkedPosts(bookmarks)
     setLoading(false)
@@ -67,3 +67,4 @@ function BookmarksPage() {
 }
 
 export default BookmarksPage
+

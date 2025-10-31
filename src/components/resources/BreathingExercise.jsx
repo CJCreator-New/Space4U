@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { Play, Pause, RotateCcw } from 'lucide-react'
 
 const EXERCISES = {
@@ -90,7 +90,7 @@ function BreathingExercise() {
   }
 
   useEffect(() => {
-    const saved = localStorage.getItem('safespace_breathing_sessions')
+    const saved = localStorage.getItem('space4u_breathing_sessions')
     if (saved) setTotalSessions(parseInt(saved))
   }, [])
 
@@ -98,7 +98,7 @@ function BreathingExercise() {
     if (completedCycles > 0) {
       const newTotal = totalSessions + 1
       setTotalSessions(newTotal)
-      localStorage.setItem('safespace_breathing_sessions', newTotal.toString())
+      localStorage.setItem('space4u_breathing_sessions', newTotal.toString())
     }
   }, [completedCycles])
 
@@ -183,23 +183,23 @@ function BreathingExercise() {
         <h3 className="text-lg font-semibold mb-4">Benefits of Breathing Exercises</h3>
         <ul className="space-y-2 text-text-secondary">
           <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-1">✓</span>
+            <span className="text-green-500 mt-1">âœ“</span>
             <span>Reduces stress and anxiety</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-1">✓</span>
+            <span className="text-green-500 mt-1">âœ“</span>
             <span>Improves focus and concentration</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-1">✓</span>
+            <span className="text-green-500 mt-1">âœ“</span>
             <span>Lowers blood pressure</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-1">✓</span>
+            <span className="text-green-500 mt-1">âœ“</span>
             <span>Promotes better sleep</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-green-500 mt-1">✓</span>
+            <span className="text-green-500 mt-1">âœ“</span>
             <span>Increases emotional regulation</span>
           </li>
         </ul>
@@ -209,3 +209,4 @@ function BreathingExercise() {
 }
 
 export default BreathingExercise
+

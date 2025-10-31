@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { supabase } from '../utils/supabase'
 
 export function useMoods() {
@@ -12,7 +12,7 @@ export function useMoods() {
   const loadMoods = async () => {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
-      const localMoods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+      const localMoods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
       setMoods(localMoods)
       setLoading(false)
       return
@@ -39,7 +39,7 @@ export function useMoods() {
     
     if (!user) {
       const localMoods = { ...moods, [date]: moodData }
-      localStorage.setItem('safespace_moods', JSON.stringify(localMoods))
+      localStorage.setItem('space4u_moods', JSON.stringify(localMoods))
       setMoods(localMoods)
       return { success: true }
     }
@@ -61,3 +61,4 @@ export function useMoods() {
 
   return { moods, loading, saveMood, refreshMoods: loadMoods }
 }
+

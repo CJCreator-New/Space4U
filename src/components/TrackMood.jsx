@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { api } from '../utils/supabase'
 import { motion } from 'framer-motion'
 
@@ -7,13 +7,13 @@ function TrackMood({ onSaved }) {
   const [note, setNote] = useState('')
   const [saving, setSaving] = useState(false)
 
-  const emojiMap = { 1: '😰', 2: '😢', 3: '😐', 4: '🙂', 5: '😊' }
+  const emojiMap = { 1: 'ðŸ˜°', 2: 'ðŸ˜¢', 3: 'ðŸ˜', 4: 'ðŸ™‚', 5: 'ðŸ˜Š' }
 
   const handleSave = async () => {
     setSaving(true)
     try {
       const today = new Date().toISOString().split('T')[0]
-      const stored = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+      const stored = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
       stored[today] = {
         mood: Number(rating),
         emoji: emojiMap[rating],
@@ -21,7 +21,7 @@ function TrackMood({ onSaved }) {
         note: note || '',
         timestamp: new Date().toISOString()
       }
-      localStorage.setItem('safespace_moods', JSON.stringify(stored))
+      localStorage.setItem('space4u_moods', JSON.stringify(stored))
 
       // Try to persist to backend but don't block the UI if it fails
       try {
@@ -65,3 +65,4 @@ function TrackMood({ onSaved }) {
 }
 
 export default TrackMood
+

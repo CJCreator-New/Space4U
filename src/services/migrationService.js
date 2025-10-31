@@ -1,8 +1,8 @@
-import { supabase } from '../lib/supabase'
+﻿import { supabase } from '../lib/supabase'
 
 export const migrationService = {
   async migrateMoods(userId) {
-    const localMoods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+    const localMoods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
     const entries = Object.entries(localMoods)
     
     if (entries.length === 0) return { success: true, count: 0 }
@@ -24,7 +24,7 @@ export const migrationService = {
   },
 
   async migrateProfile(userId) {
-    const profile = JSON.parse(localStorage.getItem('safespace_user_profile') || '{}')
+    const profile = JSON.parse(localStorage.getItem('space4u_user_profile') || '{}')
     
     if (!profile.username) return { success: true }
 
@@ -41,7 +41,7 @@ export const migrationService = {
   },
 
   async migrateBadges(userId) {
-    const badges = JSON.parse(localStorage.getItem('safespace_badges') || '{}')
+    const badges = JSON.parse(localStorage.getItem('space4u_badges') || '{}')
     const unlockedBadges = Object.entries(badges)
       .filter(([_, badge]) => badge.unlocked)
       .map(([badgeId, badge]) => ({
@@ -68,11 +68,12 @@ export const migrationService = {
       badges: await this.migrateBadges(userId)
     }
 
-    localStorage.setItem('safespace_migration_complete', 'true')
+    localStorage.setItem('space4u_migration_complete', 'true')
     return results
   },
 
   isMigrationComplete() {
-    return localStorage.getItem('safespace_migration_complete') === 'true'
+    return localStorage.getItem('space4u_migration_complete') === 'true'
   }
 }
+

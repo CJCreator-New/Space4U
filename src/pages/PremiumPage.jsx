@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
 import { 
@@ -12,9 +12,9 @@ const FEATURES = {
 }
 
 const TESTIMONIALS = [
-  { avatar: '🐻', name: 'Anonymous Bear', quote: 'Premium insights helped me identify my anxiety triggers', rating: 5 },
-  { avatar: '🦋', name: 'Anonymous Butterfly', quote: 'The group therapy sessions changed my life', rating: 5 },
-  { avatar: '🌸', name: 'Anonymous Blossom', quote: 'Best investment in my mental health journey', rating: 5 }
+  { avatar: 'ðŸ»', name: 'Anonymous Bear', quote: 'Premium insights helped me identify my anxiety triggers', rating: 5 },
+  { avatar: 'ðŸ¦‹', name: 'Anonymous Butterfly', quote: 'The group therapy sessions changed my life', rating: 5 },
+  { avatar: 'ðŸŒ¸', name: 'Anonymous Blossom', quote: 'Best investment in my mental health journey', rating: 5 }
 ]
 
 const FAQS = [
@@ -53,7 +53,7 @@ function PremiumPage() {
         <p className="text-xl text-text-secondary mb-8">
           Get advanced insights, priority support, and ad-free experience
         </p>
-        <div className="text-6xl mb-4">🌟</div>
+        <div className="text-6xl mb-4">ðŸŒŸ</div>
       </div>
 
       {/* Pricing Cards */}
@@ -62,7 +62,7 @@ function PremiumPage() {
         <div className="card p-6 hover:shadow-xl transition-shadow">
           <div className="text-sm font-medium text-primary mb-2">Most Flexible</div>
           <div className="mb-4">
-            <span className="text-4xl font-bold">₹299</span>
+            <span className="text-4xl font-bold">â‚¹299</span>
             <span className="text-text-secondary">/month</span>
           </div>
           <ul className="space-y-3 mb-6">
@@ -87,11 +87,11 @@ function PremiumPage() {
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-4 py-1 rounded-full text-sm font-medium">
             Best Value
           </div>
-          <div className="text-sm font-medium text-primary mb-2">Save ₹600 per year</div>
+          <div className="text-sm font-medium text-primary mb-2">Save â‚¹600 per year</div>
           <div className="mb-4">
-            <span className="text-4xl font-bold">₹2,999</span>
+            <span className="text-4xl font-bold">â‚¹2,999</span>
             <span className="text-text-secondary">/year</span>
-            <div className="text-sm text-text-secondary">₹250/month</div>
+            <div className="text-sm text-text-secondary">â‚¹250/month</div>
           </div>
           <ul className="space-y-3 mb-6">
             {['Unlimited mood history', 'Advanced AI insights', '4 live group therapy sessions', 'Priority support', 'Ad-free experience', 'Custom mood metrics', 'Export detailed reports'].map((feature, i) => (
@@ -170,7 +170,7 @@ function PremiumPage() {
             <Users className="text-primary mb-4" size={32} />
             <h3 className="text-xl font-semibold mb-2">Real Support</h3>
             <p className="text-text-secondary">
-              Affordable group therapy. Connect with licensed therapists in small groups for just ₹199/session.
+              Affordable group therapy. Connect with licensed therapists in small groups for just â‚¹199/session.
             </p>
           </div>
           
@@ -273,7 +273,7 @@ function PaymentModal({ plan, onClose, onSuccess }) {
     upiId: ''
   })
 
-  const price = plan === 'annual' ? '₹2,999' : '₹299'
+  const price = plan === 'annual' ? 'â‚¹2,999' : 'â‚¹299'
   const trialEndDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()
 
   const handleSubmit = (e) => {
@@ -290,7 +290,7 @@ function PaymentModal({ plan, onClose, onSuccess }) {
       nextBillingDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
     }
     
-    localStorage.setItem('safespace_premium', JSON.stringify(premiumData))
+    localStorage.setItem('space4u_premium', JSON.stringify(premiumData))
     onSuccess()
   }
 
@@ -300,7 +300,7 @@ function PaymentModal({ plan, onClose, onSuccess }) {
         <div className="p-6">
           {/* TEST MODE Banner */}
           <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded-lg mb-4 text-center font-medium">
-            🧪 TEST MODE - No actual charges
+            ðŸ§ª TEST MODE - No actual charges
           </div>
 
           <div className="flex items-center justify-between mb-6">
@@ -401,7 +401,7 @@ function PaymentModal({ plan, onClose, onSuccess }) {
             {/* Security */}
             <div className="flex items-center gap-2 text-sm text-text-secondary mb-6">
               <Shield size={16} />
-              <span>🔒 Secured by Razorpay - Your payment info is encrypted</span>
+              <span>ðŸ”’ Secured by Razorpay - Your payment info is encrypted</span>
             </div>
 
             {/* Terms */}
@@ -443,3 +443,4 @@ function PaymentModal({ plan, onClose, onSuccess }) {
 }
 
 export default PremiumPage
+

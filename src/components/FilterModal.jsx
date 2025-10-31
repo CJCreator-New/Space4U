@@ -12,9 +12,9 @@ function FilterModal({ isOpen, onClose, filters, onFiltersChange }) {
 
   const sortOptions = [
     { value: 'recommended', label: 'Recommended' },
-    { value: 'members', label: 'Most Members' },
-    { value: 'active', label: 'Most Active' },
-    { value: 'recent', label: 'Recently Joined' }
+    { value: 'active', label: 'Active now' },
+    { value: 'members', label: 'Largest communities' },
+    { value: 'growth', label: 'Growing fastest' }
   ]
 
   const handleApply = () => {

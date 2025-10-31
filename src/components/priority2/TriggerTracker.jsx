@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { X, Plus } from 'lucide-react'
 
 const CATEGORIES = ['person', 'place', 'event', 'situation', 'thought']
@@ -9,14 +9,14 @@ function TriggerTracker({ onClose }) {
   const [newTrigger, setNewTrigger] = useState({ name: '', category: 'situation', description: '', coping_plan: '' })
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('safespace_triggers') || '[]')
+    const saved = JSON.parse(localStorage.getItem('space4u_triggers') || '[]')
     setTriggers(saved)
   }, [])
 
   const addTrigger = () => {
     const trigger = { ...newTrigger, id: Date.now(), logs: [] }
     const updated = [...triggers, trigger]
-    localStorage.setItem('safespace_triggers', JSON.stringify(updated))
+    localStorage.setItem('space4u_triggers', JSON.stringify(updated))
     setTriggers(updated)
     setShowModal(false)
     setNewTrigger({ name: '', category: 'situation', description: '', coping_plan: '' })
@@ -115,3 +115,4 @@ function TriggerTracker({ onClose }) {
 }
 
 export default TriggerTracker
+

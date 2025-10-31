@@ -1,4 +1,4 @@
-# Development Guidelines & Standards
+﻿# Development Guidelines & Standards
 
 ## Code Quality Standards
 
@@ -37,14 +37,14 @@ export default ComponentName
 ## State Management Patterns
 
 ### Local Storage Integration
-- **Consistent Keys**: Use `safespace_` prefix for all localStorage keys
+- **Consistent Keys**: Use `space4u_` prefix for all localStorage keys
 - **JSON Serialization**: Always use JSON.parse/stringify for complex data
 - **Error Handling**: Provide fallback values with `|| '{}'` or `|| '[]'`
 - **Data Validation**: Merge with default objects to ensure data integrity
 
 ```javascript
 const DEFAULT_SETTINGS = { /* default structure */ }
-const saved = localStorage.getItem('safespace_settings')
+const saved = localStorage.getItem('space4u_settings')
 const settings = saved ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) } : DEFAULT_SETTINGS
 ```
 

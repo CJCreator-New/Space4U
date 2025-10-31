@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Download, FileText, Table, Code } from 'lucide-react'
 
 function DataExport() {
@@ -6,12 +6,12 @@ function DataExport() {
   const [format, setFormat] = useState('json')
 
   const dataTypes = [
-    { id: 'moods', label: 'Mood Logs', count: Object.keys(JSON.parse(localStorage.getItem('safespace_moods') || '{}')).length },
-    { id: 'habits', label: 'Habits', count: JSON.parse(localStorage.getItem('safespace_habits') || '[]').length },
-    { id: 'gratitude', label: 'Gratitude Entries', count: JSON.parse(localStorage.getItem('safespace_gratitude_entries') || '[]').length },
-    { id: 'emotions', label: 'Emotion Logs', count: JSON.parse(localStorage.getItem('safespace_emotion_logs') || '[]').length },
-    { id: 'triggers', label: 'Triggers', count: JSON.parse(localStorage.getItem('safespace_triggers') || '[]').length },
-    { id: 'journal', label: 'Journal Entries', count: JSON.parse(localStorage.getItem('safespace_journal_entries') || '[]').length }
+    { id: 'moods', label: 'Mood Logs', count: Object.keys(JSON.parse(localStorage.getItem('space4u_moods') || '{}')).length },
+    { id: 'habits', label: 'Habits', count: JSON.parse(localStorage.getItem('space4u_habits') || '[]').length },
+    { id: 'gratitude', label: 'Gratitude Entries', count: JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]').length },
+    { id: 'emotions', label: 'Emotion Logs', count: JSON.parse(localStorage.getItem('space4u_emotion_logs') || '[]').length },
+    { id: 'triggers', label: 'Triggers', count: JSON.parse(localStorage.getItem('space4u_triggers') || '[]').length },
+    { id: 'journal', label: 'Journal Entries', count: JSON.parse(localStorage.getItem('space4u_journal_entries') || '[]').length }
   ]
 
   const toggleType = (id) => {
@@ -23,7 +23,7 @@ function DataExport() {
   const exportData = () => {
     const data = {}
     selectedTypes.forEach(type => {
-      const key = `safespace_${type}`
+      const key = `space4u_${type}`
       data[type] = JSON.parse(localStorage.getItem(key) || '{}')
     })
 
@@ -53,9 +53,9 @@ function DataExport() {
     a.click()
     URL.revokeObjectURL(url)
 
-    const logs = JSON.parse(localStorage.getItem('safespace_export_logs') || '[]')
+    const logs = JSON.parse(localStorage.getItem('space4u_export_logs') || '[]')
     logs.push({ date: new Date().toISOString(), format, types: selectedTypes })
-    localStorage.setItem('safespace_export_logs', JSON.stringify(logs))
+    localStorage.setItem('space4u_export_logs', JSON.stringify(logs))
   }
 
   const convertToCSV = (data) => {
@@ -132,12 +132,12 @@ function DataExport() {
       </div>
 
       <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
-        <h4 className="font-semibold text-blue-900 mb-2">📋 Data Privacy</h4>
+        <h4 className="font-semibold text-blue-900 mb-2">ðŸ“‹ Data Privacy</h4>
         <ul className="text-sm text-blue-800 space-y-1">
-          <li>• Your data is stored locally on your device</li>
-          <li>• Exports are generated in your browser</li>
-          <li>• No data is sent to external servers</li>
-          <li>• Keep exported files secure</li>
+          <li>â€¢ Your data is stored locally on your device</li>
+          <li>â€¢ Exports are generated in your browser</li>
+          <li>â€¢ No data is sent to external servers</li>
+          <li>â€¢ Keep exported files secure</li>
         </ul>
       </div>
     </div>
@@ -145,3 +145,4 @@ function DataExport() {
 }
 
 export default DataExport
+

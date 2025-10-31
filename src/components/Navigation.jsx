@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+﻿import { NavLink } from 'react-router-dom'
 import { Home, Users, Brain, User, Activity, Heart, Sparkles, Building2, LogOut, LogIn } from '../config/icons'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 import { useTranslation } from 'react-i18next'
@@ -72,7 +72,7 @@ function Navigation() {
       {/* Desktop Sidebar Navigation */}
       <nav className="hidden md:block fixed left-0 top-0 h-full w-64 bg-surface dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-50" aria-label="Main navigation">
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-primary dark:text-primary-light mb-8 font-secondary">Safespace</h1>
+          <h1 className="text-2xl font-bold text-primary dark:text-primary-light mb-8 font-secondary">space4u</h1>
           <div className="space-y-2">
             {navItems.map(({ path, icon: Icon, label }) => (
               <NavLink

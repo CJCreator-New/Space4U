@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSpring, animated, useTrail, config } from 'react-spring'
 import { useInView } from 'react-intersection-observer'
@@ -22,17 +22,17 @@ const featureGroups = [
   {
     title: 'Daily Wellness',
     items: [
-      { icon: '❤️', label: 'Gratitude', path: '/gratitude' },
-      { icon: '🎯', label: 'Habits', path: '/habits' },
-      { icon: '💭', label: 'Emotions', path: '/emotions' }
+      { icon: 'â¤ï¸', label: 'Gratitude', path: '/gratitude' },
+      { icon: 'ðŸŽ¯', label: 'Habits', path: '/habits' },
+      { icon: 'ðŸ’­', label: 'Emotions', path: '/emotions' }
     ]
   },
   {
     title: 'Tools & Resources',
     items: [
-      { icon: '🛠️', label: 'Coping Skills', path: '/coping-skills' },
-      { icon: '⏰', label: 'Reminders', path: '/reminders' },
-      { icon: '🧰', label: 'Therapy Tools', path: '/tools' }
+      { icon: 'ðŸ› ï¸', label: 'Coping Skills', path: '/coping-skills' },
+      { icon: 'â°', label: 'Reminders', path: '/reminders' },
+      { icon: 'ðŸ§°', label: 'Therapy Tools', path: '/tools' }
     ]
   }
 ]
@@ -49,7 +49,7 @@ function UltraEnhancedHomePage() {
   const [cardsRef, cardsInView] = useInView({ threshold: 0.1, triggerOnce: true })
 
   useEffect(() => {
-    const userData = localStorage.getItem('safespace_user')
+    const userData = localStorage.getItem('space4u_user')
     if (userData) setUser(JSON.parse(userData))
   }, [])
 
@@ -104,7 +104,7 @@ function UltraEnhancedHomePage() {
                 )}
                 <Box>
                   <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
-                    Welcome back{user?.username ? `, ${user.username}` : ''}! 👋
+                    Welcome back{user?.username ? `, ${user.username}` : ''}! ðŸ‘‹
                   </h1>
                   <p style={{ opacity: 0.9 }}>Your mind matters. Let's check in today.</p>
                 </Box>
@@ -231,3 +231,4 @@ function UltraEnhancedHomePage() {
 }
 
 export default UltraEnhancedHomePage
+

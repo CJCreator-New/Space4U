@@ -1,17 +1,17 @@
-// Data Export/Import Utilities
+﻿// Data Export/Import Utilities
 
 export const exportAllData = () => {
   const data = {
     version: '1.0.0',
     exportDate: new Date().toISOString(),
-    moods: JSON.parse(localStorage.getItem('safespace_moods') || '{}'),
-    user: JSON.parse(localStorage.getItem('safespace_user') || '{}'),
-    badges: JSON.parse(localStorage.getItem('safespace_badges') || '{}'),
-    settings: JSON.parse(localStorage.getItem('safespace_settings') || '{}'),
-    premium: JSON.parse(localStorage.getItem('safespace_premium') || '{}'),
-    habits: JSON.parse(localStorage.getItem('safespace_habits') || '[]'),
-    gratitude: JSON.parse(localStorage.getItem('safespace_gratitude') || '[]'),
-    journal: JSON.parse(localStorage.getItem('safespace_journal') || '[]')
+    moods: JSON.parse(localStorage.getItem('space4u_moods') || '{}'),
+    user: JSON.parse(localStorage.getItem('space4u_user') || '{}'),
+    badges: JSON.parse(localStorage.getItem('space4u_badges') || '{}'),
+    settings: JSON.parse(localStorage.getItem('space4u_settings') || '{}'),
+    premium: JSON.parse(localStorage.getItem('space4u_premium') || '{}'),
+    habits: JSON.parse(localStorage.getItem('space4u_habits') || '[]'),
+    gratitude: JSON.parse(localStorage.getItem('space4u_gratitude') || '[]'),
+    journal: JSON.parse(localStorage.getItem('space4u_journal') || '[]')
   }
   
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
@@ -26,7 +26,7 @@ export const exportAllData = () => {
 }
 
 export const exportMoodsToCSV = () => {
-  const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+  const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
   const entries = Object.entries(moods).map(([date, mood]) => ({
     date,
     mood: mood.mood,
@@ -68,11 +68,11 @@ export const importData = (file) => {
         const keys = ['moods', 'user', 'badges', 'settings', 'premium', 'habits', 'gratitude', 'journal']
         keys.forEach(key => {
           if (data[key]) {
-            const existing = JSON.parse(localStorage.getItem(`safespace_${key}`) || (Array.isArray(data[key]) ? '[]' : '{}'))
+            const existing = JSON.parse(localStorage.getItem(`space4u_${key}`) || (Array.isArray(data[key]) ? '[]' : '{}'))
             const merged = Array.isArray(data[key]) 
               ? [...existing, ...data[key]]
               : { ...existing, ...data[key] }
-            localStorage.setItem(`safespace_${key}`, JSON.stringify(merged))
+            localStorage.setItem(`space4u_${key}`, JSON.stringify(merged))
           }
         })
         
@@ -88,7 +88,7 @@ export const importData = (file) => {
 }
 
 export const generateWeeklyReport = () => {
-  const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+  const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
   
   const weekMoods = Object.entries(moods)
@@ -112,7 +112,7 @@ export const generateWeeklyReport = () => {
 }
 
 export const generateMonthlyReport = () => {
-  const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+  const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
   const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
   
   const monthMoods = Object.entries(moods)
@@ -134,3 +134,4 @@ export const generateMonthlyReport = () => {
     consistency: ((monthMoods.length / 30) * 100).toFixed(0)
   }
 }
+

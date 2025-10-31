@@ -1,4 +1,4 @@
-// Recommendation Engine - Generate personalized feature suggestions
+﻿// Recommendation Engine - Generate personalized feature suggestions
 
 import { getPersonalization, updatePersonalization } from './personalizationEngine'
 
@@ -17,7 +17,7 @@ export const generateRecommendations = () => {
   const recommendations = []
 
   // Goal-based recommendations
-  const goals = JSON.parse(localStorage.getItem('safespace_user_profile') || '{}').goals || []
+  const goals = JSON.parse(localStorage.getItem('space4u_user_profile') || '{}').goals || []
   goals.forEach(goal => {
     const features = FEATURE_MAP[goal] || []
     features.forEach(feature => {
@@ -33,7 +33,7 @@ export const generateRecommendations = () => {
   })
 
   // Mood-based recommendations
-  const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+  const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
   const recentMoods = Object.values(moods).slice(-7)
   const avgMood = recentMoods.reduce((sum, m) => sum + m.rating, 0) / recentMoods.length
 
@@ -112,9 +112,10 @@ const getRelatedFeatures = (featureId) => {
 }
 
 export const checkInactiveFeatures = () => {
-  const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+  const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
   const lastMood = Object.values(moods).slice(-1)[0]
   const daysSinceLastMood = lastMood ? Math.floor((Date.now() - new Date(lastMood.date).getTime()) / 86400000) : 999
 
   return daysSinceLastMood >= 3
 }
+

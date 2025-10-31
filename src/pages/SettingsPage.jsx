@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { 
   Bell, Shield, Palette, Globe, Eye, User, HelpCircle, Info,
   Search, ChevronDown, ChevronRight, Download, Trash2, X, Check,
@@ -137,12 +137,12 @@ function SettingsPage() {
 
   useEffect(() => {
     loadSettings()
-    const premiumData = JSON.parse(localStorage.getItem('safespace_premium') || '{}')
+    const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
     setIsPremium(premiumData.isPremium || false)
   }, [])
 
   const loadSettings = () => {
-    const saved = localStorage.getItem('safespace_settings')
+    const saved = localStorage.getItem('space4u_settings')
     if (saved) {
       setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(saved) })
     }
@@ -150,7 +150,7 @@ function SettingsPage() {
 
   const saveSettings = (newSettings) => {
     setSettings(newSettings)
-    localStorage.setItem('safespace_settings', JSON.stringify(newSettings))
+    localStorage.setItem('space4u_settings', JSON.stringify(newSettings))
     showToast('Setting saved')
   }
 
@@ -169,7 +169,7 @@ function SettingsPage() {
     const newStatus = !isPremium
     setIsPremium(newStatus)
     if (newStatus) {
-      localStorage.setItem('safespace_premium', JSON.stringify({
+      localStorage.setItem('space4u_premium', JSON.stringify({
         isPremium: true,
         plan: 'annual',
         startDate: new Date().toISOString(),
@@ -177,7 +177,7 @@ function SettingsPage() {
       }))
       showToast('Premium enabled')
     } else {
-      localStorage.removeItem('safespace_premium')
+      localStorage.removeItem('space4u_premium')
       showToast('Premium disabled')
     }
   }
@@ -199,11 +199,11 @@ function SettingsPage() {
 
   const exportData = () => {
     const userData = {
-      profile: JSON.parse(localStorage.getItem('safespace_user') || '{}'),
-      moods: JSON.parse(localStorage.getItem('safespace_moods') || '{}'),
-      posts: JSON.parse(localStorage.getItem('safespace_user_posts') || '[]'),
-      circles: JSON.parse(localStorage.getItem('safespace_user_circles') || '[]'),
-      badges: JSON.parse(localStorage.getItem('safespace_badges') || '{}'),
+      profile: JSON.parse(localStorage.getItem('space4u_user') || '{}'),
+      moods: JSON.parse(localStorage.getItem('space4u_moods') || '{}'),
+      posts: JSON.parse(localStorage.getItem('space4u_user_posts') || '[]'),
+      circles: JSON.parse(localStorage.getItem('space4u_user_circles') || '[]'),
+      badges: JSON.parse(localStorage.getItem('space4u_badges') || '{}'),
       settings: settings,
       exportedAt: new Date().toISOString()
     }
@@ -212,7 +212,7 @@ function SettingsPage() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `safespace-data-${new Date().toISOString().split('T')[0]}.json`
+    a.download = `space4u-data-${new Date().toISOString().split('T')[0]}.json`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
@@ -224,9 +224,9 @@ function SettingsPage() {
     if (deleteConfirm !== 'DELETE') return
     
     const keysToRemove = [
-      'safespace_user', 'safespace_moods', 'safespace_user_posts',
-      'safespace_user_circles', 'safespace_badges', 'safespace_hearted_posts',
-      'safespace_onboarding_completed', 'safespace_settings'
+      'space4u_user', 'space4u_moods', 'space4u_user_posts',
+      'space4u_user_circles', 'space4u_badges', 'space4u_hearted_posts',
+      'space4u_onboarding_completed', 'space4u_settings'
     ]
     
     keysToRemove.forEach(key => localStorage.removeItem(key))
@@ -310,7 +310,7 @@ function SettingsPage() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-text-primary mb-2">{t('settings.title')}</h1>
-        <p className="text-text-secondary">{t('settings.subtitle', 'Customize your Safespace experience')}</p>
+        <p className="text-text-secondary">{t('settings.subtitle', 'Customize your space4u experience')}</p>
       </div>
 
       {/* Search */}
@@ -561,7 +561,7 @@ function SettingsPage() {
                       key={value}
                       onClick={action}
                       className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-colors ${
-                        (value === 'auto' && !localStorage.getItem('safespace_theme')) || theme === value
+                        (value === 'auto' && !localStorage.getItem('space4u_theme')) || theme === value
                           ? 'border-primary bg-primary/10 text-primary dark:border-primary-light dark:bg-primary-light/10'
                           : 'border-gray-200 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700'
                       }`}
@@ -697,19 +697,19 @@ function SettingsPage() {
                   }}
                   className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                 >
-                  <option value="en">🇬🇧 English</option>
-                  <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
-                  <option value="ta">🇮🇳 தமிழ் (Tamil)</option>
-                  <option value="te">🇮🇳 తెలుగు (Telugu)</option>
-                  <option value="bn">🇮🇳 বাংলা (Bengali)</option>
-                  <option value="mr">🇮🇳 मराठी (Marathi)</option>
-                  <option value="kn">🇮🇳 ಕನ್ನಡ (Kannada)</option>
-                  <option value="ml">🇮🇳 മലയാളം (Malayalam)</option>
-                  <option value="gu">🇮🇳 ગુજરાતી (Gujarati)</option>
-                  <option value="es">🇪🇸 Español (Spanish)</option>
-                  <option value="fr">🇫🇷 Français (French)</option>
-                  <option value="de">🇩🇪 Deutsch (German)</option>
-                  <option value="ar">🇸🇦 العربية (Arabic)</option>
+                  <option value="en">ðŸ‡¬ðŸ‡§ English</option>
+                  <option value="hi">ðŸ‡®ðŸ‡³ à¤¹à¤¿à¤¨à¥à¤¦à¥€ (Hindi)</option>
+                  <option value="ta">ðŸ‡®ðŸ‡³ à®¤à®®à®¿à®´à¯ (Tamil)</option>
+                  <option value="te">ðŸ‡®ðŸ‡³ à°¤à±†à°²à±à°—à± (Telugu)</option>
+                  <option value="bn">ðŸ‡®ðŸ‡³ à¦¬à¦¾à¦‚à¦²à¦¾ (Bengali)</option>
+                  <option value="mr">ðŸ‡®ðŸ‡³ à¤®à¤°à¤¾à¤ à¥€ (Marathi)</option>
+                  <option value="kn">ðŸ‡®ðŸ‡³ à²•à²¨à³à²¨à²¡ (Kannada)</option>
+                  <option value="ml">ðŸ‡®ðŸ‡³ à´®à´²à´¯à´¾à´³à´‚ (Malayalam)</option>
+                  <option value="gu">ðŸ‡®ðŸ‡³ àª—à«àªœàª°àª¾àª¤à«€ (Gujarati)</option>
+                  <option value="es">ðŸ‡ªðŸ‡¸ EspaÃ±ol (Spanish)</option>
+                  <option value="fr">ðŸ‡«ðŸ‡· FranÃ§ais (French)</option>
+                  <option value="de">ðŸ‡©ðŸ‡ª Deutsch (German)</option>
+                  <option value="ar">ðŸ‡¸ðŸ‡¦ Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© (Arabic)</option>
                 </select>
               </SettingRow>
             </div>
@@ -1286,7 +1286,7 @@ function SettingsPage() {
               ))}
               
               <div className="p-4 text-center">
-                <p className="text-text-secondary">Made with ❤️ for mental health</p>
+                <p className="text-text-secondary">Made with â¤ï¸ for mental health</p>
               </div>
             </div>
           )}

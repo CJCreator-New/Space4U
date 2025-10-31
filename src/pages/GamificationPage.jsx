@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Trophy, Target, Zap, Star, Calendar, Crown, Lock } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
@@ -7,16 +7,16 @@ import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
 import { disclaimers } from '../data/disclaimers'
 
 const CHALLENGES = [
-  { id: 1, title: '7-Day Mood Tracker', description: 'Track mood daily for 7 days', duration: 7, progress: 0, badge: '🎯' },
-  { id: 2, title: '30-Day Gratitude', description: 'Write gratitude daily for 30 days', duration: 30, progress: 0, badge: '🙏' },
-  { id: 3, title: 'Mindfulness Week', description: 'Complete 5 mindfulness sessions', duration: 7, progress: 0, badge: '🧘' },
-  { id: 4, title: 'Habit Builder', description: 'Complete habits for 14 days', duration: 14, progress: 0, badge: '💪' }
+  { id: 1, title: '7-Day Mood Tracker', description: 'Track mood daily for 7 days', duration: 7, progress: 0, badge: 'ðŸŽ¯' },
+  { id: 2, title: '30-Day Gratitude', description: 'Write gratitude daily for 30 days', duration: 30, progress: 0, badge: 'ðŸ™' },
+  { id: 3, title: 'Mindfulness Week', description: 'Complete 5 mindfulness sessions', duration: 7, progress: 0, badge: 'ðŸ§˜' },
+  { id: 4, title: 'Habit Builder', description: 'Complete habits for 14 days', duration: 14, progress: 0, badge: 'ðŸ’ª' }
 ]
 
 const QUESTS = [
-  { id: 1, title: 'Getting Started', description: 'Complete your first week', xp: 100, badge: '🌟', tasks: ['Log 3 moods', 'Join a circle'] },
-  { id: 2, title: 'Wellness Warrior', description: 'Use 5 different tools', xp: 250, badge: '⚔️', tasks: ['Use 5 tools'] },
-  { id: 3, title: 'Master of Mindfulness', description: 'Complete 20 sessions', xp: 500, badge: '🧘', tasks: ['20 mindfulness sessions'], premium: true }
+  { id: 1, title: 'Getting Started', description: 'Complete your first week', xp: 100, badge: 'ðŸŒŸ', tasks: ['Log 3 moods', 'Join a circle'] },
+  { id: 2, title: 'Wellness Warrior', description: 'Use 5 different tools', xp: 250, badge: 'âš”ï¸', tasks: ['Use 5 tools'] },
+  { id: 3, title: 'Master of Mindfulness', description: 'Complete 20 sessions', xp: 500, badge: 'ðŸ§˜', tasks: ['20 mindfulness sessions'], premium: true }
 ]
 
 function GamificationPage() {
@@ -29,15 +29,15 @@ function GamificationPage() {
   const FREE_CHALLENGE_LIMIT = 1
 
   useEffect(() => {
-    const level = JSON.parse(localStorage.getItem('safespace_user_level') || '{"level":1,"xp":0,"badges":[]}')
+    const level = JSON.parse(localStorage.getItem('space4u_user_level') || '{"level":1,"xp":0,"badges":[]}')
     setUserLevel(level)
-    const active = JSON.parse(localStorage.getItem('safespace_active_challenges') || '[]')
+    const active = JSON.parse(localStorage.getItem('space4u_active_challenges') || '[]')
     setActiveChallenges(active)
     
     // Calculate streaks
-    const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
-    const gratitude = JSON.parse(localStorage.getItem('safespace_gratitude_entries') || '[]')
-    const habits = JSON.parse(localStorage.getItem('safespace_habits') || '[]')
+    const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
+    const gratitude = JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]')
+    const habits = JSON.parse(localStorage.getItem('space4u_habits') || '[]')
     
     setStreaks({
       mood: calculateStreak(Object.keys(moods)),
@@ -83,7 +83,7 @@ function GamificationPage() {
     }
     const updated = [...activeChallenges, challengeId]
     setActiveChallenges(updated)
-    localStorage.setItem('safespace_active_challenges', JSON.stringify(updated))
+    localStorage.setItem('space4u_active_challenges', JSON.stringify(updated))
   }
 
   const handleStartQuest = (quest) => {
@@ -108,7 +108,7 @@ function GamificationPage() {
             </div>
           )}
         </div>
-        <p className="text-text-secondary">Level up your mental wellness journey • {isPremium ? '3 active challenges' : '1 active challenge'}</p>
+        <p className="text-text-secondary">Level up your mental wellness journey â€¢ {isPremium ? '3 active challenges' : '1 active challenge'}</p>
       </div>
 
       <div className="mb-8">
@@ -261,3 +261,4 @@ function GamificationPage() {
 }
 
 export default GamificationPage
+
