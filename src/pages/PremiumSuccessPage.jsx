@@ -38,7 +38,7 @@ function PremiumSuccessPage() {
                 animationDuration: `${2 + Math.random() * 2}s`
               }}
             >
-              {['ðŸŽ‰', 'âœ¨', 'ðŸŒŸ', 'ðŸ’«', 'â­'][Math.floor(Math.random() * 5)]}
+              {['', '✨', '', '', '✅'][Math.floor(Math.random() * 5)]}
             </div>
           ))}
         </div>

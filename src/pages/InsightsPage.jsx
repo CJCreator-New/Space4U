@@ -28,11 +28,11 @@ import TrackMood from '../components/TrackMood'
 import { motion } from 'framer-motion'
 
 const moodLabels = {
-  5: { label: 'Amazing', emoji: 'ðŸ˜Š' },
-  4: { label: 'Good', emoji: 'ðŸ™‚' },
-  3: { label: 'Okay', emoji: 'ðŸ˜' },
-  2: { label: 'Low', emoji: 'ðŸ˜¢' },
-  1: { label: 'Struggling', emoji: 'ðŸ˜°' }
+  5: { label: 'Amazing', emoji: '' },
+  4: { label: 'Good', emoji: '' },
+  3: { label: 'Okay', emoji: '' },
+  2: { label: 'Low', emoji: '' },
+  1: { label: 'Struggling', emoji: '' }
 }
 
 function InsightsPage() {
@@ -45,8 +45,12 @@ function InsightsPage() {
 
   useEffect(() => {
     loadMoodData()
-    trackPageView('insights')
   }, [period])
+
+  useEffect(() => {
+    // Track page view only once on mount
+    trackPageView('insights')
+  }, [])
 
   // expose load for child components
 
@@ -315,7 +319,7 @@ function InsightsPage() {
                 </h4>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-lg">ðŸ”¥</span>
+                    <span className="text-lg">🔥</span>
                     <div>
                       <div className="font-medium text-text-primary">
                         <AnimatedNumber value={analysis.streak.current} duration={800} /> day streak
@@ -324,7 +328,7 @@ function InsightsPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-lg">ðŸ“Š</span>
+                    <span className="text-lg">🎯</span>
                     <div>
                       <div className="font-medium text-text-primary">
                         <AnimatedNumber value={analysis.consistencyScore} duration={800} />% consistent
@@ -383,7 +387,7 @@ function InsightsPage() {
           <div className="grid md:grid-cols-2 gap-6 mb-6">
             <div className="card p-6">
               <h3 className="font-semibold text-text-primary mb-4 flex items-center gap-2">
-                <span className="text-lg">ðŸ˜¢</span>
+                <span className="text-lg">💔</span>
                 When you feel down
               </h3>
               {analysis.triggers.negative.length > 0 ? (
@@ -401,7 +405,7 @@ function InsightsPage() {
 
             <div className="card p-6">
               <h3 className="font-semibold text-text-primary mb-4 flex items-center gap-2">
-                <span className="text-lg">ðŸ˜Š</span>
+                <span className="text-lg">✨</span>
                 What lifts you up
               </h3>
               {analysis.triggers.positive.length > 0 ? (
@@ -443,7 +447,7 @@ function InsightsPage() {
                 {/* Resource Library Suggestion */}
                 <div className="card p-4 cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/resources')}>
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="text-2xl">ðŸ“š</div>
+                    <div className="text-2xl">📚</div>
                     <div>
                       <h3 className="font-semibold text-text-primary mb-1">Explore Resources</h3>
                       <p className="text-sm text-text-secondary mb-3">Access breathing exercises, articles, and wellness tools</p>
@@ -500,7 +504,7 @@ function InsightsPage() {
                       })}
                     </div>
                     <div className="text-sm text-text-secondary mt-1">
-                      Remember: tough days don't last, but you do ðŸ’ª
+                      Remember: tough days don't last, but you do 
                     </div>
                   </div>
                 </div>

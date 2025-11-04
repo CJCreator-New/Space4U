@@ -2,11 +2,11 @@
 
 export const REACTIONS = {
   heart: { emoji: 'â¤ï¸', label: 'Heart' },
-  like: { emoji: 'ðŸ‘', label: 'Like' },
-  support: { emoji: 'ðŸ™', label: 'Support' },
-  strength: { emoji: 'ðŸ’ª', label: 'Strength' },
-  hug: { emoji: 'ðŸ¤—', label: 'Hug' },
-  celebrate: { emoji: 'ðŸŽ‰', label: 'Celebrate' }
+  like: { emoji: '', label: 'Like' },
+  support: { emoji: '', label: 'Support' },
+  strength: { emoji: '', label: 'Strength' },
+  hug: { emoji: '', label: 'Hug' },
+  celebrate: { emoji: '', label: 'Celebrate' }
 }
 
 export const addReaction = (postId, reactionType, userId) => {

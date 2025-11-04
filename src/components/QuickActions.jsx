@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Icon } from './common/IconLibrary'
+import Icon from './Icon'
 import { useState } from 'react'
 
 function QuickActions() {

@@ -273,20 +273,20 @@ function SettingsPage() {
   )
 
   const SettingRow = ({ icon: Icon, label, description, children, modified = false, premium = false, isNew = false }) => (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-4 px-4 hover:bg-gray-50 rounded-xl transition-colors">
-      <div className="flex items-center gap-3 flex-1 min-w-0">
-        <Icon className="text-text-secondary" size={20} />
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-text-primary">{label}</span>
-            {modified && <Dot className="text-primary" size={16} />}
-            {premium && <Crown className="text-yellow-500" size={16} />}
-            {isNew && <span className="bg-primary text-white text-xs px-2 py-1 rounded-full">New</span>}
+    <div className="flex flex-col gap-3 py-4 px-4 hover:bg-gray-50 rounded-xl transition-colors">
+      <div className="flex items-start gap-3 flex-1 min-w-0">
+        <Icon className="text-text-secondary flex-shrink-0 mt-0.5" size={20} />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-medium text-text-primary break-words">{label}</span>
+            {modified && <Dot className="text-primary flex-shrink-0" size={16} />}
+            {premium && <Crown className="text-yellow-500 flex-shrink-0" size={16} />}
+            {isNew && <span className="bg-primary text-white text-xs px-2 py-1 rounded-full flex-shrink-0">New</span>}
           </div>
-          {description && <p className="text-sm text-text-secondary">{description}</p>}
+          {description && <p className="text-sm text-text-secondary mt-1 break-words">{description}</p>}
         </div>
       </div>
-      <div className="flex-shrink-0 w-full sm:w-auto">
+      <div className="flex-shrink-0 w-full sm:w-auto sm:ml-8">
         {children}
       </div>
     </div>
@@ -378,7 +378,7 @@ function SettingsPage() {
                       type="time"
                       value={settings.notifications.reminderTime}
                       onChange={(e) => updateSetting('notifications', 'reminderTime', e.target.value)}
-                      className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
+                      className="w-full sm:w-auto px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                     />
                   </SettingRow>
                   
@@ -386,7 +386,7 @@ function SettingsPage() {
                     <select
                       value={settings.notifications.reminderDays}
                       onChange={(e) => updateSetting('notifications', 'reminderDays', e.target.value)}
-                      className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
+                      className="w-full sm:w-auto px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                     >
                       <option value="daily">Daily</option>
                       <option value="weekdays">Weekdays only</option>
@@ -504,7 +504,7 @@ function SettingsPage() {
                     }
                     updateSetting('privacy', 'autoDelete', e.target.value)
                   }}
-                  className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
+                  className="w-full sm:w-auto px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                 >
                   <option value="never">Never</option>
                   <option value="30 days">30 days</option>
@@ -551,7 +551,7 @@ function SettingsPage() {
                 description="Choose your preferred theme"
                 modified={theme !== 'auto'}
               >
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   {[
                     { value: 'light', icon: Sun, label: 'Light', action: setLightTheme },
                     { value: 'dark', icon: Moon, label: 'Dark', action: setDarkTheme },
@@ -560,7 +560,7 @@ function SettingsPage() {
                     <button
                       key={value}
                       onClick={action}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-colors ${
+                      className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition-colors ${
                         (value === 'auto' && !localStorage.getItem('space4u_theme')) || theme === value
                           ? 'border-primary bg-primary/10 text-primary dark:border-primary-light dark:bg-primary-light/10'
                           : 'border-gray-200 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700'
@@ -697,19 +697,19 @@ function SettingsPage() {
                   }}
                   className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                 >
-                  <option value="en">ðŸ‡¬ðŸ‡§ English</option>
-                  <option value="hi">ðŸ‡®ðŸ‡³ à¤¹à¤¿à¤¨à¥à¤¦à¥€ (Hindi)</option>
-                  <option value="ta">ðŸ‡®ðŸ‡³ à®¤à®®à®¿à®´à¯ (Tamil)</option>
-                  <option value="te">ðŸ‡®ðŸ‡³ à°¤à±†à°²à±à°—à± (Telugu)</option>
-                  <option value="bn">ðŸ‡®ðŸ‡³ à¦¬à¦¾à¦‚à¦²à¦¾ (Bengali)</option>
-                  <option value="mr">ðŸ‡®ðŸ‡³ à¤®à¤°à¤¾à¤ à¥€ (Marathi)</option>
-                  <option value="kn">ðŸ‡®ðŸ‡³ à²•à²¨à³à²¨à²¡ (Kannada)</option>
-                  <option value="ml">ðŸ‡®ðŸ‡³ à´®à´²à´¯à´¾à´³à´‚ (Malayalam)</option>
-                  <option value="gu">ðŸ‡®ðŸ‡³ àª—à«àªœàª°àª¾àª¤à«€ (Gujarati)</option>
-                  <option value="es">ðŸ‡ªðŸ‡¸ EspaÃ±ol (Spanish)</option>
-                  <option value="fr">ðŸ‡«ðŸ‡· FranÃ§ais (French)</option>
-                  <option value="de">ðŸ‡©ðŸ‡ª Deutsch (German)</option>
-                  <option value="ar">ðŸ‡¸ðŸ‡¦ Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© (Arabic)</option>
+                  <option value="en"> English</option>
+                  <option value="hi"> à¤¹à¤¿à¤¨à¥à¤¦à¥€ (Hindi)</option>
+                  <option value="ta"> à®¤à®®à®¿à®´à¯ (Tamil)</option>
+                  <option value="te"> à°¤à±†à°²à±à°—à± (Telugu)</option>
+                  <option value="bn"> à¦¬à¦¾à¦‚à¦²à¦¾ (Bengali)</option>
+                  <option value="mr"> à¤®à¤°à¤¾à¤ à¥€ (Marathi)</option>
+                  <option value="kn"> à²•à²¨à³à²¨à²¡ (Kannada)</option>
+                  <option value="ml"> à´®à´²à´¯à´¾à´³à´‚ (Malayalam)</option>
+                  <option value="gu"> àª—à«àªœàª°àª¾àª¤à«€ (Gujarati)</option>
+                  <option value="es">🇪🇸 Español (Spanish)</option>
+                  <option value="fr">🇫🇷 Français (French)</option>
+                  <option value="de"> Deutsch (German)</option>
+                  <option value="ar"> Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© (Arabic)</option>
                 </select>
               </SettingRow>
             </div>
@@ -797,18 +797,18 @@ function SettingsPage() {
                 label="Email (optional)"
                 description="For account recovery only"
               >
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="email"
                     value={settings.account.email}
                     onChange={(e) => updateSetting('account', 'email', e.target.value)}
                     placeholder="your@email.com"
-                    className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
+                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                   />
                   <button 
                     disabled
                     title="Coming soon"
-                    className="px-3 py-2 text-gray-400 font-medium cursor-not-allowed"
+                    className="px-3 py-2 text-gray-400 font-medium cursor-not-allowed whitespace-nowrap"
                   >
                     Verify
                   </button>
@@ -826,7 +826,7 @@ function SettingsPage() {
                   value={settings.account.phone}
                   onChange={(e) => updateSetting('account', 'phone', e.target.value)}
                   placeholder="+91 98765 43210"
-                  className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                   disabled
                 />
               </SettingRow>

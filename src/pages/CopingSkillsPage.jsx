@@ -75,7 +75,7 @@ function CopingSkillsPage() {
             </div>
           )}
         </div>
-        <p className="text-text-secondary">{t('copingSkills.subtitle')} â€¢ {t('copingSkills.skillsAvailable', { count: isPremium ? 100 : 50 })}</p>
+        <p className="text-text-secondary">{t('copingSkills.subtitle')} • {t('copingSkills.skillsAvailable', { count: isPremium ? 100 : 50 })}</p>
       </div>
 
       <div className="mb-6">

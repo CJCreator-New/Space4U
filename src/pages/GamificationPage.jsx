@@ -5,18 +5,21 @@ import SafeComponent from '../components/SafeComponent'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
 import { disclaimers } from '../data/disclaimers'
+import XPCounter from '../components/common/XPCounter'
+import LevelUpCelebration from '../components/common/LevelUpCelebration'
+import StreakCelebration from '../components/common/StreakCelebration'
 
 const CHALLENGES = [
-  { id: 1, title: '7-Day Mood Tracker', description: 'Track mood daily for 7 days', duration: 7, progress: 0, badge: 'ðŸŽ¯' },
-  { id: 2, title: '30-Day Gratitude', description: 'Write gratitude daily for 30 days', duration: 30, progress: 0, badge: 'ðŸ™' },
-  { id: 3, title: 'Mindfulness Week', description: 'Complete 5 mindfulness sessions', duration: 7, progress: 0, badge: 'ðŸ§˜' },
-  { id: 4, title: 'Habit Builder', description: 'Complete habits for 14 days', duration: 14, progress: 0, badge: 'ðŸ’ª' }
+  { id: 1, title: '7-Day Mood Tracker', description: 'Track mood daily for 7 days', duration: 7, progress: 0, badge: '' },
+  { id: 2, title: '30-Day Gratitude', description: 'Write gratitude daily for 30 days', duration: 30, progress: 0, badge: '' },
+  { id: 3, title: 'Mindfulness Week', description: 'Complete 5 mindfulness sessions', duration: 7, progress: 0, badge: '' },
+  { id: 4, title: 'Habit Builder', description: 'Complete habits for 14 days', duration: 14, progress: 0, badge: '' }
 ]
 
 const QUESTS = [
-  { id: 1, title: 'Getting Started', description: 'Complete your first week', xp: 100, badge: 'ðŸŒŸ', tasks: ['Log 3 moods', 'Join a circle'] },
+  { id: 1, title: 'Getting Started', description: 'Complete your first week', xp: 100, badge: '', tasks: ['Log 3 moods', 'Join a circle'] },
   { id: 2, title: 'Wellness Warrior', description: 'Use 5 different tools', xp: 250, badge: 'âš”ï¸', tasks: ['Use 5 tools'] },
-  { id: 3, title: 'Master of Mindfulness', description: 'Complete 20 sessions', xp: 500, badge: 'ðŸ§˜', tasks: ['20 mindfulness sessions'], premium: true }
+  { id: 3, title: 'Master of Mindfulness', description: 'Complete 20 sessions', xp: 500, badge: '', tasks: ['20 mindfulness sessions'], premium: true }
 ]
 
 function GamificationPage() {
@@ -25,6 +28,12 @@ function GamificationPage() {
   const [streaks, setStreaks] = useState({ mood: 0, gratitude: 0, habits: 0 })
   const [activeTab, setActiveTab] = useState('challenges')
   const [activeChallenges, setActiveChallenges] = useState([])
+  const [showXpCounter, setShowXpCounter] = useState(false)
+  const [xpAmount, setXpAmount] = useState(0)
+  const [showLevelUp, setShowLevelUp] = useState(false)
+  const [newLevel, setNewLevel] = useState(1)
+  const [showStreakCelebration, setShowStreakCelebration] = useState(false)
+  const [celebrationStreak, setCelebrationStreak] = useState(0)
   const { isPremium } = getPremiumStatus()
   const FREE_CHALLENGE_LIMIT = 1
 
@@ -39,11 +48,35 @@ function GamificationPage() {
     const gratitude = JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]')
     const habits = JSON.parse(localStorage.getItem('space4u_habits') || '[]')
     
+    const moodStreak = calculateStreak(Object.keys(moods))
+    const gratitudeStreak = calculateStreak(gratitude.map(g => g.date))
+    const habitStreak = habits.length > 0 ? calculateHabitStreak(habits[0]) : 0
+    
     setStreaks({
-      mood: calculateStreak(Object.keys(moods)),
-      gratitude: calculateStreak(gratitude.map(g => g.date)),
-      habits: habits.length > 0 ? calculateHabitStreak(habits[0]) : 0
+      mood: moodStreak,
+      gratitude: gratitudeStreak,
+      habits: habitStreak
     })
+
+    // Check for streak milestones and celebrate
+    const checkStreakMilestone = (streak, type) => {
+      const milestones = [7, 14, 30, 100]
+      const lastCelebrated = localStorage.getItem(`space4u_streak_celebrated_${type}`) || 0
+      
+      for (const milestone of milestones) {
+        if (streak >= milestone && parseInt(lastCelebrated) < milestone) {
+          setCelebrationStreak(streak)
+          setShowStreakCelebration(true)
+          localStorage.setItem(`space4u_streak_celebrated_${type}`, milestone.toString())
+          break // Only celebrate the highest milestone reached
+        }
+      }
+    }
+
+    // Check all streak types for milestones
+    checkStreakMilestone(moodStreak, 'mood')
+    checkStreakMilestone(gratitudeStreak, 'gratitude')
+    checkStreakMilestone(habitStreak, 'habits')
   }, [])
 
   const calculateStreak = (dates) => {
@@ -95,6 +128,33 @@ function GamificationPage() {
 
   const xpToNextLevel = userLevel.level * 100
 
+  const awardXP = (amount) => {
+    const newXP = userLevel.xp + amount
+    const newLevel = Math.floor(newXP / 100) + 1
+    const leveledUp = newLevel > userLevel.level
+
+    const updatedLevel = {
+      ...userLevel,
+      xp: newXP,
+      level: newLevel
+    }
+
+    setUserLevel(updatedLevel)
+    localStorage.setItem('space4u_user_level', JSON.stringify(updatedLevel))
+
+    // Show XP counter
+    setXpAmount(amount)
+    setShowXpCounter(true)
+
+    // Show level up celebration if leveled up
+    if (leveledUp) {
+      setNewLevel(newLevel)
+      setTimeout(() => {
+        setShowLevelUp(true)
+      }, 1500) // Show after XP counter finishes
+    }
+  }
+
   return (
     <SafeComponent>
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -108,7 +168,7 @@ function GamificationPage() {
             </div>
           )}
         </div>
-        <p className="text-text-secondary">Level up your mental wellness journey â€¢ {isPremium ? '3 active challenges' : '1 active challenge'}</p>
+        <p className="text-text-secondary">Level up your mental wellness journey • {isPremium ? '3 active challenges' : '1 active challenge'}</p>
       </div>
 
       <div className="mb-8">
@@ -135,6 +195,21 @@ function GamificationPage() {
         </div>
         <div className="w-full h-3 bg-hover rounded-full overflow-hidden">
           <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500" style={{ width: `${(userLevel.xp / xpToNextLevel) * 100}%` }} />
+        </div>
+        {/* Test XP button for development */}
+        <div className="mt-4 flex gap-2">
+          <button
+            onClick={() => awardXP(25)}
+            className="px-3 py-1 bg-primary text-white text-sm rounded hover:bg-primary-dark transition-colors"
+          >
+            +25 XP
+          </button>
+          <button
+            onClick={() => awardXP(100)}
+            className="px-3 py-1 bg-secondary text-white text-sm rounded hover:bg-secondary-dark transition-colors"
+          >
+            +100 XP (Level Up)
+          </button>
         </div>
       </div>
 
@@ -255,7 +330,28 @@ function GamificationPage() {
         </div>
       )}
     </div>
-  
+
+    {/* XP Counter Animation */}
+    <XPCounter
+      xp={xpAmount}
+      show={showXpCounter}
+      onComplete={() => setShowXpCounter(false)}
+    />
+
+    {/* Level Up Celebration */}
+    <LevelUpCelebration
+      level={newLevel}
+      show={showLevelUp}
+      onComplete={() => setShowLevelUp(false)}
+    />
+
+    {/* Streak Celebration */}
+    <StreakCelebration
+      streak={celebrationStreak}
+      show={showStreakCelebration}
+      onComplete={() => setShowStreakCelebration(false)}
+    />
+
     </SafeComponent>
   )
 }

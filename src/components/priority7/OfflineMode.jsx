@@ -9,15 +9,19 @@ function OfflineMode() {
     const handleOnline = () => setIsOnline(true)
     const handleOffline = () => setIsOnline(false)
 
-    window.addEventListener('online', handleOnline)
-    window.addEventListener('offline', handleOffline)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('online', handleOnline)
+      window.addEventListener('offline', handleOffline)
+    }
 
     const saved = localStorage.getItem('space4u_sync_queue')
     if (saved) setSyncQueue(JSON.parse(saved))
 
     return () => {
-      window.removeEventListener('online', handleOnline)
-      window.removeEventListener('offline', handleOffline)
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('online', handleOnline)
+        window.removeEventListener('offline', handleOffline)
+      }
     }
   }, [])
 
@@ -91,12 +95,12 @@ function OfflineMode() {
       )}
 
       <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
-        <h4 className="font-semibold text-blue-900 mb-2">ðŸ“± Offline Mode</h4>
+        <h4 className="font-semibold text-blue-900 mb-2"> Offline Mode</h4>
         <ul className="text-sm text-blue-800 space-y-1">
-          <li>â€¢ All features work without internet</li>
-          <li>â€¢ Data syncs automatically when online</li>
-          <li>â€¢ Crisis resources cached for offline access</li>
-          <li>â€¢ No data loss during offline periods</li>
+          <li>• All features work without internet</li>
+          <li>• Data syncs automatically when online</li>
+          <li>• Crisis resources cached for offline access</li>
+          <li>• No data loss during offline periods</li>
         </ul>
       </div>
     </div>

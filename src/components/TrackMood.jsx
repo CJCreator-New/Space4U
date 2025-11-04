@@ -7,7 +7,7 @@ function TrackMood({ onSaved }) {
   const [note, setNote] = useState('')
   const [saving, setSaving] = useState(false)
 
-  const emojiMap = { 1: 'ðŸ˜°', 2: 'ðŸ˜¢', 3: 'ðŸ˜', 4: 'ðŸ™‚', 5: 'ðŸ˜Š' }
+  const emojiMap = { 1: '', 2: '', 3: '', 4: '', 5: '' }
 
   const handleSave = async () => {
     setSaving(true)

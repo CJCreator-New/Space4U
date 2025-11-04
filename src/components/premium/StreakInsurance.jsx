@@ -54,10 +54,10 @@ function StreakInsurance() {
       <div className="card p-6 bg-blue-50">
         <h3 className="font-bold mb-2">How It Works</h3>
         <ul className="space-y-2 text-sm text-gray-700">
-          <li>â€¢ Miss a day? Use a freeze to protect your streak</li>
-          <li>â€¢ Get 2 freezes per month as a premium member</li>
-          <li>â€¢ Freezes reset on the 1st of each month</li>
-          <li>â€¢ Use them wisely for unexpected situations</li>
+          <li>• Miss a day? Use a freeze to protect your streak</li>
+          <li>• Get 2 freezes per month as a premium member</li>
+          <li>• Freezes reset on the 1st of each month</li>
+          <li>• Use them wisely for unexpected situations</li>
         </ul>
       </div>
     </div>

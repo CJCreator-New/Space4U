@@ -23,7 +23,7 @@ export default function MoodTimeline() {
   if (data.length === 0) {
     return (
       <div className="bg-gray-50 rounded-2xl p-8 text-center">
-        <div className="text-4xl mb-3">ðŸ“Š</div>
+        <div className="text-4xl mb-3">📊</div>
         <h3 className="font-semibold text-gray-900 mb-2">Your Mood Timeline</h3>
         <p className="text-gray-600 text-sm">
           Log your mood daily to see trends and patterns over time

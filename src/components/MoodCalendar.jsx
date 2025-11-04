@@ -135,7 +135,7 @@ function MoodCalendar() {
   if (!hasAnyMoods) {
     return (
       <div className="card p-6 mb-6 text-center dark:bg-gray-800 dark:border-gray-700">
-        <div className="text-4xl mb-4">ðŸ“Š</div>
+        <div className="text-4xl mb-4">
         <h3 className="text-xl font-semibold text-text-primary dark:text-white mb-2">Your Mood History</h3>
         <p className="text-text-secondary dark:text-gray-300 mb-4">Start tracking your mood to see patterns over time</p>
         <button 
@@ -144,6 +144,7 @@ function MoodCalendar() {
         >
           Log your first mood
         </button>
+      </div>
       </div>
     )
   }

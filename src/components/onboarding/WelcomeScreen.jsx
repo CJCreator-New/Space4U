@@ -13,7 +13,7 @@
       
       <div className="flex-1 flex items-center justify-center mb-8">
         <div className="w-48 h-48 bg-gradient-to-br from-primary-light/20 to-secondary/20 rounded-full flex items-center justify-center">
-          <span className="text-6xl">ðŸŒ±</span>
+          <span className="text-6xl">🌟</span>
         </div>
       </div>
       

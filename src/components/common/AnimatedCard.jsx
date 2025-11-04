@@ -1,22 +1,18 @@
-import { motion } from 'framer-motion';
-import { fadeInUp, cardHover } from '../../utils/animations';
+import { motion } from 'framer-motion'
+import { cardHover, cardTap } from '../../config/animations'
 
-export function AnimatedCard({ 
-  children, 
-  delay = 0, 
-  hover = true,
-  className = '',
-  ...props 
-}) {
+function AnimatedCard({ children, className = '', onClick, ...props }) {
   return (
     <motion.div
-      {...fadeInUp}
-      transition={{ ...fadeInUp.transition, delay }}
-      {...(hover ? cardHover : {})}
-      className={`card ${className}`}
+      className={className}
+      onClick={onClick}
+      whileHover={cardHover}
+      whileTap={onClick ? cardTap : {}}
       {...props}
     >
       {children}
     </motion.div>
-  );
+  )
 }
+
+export default AnimatedCard

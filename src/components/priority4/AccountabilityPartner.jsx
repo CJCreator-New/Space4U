@@ -104,7 +104,7 @@ function AccountabilityPartner() {
                   onChange={(e) => setMoodRating(parseInt(e.target.value))}
                   className="w-full"
                 />
-                <div className="text-center text-2xl">{['ðŸ˜¢', 'ðŸ˜•', 'ðŸ˜', 'ðŸ™‚', 'ðŸ˜Š'][moodRating - 1]}</div>
+                <div className="text-center text-2xl">{['', '', '', '', ''][moodRating - 1]}</div>
               </div>
               <textarea
                 value={checkinMessage}
@@ -131,7 +131,7 @@ function AccountabilityPartner() {
                 {pair.checkins.slice(-3).reverse().map(checkin => (
                   <div key={checkin.id} className="bg-background p-3 rounded-xl">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xl">{['ðŸ˜¢', 'ðŸ˜•', 'ðŸ˜', 'ðŸ™‚', 'ðŸ˜Š'][checkin.mood - 1]}</span>
+                      <span className="text-xl">{['', '', '', '', ''][checkin.mood - 1]}</span>
                       <span className="text-xs text-text-secondary">
                         {new Date(checkin.timestamp).toLocaleDateString()}
                       </span>

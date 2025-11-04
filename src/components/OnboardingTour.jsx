@@ -6,34 +6,34 @@ function OnboardingTour({ onComplete }) {
 
   const steps = [
     {
-      title: 'Welcome to Space4U! ðŸ‘‹',
+      title: 'Welcome to Space4U! ',
       description: 'Your personal mental health companion. Let\'s take a quick tour of the key features.',
-      image: 'ðŸ '
+      image: ' '
     },
     {
-      title: 'Track Your Mood Daily ðŸ˜Š',
+      title: 'Track Your Mood Daily ',
       description: 'Log how you\'re feeling each day with our simple 5-point scale. Add notes to remember what influenced your mood.',
-      image: 'ðŸ“Š'
+      image: ''
     },
     {
-      title: 'Discover Insights ðŸ“ˆ',
+      title: 'Discover Insights ',
       description: 'Get AI-powered insights about your mood patterns, best days, and personalized recommendations.',
-      image: 'ðŸ§ '
+      image: ' '
     },
     {
-      title: 'Join Support Circles ðŸ’¬',
+      title: 'Join Support Circles ',
       description: 'Connect with others who understand. Share experiences and find support in topic-based communities.',
-      image: 'ðŸ‘¥'
+      image: ''
     },
     {
-      title: 'Access Resources ðŸ“š',
+      title: 'Access Resources ',
       description: 'Explore breathing exercises, articles, crisis resources, and wellness tools whenever you need them.',
-      image: 'ðŸ› ï¸'
+      image: ' ï¸'
     },
     {
-      title: 'Your Data is Private ðŸ”’',
+      title: 'Your Data is Private ',
       description: 'Everything stays on your device. Export your data anytime. We never see your personal information.',
-      image: 'ðŸ›¡ï¸'
+      image: ''
     }
   ]
 

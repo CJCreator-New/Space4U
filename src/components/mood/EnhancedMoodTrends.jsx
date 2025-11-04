@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
 import { motion } from 'framer-motion'
+import { useSpring, animated } from 'react-spring'
 import { TrendingUp, Calendar, Target, Award } from 'lucide-react'
 import { useMoods } from '../../hooks/useMoods'
 
@@ -12,6 +13,33 @@ const moodLabels = {
   3: { label: 'Okay', emoji: '😐', color: '#F59E0B' },
   2: { label: 'Low', emoji: '😢', color: '#F97316' },
   1: { label: 'Struggling', emoji: '😰', color: '#EF4444' }
+}
+
+// Animated bar component with bounce effect
+const AnimatedBar = (props) => {
+  const { fill, x, y, width, height, payload } = props
+  
+  const springProps = useSpring({
+    from: { height: 0, y: y + height },
+    to: { height: height, y: y },
+    config: {
+      tension: 300,
+      friction: 20,
+      bounce: 0.3
+    },
+    delay: Math.random() * 200 // Stagger the animations
+  })
+
+  return (
+    <animated.rect
+      x={x}
+      width={width}
+      fill={fill}
+      rx={8}
+      ry={8}
+      style={springProps}
+    />
+  )
 }
 
 function EnhancedMoodTrends() {
@@ -277,9 +305,7 @@ function EnhancedMoodTrends() {
               <Bar
                 dataKey="mood"
                 fill="#4F46E5"
-                radius={[8, 8, 0, 0]}
-                animationDuration={800}
-                animationEasing="ease-out"
+                shape={<AnimatedBar />}
               />
             </BarChart>
           )}

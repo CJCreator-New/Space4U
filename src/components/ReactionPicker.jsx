@@ -28,7 +28,7 @@ function ReactionPicker({ postId, onReact }) {
             : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'
         }`}
       >
-        <span className="text-lg">{userReaction ? REACTIONS[userReaction].emoji : 'ðŸ‘'}</span>
+        <span className="text-lg">{userReaction ? REACTIONS[userReaction].emoji : ''}</span>
         {getTotalCount() > 0 && (
           <span className="text-sm font-medium">{getTotalCount()}</span>
         )}

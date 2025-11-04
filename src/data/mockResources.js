@@ -233,7 +233,7 @@ Sleep and mental health are closely linked:
 - Avoid screens or use blue light filters
 
 ### 3. Optimize Your Environment
-- Keep your bedroom cool (60-67Â°F)
+- Keep your bedroom cool (60-67 °F)
 - Make it as dark as possible
 - Reduce noise or use white noise
 - Invest in comfortable bedding

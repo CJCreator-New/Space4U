@@ -132,12 +132,12 @@ function DataExport() {
       </div>
 
       <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
-        <h4 className="font-semibold text-blue-900 mb-2">ðŸ“‹ Data Privacy</h4>
+        <h4 className="font-semibold text-blue-900 mb-2"> Data Privacy</h4>
         <ul className="text-sm text-blue-800 space-y-1">
-          <li>â€¢ Your data is stored locally on your device</li>
-          <li>â€¢ Exports are generated in your browser</li>
-          <li>â€¢ No data is sent to external servers</li>
-          <li>â€¢ Keep exported files secure</li>
+          <li>• Your data is stored locally on your device</li>
+          <li>• Exports are generated in your browser</li>
+          <li>• No data is sent to external servers</li>
+          <li>• Keep exported files secure</li>
         </ul>
       </div>
     </div>

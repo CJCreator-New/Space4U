@@ -1,24 +1,19 @@
-import { motion } from 'framer-motion';
-import { buttonPress } from '../../utils/animations';
+import { motion } from 'framer-motion'
+import { buttonHover, buttonTap } from '../../config/animations'
 
-export function AnimatedButton({ 
-  children, 
-  variant = 'primary',
-  className = '',
-  disabled = false,
-  ...props 
-}) {
-  const baseClass = variant === 'primary' ? 'btn-primary' : '';
-  
+function AnimatedButton({ children, className = '', onClick, disabled, ...props }) {
   return (
     <motion.button
-      {...buttonPress}
-      className={`${baseClass} ${className} touch-target`}
+      className={className}
+      onClick={onClick}
       disabled={disabled}
-      style={{ opacity: disabled ? 0.5 : 1 }}
+      whileHover={!disabled ? buttonHover : {}}
+      whileTap={!disabled ? buttonTap : {}}
       {...props}
     >
       {children}
     </motion.button>
-  );
+  )
 }
+
+export default AnimatedButton

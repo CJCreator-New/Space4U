@@ -18,7 +18,9 @@ class LazyLoadErrorBoundary extends Component {
 
   handleRetry = () => {
     this.setState({ hasError: false, error: null });
-    window.location.reload();
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    }
   };
 
   render() {

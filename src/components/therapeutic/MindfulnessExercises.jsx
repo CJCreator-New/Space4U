@@ -35,7 +35,7 @@ function MindfulnessExercises({ onClose }) {
     }
 
     if (user) {
-      console.log('Saving to database:', data)
+      // TODO: Implement database save for authenticated users
     } else {
       const saved = JSON.parse(localStorage.getItem('space4u_mindfulness_sessions') || '[]')
       saved.push({ ...data, id: Date.now(), created_at: new Date().toISOString() })

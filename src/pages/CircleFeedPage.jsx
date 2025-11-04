@@ -44,17 +44,6 @@ function CircleFeedPage() {
     }
   }, [realtimePosts, postsLoading, sortBy, filterBy])
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300 && hasMore && !loadingMore) {
-        loadMorePosts()
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [hasMore, loadingMore, loadMorePosts])
-
   const loadCircleData = () => {
     const foundCircle = mockCircles.find(c => c.id === parseInt(circleId))
     setCircle(foundCircle)
@@ -92,6 +81,17 @@ function CircleFeedPage() {
       setLoadingMore(false)
     }, 1000)
   }, [circleId, sortBy, filterBy, page, loadingMore, hasMore])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300 && hasMore && !loadingMore) {
+        loadMorePosts()
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [hasMore, loadingMore, loadMorePosts])
 
   const sortPosts = (posts, sort) => {
     switch (sort) {
@@ -200,7 +200,7 @@ function CircleFeedPage() {
                   <Users size={14} />
                   <span>{formatNumber(circle.members)} members</span>
                   {onlineCount > 0 && (
-                    <span className="ml-2 text-green-600">â€¢ {t('circles.online', { count: onlineCount })}</span>
+                    <span className="ml-2 text-green-600">• {t('circles.online', { count: onlineCount })}</span>
                   )}
                 </div>
               </div>
@@ -293,7 +293,7 @@ function CircleFeedPage() {
         <div className="space-y-3">
           {posts.map((post) => (
             <PostCard
-              key={post.id}
+              key={post.id || post.name || Math.random()}
               post={post}
               circleColor={circle.color}
               onHeart={handleHeartPost}

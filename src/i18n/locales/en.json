@@ -124,7 +124,7 @@
     "tryAdjustingFilters": "Try adjusting your filters",
     "clearFilters": "Clear Filters",
     "loadingMore": "Loading more posts...",
-    "caughtUp": "You've caught up! ðŸŽ‰",
+    "caughtUp": "You've caught up! ",
     "linkCopied": "Link copied!"
   },
   "insights": {
@@ -290,16 +290,16 @@
     "currentStreak": "Current Streak",
     "streakDays": "{{count}} days",
     "totalEntries": "Total Entries",
+    "entries": "entries",
+    "days": "days",
+    "weeklyGoal": "Weekly Goal",
+    "thisWeek": "this week",
     "thisMonth": "This Month",
-    "empty": {
-      "title": "Start Your Gratitude Journey",
-      "description": "Research shows that practicing gratitude can improve mental health and overall well-being.",
-      "benefitsTitle": "Daily gratitude practice can help you:",
-      "benefit1": "Increase positive emotions and life satisfaction",
-      "benefit2": "Reduce stress and improve sleep quality",
-      "benefit3": "Strengthen relationships and social connections",
-      "benefit4": "Build resilience during challenging times"
-    },
+    "recentEntries": "Recent Entries",
+    "noEntries": "No Entries Yet",
+    "startJourney": "Start your gratitude journey today",
+    "addFirstEntry": "Add First Entry",
+
     "guidelines": {
       "title": "Optimal Practice Guidelines",
       "tip1": "Write 3-5 entries per session (Emmons & McCullough, 2003)",
@@ -314,7 +314,7 @@
     "subtitle": "Build better habits, one day at a time",
     "addHabit": "Add Habit",
     "createFirst": "Create First Habit",
-    "streakInfo": "{{streak}} day streak â€¢ {{total}} total",
+    "streakInfo": "{{streak}} day streak • {{total}} total",
     "empty": {
       "title": "Start Building Habits",
       "description": "Research shows it takes an average of 66 days to form a new habit",
@@ -338,7 +338,7 @@
     "price": "Price",
     "unlockUnlimited": "Unlock unlimited features, custom themes, and advanced analytics",
     "trialDaysLeft": "Trial: {{days}} days left",
-    "welcomeToPremium": "Welcome to Premium! ðŸŽ‰",
+    "welcomeToPremium": "Welcome to Premium! ",
     "trialEndsOn": "Your trial ends on {{date}}",
     "reminderBeforeCharge": "We'll send a reminder before charging",
     "accessTo": "You now have access to:",
@@ -810,7 +810,7 @@
     "loggingIn": "Logging in...",
     "creatingAccount": "Creating account...",
     "emailPlaceholder": "your@email.com",
-    "passwordPlaceholder": "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢",
+    "passwordPlaceholder": "••••••••",
     "usernamePlaceholder": "Choose a username",
     "configError": "âš ï¸ Configuration Error",
     "contactAdmin": "Please contact the administrator or check your .env file.",

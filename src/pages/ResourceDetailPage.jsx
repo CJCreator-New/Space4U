@@ -118,7 +118,7 @@ function ResourceDetailPage() {
           )}
 
           {resource.readTime && (
-            <button onClick={() => alert('Marked as read â€” + points')} className="px-4 py-2 bg-success text-white rounded-xl flex items-center gap-2">
+            <button onClick={() => alert('Marked as read "” + points')} className="px-4 py-2 bg-success text-white rounded-xl flex items-center gap-2">
               <Book size={16} />
               Read ({resource.readTime} min)
             </button>

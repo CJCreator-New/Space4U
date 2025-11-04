@@ -108,7 +108,7 @@ function ResourceLibraryPage() {
     <SafeComponent>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {meditations.map((meditation) => (
-          <div key={meditation.id} className="card p-6 hover:shadow-lg transition-shadow">
+          <div key={meditation.id || meditation.name || Math.random()} className="card p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <h3 className="font-bold text-text-primary mb-2">{meditation.title}</h3>
@@ -156,7 +156,7 @@ function ResourceLibraryPage() {
     return (
       <div className="grid gap-4 md:grid-cols-2">
         {articles.map((article) => (
-          <div key={article.id} className="card p-6 hover:shadow-lg transition-shadow">
+          <div key={article.id || article.name || Math.random()} className="card p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <h3 className="font-bold text-text-primary mb-2">{article.title}</h3>
@@ -218,7 +218,7 @@ function ResourceLibraryPage() {
           <h3 className="text-xl font-semibold text-text-primary mb-4">Crisis Helplines</h3>
           <div className="grid gap-4 md:grid-cols-2">
             {mockResources.crisisResources.map((resource) => (
-              <div key={resource.id} className="card p-6">
+              <div key={resource.id || resource.name || Math.random()} className="card p-6">
                 <h4 className="font-bold text-text-primary mb-2">{resource.name}</h4>
                 <p className="text-text-secondary text-sm mb-4">{resource.description}</p>
                 
@@ -265,7 +265,7 @@ function ResourceLibraryPage() {
           <h3 className="text-xl font-semibold text-text-primary mb-4">Self-Help Guides</h3>
           <div className="grid gap-4">
             {mockResources.selfHelpGuides.map((guide) => (
-              <div key={guide.id} className="card p-6">
+              <div key={guide.id || guide.name || Math.random()} className="card p-6">
                 <h4 className="font-bold text-text-primary mb-2">{guide.title}</h4>
                 <p className="text-text-secondary text-sm mb-4">{guide.description}</p>
                 <ol className="space-y-2">
@@ -287,10 +287,10 @@ function ResourceLibraryPage() {
   }
 
   const tabs = [
-    { id: 'breathing', label: 'Breathing Exercises', icon: 'ðŸ«' },
-    { id: 'meditation', label: 'Guided Meditations', icon: 'ðŸ§˜' },
-    { id: 'articles', label: 'Articles & Tips', icon: 'ðŸ“š' },
-    { id: 'crisis', label: 'Crisis Resources', icon: 'ðŸ†˜' }
+    { id: 'breathing', label: 'Breathing Exercises', icon: '' },
+    { id: 'meditation', label: 'Guided Meditations', icon: '' },
+    { id: 'articles', label: 'Articles & Tips', icon: '' },
+    { id: 'crisis', label: 'Crisis Resources', icon: '' }
   ]
 
   return (
@@ -340,8 +340,8 @@ function ResourceLibraryPage() {
       {/* Category Tabs */}
       <div className="flex gap-2 mb-6 overflow-x-auto">
         {tabs.map((tab) => (
-          <button
-            key={tab.id}
+            <button
+              key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-4 py-3 rounded-xl font-medium whitespace-nowrap transition-colors ${
               activeTab === tab.id
@@ -363,8 +363,7 @@ function ResourceLibraryPage() {
             <h3 className="text-lg font-semibold text-text-primary mb-3">Recommended for you</h3>
             <div className="grid gap-4 md:grid-cols-4">
               {recommended.map((r, i) => (
-                <div
-                  key={i}
+                <div key={r.id || i}
                   role="button"
                   tabIndex={0}
                   onClick={() => navigate(`/resources/${(r.category || r.type || 'misc')}-${r.id}`)}

@@ -65,17 +65,19 @@ export default function ProgressOverviewWidget() {
           .select('*', { count: 'exact', head: true })
           .eq('user_id', user.id)
           .gte('created_at', monthStart.toISOString())
+        
+        // Check for errors (table doesn't exist)
+        if (res.error) {
+          throw res.error
+        }
+        
         if (res && res.count !== undefined) {
           gratitudeCount = res.count
         }
       } catch (err) {
-        // If table doesn't exist (PGRST205) use localStorage fallback
-        if (err && err.code === 'PGRST205') {
-          const saved = JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]')
-          gratitudeCount = saved.filter(e => new Date(e.date) >= monthStart).length
-        } else {
-          console.error('Error fetching gratitude entries:', err)
-        }
+        // Silently fall back to localStorage if table doesn't exist
+        const saved = JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]')
+        gratitudeCount = saved.filter(e => new Date(e.date) >= monthStart).length
       }
 
       // Calculate active days this month
@@ -218,7 +220,7 @@ export default function ProgressOverviewWidget() {
           className="mt-4 p-3 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border border-green-200 dark:border-green-800"
         >
           <p className="text-sm text-text-primary dark:text-white">
-            ðŸŽ‰ <strong>Great job!</strong> You're on a {stats.moodStreak}-day streak! Keep it up!
+             <strong>Great job!</strong> You're on a {stats.moodStreak}-day streak! Keep it up!
           </p>
         </motion.div>
       )}
@@ -231,7 +233,7 @@ export default function ProgressOverviewWidget() {
           className="mt-4 p-3 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg border border-purple-200 dark:border-purple-800"
         >
           <p className="text-sm text-text-primary dark:text-white">
-            ðŸ’ª <strong>Start today!</strong> Log your mood to begin building your streak.
+             <strong>Start today!</strong> Log your mood to begin building your streak.
           </p>
         </motion.div>
       )}

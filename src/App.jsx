@@ -3,6 +3,7 @@ import { Routes, Route, BrowserRouter, useNavigate, useLocation } from 'react-ro
 import { AuthProvider, useSupabaseAuth } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { NotificationProvider } from './contexts/NotificationContext'
+import { ReminderProvider } from './contexts/ReminderContext'
 import { ChakraProvider } from '@chakra-ui/react'
 import Layout from './components/Layout'
 import theme from './theme'
@@ -19,6 +20,8 @@ import GlobalSearch from './components/GlobalSearch'
 import QuickActions from './components/QuickActions'
 import OnboardingTour from './components/OnboardingTour'
 import SplashScreen from './components/SplashScreen'
+import ReminderContainer from './components/common/ReminderContainer'
+import ReminderScheduler from './components/common/ReminderScheduler'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { initNotifications, requestNotificationPermission } from './utils/notifications'
 import { safeStorage } from './utils/safeStorage'
@@ -67,9 +70,11 @@ function App() {
         <ThemeProvider>
           <AuthProvider>
             <NotificationProvider>
-              <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-                <AppContent />
-              </BrowserRouter>
+              <ReminderProvider>
+                <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                  <AppContent />
+                </BrowserRouter>
+              </ReminderProvider>
             </NotificationProvider>
           </AuthProvider>
         </ThemeProvider>
@@ -178,6 +183,8 @@ function AppContent() {
         onClose={() => setShowKeyboardHelp(false)} 
       />
       {showTour && <OnboardingTour onComplete={() => setShowTour(false)} />}
+      <ReminderContainer />
+      <ReminderScheduler />
       <LazyLoadErrorBoundary>
         <Suspense fallback={<PageLoader message="Loading page..." />}>
           <PageTransition>

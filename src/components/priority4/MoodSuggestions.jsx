@@ -57,7 +57,7 @@ function MoodSuggestions() {
   }
 
   const moodLabels = ['Very Low', 'Low', 'Neutral', 'Good', 'Great']
-  const moodEmojis = ['ðŸ˜¢', 'ðŸ˜•', 'ðŸ˜', 'ðŸ™‚', 'ðŸ˜Š']
+  const moodEmojis = ['', '', '', '', '']
 
   return (
     <div className="space-y-6">

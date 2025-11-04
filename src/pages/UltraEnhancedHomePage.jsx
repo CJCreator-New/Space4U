@@ -23,16 +23,16 @@ const featureGroups = [
     title: 'Daily Wellness',
     items: [
       { icon: 'â¤ï¸', label: 'Gratitude', path: '/gratitude' },
-      { icon: 'ðŸŽ¯', label: 'Habits', path: '/habits' },
-      { icon: 'ðŸ’­', label: 'Emotions', path: '/emotions' }
+      { icon: '', label: 'Habits', path: '/habits' },
+      { icon: '', label: 'Emotions', path: '/emotions' }
     ]
   },
   {
     title: 'Tools & Resources',
     items: [
-      { icon: 'ðŸ› ï¸', label: 'Coping Skills', path: '/coping-skills' },
+      { icon: ' ï¸', label: 'Coping Skills', path: '/coping-skills' },
       { icon: 'â°', label: 'Reminders', path: '/reminders' },
-      { icon: 'ðŸ§°', label: 'Therapy Tools', path: '/tools' }
+      { icon: '', label: 'Therapy Tools', path: '/tools' }
     ]
   }
 ]
@@ -104,7 +104,7 @@ function UltraEnhancedHomePage() {
                 )}
                 <Box>
                   <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
-                    Welcome back{user?.username ? `, ${user.username}` : ''}! ðŸ‘‹
+                    Welcome back{user?.username ? `, ${user.username}` : ''}! 
                   </h1>
                   <p style={{ opacity: 0.9 }}>Your mind matters. Let's check in today.</p>
                 </Box>
@@ -117,7 +117,7 @@ function UltraEnhancedHomePage() {
                 <DropdownMenu.Portal>
                   <DropdownMenu.Content className="bg-white rounded-xl shadow-2xl p-2 min-w-[200px] z-50" sideOffset={5}>
                     {quickActions.map((action) => (
-                      <DropdownMenu.Item
+    <DropdownMenu key={action.id || action.name || Math.random()}.Item
                         key={action.id}
                         className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 cursor-pointer outline-none"
                         onSelect={() => action.path ? navigate(action.path) : setShowMoodTracker(true)}
@@ -193,12 +193,12 @@ function UltraEnhancedHomePage() {
 
       <Stack spacing={4}>
         {featureGroups.map((group) => (
-          <Card key={group.title}>
+    <Car key={group.id || group.name || Math.random()}d key={group.title}>
             <CardBody p={6}>
               <h3 className="text-lg font-bold mb-4">{group.title}</h3>
               <div className="grid gap-3 md:grid-cols-3">
                 {group.items.map((item) => (
-                  <Link key={item.path} to={item.path}>
+    <Lin key={item.id || item.name || Math.random()}k key={item.path} to={item.path}>
                     <div className="p-4 bg-gray-50 rounded-xl hover:bg-gray-100 hover:scale-105 transition-all">
                       <span className="text-3xl block mb-2">{item.icon}</span>
                       <h4 className="font-semibold text-sm">{item.label}</h4>

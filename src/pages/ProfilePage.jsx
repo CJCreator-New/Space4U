@@ -15,7 +15,7 @@ import {
   getProgressToNextLevel
 } from '../utils/badgeSystem'
 
-const AVATARS = ['ðŸ˜Š', 'ðŸ˜Ž', 'ðŸŒŸ', 'ðŸ¦‹', 'ðŸŒ¸', 'ðŸŒˆ', 'ðŸŽ¨', 'ðŸ“š', 'ðŸŽµ', 'â˜•', 'ðŸŒ™', 'â­']
+const AVATARS = ['', '', '', '', '', '', '', '', '', 'â˜•', '', 'â­']
 
 function ProfilePage() {
   const navigate = useNavigate()
@@ -45,7 +45,7 @@ function ProfilePage() {
     setUser(userData)
     setEditForm({
       username: userData.username || '',
-      avatar: userData.avatar || 'ðŸ˜Š',
+      avatar: userData.avatar || '',
       bio: userData.bio || '',
       interests: userData.interests || []
     })
@@ -113,14 +113,14 @@ function ProfilePage() {
 
   const loadActivities = () => {
     const activities = [
-      { type: 'mood', text: 'Logged mood ðŸ˜Š', time: '2 hours ago', icon: 'ðŸ˜Š' },
-      { type: 'post', text: 'Posted in Anxiety Support', time: '5 hours ago', icon: 'ðŸ’¬' },
-      { type: 'badge', text: 'Earned "Week Warrior" badge ðŸ”¥', time: '1 day ago', icon: 'ðŸ†' },
-      { type: 'circle', text: 'Joined Work & Career circle', time: '2 days ago', icon: 'ðŸ‘¥' },
-      { type: 'mood', text: 'Logged mood ðŸ˜', time: '1 day ago', icon: 'ðŸ˜' },
-      { type: 'exercise', text: 'Completed breathing exercise', time: '3 days ago', icon: 'ðŸ§˜' },
-      { type: 'post', text: 'Posted in Daily Check-in', time: '4 days ago', icon: 'ðŸ’¬' },
-      { type: 'mood', text: 'Logged mood ðŸ™‚', time: '4 days ago', icon: 'ðŸ™‚' }
+      { type: 'mood', text: 'Logged mood ', time: '2 hours ago', icon: '' },
+      { type: 'post', text: 'Posted in Anxiety Support', time: '5 hours ago', icon: '' },
+      { type: 'badge', text: 'Earned "Week Warrior" badge ', time: '1 day ago', icon: '' },
+      { type: 'circle', text: 'Joined Work & Career circle', time: '2 days ago', icon: '' },
+      { type: 'mood', text: 'Logged mood ', time: '1 day ago', icon: '' },
+      { type: 'exercise', text: 'Completed breathing exercise', time: '3 days ago', icon: '' },
+      { type: 'post', text: 'Posted in Daily Check-in', time: '4 days ago', icon: '' },
+      { type: 'mood', text: 'Logged mood ', time: '4 days ago', icon: '' }
     ]
     setActivities(activities)
   }
@@ -249,7 +249,7 @@ function ProfilePage() {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-semibold mb-1">Unlock Premium for advanced insights</h3>
-              <p className="text-sm text-white/90">Full history â€¢ Priority support â€¢ Ad-free experience</p>
+              <p className="text-sm text-white/90">Full history • Priority support • Ad-free experience</p>
             </div>
             <button className="bg-white text-primary px-4 py-2 rounded-lg font-medium hover:bg-white/90 transition-colors">
               Learn More
@@ -268,7 +268,7 @@ function ProfilePage() {
                    height: '120px',
                    borderColor: badgeData?.totalPoints >= 500 ? '#FFD700' : 'rgba(255,255,255,0.3)'
                  }}>
-              {user.avatar || 'ðŸ˜Š'}
+              {user.avatar || ''}
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
@@ -310,7 +310,7 @@ function ProfilePage() {
           <div className="space-y-3">
             <div>
               <p className="text-sm text-text-secondary">Current streak</p>
-              <p className="text-xl font-bold">{stats.currentStreak} days ðŸ”¥</p>
+              <p className="text-xl font-bold">{stats.currentStreak} days</p>
             </div>
             <div>
               <p className="text-sm text-text-secondary">Total mood logs</p>
@@ -318,7 +318,7 @@ function ProfilePage() {
             </div>
             <div>
               <p className="text-sm text-text-secondary">Average mood this week</p>
-              <p className="text-xl font-bold">{stats.avgMoodThisWeek.toFixed(1)} ðŸ™‚</p>
+              <p className="text-xl font-bold">{stats.avgMoodThisWeek.toFixed(1)}</p>
             </div>
           </div>
           <MicroInteraction type="press">

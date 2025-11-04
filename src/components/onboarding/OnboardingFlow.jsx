@@ -44,7 +44,7 @@ function OnboardingFlow({ onComplete }) {
   const handleSkip = () => {
     const defaultData = {
       username: `user_${Date.now()}`,
-      avatar: 'ðŸ»',
+      avatar: '',
       interests: ['General Wellness']
     }
     completeOnboarding({ ...userData, ...defaultData })

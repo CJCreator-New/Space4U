@@ -1,7 +1,7 @@
 ﻿import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Crown, Sparkles, Smile, Heart, BookOpen } from 'lucide-react'
+import { Crown, Sparkles, Smile, Heart, BookOpen, BarChart, Trophy, MessageCircle, TrendingUp } from 'lucide-react'
 import { motion } from 'framer-motion'
 import {
   Box,
@@ -90,7 +90,7 @@ function HomePage() {
     },
     {
       icon: <Heart size={20} />,
-      label: t('gratitude.title'),
+      label: t('gratitude title'),
       onClick: () => navigate('/gratitude'),
       color: 'from-pink-500 to-red-600'
     },
@@ -128,7 +128,7 @@ function HomePage() {
         <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
           <Card
             as={motion.div}
-            whileHover={{ y: -4, shadow: 'xl' }}
+            whileHover={{ y: -4, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
             p={6}
             bg="gradient-to-br from-blue-50 to-indigo-50"
             borderLeft="4px solid"
@@ -155,7 +155,7 @@ function HomePage() {
 
           <Card
             as={motion.div}
-            whileHover={{ y: -4, shadow: 'xl' }}
+            whileHover={{ y: -4, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
             p={6}
             bg="gradient-to-br from-purple-50 to-pink-50"
             borderLeft="4px solid"
@@ -182,7 +182,7 @@ function HomePage() {
 
           <Card
             as={motion.div}
-            whileHover={{ y: -4, shadow: 'xl' }}
+            whileHover={{ y: -4, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
             p={6}
             bg="gradient-to-br from-green-50 to-emerald-50"
             borderLeft="4px solid"
@@ -253,21 +253,21 @@ function HomePage() {
         </HStack>
         <SimpleGrid columns={{ base: 2, md: 3 }} gap={3}>
           {[
-            { path: '/wellness', emoji: 'ðŸ“Š', key: 'wellnessScore' },
-            { path: '/gamification', emoji: 'ðŸ†', key: 'gamification' },
-            { path: '/social', emoji: 'ðŸ’¬', key: 'socialHub' },
-            { path: '/analytics', emoji: 'ðŸ“ˆ', key: 'analytics' },
-          ].map(({ path, emoji, key }) => (
+            { path: '/wellness', icon: BarChart, key: 'wellnessScore', color: 'blue.500' },
+            { path: '/gamification', icon: Trophy, key: 'gamification', color: 'yellow.500' },
+            { path: '/social', icon: MessageCircle, key: 'socialHub', color: 'purple.500' },
+            { path: '/analytics', icon: TrendingUp, key: 'analytics', color: 'green.500' },
+          ].map(({ path, icon: IconComponent, key, color }) => (
             <Link key={path} to={path} style={{ textDecoration: 'none' }}>
               <Card
                 as={motion.div}
-                whileHover={{ y: -2, shadow: 'md' }}
+                whileHover={{ y: -2, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)' }}
                 p={4}
                 transition="all 0.2s"
                 cursor="pointer"
               >
                 <VStack gap={2}>
-                  <Text fontSize="2xl">{emoji}</Text>
+                  <Icon as={IconComponent} boxSize={8} color={color} />
                   <Text fontSize="sm" fontWeight="medium" textAlign="center">
                     {t(`wellnessTools.${key}`)}
                   </Text>

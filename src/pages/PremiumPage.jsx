@@ -12,9 +12,9 @@ const FEATURES = {
 }
 
 const TESTIMONIALS = [
-  { avatar: 'ðŸ»', name: 'Anonymous Bear', quote: 'Premium insights helped me identify my anxiety triggers', rating: 5 },
-  { avatar: 'ðŸ¦‹', name: 'Anonymous Butterfly', quote: 'The group therapy sessions changed my life', rating: 5 },
-  { avatar: 'ðŸŒ¸', name: 'Anonymous Blossom', quote: 'Best investment in my mental health journey', rating: 5 }
+  { avatar: '', name: 'Anonymous Bear', quote: 'Premium insights helped me identify my anxiety triggers', rating: 5 },
+  { avatar: '', name: 'Anonymous Butterfly', quote: 'The group therapy sessions changed my life', rating: 5 },
+  { avatar: '', name: 'Anonymous Blossom', quote: 'Best investment in my mental health journey', rating: 5 }
 ]
 
 const FAQS = [
@@ -53,7 +53,8 @@ function PremiumPage() {
         <p className="text-xl text-text-secondary mb-8">
           Get advanced insights, priority support, and ad-free experience
         </p>
-        <div className="text-6xl mb-4">ðŸŒŸ</div>
+        <div className="text-6xl mb-4">
+        </div>
       </div>
 
       {/* Pricing Cards */}
@@ -300,7 +301,7 @@ function PaymentModal({ plan, onClose, onSuccess }) {
         <div className="p-6">
           {/* TEST MODE Banner */}
           <div className="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded-lg mb-4 text-center font-medium">
-            ðŸ§ª TEST MODE - No actual charges
+             TEST MODE - No actual charges
           </div>
 
           <div className="flex items-center justify-between mb-6">
@@ -401,7 +402,7 @@ function PaymentModal({ plan, onClose, onSuccess }) {
             {/* Security */}
             <div className="flex items-center gap-2 text-sm text-text-secondary mb-6">
               <Shield size={16} />
-              <span>ðŸ”’ Secured by Razorpay - Your payment info is encrypted</span>
+              <span> Secured by Razorpay - Your payment info is encrypted</span>
             </div>
 
             {/* Terms */}

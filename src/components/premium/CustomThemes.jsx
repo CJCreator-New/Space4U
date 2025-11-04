@@ -57,10 +57,10 @@ function CustomThemes() {
       <div className="card p-6 bg-purple-50">
         <h3 className="font-bold mb-2">Theme Benefits</h3>
         <ul className="space-y-2 text-sm text-gray-700">
-          <li>â€¢ Choose colors that match your mood</li>
-          <li>â€¢ Reduce eye strain with darker themes</li>
-          <li>â€¢ Make the app feel truly yours</li>
-          <li>â€¢ Switch themes anytime</li>
+          <li>• Choose colors that match your mood</li>
+          <li>• Reduce eye strain with darker themes</li>
+          <li>• Make the app feel truly yours</li>
+          <li>• Switch themes anytime</li>
         </ul>
       </div>
     </div>

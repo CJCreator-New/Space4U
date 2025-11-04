@@ -150,7 +150,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
     const percentage = Math.round((goodDays / moods.length) * 100)
     insights.push({
       type: 'positive',
-      icon: 'ðŸŽ‰',
+      icon: '',
       title: 'You had a great week!',
       description: `Your mood was positive or better ${percentage}% of the time. That's wonderful!`,
       color: 'success'
@@ -161,7 +161,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
   if (averageMood < 2.5) {
     insights.push({
       type: 'support',
-      icon: 'ðŸ¤—',
+      icon: '',
       title: 'This week was challenging',
       description: 'Remember that tough times don\'t last, but resilient people like you do. Consider reaching out for support.',
       color: 'warning'
@@ -172,7 +172,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
   if (weekdayPatterns.Monday && typeof weekdayPatterns.Monday.average === 'number' && weekdayPatterns.Monday.average < averageMood - 0.5) {
     insights.push({
       type: 'pattern',
-      icon: 'ðŸ“…',
+      icon: '',
       title: 'Monday blues detected',
       description: 'Your mood tends to dip on Mondays. Consider starting your week with something you enjoy.',
       color: 'primary'
@@ -202,7 +202,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
     if (weekendAvg > averageMood + 0.5) {
       insights.push({
         type: 'pattern',
-        icon: 'ðŸŒ…',
+        icon: '',
         title: 'Weekends recharge you',
         description: 'Your mood consistently improves on weekends. Make sure to prioritize rest and activities you enjoy.',
         color: 'secondary'
@@ -224,7 +224,7 @@ export const generateSuggestions = (moods, userData = {}, circleActivity = []) =
   // Circle suggestions based on interests
   if (userInterests.includes('anxiety') && !joinedCircles.includes(1)) {
     suggestions.push({
-      icon: 'ðŸŒŠ',
+      icon: '',
       title: 'Join the Anxiety Support circle',
       description: 'Connect with others who understand your experience',
       action: 'Join Circle',
@@ -246,7 +246,7 @@ export const generateSuggestions = (moods, userData = {}, circleActivity = []) =
   // Stress management
   if (averageMood < 3.5) {
     suggestions.push({
-      icon: 'ðŸ«',
+      icon: '',
       title: 'Try the 5-minute breathing exercise',
       description: 'Deep breathing can help reduce stress and improve mood',
       action: 'Start Exercise',

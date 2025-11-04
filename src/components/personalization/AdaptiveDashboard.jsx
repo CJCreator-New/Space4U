@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Sparkles, TrendingUp, Heart, Brain, Moon, Users, BookOpen, Target } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { getMostUsedFeatures, getTimeBasedFeatures } from '../../utils/usageTracker'
 import { generateRecommendations, checkInactiveFeatures, dismissRecommendation } from '../../utils/recommendationEngine'
 import { isPersonalizationEnabled } from '../../utils/personalizationEngine'
@@ -24,6 +25,37 @@ function AdaptiveDashboard() {
   const [recommendations, setRecommendations] = useState([])
   const [showInactivePrompt, setShowInactivePrompt] = useState(false)
   const enabled = isPersonalizationEnabled()
+
+  // Animation variants for staggered card entrance
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  }
+
+  const cardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 20,
+      scale: 0.95
+    },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+        duration: 0.6
+      }
+    }
+  }
 
   useEffect(() => {
     if (!enabled) return
@@ -63,50 +95,62 @@ function AdaptiveDashboard() {
 
       <div>
         <h3 className="text-lg font-bold mb-3">Your Top Tools</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {topFeatures.map(featureId => {
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
+          {topFeatures.map((featureId, index) => {
             const config = FEATURE_CONFIG[featureId]
             if (!config) return null
             return (
-              <SmartCard
-                key={featureId}
-                feature={{
-                  name: config.name,
-                  icon: config.icon,
-                  path: config.path,
-                  gradient: 'from-primary to-purple-500'
-                }}
-                priority="medium"
-              />
+              <motion.div key={featureId} variants={cardVariants}>
+                <SmartCard
+                  feature={{
+                    name: config.name,
+                    icon: config.icon,
+                    path: config.path,
+                    gradient: 'from-primary to-purple-500'
+                  }}
+                  priority="medium"
+                />
+              </motion.div>
             )
           })}
-        </div>
+        </motion.div>
       </div>
 
       {recommendations.length > 0 && (
         <div>
           <h3 className="text-lg font-bold mb-3">Recommended for You</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {recommendations.map(rec => {
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+          >
+            {recommendations.map((rec, index) => {
               const config = FEATURE_CONFIG[rec.featureId]
               if (!config) return null
               return (
-                <SmartCard
-                  key={rec.featureId}
-                  feature={{
-                    name: config.name,
-                    icon: config.icon,
-                    path: config.path,
-                    description: rec.reason,
-                    gradient: 'from-primary to-purple-500'
-                  }}
-                  priority={rec.priority}
-                  isRecommended
-                  onDismiss={() => dismissRecommendation(rec.featureId)}
-                />
+                <motion.div key={rec.featureId} variants={cardVariants}>
+                  <SmartCard
+                    feature={{
+                      name: config.name,
+                      icon: config.icon,
+                      path: config.path,
+                      description: rec.reason,
+                      gradient: 'from-primary to-purple-500'
+                    }}
+                    priority={rec.priority}
+                    isRecommended
+                    onDismiss={() => dismissRecommendation(rec.featureId)}
+                  />
+                </motion.div>
               )
             })}
-          </div>
+          </motion.div>
         </div>
       )}
     </div>

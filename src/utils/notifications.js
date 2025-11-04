@@ -1,4 +1,4 @@
-﻿// Notification & Reminder System
+// Notification & Reminder System
 
 export const requestNotificationPermission = async () => {
   if (!('Notification' in window)) {
@@ -94,7 +94,7 @@ export const checkStreakReminder = () => {
   if (lastDate === yesterdayStr) {
     const today = new Date().toISOString().split('T')[0]
     if (!moods[today]) {
-      showNotification('Don\'t break your streak! Log your mood today ðŸ”¥', {
+      showNotification('Don\'t break your streak! Log your mood today 🔥', {
         tag: 'streak-reminder'
       })
     }
@@ -116,4 +116,3 @@ export const initNotifications = () => {
   }
   setInterval(checkStreak, 60000)
 }
-

@@ -45,20 +45,20 @@ export default function WelcomeBanner() {
               <Sparkles size={24} />
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-bold mb-2">Welcome to Space4U! ðŸ‘‹</h3>
+              <h3 className="text-xl font-bold mb-2">Welcome to Space4U!</h3>
               <p className="text-white/90 mb-4">
                 Start your wellness journey by logging your first mood. Track patterns, 
                 join supportive circles, and discover tools that help.
               </p>
               <div className="flex flex-wrap gap-2">
                 <span className="px-3 py-1 bg-white/20 rounded-full text-sm">
-                  âœ“ 100% Private
+                  100% Private
                 </span>
                 <span className="px-3 py-1 bg-white/20 rounded-full text-sm">
-                  âœ“ No Judgment
+                  No Judgment
                 </span>
                 <span className="px-3 py-1 bg-white/20 rounded-full text-sm">
-                  âœ“ Supportive Community
+                  Supportive Community
                 </span>
               </div>
             </div>

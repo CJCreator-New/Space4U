@@ -131,7 +131,7 @@ function SupportRequests() {
                       {new Date(request.createdAt).toLocaleDateString()}
                     </span>
                     {request.isAnonymous && (
-                      <span className="text-xs text-text-secondary">â€¢ Anonymous</span>
+                      <span className="text-xs text-text-secondary">• Anonymous</span>
                     )}
                   </div>
                   <p className="text-text-primary">{request.message}</p>

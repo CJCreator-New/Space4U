@@ -1,11 +1,11 @@
-﻿// Custom Reminders System
+// Custom Reminders System
 
 export const REMINDER_TYPES = {
-  mood: { id: 'mood', label: 'Mood Check-in', icon: 'ðŸ˜Š' },
-  gratitude: { id: 'gratitude', label: 'Gratitude Journal', icon: 'ðŸ™' },
-  habit: { id: 'habit', label: 'Habit Tracker', icon: 'âœ“' },
-  breathing: { id: 'breathing', label: 'Breathing Exercise', icon: 'ðŸ§˜' },
-  custom: { id: 'custom', label: 'Custom Reminder', icon: 'â°' }
+  mood: { id: 'mood', label: 'Mood Check-in', icon: '😊' },
+  gratitude: { id: 'gratitude', label: 'Gratitude Journal', icon: '🙏' },
+  habit: { id: 'habit', label: 'Habit Tracker', icon: '✔' },
+  breathing: { id: 'breathing', label: 'Breathing Exercise', icon: '🧘' },
+  custom: { id: 'custom', label: 'Custom Reminder', icon: '⏰' }
 }
 
 export const createReminder = (type, time, message, days = [0,1,2,3,4,5,6]) => {
@@ -80,4 +80,3 @@ export const getActiveReminders = () => {
   const reminders = getReminders()
   return reminders.filter(shouldShowReminder)
 }
-

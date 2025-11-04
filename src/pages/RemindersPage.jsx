@@ -6,16 +6,17 @@ import SafeComponent from '../components/SafeComponent'
 import LimitWarningBanner from '../components/common/LimitWarningBanner'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import ReminderTest from '../components/common/ReminderTest'
 import { disclaimers } from '../data/disclaimers'
 
 function RemindersPage() {
   const { t } = useTranslation()
   
   const REMINDER_TYPES = [
-    { value: 'mood_checkin', label: t('reminders.moodCheckIn'), icon: 'ðŸ˜Š' },
-    { value: 'medication', label: t('reminders.medication'), icon: 'ðŸ’Š' },
-    { value: 'therapy', label: t('reminders.therapy'), icon: 'ðŸ§ ' },
-    { value: 'habit', label: t('reminders.habit'), icon: 'ðŸŽ¯' },
+    { value: 'mood_checkin', label: t('reminders.moodCheckIn'), icon: '' },
+    { value: 'medication', label: t('reminders.medication'), icon: '' },
+    { value: 'therapy', label: t('reminders.therapy'), icon: ' ' },
+    { value: 'habit', label: t('reminders.habit'), icon: '' },
     { value: 'custom', label: t('reminders.custom'), icon: 'â°' }
   ]
 
@@ -124,7 +125,7 @@ function RemindersPage() {
                     <div>
                       <h3 className="text-lg font-semibold">{reminder.title || type?.label}</h3>
                       <p className="text-text-secondary text-sm">
-                        {reminder.time} â€¢ {reminder.days.map(d => DAYS[d]).join(', ')}
+                        {reminder.time} • {reminder.days.map(d => DAYS[d]).join(', ')}
                       </p>
                     </div>
                   </div>
@@ -203,7 +204,7 @@ function RemindersPage() {
                       }`}
                     >
                       {day}
-                    </button>
+                    </button >
                   ))}
                 </div>
               </div>
@@ -216,6 +217,9 @@ function RemindersPage() {
           </div>
         </div>
       )}
+
+      {/* Test component for reminder toasts */}
+      <ReminderTest />
     </div>
   
     </SafeComponent>

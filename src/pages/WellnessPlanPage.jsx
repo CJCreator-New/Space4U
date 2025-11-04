@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from 'react'
-import { Plus, Clock, CheckCircle2, Circle, Crown } from 'lucide-react'
+import { Plus, Clock, CheckCircle2, Circle, Crown, Calendar } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
 import { getPremiumStatus } from '../utils/premiumUtils'
@@ -138,7 +138,7 @@ function WellnessPlanPage() {
                       <div className="flex items-center gap-2 text-sm text-text-secondary">
                         <Clock className="w-4 h-4" />
                         <span>{activity.time}</span>
-                        <span className="capitalize">â€¢ {activity.activity_type.replace('_', ' ')}</span>
+                        <span className="capitalize">• {activity.activity_type.replace('_', ' ')}</span>
                       </div>
                     </div>
                   </div>
@@ -158,7 +158,7 @@ function WellnessPlanPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-medium">{activity.title}</h3>
-                      <p className="text-sm text-text-secondary">{activity.time} â€¢ {activity.days.length} days/week</p>
+                      <p className="text-sm text-text-secondary">{activity.time} • {activity.days.length} days/week</p>
                     </div>
                     <span className="text-sm text-text-secondary capitalize">{activity.activity_type.replace('_', ' ')}</span>
                   </div>

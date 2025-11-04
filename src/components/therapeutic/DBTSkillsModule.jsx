@@ -23,7 +23,7 @@ function DBTSkillsModule({ onClose }) {
 
   const handleSave = async () => {
     if (user) {
-      console.log('Saving to database:', entry)
+      // TODO: Implement database save for authenticated users
     } else {
       const saved = JSON.parse(localStorage.getItem('space4u_dbt_skills') || '[]')
       saved.push({ ...entry, id: Date.now(), created_at: new Date().toISOString() })

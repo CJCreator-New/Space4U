@@ -5,22 +5,22 @@ import { X, ArrowRight, Sparkles } from 'lucide-react'
 
 const steps = [
   {
-    title: 'Welcome to Space4U! ðŸŽ‰',
+    title: 'Welcome to Space4U! ',
     desc: 'Your personal mental wellness companion',
     action: 'Get Started'
   },
   {
-    title: 'Track Your Mood ðŸ˜Š',
+    title: 'Track Your Mood ',
     desc: 'Log daily moods and see patterns over time',
     action: 'Next'
   },
   {
-    title: 'Join Circles ðŸ¤',
+    title: 'Join Circles ',
     desc: 'Connect with supportive communities',
     action: 'Next'
   },
   {
-    title: 'View Insights ðŸ“Š',
+    title: 'View Insights ',
     desc: 'Get personalized wellness analytics',
     action: 'Finish'
   }

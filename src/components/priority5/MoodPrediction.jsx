@@ -34,7 +34,7 @@ function MoodPrediction() {
     setPredictions(next7Days)
   }, [isPremium])
 
-  const moodEmojis = ['ðŸ˜¢', 'ðŸ˜•', 'ðŸ˜', 'ðŸ™‚', 'ðŸ˜Š']
+  const moodEmojis = ['', '', '', '', '']
 
   if (!isPremium) {
     return (
@@ -101,10 +101,10 @@ function MoodPrediction() {
                 Our AI predicts potential low mood periods ahead. Consider these preventive actions:
               </p>
               <ul className="text-sm text-orange-800 space-y-1">
-                <li>â€¢ Schedule time with supportive friends</li>
-                <li>â€¢ Plan enjoyable activities</li>
-                <li>â€¢ Ensure adequate sleep</li>
-                <li>â€¢ Practice self-care routines</li>
+                <li>• Schedule time with supportive friends</li>
+                <li>• Plan enjoyable activities</li>
+                <li>• Ensure adequate sleep</li>
+                <li>• Practice self-care routines</li>
               </ul>
             </div>
           </div>

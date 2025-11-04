@@ -134,10 +134,10 @@ function EmotionTrackerPage() {
           <div className="max-w-md mx-auto mb-6 text-left">
             <p className="text-sm font-medium text-gray-700 mb-2">{t('emotions.empty.benefitsTitle')}</p>
             <ul className="text-sm text-gray-600 space-y-1">
-              <li>â€¢ {t('emotions.empty.benefit1')}</li>
-              <li>â€¢ {t('emotions.empty.benefit2')}</li>
-              <li>â€¢ {t('emotions.empty.benefit3')}</li>
-              <li>â€¢ {t('emotions.empty.benefit4')}</li>
+              <li>• {t('emotions.empty.benefit1')}</li>
+              <li>• {t('emotions.empty.benefit2')}</li>
+              <li>• {t('emotions.empty.benefit3')}</li>
+              <li>• {t('emotions.empty.benefit4')}</li>
             </ul>
           </div>
           <button onClick={() => setShowModal(true)} className="btn-primary">

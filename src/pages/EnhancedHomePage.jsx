@@ -1,9 +1,9 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Box, Card, CardBody, Stack, IconButton, Collapse, useDisclosure } from '@chakra-ui/react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { Crown, Sparkles, Smile, Heart, BookOpen, Menu, ChevronDown, TrendingUp, Users, Brain, Zap } from 'lucide-react'
+import { Crown, Sparkles, Smile, Heart, BookOpen, Menu, ChevronDown, TrendingUp, Users, Brain, Zap, Calendar } from 'lucide-react'
 import MoodTracker from '../components/MoodTracker'
 import MoodCalendar from '../components/MoodCalendar'
 import MoodTrends from '../components/MoodTrends'
@@ -20,36 +20,36 @@ const featureGroups = [
     title: 'Daily Wellness',
     icon: Heart,
     items: [
-      { icon: 'â¤ï¸', label: 'Gratitude Journal', path: '/gratitude', desc: 'Daily gratitude practice' },
-      { icon: 'ðŸŽ¯', label: 'Habit Tracker', path: '/habits', desc: 'Build healthy habits' },
-      { icon: 'ðŸ’­', label: 'Emotion Wheel', path: '/emotions', desc: 'Explore your emotions' }
+      { icon: '❤️', label: 'Gratitude Journal', path: '/gratitude', desc: 'Daily gratitude practice' },
+      { icon: '✅', label: 'Habit Tracker', path: '/habits', desc: 'Build healthy habits' },
+      { icon: '🎨', label: 'Emotion Wheel', path: '/emotions', desc: 'Explore your emotions' }
     ]
   },
   {
     title: 'Tools & Resources',
     icon: Brain,
     items: [
-      { icon: 'ðŸ› ï¸', label: 'Coping Skills', path: '/coping-skills', desc: '100+ strategies' },
-      { icon: 'â°', label: 'Reminders', path: '/reminders', desc: 'Stay on track' },
-      { icon: 'ðŸ§°', label: 'Therapy Tools', path: '/tools', desc: 'CBT, DBT, Mindfulness' }
+      { icon: '🛠️', label: 'Coping Skills', path: '/coping-skills', desc: '100+ strategies' },
+      { icon: '⏰', label: 'Reminders', path: '/reminders', desc: 'Stay on track' },
+      { icon: '🧘', label: 'Therapy Tools', path: '/tools', desc: 'CBT, DBT, Mindfulness' }
     ]
   },
   {
     title: 'Insights & Growth',
     icon: TrendingUp,
     items: [
-      { icon: 'ðŸ“Š', label: 'Wellness Score', path: '/wellness', desc: 'Track your progress' },
-      { icon: 'ðŸš€', label: 'Advanced Tools', path: '/advanced-tools', desc: 'Deep dive features' },
-      { icon: 'ðŸ†', label: 'Challenges', path: '/gamification', desc: 'Gamified wellness' }
+      { icon: '📊', label: 'Wellness Score', path: '/wellness', desc: 'Track your progress' },
+      { icon: '🔬', label: 'Advanced Tools', path: '/advanced-tools', desc: 'Deep dive features' },
+      { icon: '🎮', label: 'Challenges', path: '/gamification', desc: 'Gamified wellness' }
     ]
   },
   {
     title: 'Community & Support',
     icon: Users,
     items: [
-      { icon: 'ðŸ¤', label: 'Social Hub', path: '/social', desc: 'Connect with others' },
-      { icon: 'ðŸ“Š', label: 'Analytics', path: '/analytics', desc: 'Deep insights' },
-      { icon: 'ðŸ¥', label: 'Professional', path: '/professional', desc: 'Therapist integration' }
+      { icon: '👥', label: 'Social Hub', path: '/social', desc: 'Connect with others' },
+      { icon: '📈', label: 'Analytics', path: '/analytics', desc: 'Deep insights' },
+      { icon: '👨‍⚕️', label: 'Professional', path: '/professional', desc: 'Therapist integration' }
     ]
   }
 ]
@@ -130,7 +130,7 @@ function EnhancedHomePage() {
                     transition={{ delay: 0.2 }}
                     style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}
                   >
-                    Welcome back{user?.username ? `, ${user.username}` : ''}! ðŸ‘‹
+                    Welcome back{user?.username ? `, ${user.username}` : ''}! 
                   </motion.h1>
                   <p style={{ opacity: 0.9 }}>Your mind matters. Let's check in today.</p>
                 </Box>
@@ -258,7 +258,7 @@ function EnhancedHomePage() {
         <Stack spacing={4}>
           {featureGroups.map((group, index) => (
             <motion.div
-              key={group.title}
+              key={group.title || index}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 + index * 0.1 }}
@@ -297,7 +297,7 @@ function EnhancedHomePage() {
                     <Box id={`group-${group.title}`} p={4} pt={0}>
                       <div className="grid gap-3 md:grid-cols-3">
                         {group.items.map((item) => (
-                          <Link key={item.path} to={item.path}>
+                          <Link key={item.id || item.label || Math.random()} to={item.path}>
                             <motion.div
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
@@ -347,4 +347,3 @@ function EnhancedHomePage() {
 }
 
 export default EnhancedHomePage
-

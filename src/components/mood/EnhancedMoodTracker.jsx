@@ -13,11 +13,11 @@ import TagSelector from './TagSelector'
 const MotionDiv = motion.div
 
 const moods = [
-  { emoji: 'ðŸ˜Š', label: 'Amazing', value: 5, color: '#10B981' },
-  { emoji: 'ðŸ™‚', label: 'Good', value: 4, color: '#84CC16' },
-  { emoji: 'ðŸ˜', label: 'Okay', value: 3, color: '#F59E0B' },
-  { emoji: 'ðŸ˜¢', label: 'Low', value: 2, color: '#F97316' },
-  { emoji: 'ðŸ˜°', label: 'Struggling', value: 1, color: '#EF4444' },
+  { emoji: '', label: 'Amazing', value: 5, color: '#10B981' },
+  { emoji: '', label: 'Good', value: 4, color: '#84CC16' },
+  { emoji: '', label: 'Okay', value: 3, color: '#F59E0B' },
+  { emoji: '', label: 'Low', value: 2, color: '#F97316' },
+  { emoji: '', label: 'Struggling', value: 1, color: '#EF4444' },
 ]
 
 function EnhancedMoodTracker({ onMoodLogged }) {
@@ -112,11 +112,11 @@ function EnhancedMoodTracker({ onMoodLogged }) {
         animate={{ opacity: 1, scale: 1 }}
         className="card p-6 mb-6 text-center"
       >
-        <div className="text-4xl mb-4">ðŸŽ‰</div>
+        <div className="text-4xl mb-4">
         <h3 className="text-xl font-semibold mb-2">Mood logged!</h3>
         {streak > 1 && (
           <p className="text-gray-600">
-            {streak} day streak! Keep it up ðŸ”¥
+            {streak} day streak! Keep it up 
           </p>
         )}
       </MotionDiv>
@@ -168,7 +168,7 @@ function EnhancedMoodTracker({ onMoodLogged }) {
               className="mb-4 p-4 bg-blue-50 rounded-xl"
             >
               <p className="text-sm text-blue-700">
-                ðŸ‘‹ Welcome! Track your mood daily to unlock insights and build healthy habits.
+                 Welcome! Track your mood daily to unlock insights and build healthy habits.
               </p>
             </MotionDiv>
           </AnimatePresence>
@@ -307,7 +307,7 @@ function EnhancedMoodTracker({ onMoodLogged }) {
               </div>
               {streak > 0 && (
                 <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">
-                  ðŸ”¥ {streak} day streak
+                   {streak} day streak
                 </span>
               )}
             </div>

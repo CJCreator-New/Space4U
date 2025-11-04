@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import Icon from './Icon'
 import { circleService } from '../services/circleService'
 import { useSupabaseAuth } from '../contexts/AuthContext'
@@ -183,8 +184,20 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-end md:items-center justify-center z-50">
-      <div className="bg-surface w-full md:max-w-2xl md:mx-4 rounded-t-3xl md:rounded-3xl max-h-[90vh] overflow-hidden animate-slide-up">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end md:items-center justify-center z-50">
+      <motion.div
+        initial={{ y: "100%", opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: "100%", opacity: 0 }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 300, 
+          damping: 30,
+          duration: 0.4
+        }}
+        className="bg-surface w-full md:max-w-2xl md:mx-4 rounded-t-3xl md:rounded-3xl max-h-[90vh] overflow-hidden shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
         {showSuccess ? (
           <div className="p-8 text-center">
             <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -422,7 +435,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
             </div>
           </>
         )}
-      </div>
+      </motion.div>
     </div>
   )
 }

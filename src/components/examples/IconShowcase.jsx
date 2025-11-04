@@ -1,4 +1,4 @@
-import { Icon, Icons } from '../common/IconLibrary';
+import Icon, { Icons } from '../Icon';
 
 export function IconShowcase() {
   return (

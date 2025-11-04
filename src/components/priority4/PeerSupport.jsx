@@ -144,7 +144,7 @@ function PeerSupport() {
                 <div>
                   <p className="font-medium text-text-primary">Peer Support Match</p>
                   <p className="text-sm text-text-secondary">
-                    {match.messages.length} messages â€¢ {match.matchScore}% match
+                    {match.messages.length} messages • {match.matchScore}% match
                   </p>
                 </div>
                 <MessageCircle className="text-primary" size={20} />

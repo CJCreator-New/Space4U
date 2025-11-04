@@ -340,7 +340,7 @@ export function MedicationTracker({ onClose }) {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xl font-semibold">{med.name}</h3>
-                <p className="text-text-secondary">{med.dosage} â€¢ {med.frequency}</p>
+                <p className="text-text-secondary">{med.dosage} • {med.frequency}</p>
                 <p className="text-sm text-text-secondary">Times: {med.times.join(', ')}</p>
               </div>
               <button

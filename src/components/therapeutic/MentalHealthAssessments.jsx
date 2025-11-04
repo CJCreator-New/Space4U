@@ -75,7 +75,7 @@ function MentalHealthAssessments({ onClose }) {
     }
 
     if (user) {
-      console.log('Saving to database:', data)
+      // TODO: Implement database save for authenticated users
     } else {
       const saved = JSON.parse(localStorage.getItem('space4u_assessments') || '[]')
       saved.push({ ...data, id: Date.now(), created_at: new Date().toISOString() })
@@ -211,7 +211,7 @@ function MentalHealthAssessments({ onClose }) {
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="text-xl font-semibold mb-2">{assessment.name}</h3>
-                    <p className="text-text-secondary text-sm mb-3">{assessment.questions.length} questions â€¢ 2-3 minutes</p>
+                    <p className="text-text-secondary text-sm mb-3">{assessment.questions.length} questions • 2-3 minutes</p>
                     <div className="flex items-center gap-2 text-xs text-text-secondary">
                       <Shield size={14} />
                       <span>Clinically validated screening tool</span>

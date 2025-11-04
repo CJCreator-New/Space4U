@@ -22,7 +22,7 @@ export default function RecommendedSection({ toolIds, onToolClick }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -4, shadow: 'xl' }}
+              whileHover={{ y: -4, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
               className="bg-white rounded-xl p-6 border border-gray-200 cursor-pointer hover:border-purple-300 transition-all"
               onClick={() => onToolClick(toolId)}
             >

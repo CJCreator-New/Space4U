@@ -55,7 +55,7 @@ export const searchAll = (query) => {
         description: post.content.slice(0, 100),
         date: post.createdAt,
         link: `/circles/${post.circleId}`,
-        icon: 'ðŸ“'
+        icon: ''
       })
     }
   })
@@ -70,7 +70,7 @@ export const searchAll = (query) => {
         description: entry.text,
         date: entry.date,
         link: '/gratitude',
-        icon: 'ðŸ™'
+        icon: ''
       })
     }
   })

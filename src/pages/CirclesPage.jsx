@@ -117,7 +117,7 @@ const normalizeCircleRecord = (circle, index, joinedLookup) => {
   const members = ensureNumber(circle?.members ?? circle?.member_count ?? circle?.total_members)
   const posts = ensureNumber(circle?.posts ?? circle?.post_count ?? circle?.total_posts)
   const unreadCount = ensureNumber(circle?.unreadCount ?? circle?.unread_count ?? circle?.new_posts)
-  const icon = circle?.icon ?? circle?.emoji ?? 'ðŸ«‚'
+  const icon = circle?.icon ?? circle?.emoji ?? ''
   const color = circle?.color ?? circle?.theme_color ?? COLOR_PALETTE[index % COLOR_PALETTE.length]
   const lastActiveRaw = circle?.lastActive ?? circle?.last_active ?? circle?.last_active_at ?? circle?.last_active_label ?? circle?.last_active_humanized
   const highlight = circle?.highlight ?? circle?.highlight_text ?? circle?.tagline ?? circle?.purpose ?? ''
@@ -238,8 +238,12 @@ function CirclesPage() {
 
   useEffect(() => {
     loadData({ showLoading: true })
-    trackPageView('circles')
   }, [loadData])
+
+  useEffect(() => {
+    // Track page view only once on mount
+    trackPageView('circles')
+  }, [])
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -636,7 +640,7 @@ function CirclesPage() {
           <h2 className="text-xl font-semibold text-text-primary mb-4">Recommended for You</h2>
           <div className="flex gap-4 overflow-x-auto pb-2">
             {recommendedCircles.map((circle) => (
-              <div key={circle.id} className="flex-shrink-0 w-64">
+              <div key={circle.id || circle.name || Math.random()} className="flex-shrink-0 w-64">
                 <CircleCard
                   circle={circle}
                   isJoined={joinedCircles.includes(String(circle.id))}
@@ -653,15 +657,17 @@ function CirclesPage() {
       {/* Empty States */}
       {activeTab === 'my-circles' && joinedCircles.length === 0 ? (
         <EmptyState
-          icon="ðŸŒ"
+          icon="🌐"
           title="No Circles Yet"
           description="Join circles to connect with supportive communities and share your journey"
           action={() => setActiveTab('discover')}
           actionLabel="Discover Circles"
+          showPreview={true}
+          previewType="post"
         />
       ) : filteredCircles.length === 0 && debouncedSearch ? (
         <EmptyState
-          icon="ðŸ”"
+          icon=""
           title="No Results Found"
           description={`No circles match "${debouncedSearch}". Try different keywords or browse all circles.`}
           action={() => setSearchQuery('')}
@@ -669,7 +675,7 @@ function CirclesPage() {
         />
       ) : filteredCircles.length === 0 ? (
         <EmptyState
-          icon="ðŸŒŸ"
+          icon=""
           title="No Circles Available"
           description="Check back soon for new support circles"
         />
@@ -677,7 +683,7 @@ function CirclesPage() {
         /* Circle Grid */
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredCircles.map((circle, index) => (
-            <div key={circle.id} className="stagger-item" style={{ animationDelay: `${index * 50}ms` }}>
+            <div key={circle.id || index} className="stagger-item" style={{ animationDelay: `${index * 50}ms` }}>
               <CircleCard
                 circle={circle}
                 isJoined={joinedCircles.includes(String(circle.id))}
@@ -706,11 +712,11 @@ function CirclesPage() {
             <div className="text-sm">
               <p className="font-semibold mb-1 text-gray-900">Community Guidelines</p>
               <ul className="text-gray-700 space-y-1">
-                <li>â€¢ Be respectful and supportive - everyone's journey is unique</li>
-                <li>â€¢ Share your experiences, not medical advice</li>
-                <li>â€¢ Respect privacy - what's shared here stays here</li>
-                <li>â€¢ Report harmful content using the report button</li>
-                <li>â€¢ Remember: peer support complements, doesn't replace professional care</li>
+                <li>• Be respectful and supportive - everyone's journey is unique</li>
+                <li>• Share your experiences, not medical advice</li>
+                <li>• Respect privacy - what's shared here stays here</li>
+                <li>• Report harmful content using the report button</li>
+                <li>• Remember: peer support complements, doesn't replace professional care</li>
               </ul>
             </div>
           </div>
@@ -726,10 +732,10 @@ function CirclesPage() {
                 Seek professional help if you're experiencing:
               </p>
               <ul className="text-gray-700 space-y-1">
-                <li>â€¢ Persistent feelings of sadness, anxiety, or hopelessness</li>
-                <li>â€¢ Thoughts of self-harm or suicide</li>
-                <li>â€¢ Difficulty functioning in daily life</li>
-                <li>â€¢ Substance abuse issues</li>
+                <li>• Persistent feelings of sadness, anxiety, or hopelessness</li>
+                <li>• Thoughts of self-harm or suicide</li>
+                <li>• Difficulty functioning in daily life</li>
+                <li>• Substance abuse issues</li>
               </ul>
               <p className="text-gray-700 mt-2 font-medium">
                 Crisis support: Call 988 (Suicide & Crisis Lifeline) - Available 24/7

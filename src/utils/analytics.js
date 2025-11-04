@@ -20,7 +20,7 @@ export const trackEvent = (eventName, properties = {}) => {
     
     // Console log in development
     if (process.env.NODE_ENV === 'development') {
-      console.log('ðŸ“Š Analytics:', eventName, properties)
+      console.log(' Analytics:', eventName, properties)
     }
   } catch (error) {
     console.error('Analytics error:', error)

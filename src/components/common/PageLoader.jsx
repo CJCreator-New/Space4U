@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Icon } from './IconLibrary'
+import Icon from '../Icon'
 
 function PageLoader({ message = 'Loading...' }) {
   return (

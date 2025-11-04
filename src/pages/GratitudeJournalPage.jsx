@@ -40,6 +40,8 @@ import {
 } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 
+const MotionDiv = motion.div
+
 function GratitudeJournalPage() {
   const { user } = useAuth()
   const { t } = useTranslation()
@@ -57,8 +59,12 @@ function GratitudeJournalPage() {
   useEffect(() => {
     loadEntries()
     setDailyPrompt(getDailyPrompt())
-    trackPageView('gratitude_journal')
   }, [user])
+
+  useEffect(() => {
+    // Track page view only once on mount
+    trackPageView('gratitude_journal')
+  }, [])
 
   const loadEntries = () => {
     const saved = localStorage.getItem('space4u_gratitude_entries')
@@ -246,10 +252,10 @@ function GratitudeJournalPage() {
                 <CardBody>
                   <HStack spacing={3} mb={2}>
                     <Icon as={Sparkles} w={5} h={5} color="yellow.500" />
-                    <Text color="gray.600">{t('gratitude.currentStreak')}</Text>
+                    <Text color="gray.600">{t('gratitude currentStreak')}</Text>
                   </HStack>
                   <Heading size="2xl" color="yellow.500">{streak}</Heading>
-                  <Text fontSize="sm" color="gray.500">{t('gratitude.days')}</Text>
+                  <Text fontSize="sm" color="gray.500">{t('gratitude days')}</Text>
                 </CardBody>
               </Card>
 
@@ -257,10 +263,10 @@ function GratitudeJournalPage() {
                 <CardBody>
                   <HStack spacing={3} mb={2}>
                     <Icon as={Calendar} w={5} h={5} color="blue.500" />
-                    <Text color="gray.600">{t('gratitude.totalEntries')}</Text>
+                    <Text color="gray.600">{t('gratitude totalEntries')}</Text>
                   </HStack>
                   <Heading size="2xl" color="blue.500">{entries.length}</Heading>
-                  <Text fontSize="sm" color="gray.500">{t('gratitude.entries')}</Text>
+                  <Text fontSize="sm" color="gray.500">{t('gratitude entries')}</Text>
                 </CardBody>
               </Card>
 
@@ -268,7 +274,7 @@ function GratitudeJournalPage() {
                 <CardBody>
                   <HStack spacing={3} mb={2}>
                     <Icon as={TrendingUp} w={5} h={5} color="green.500" />
-                    <Text color="gray.600">{t('gratitude.weeklyGoal')}</Text>
+                    <Text color="gray.600">{t('gratitude weeklyGoal')}</Text>
                   </HStack>
                   <Heading size="2xl" color="green.500">
                     {Math.min(7, entries.filter(e => {
@@ -284,12 +290,12 @@ function GratitudeJournalPage() {
             </Grid>
 
             <VStack spacing={4} align="stretch">
-              <Heading size="lg">{t('gratitude.recentEntries')}</Heading>
+              <Heading size="lg">{t('gratitude recentEntries')}</Heading>
               {entries.length === 0 ? (
                 <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl" shadow="lg">
                   <CardBody textAlign="center" py={12}>
                     <Icon as={BookOpen} w={12} h={12} color="gray.400" mb={4} />
-                    <Heading size="md" color="gray.500" mb={2}>{t('gratitude.noEntries')}</Heading>
+                    <Heading size="md" color="gray.500" mb={2}>{t('gratitude noEntries')}</Heading>
                     <Text color="gray.600" mb={4}>{t('gratitude.startJourney')}</Text>
                     <Button
                       leftIcon={<Plus />}
@@ -304,8 +310,8 @@ function GratitudeJournalPage() {
               ) : (
                 <VStack spacing={4} align="stretch">
                   {entries.slice(0, 5).map((entry, index) => (
-                    <motion.div
-                      key={entry.date}
+                    <MotionDiv
+                      key={entry.date || index}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
@@ -316,7 +322,7 @@ function GratitudeJournalPage() {
                         onDelete={handleDelete}
                         isPremium={isPremium}
                       />
-                    </motion.div>
+                    </MotionDiv>
                   ))}
                 </VStack>
               )}

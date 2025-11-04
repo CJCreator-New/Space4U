@@ -1,4 +1,4 @@
-﻿// Custom Mood Scales System
+// Custom Mood Scales System
 
 export const MOOD_SCALES = {
   scale5: {
@@ -6,11 +6,11 @@ export const MOOD_SCALES = {
     name: '5-Point Scale',
     description: 'Default balanced scale',
     points: [
-      { value: 1, emoji: 'ðŸ˜°', label: 'Struggling' },
-      { value: 2, emoji: 'ðŸ˜¢', label: 'Low' },
-      { value: 3, emoji: 'ðŸ˜', label: 'Okay' },
-      { value: 4, emoji: 'ðŸ™‚', label: 'Good' },
-      { value: 5, emoji: 'ðŸ˜Š', label: 'Amazing' }
+      { value: 1, emoji: '😰', label: 'Struggling' },
+      { value: 2, emoji: '😢', label: 'Low' },
+      { value: 3, emoji: '😐', label: 'Okay' },
+      { value: 4, emoji: '🙂', label: 'Good' },
+      { value: 5, emoji: '😊', label: 'Amazing' }
     ]
   },
   scale10: {
@@ -18,16 +18,16 @@ export const MOOD_SCALES = {
     name: '10-Point Scale',
     description: 'More granular tracking',
     points: [
-      { value: 1, emoji: 'ðŸ˜­', label: 'Terrible' },
-      { value: 2, emoji: 'ðŸ˜°', label: 'Very Bad' },
-      { value: 3, emoji: 'ðŸ˜¢', label: 'Bad' },
-      { value: 4, emoji: 'ðŸ˜”', label: 'Low' },
-      { value: 5, emoji: 'ðŸ˜', label: 'Neutral' },
-      { value: 6, emoji: 'ðŸ™‚', label: 'Okay' },
-      { value: 7, emoji: 'ðŸ˜Š', label: 'Good' },
-      { value: 8, emoji: 'ðŸ˜„', label: 'Great' },
-      { value: 9, emoji: 'ðŸ¤©', label: 'Excellent' },
-      { value: 10, emoji: 'ðŸ¥³', label: 'Amazing' }
+      { value: 1, emoji: '😭', label: 'Terrible' },
+      { value: 2, emoji: '😰', label: 'Very Bad' },
+      { value: 3, emoji: '😢', label: 'Bad' },
+      { value: 4, emoji: '😔', label: 'Low' },
+      { value: 5, emoji: '😐', label: 'Neutral' },
+      { value: 6, emoji: '🙂', label: 'Okay' },
+      { value: 7, emoji: '😊', label: 'Good' },
+      { value: 8, emoji: '😄', label: 'Great' },
+      { value: 9, emoji: '🤩', label: 'Excellent' },
+      { value: 10, emoji: '🥳', label: 'Amazing' }
     ]
   },
   scale3: {
@@ -35,9 +35,9 @@ export const MOOD_SCALES = {
     name: '3-Point Scale',
     description: 'Simple and quick',
     points: [
-      { value: 1, emoji: 'ðŸ˜¢', label: 'Bad' },
-      { value: 2, emoji: 'ðŸ˜', label: 'Okay' },
-      { value: 3, emoji: 'ðŸ˜Š', label: 'Good' }
+      { value: 1, emoji: '😢', label: 'Bad' },
+      { value: 2, emoji: '😐', label: 'Okay' },
+      { value: 3, emoji: '😊', label: 'Good' }
     ]
   }
 }
@@ -70,4 +70,3 @@ export const convertMoodValue = (value, fromScale, toScale) => {
   
   return Math.max(1, Math.min(toMax, converted))
 }
-

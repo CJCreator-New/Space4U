@@ -9,13 +9,15 @@ import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
 import ResearchCard from '../components/wellness/ResearchCard'
 import { disclaimers } from '../data/disclaimers'
 import { researchCitations } from '../data/researchCitations'
+import HabitCompletionEffect from '../components/common/HabitCompletionEffect'
 
 function HabitTrackerPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [habits, setHabits] = useState([])
   const [showModal, setShowModal] = useState(false)
-  const [newHabit, setNewHabit] = useState({ name: '', icon: 'ðŸŽ¯', color: 'blue', frequency: 'daily' })
+  const [newHabit, setNewHabit] = useState({ name: '', icon: '', color: 'blue', frequency: 'daily' })
+  const [showCompletionEffect, setShowCompletionEffect] = useState(false)
   const { isPremium } = getPremiumStatus()
   const FREE_HABIT_LIMIT = 5
 
@@ -38,7 +40,7 @@ function HabitTrackerPage() {
     localStorage.setItem('space4u_habits', JSON.stringify(updated))
     setHabits(updated)
     setShowModal(false)
-    setNewHabit({ name: '', icon: 'ðŸŽ¯', color: 'blue', frequency: 'daily' })
+    setNewHabit({ name: '', icon: '', color: 'blue', frequency: 'daily' })
   }
 
   const toggleCompletion = (habitId) => {
@@ -46,7 +48,14 @@ function HabitTrackerPage() {
     const updated = habits.map(h => {
       if (h.id === habitId) {
         const completions = { ...h.completions }
+        const wasCompleted = completions[today]
         completions[today] = !completions[today]
+
+        // Show completion effect if habit was just completed (not uncompleted)
+        if (!wasCompleted && completions[today]) {
+          setShowCompletionEffect(true)
+        }
+
         return { ...h, completions }
       }
       return h
@@ -108,10 +117,10 @@ function HabitTrackerPage() {
           <div className="max-w-md mx-auto mb-6 text-left">
             <p className="text-sm font-medium text-gray-700 mb-2">{t('habits.empty.keysTitle')}</p>
             <ul className="text-sm text-gray-600 space-y-1">
-              <li>â€¢ {t('habits.empty.key1')}</li>
-              <li>â€¢ {t('habits.empty.key2')}</li>
-              <li>â€¢ {t('habits.empty.key3')}</li>
-              <li>â€¢ {t('habits.empty.key4')}</li>
+              <li>• {t('habits.empty.key1')}</li>
+              <li>• {t('habits.empty.key2')}</li>
+              <li>• {t('habits.empty.key3')}</li>
+              <li>• {t('habits.empty.key4')}</li>
             </ul>
           </div>
           <button onClick={handleAddClick} className="btn-primary">
@@ -167,7 +176,7 @@ function HabitTrackerPage() {
               <div>
                 <label className="block text-sm font-medium mb-2">{t('habits.modal.iconLabel')}</label>
                 <div className="flex gap-2 flex-wrap">
-                  {['ðŸŽ¯', 'ðŸ’ª', 'ðŸ§˜', 'ðŸ“š', 'ðŸ’§', 'ðŸƒ', 'ðŸŽ¨', 'ðŸŽµ'].map(icon => (
+                  {['', '', '', '', '', '', '', ''].map(icon => (
                     <button
                       key={icon}
                       onClick={() => setNewHabit({ ...newHabit, icon })}
@@ -187,7 +196,13 @@ function HabitTrackerPage() {
         </div>
       )}
     </div>
-  
+
+    {/* Habit completion effect */}
+    <HabitCompletionEffect
+      show={showCompletionEffect}
+      onComplete={() => setShowCompletionEffect(false)}
+    />
+
     </SafeComponent>
   )
 }

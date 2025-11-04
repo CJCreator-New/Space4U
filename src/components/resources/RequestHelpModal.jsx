@@ -14,7 +14,7 @@ function RequestHelpModal({ isOpen, onClose, defaultNumber = '988' }) {
     localStorage.setItem('space4u_help_requests', JSON.stringify(requests))
 
     // If call, open dialer
-    if (contactMethod === 'call') {
+    if (contactMethod === 'call' && typeof window !== 'undefined') {
       window.location.href = `tel:${defaultNumber}`
     }
 

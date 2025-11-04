@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Smile, Meh, Frown, Check } from 'lucide-react'
 
 const moods = [
-  { emoji: 'ðŸ˜Š', label: 'Great', value: 5, color: 'from-green-400 to-emerald-500' },
-  { emoji: 'ðŸ™‚', label: 'Good', value: 4, color: 'from-lime-400 to-green-500' },
-  { emoji: 'ðŸ˜', label: 'Okay', value: 3, color: 'from-yellow-400 to-amber-500' },
-  { emoji: 'ðŸ˜”', label: 'Low', value: 2, color: 'from-orange-400 to-red-500' },
-  { emoji: 'ðŸ˜¢', label: 'Struggling', value: 1, color: 'from-red-400 to-rose-500' },
+  { emoji: '', label: 'Great', value: 5, color: 'from-green-400 to-emerald-500' },
+  { emoji: '', label: 'Good', value: 4, color: 'from-lime-400 to-green-500' },
+  { emoji: '', label: 'Okay', value: 3, color: 'from-yellow-400 to-amber-500' },
+  { emoji: '', label: 'Low', value: 2, color: 'from-orange-400 to-red-500' },
+  { emoji: '', label: 'Struggling', value: 1, color: 'from-red-400 to-rose-500' },
 ]
 
 export default function QuickMoodCheckIn({ onMoodLogged }) {

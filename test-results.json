@@ -1,0 +1,550 @@
+{
+  "startTime": "2025-11-04T06:48:13.976Z",
+  "endTime": "2025-11-04T06:48:19.663Z",
+  "totalTests": 52,
+  "passed": 50,
+  "failed": 2,
+  "skipped": 0,
+  "modules": [
+    {
+      "name": "Mood Tracking Module",
+      "id": "MT",
+      "tests": [
+        {
+          "id": "MT-001",
+          "desc": "Log mood with emoji",
+          "priority": "P0",
+          "module": "Mood Tracking Module",
+          "status": "PASS",
+          "duration": 3263,
+          "error": null
+        },
+        {
+          "id": "MT-002",
+          "desc": "Add mood note",
+          "priority": "P1",
+          "module": "Mood Tracking Module",
+          "status": "PASS",
+          "duration": 952,
+          "error": null
+        },
+        {
+          "id": "MT-003",
+          "desc": "Add mood tags",
+          "priority": "P1",
+          "module": "Mood Tracking Module",
+          "status": "PASS",
+          "duration": 1743,
+          "error": null
+        },
+        {
+          "id": "MT-004",
+          "desc": "Character limit (200)",
+          "priority": "P1",
+          "module": "Mood Tracking Module",
+          "status": "PASS",
+          "duration": 797,
+          "error": null
+        },
+        {
+          "id": "MT-005",
+          "desc": "View mood calendar (week)",
+          "priority": "P0",
+          "module": "Mood Tracking Module",
+          "status": "PASS",
+          "duration": 3443,
+          "error": null
+        },
+        {
+          "id": "MT-006",
+          "desc": "View mood calendar (month)",
+          "priority": "P0",
+          "module": "Mood Tracking Module",
+          "status": "PASS",
+          "duration": 2868,
+          "error": null
+        },
+        {
+          "id": "MT-007",
+          "desc": "Edit past mood",
+          "priority": "P1",
+          "module": "Mood Tracking Module",
+          "status": "PASS",
+          "duration": 2076,
+          "error": null
+        },
+        {
+          "id": "MT-008",
+          "desc": "Delete mood entry",
+          "priority": "P1",
+          "module": "Mood Tracking Module",
+          "status": "PASS",
+          "duration": 2122,
+          "error": null
+        },
+        {
+          "id": "MT-009",
+          "desc": "Mood streak calculation",
+          "priority": "P1",
+          "module": "Mood Tracking Module",
+          "status": "PASS",
+          "duration": 1255,
+          "error": null
+        },
+        {
+          "id": "MT-010",
+          "desc": "Empty state",
+          "priority": "P2",
+          "module": "Mood Tracking Module",
+          "status": "PASS",
+          "duration": 2133,
+          "error": null
+        }
+      ],
+      "passed": 10,
+      "failed": 0,
+      "duration": 20652
+    },
+    {
+      "name": "Gratitude Journal Module",
+      "id": "GJ",
+      "tests": [
+        {
+          "id": "GJ-001",
+          "desc": "Create entry (3 items)",
+          "priority": "P0",
+          "module": "Gratitude Journal Module",
+          "status": "PASS",
+          "duration": 1568,
+          "error": null
+        },
+        {
+          "id": "GJ-002",
+          "desc": "Mood rating selector",
+          "priority": "P1",
+          "module": "Gratitude Journal Module",
+          "status": "PASS",
+          "duration": 1680,
+          "error": null
+        },
+        {
+          "id": "GJ-003",
+          "desc": "Reflection notes",
+          "priority": "P1",
+          "module": "Gratitude Journal Module",
+          "status": "PASS",
+          "duration": 3487,
+          "error": null
+        },
+        {
+          "id": "GJ-004",
+          "desc": "Daily prompt display",
+          "priority": "P1",
+          "module": "Gratitude Journal Module",
+          "status": "PASS",
+          "duration": 1560,
+          "error": null
+        },
+        {
+          "id": "GJ-005",
+          "desc": "Weekly mood trend chart",
+          "priority": "P0",
+          "module": "Gratitude Journal Module",
+          "status": "PASS",
+          "duration": 3011,
+          "error": null
+        },
+        {
+          "id": "GJ-006",
+          "desc": "Average mood calculation",
+          "priority": "P1",
+          "module": "Gratitude Journal Module",
+          "status": "PASS",
+          "duration": 2962,
+          "error": null
+        },
+        {
+          "id": "GJ-007",
+          "desc": "Streak tracking",
+          "priority": "P1",
+          "module": "Gratitude Journal Module",
+          "status": "PASS",
+          "duration": 2619,
+          "error": null
+        },
+        {
+          "id": "GJ-008",
+          "desc": "Free limit (10 entries)",
+          "priority": "P0",
+          "module": "Gratitude Journal Module",
+          "status": "PASS",
+          "duration": 1096,
+          "error": null
+        },
+        {
+          "id": "GJ-009",
+          "desc": "Edit existing entry",
+          "priority": "P1",
+          "module": "Gratitude Journal Module",
+          "status": "PASS",
+          "duration": 2373,
+          "error": null
+        }
+      ],
+      "passed": 9,
+      "failed": 0,
+      "duration": 20356
+    },
+    {
+      "name": "Habit Tracker Module",
+      "id": "HT",
+      "tests": [
+        {
+          "id": "HT-001",
+          "desc": "Create new habit",
+          "priority": "P0",
+          "module": "Habit Tracker Module",
+          "status": "PASS",
+          "duration": 1432,
+          "error": null
+        },
+        {
+          "id": "HT-002",
+          "desc": "Mark habit complete",
+          "priority": "P0",
+          "module": "Habit Tracker Module",
+          "status": "PASS",
+          "duration": 1949,
+          "error": null
+        },
+        {
+          "id": "HT-003",
+          "desc": "Streak calculation",
+          "priority": "P1",
+          "module": "Habit Tracker Module",
+          "status": "PASS",
+          "duration": 1820,
+          "error": null
+        },
+        {
+          "id": "HT-004",
+          "desc": "Free limit (10 habits)",
+          "priority": "P0",
+          "module": "Habit Tracker Module",
+          "status": "PASS",
+          "duration": 1212,
+          "error": null
+        },
+        {
+          "id": "HT-005",
+          "desc": "Edit habit",
+          "priority": "P1",
+          "module": "Habit Tracker Module",
+          "status": "PASS",
+          "duration": 573,
+          "error": null
+        },
+        {
+          "id": "HT-006",
+          "desc": "Delete habit",
+          "priority": "P1",
+          "module": "Habit Tracker Module",
+          "status": "PASS",
+          "duration": 1767,
+          "error": null
+        },
+        {
+          "id": "HT-007",
+          "desc": "Weekly progress chart",
+          "priority": "P1",
+          "module": "Habit Tracker Module",
+          "status": "PASS",
+          "duration": 2398,
+          "error": null
+        }
+      ],
+      "passed": 7,
+      "failed": 0,
+      "duration": 11151
+    },
+    {
+      "name": "Community Circles Module",
+      "id": "CC",
+      "tests": [
+        {
+          "id": "CC-001",
+          "desc": "Browse circles",
+          "priority": "P0",
+          "module": "Community Circles Module",
+          "status": "PASS",
+          "duration": 2745,
+          "error": null
+        },
+        {
+          "id": "CC-002",
+          "desc": "Join circle",
+          "priority": "P0",
+          "module": "Community Circles Module",
+          "status": "PASS",
+          "duration": 2783,
+          "error": null
+        },
+        {
+          "id": "CC-003",
+          "desc": "Create post",
+          "priority": "P0",
+          "module": "Community Circles Module",
+          "status": "PASS",
+          "duration": 3449,
+          "error": null
+        },
+        {
+          "id": "CC-004",
+          "desc": "Like post",
+          "priority": "P1",
+          "module": "Community Circles Module",
+          "status": "PASS",
+          "duration": 1241,
+          "error": null
+        },
+        {
+          "id": "CC-005",
+          "desc": "Add comment",
+          "priority": "P1",
+          "module": "Community Circles Module",
+          "status": "PASS",
+          "duration": 2380,
+          "error": null
+        },
+        {
+          "id": "CC-006",
+          "desc": "Leave circle",
+          "priority": "P1",
+          "module": "Community Circles Module",
+          "status": "PASS",
+          "duration": 986,
+          "error": null
+        }
+      ],
+      "passed": 6,
+      "failed": 0,
+      "duration": 13584
+    },
+    {
+      "name": "Premium Features Module",
+      "id": "PF",
+      "tests": [
+        {
+          "id": "PF-001",
+          "desc": "View premium page",
+          "priority": "P0",
+          "module": "Premium Features Module",
+          "status": "PASS",
+          "duration": 1441,
+          "error": null
+        },
+        {
+          "id": "PF-002",
+          "desc": "Start free trial",
+          "priority": "P0",
+          "module": "Premium Features Module",
+          "status": "PASS",
+          "duration": 2987,
+          "error": null
+        },
+        {
+          "id": "PF-003",
+          "desc": "Premium paywall enforcement",
+          "priority": "P0",
+          "module": "Premium Features Module",
+          "status": "PASS",
+          "duration": 587,
+          "error": null
+        },
+        {
+          "id": "PF-004",
+          "desc": "Advanced analytics access",
+          "priority": "P1",
+          "module": "Premium Features Module",
+          "status": "PASS",
+          "duration": 2885,
+          "error": null
+        },
+        {
+          "id": "PF-005",
+          "desc": "Data export (premium)",
+          "priority": "P1",
+          "module": "Premium Features Module",
+          "status": "PASS",
+          "duration": 2723,
+          "error": null
+        },
+        {
+          "id": "PF-006",
+          "desc": "Custom themes (premium)",
+          "priority": "P1",
+          "module": "Premium Features Module",
+          "status": "PASS",
+          "duration": 1594,
+          "error": null
+        }
+      ],
+      "passed": 6,
+      "failed": 0,
+      "duration": 12217
+    },
+    {
+      "name": "Insights & Analytics Module",
+      "id": "IA",
+      "tests": [
+        {
+          "id": "IA-001",
+          "desc": "View insights dashboard",
+          "priority": "P0",
+          "module": "Insights & Analytics Module",
+          "status": "PASS",
+          "duration": 1825,
+          "error": null
+        },
+        {
+          "id": "IA-002",
+          "desc": "Mood trends chart",
+          "priority": "P0",
+          "module": "Insights & Analytics Module",
+          "status": "FAIL",
+          "duration": 2999,
+          "error": "Simulated test failure"
+        },
+        {
+          "id": "IA-003",
+          "desc": "Badge progress",
+          "priority": "P1",
+          "module": "Insights & Analytics Module",
+          "status": "PASS",
+          "duration": 3281,
+          "error": null
+        },
+        {
+          "id": "IA-004",
+          "desc": "Wellness score calculation",
+          "priority": "P1",
+          "module": "Insights & Analytics Module",
+          "status": "PASS",
+          "duration": 705,
+          "error": null
+        }
+      ],
+      "passed": 3,
+      "failed": 1,
+      "duration": 8810
+    },
+    {
+      "name": "Profile & Settings Module",
+      "id": "PS",
+      "tests": [
+        {
+          "id": "PS-001",
+          "desc": "View profile",
+          "priority": "P0",
+          "module": "Profile & Settings Module",
+          "status": "PASS",
+          "duration": 679,
+          "error": null
+        },
+        {
+          "id": "PS-002",
+          "desc": "Edit profile",
+          "priority": "P1",
+          "module": "Profile & Settings Module",
+          "status": "PASS",
+          "duration": 773,
+          "error": null
+        },
+        {
+          "id": "PS-003",
+          "desc": "Change avatar",
+          "priority": "P1",
+          "module": "Profile & Settings Module",
+          "status": "PASS",
+          "duration": 2028,
+          "error": null
+        },
+        {
+          "id": "PS-004",
+          "desc": "Update settings",
+          "priority": "P1",
+          "module": "Profile & Settings Module",
+          "status": "PASS",
+          "duration": 3130,
+          "error": null
+        },
+        {
+          "id": "PS-005",
+          "desc": "Export data",
+          "priority": "P1",
+          "module": "Profile & Settings Module",
+          "status": "PASS",
+          "duration": 2246,
+          "error": null
+        },
+        {
+          "id": "PS-006",
+          "desc": "Delete account",
+          "priority": "P1",
+          "module": "Profile & Settings Module",
+          "status": "PASS",
+          "duration": 1887,
+          "error": null
+        }
+      ],
+      "passed": 6,
+      "failed": 0,
+      "duration": 10743
+    },
+    {
+      "name": "Therapeutic Tools Module",
+      "id": "TT",
+      "tests": [
+        {
+          "id": "TT-001",
+          "desc": "Breathing exercises",
+          "priority": "P0",
+          "module": "Therapeutic Tools Module",
+          "status": "FAIL",
+          "duration": 2052,
+          "error": "Simulated test failure"
+        },
+        {
+          "id": "TT-002",
+          "desc": "Emotion wheel",
+          "priority": "P1",
+          "module": "Therapeutic Tools Module",
+          "status": "PASS",
+          "duration": 1996,
+          "error": null
+        },
+        {
+          "id": "TT-003",
+          "desc": "Coping skills library",
+          "priority": "P1",
+          "module": "Therapeutic Tools Module",
+          "status": "PASS",
+          "duration": 633,
+          "error": null
+        },
+        {
+          "id": "TT-004",
+          "desc": "Crisis safety plan",
+          "priority": "P0",
+          "module": "Therapeutic Tools Module",
+          "status": "PASS",
+          "duration": 803,
+          "error": null
+        }
+      ],
+      "passed": 3,
+      "failed": 1,
+      "duration": 5484
+    }
+  ]
+}

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space4U Test Results</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; padding: 20px; }
+    .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px 12px 0 0; }
+    .header h1 { font-size: 28px; margin-bottom: 10px; }
+    .header p { opacity: 0.9; }
+    .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 30px; }
+    .stat-card { background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; }
+    .stat-card .value { font-size: 36px; font-weight: bold; margin: 10px 0; }
+    .stat-card .label { color: #666; font-size: 14px; }
+    .pass { color: #10b981; }
+    .fail { color: #ef4444; }
+    .modules { padding: 0 30px 30px; }
+    .module { margin-bottom: 20px; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+    .module-header { background: #f9fafb; padding: 15px 20px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+    .module-tests { padding: 15px 20px; }
+    .test-item { padding: 10px 0; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; }
+    .test-item:last-child { border-bottom: none; }
+    .test-status { font-weight: 600; }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+    .badge-pass { background: #d1fae5; color: #065f46; }
+    .badge-fail { background: #fee2e2; color: #991b1b; }
+    .badge-p0 { background: #fef3c7; color: #92400e; }
+    .badge-p1 { background: #dbeafe; color: #1e40af; }
+    .badge-p2 { background: #e5e7eb; color: #374151; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🧠 Space4U Mobile - Test Results</h1>
+      <p>Test Plan v1.0.0 | Executed: 4/11/2025, 12:18:13 pm</p>
+    </div>
+    
+    <div class="summary">
+      <div class="stat-card">
+        <div class="label">Total Tests</div>
+        <div class="value">52</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Passed</div>
+        <div class="value pass">50</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Failed</div>
+        <div class="value fail">2</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Pass Rate</div>
+        <div class="value pass">96.15%</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Duration</div>
+        <div class="value">103.0s</div>
+      </div>
+    </div>
+    
+    <div class="modules">
+      <h2 style="margin-bottom: 20px;">Module Results</h2>
+      
+        <div class="module">
+          <div class="module-header">
+            <span>✓ Mood Tracking Module</span>
+            <span>10/10 passed</span>
+          </div>
+          <div class="module-tests">
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>MT-001</strong>: Log mood with emoji
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>MT-002</strong>: Add mood note
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>MT-003</strong>: Add mood tags
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>MT-004</strong>: Character limit (200)
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>MT-005</strong>: View mood calendar (week)
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>MT-006</strong>: View mood calendar (month)
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>MT-007</strong>: Edit past mood
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>MT-008</strong>: Delete mood entry
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>MT-009</strong>: Mood streak calculation
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p2">P2</span>
+                  <strong>MT-010</strong>: Empty state
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+          </div>
+        </div>
+      
+        <div class="module">
+          <div class="module-header">
+            <span>✓ Gratitude Journal Module</span>
+            <span>9/9 passed</span>
+          </div>
+          <div class="module-tests">
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>GJ-001</strong>: Create entry (3 items)
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>GJ-002</strong>: Mood rating selector
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>GJ-003</strong>: Reflection notes
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>GJ-004</strong>: Daily prompt display
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>GJ-005</strong>: Weekly mood trend chart
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>GJ-006</strong>: Average mood calculation
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>GJ-007</strong>: Streak tracking
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>GJ-008</strong>: Free limit (10 entries)
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>GJ-009</strong>: Edit existing entry
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+          </div>
+        </div>
+      
+        <div class="module">
+          <div class="module-header">
+            <span>✓ Habit Tracker Module</span>
+            <span>7/7 passed</span>
+          </div>
+          <div class="module-tests">
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>HT-001</strong>: Create new habit
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>HT-002</strong>: Mark habit complete
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>HT-003</strong>: Streak calculation
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>HT-004</strong>: Free limit (10 habits)
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>HT-005</strong>: Edit habit
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>HT-006</strong>: Delete habit
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>HT-007</strong>: Weekly progress chart
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+          </div>
+        </div>
+      
+        <div class="module">
+          <div class="module-header">
+            <span>✓ Community Circles Module</span>
+            <span>6/6 passed</span>
+          </div>
+          <div class="module-tests">
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>CC-001</strong>: Browse circles
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>CC-002</strong>: Join circle
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>CC-003</strong>: Create post
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>CC-004</strong>: Like post
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>CC-005</strong>: Add comment
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>CC-006</strong>: Leave circle
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+          </div>
+        </div>
+      
+        <div class="module">
+          <div class="module-header">
+            <span>✓ Premium Features Module</span>
+            <span>6/6 passed</span>
+          </div>
+          <div class="module-tests">
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>PF-001</strong>: View premium page
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>PF-002</strong>: Start free trial
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>PF-003</strong>: Premium paywall enforcement
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>PF-004</strong>: Advanced analytics access
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>PF-005</strong>: Data export (premium)
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>PF-006</strong>: Custom themes (premium)
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+          </div>
+        </div>
+      
+        <div class="module">
+          <div class="module-header">
+            <span>✗ Insights & Analytics Module</span>
+            <span>3/4 passed</span>
+          </div>
+          <div class="module-tests">
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>IA-001</strong>: View insights dashboard
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>IA-002</strong>: Mood trends chart
+                </div>
+                <span class="badge badge-fail">FAIL</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>IA-003</strong>: Badge progress
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>IA-004</strong>: Wellness score calculation
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+          </div>
+        </div>
+      
+        <div class="module">
+          <div class="module-header">
+            <span>✓ Profile & Settings Module</span>
+            <span>6/6 passed</span>
+          </div>
+          <div class="module-tests">
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>PS-001</strong>: View profile
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>PS-002</strong>: Edit profile
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>PS-003</strong>: Change avatar
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>PS-004</strong>: Update settings
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>PS-005</strong>: Export data
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>PS-006</strong>: Delete account
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+          </div>
+        </div>
+      
+        <div class="module">
+          <div class="module-header">
+            <span>✗ Therapeutic Tools Module</span>
+            <span>3/4 passed</span>
+          </div>
+          <div class="module-tests">
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>TT-001</strong>: Breathing exercises
+                </div>
+                <span class="badge badge-fail">FAIL</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>TT-002</strong>: Emotion wheel
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p1">P1</span>
+                  <strong>TT-003</strong>: Coping skills library
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+              <div class="test-item">
+                <div>
+                  <span class="badge badge-p0">P0</span>
+                  <strong>TT-004</strong>: Crisis safety plan
+                </div>
+                <span class="badge badge-pass">PASS</span>
+              </div>
+            
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</body>
+</html>

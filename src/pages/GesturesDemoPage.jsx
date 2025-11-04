@@ -85,8 +85,8 @@ function GesturesDemoPage() {
 
         <div className="space-y-2">
           {items.map((item) => (
-            <SwipeableListItem
-              key={item.id}
+            <SwipeableListItem key={item.id || item.name || Math.random()}
+              
               leftActions={[
                 {
                   icon: <Trash size={20} />,

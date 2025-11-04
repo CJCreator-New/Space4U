@@ -41,7 +41,9 @@ function CrisisHotlines() {
   ]
 
   const callHotline = (phone) => {
-    window.location.href = `tel:${phone.replace(/\s/g, '')}`
+    if (typeof window !== 'undefined') {
+      window.location.href = `tel:${phone.replace(/\s/g, '')}`
+    }
   }
 
   return (

@@ -4,7 +4,7 @@ export const COUNTRIES = {
   IN: {
     code: 'IN',
     name: 'India',
-    flag: 'ðŸ‡®ðŸ‡³',
+    flag: '',
     emergency: '112',
     crisisHelplines: [
       {
@@ -47,7 +47,7 @@ export const COUNTRIES = {
   US: {
     code: 'US',
     name: 'United States',
-    flag: 'ðŸ‡ºðŸ‡¸',
+    flag: '',
     emergency: '911',
     crisisHelplines: [
       {

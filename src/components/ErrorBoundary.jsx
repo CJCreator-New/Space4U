@@ -27,15 +27,19 @@ class ErrorBoundary extends React.Component {
   }
 
   handleReload = () => {
-    window.location.reload()
+    if (typeof window !== 'undefined') {
+      window.location.reload()
+    }
   }
 
   handleGoHome = () => {
     // Clear error state and reset
     this.setState({ hasError: false, error: null, errorInfo: null })
     // Force full page reload to clear any cached errors
-    window.location.href = '/'
-    window.location.reload()
+    if (typeof window !== 'undefined') {
+      window.location.href = '/'
+      window.location.reload()
+    }
   }
 
   render() {

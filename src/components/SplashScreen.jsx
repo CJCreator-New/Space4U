@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { SplashScreen as CapacitorSplash } from '@capacitor/splash-screen'
+import { SplashScreen as CapacitorSplash } from
+ '@capacitor/splash-screen'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Icon } from './common/IconLibrary'
+import Icon from './Icon'
 
 function SplashScreen({ duration = 2000, onComplete }) {
   const [show, setShow] = useState(true)

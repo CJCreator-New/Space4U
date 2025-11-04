@@ -78,14 +78,14 @@ function SleepAnalytics() {
           {stats.avgHours < 7 && (
             <div className="p-4 bg-orange-50 border border-orange-200 rounded-xl">
               <p className="text-sm text-orange-800">
-                ðŸ’¤ You're averaging {stats.avgHours} hours. Aim for 7-9 hours for optimal health.
+                 You're averaging {stats.avgHours} hours. Aim for 7-9 hours for optimal health.
               </p>
             </div>
           )}
           {stats.avgQuality < 3 && (
             <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
               <p className="text-sm text-blue-800">
-                ðŸŒ™ Your sleep quality is below average. Try establishing a bedtime routine.
+                 Your sleep quality is below average. Try establishing a bedtime routine.
               </p>
             </div>
           )}
