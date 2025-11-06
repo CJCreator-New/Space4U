@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  // GitHub Pages base path - set to repository name for github.io or empty for custom domain
+  base: process.env.GITHUB_PAGES ? '/Space4U/' : '/',
   server: {
     host: true,
     port: 5173,
