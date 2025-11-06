@@ -1,10 +1,10 @@
-// Country-specific crisis resources and helplines
+﻿// Country-specific crisis resources and helplines
 
 export const COUNTRIES = {
   IN: {
     code: 'IN',
     name: 'India',
-    flag: '🇮🇳',
+    flag: '',
     emergency: '112',
     crisisHelplines: [
       {
@@ -47,7 +47,7 @@ export const COUNTRIES = {
   US: {
     code: 'US',
     name: 'United States',
-    flag: '🇺🇸',
+    flag: '',
     emergency: '911',
     crisisHelplines: [
       {
@@ -93,9 +93,10 @@ export const getCountryData = (countryCode) => {
 }
 
 export const saveUserCountry = (countryCode) => {
-  localStorage.setItem('safespace_country', countryCode)
+  localStorage.setItem('space4u_country', countryCode)
 }
 
 export const getUserCountry = () => {
-  return localStorage.getItem('safespace_country') || 'US'
+  return localStorage.getItem('space4u_country') || 'US'
 }
+

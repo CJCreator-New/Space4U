@@ -1,58 +1,93 @@
-import { createClient } from '@supabase/supabase-js'
+// Reuse the single supabase client from src/lib/supabase to avoid
+// multiple GoTrueClient instances in the same browser context.
+import { supabase } from '../lib/supabase'
+export { supabase }
 
-export const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-)
+// Safe helper to get session without throwing if supabase isn't available
+const getSessionSafe = async () => {
+  try {
+    if (!supabase || !supabase.auth || !supabase.auth.getSession) {
+      return { data: { session: null } }
+    }
+    const resp = await supabase.auth.getSession()
+    return resp || { data: { session: null } }
+  } catch (err) {
+    // swallow and return a consistent shape
+    return { data: { session: null } }
+  }
+}
 
 export const api = {
   async getMoods() {
-    const { data: { session } } = await supabase.auth.getSession()
+    const sessionResp = await getSessionSafe()
+    const session = sessionResp?.data?.session || null
     if (!session) return { data: null, error: 'Not authenticated' }
-    
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/moods`, {
-      headers: { Authorization: `Bearer ${session.access_token}` }
-    })
-    return response.json()
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/moods`, {
+        headers: { Authorization: `Bearer ${session.access_token}` }
+      })
+      return await response.json()
+    } catch (error) {
+      return { data: null, error }
+    }
   },
 
   async saveMood(moodData) {
-    const { data: { session } } = await supabase.auth.getSession()
+    const sessionResp = await getSessionSafe()
+    const session = sessionResp?.data?.session || null
     if (!session) return { data: null, error: 'Not authenticated' }
-    
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/moods`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.access_token}`
-      },
-      body: JSON.stringify(moodData)
-    })
-    return response.json()
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/moods`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify(moodData)
+      })
+      return await response.json()
+    } catch (error) {
+      return { data: null, error }
+    }
   },
 
   async getCircles() {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/circles`)
-    return response.json()
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/circles`)
+      return await response.json()
+    } catch (error) {
+      return { data: null, error }
+    }
   },
 
   async getCirclePosts(circleId) {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/circles/${circleId}/posts`)
-    return response.json()
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/circles/${circleId}/posts`)
+      return await response.json()
+    } catch (error) {
+      return { data: null, error }
+    }
   },
 
   async createPost(postData) {
-    const { data: { session } } = await supabase.auth.getSession()
+    const sessionResp = await getSessionSafe()
+    const session = sessionResp?.data?.session || null
     if (!session) return { data: null, error: 'Not authenticated' }
-    
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/posts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.access_token}`
-      },
-      body: JSON.stringify(postData)
-    })
-    return response.json()
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/posts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify(postData)
+      })
+      return await response.json()
+    } catch (error) {
+      return { data: null, error }
+    }
   }
 }

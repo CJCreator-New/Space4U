@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 
 export function useTheme() {
   const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('safespace_theme')
+    const saved = localStorage.getItem('space4u_theme')
     if (saved) return saved
     
     // Auto-detect system preference
@@ -21,14 +21,14 @@ export function useTheme() {
       root.classList.remove('dark')
     }
     
-    localStorage.setItem('safespace_theme', theme)
+    localStorage.setItem('space4u_theme', theme)
   }, [theme])
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     
     const handleChange = (e) => {
-      const saved = localStorage.getItem('safespace_theme')
+      const saved = localStorage.getItem('space4u_theme')
       if (!saved) {
         setTheme(e.matches ? 'dark' : 'light')
       }
@@ -47,7 +47,7 @@ export function useTheme() {
   const setAutoTheme = () => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
     setTheme(systemTheme)
-    localStorage.removeItem('safespace_theme')
+    localStorage.removeItem('space4u_theme')
   }
 
   return {

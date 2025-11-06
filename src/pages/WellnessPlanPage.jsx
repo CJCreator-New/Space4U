@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Plus, Clock, CheckCircle2, Circle, Crown } from 'lucide-react'
+﻿import { useState, useEffect } from 'react'
+import { Plus, Clock, CheckCircle2, Circle, Crown, Calendar } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
 import { getPremiumStatus } from '../utils/premiumUtils'
@@ -20,7 +20,7 @@ function WellnessPlanPage() {
   const canAddActivity = isPremium || activityCount < FREE_ACTIVITY_LIMIT
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('safespace_wellness_plans') || '[]')
+    const saved = JSON.parse(localStorage.getItem('space4u_wellness_plans') || '[]')
     setPlans(saved)
     if (saved.length > 0) setActivePlan(saved[0])
   }, [])
@@ -28,7 +28,7 @@ function WellnessPlanPage() {
   const createPlan = () => {
     const plan = { id: Date.now(), name: 'My Wellness Plan', activities: [], is_active: true }
     const updated = [plan, ...plans]
-    localStorage.setItem('safespace_wellness_plans', JSON.stringify(updated))
+    localStorage.setItem('space4u_wellness_plans', JSON.stringify(updated))
     setPlans(updated)
     setActivePlan(plan)
   }
@@ -41,7 +41,7 @@ function WellnessPlanPage() {
     }
     const activity = { ...newActivity, id: Date.now(), completions: {} }
     const updated = plans.map(p => p.id === activePlan.id ? { ...p, activities: [...(p.activities || []), activity] } : p)
-    localStorage.setItem('safespace_wellness_plans', JSON.stringify(updated))
+    localStorage.setItem('space4u_wellness_plans', JSON.stringify(updated))
     setPlans(updated)
     setActivePlan(updated.find(p => p.id === activePlan.id))
     setShowModal(false)
@@ -66,7 +66,7 @@ function WellnessPlanPage() {
       }
       return p
     })
-    localStorage.setItem('safespace_wellness_plans', JSON.stringify(updated))
+    localStorage.setItem('space4u_wellness_plans', JSON.stringify(updated))
     setPlans(updated)
     setActivePlan(updated.find(p => p.id === activePlan.id))
   }
@@ -219,3 +219,4 @@ function WellnessPlanPage() {
 }
 
 export default WellnessPlanPage
+

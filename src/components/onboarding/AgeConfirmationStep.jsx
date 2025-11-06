@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import ProgressIndicator from './ProgressIndicator'
 
@@ -41,7 +41,7 @@ function AgeConfirmationStep({ data, onNext, onBack }) {
 
       <div className="bg-amber-50 border border-warning/20 rounded-2xl p-4 mb-8">
         <p className="text-sm text-text-secondary leading-relaxed">
-          Safespace is designed for adults. If you're under 18, please speak with a trusted adult or contact a youth helpline for support.
+          space4u is designed for adults. If you're under 18, please speak with a trusted adult or contact a youth helpline for support.
         </p>
       </div>
 

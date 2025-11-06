@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { TrendingUp, Heart, Target, Brain, Smile, Crown } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
 import PremiumPaywall from '../components/PremiumPaywall'
 import WellnessBreakdown from '../components/premium/WellnessBreakdown'
+import WellnessChart from '../components/WellnessChart'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
 import ResearchCard from '../components/wellness/ResearchCard'
@@ -25,11 +26,11 @@ function WellnessDashboardPage() {
   }, [])
 
   const calculateWellnessScore = () => {
-    const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
-    const habits = JSON.parse(localStorage.getItem('safespace_habits') || '[]')
-    const gratitude = JSON.parse(localStorage.getItem('safespace_gratitude_entries') || '[]')
-    const sleep = JSON.parse(localStorage.getItem('safespace_sleep_logs') || '[]')
-    const emotions = JSON.parse(localStorage.getItem('safespace_emotion_logs') || '[]')
+    const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
+    const habits = JSON.parse(localStorage.getItem('space4u_habits') || '[]')
+    const gratitude = JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]')
+    const sleep = JSON.parse(localStorage.getItem('space4u_sleep_logs') || '[]')
+    const emotions = JSON.parse(localStorage.getItem('space4u_emotion_logs') || '[]')
 
     const last7Days = [...Array(7)].map((_, i) => {
       const d = new Date()
@@ -139,6 +140,16 @@ function WellnessDashboardPage() {
         </div>
       )}
 
+      {/* Wellness Dimension Chart */}
+      <div className="mb-8">
+        <WellnessChart scores={{
+          mood: Math.round((metrics.mood / 20) * 25),
+          habit: Math.round((metrics.habits / 20) * 25),
+          gratitude: Math.round((metrics.gratitude / 20) * 25),
+          emotion: Math.round((metrics.emotions / 20) * 25)
+        }} />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <div className="card p-6">
           <div className="flex items-center gap-3 mb-3">
@@ -232,3 +243,4 @@ function WellnessDashboardPage() {
 }
 
 export default WellnessDashboardPage
+

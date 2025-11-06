@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Plus, Bell, BellOff, Trash2, Crown } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
@@ -6,17 +6,18 @@ import SafeComponent from '../components/SafeComponent'
 import LimitWarningBanner from '../components/common/LimitWarningBanner'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
+import ReminderTest from '../components/common/ReminderTest'
 import { disclaimers } from '../data/disclaimers'
 
 function RemindersPage() {
   const { t } = useTranslation()
   
   const REMINDER_TYPES = [
-    { value: 'mood_checkin', label: t('reminders.moodCheckIn'), icon: '😊' },
-    { value: 'medication', label: t('reminders.medication'), icon: '💊' },
-    { value: 'therapy', label: t('reminders.therapy'), icon: '🧠' },
-    { value: 'habit', label: t('reminders.habit'), icon: '🎯' },
-    { value: 'custom', label: t('reminders.custom'), icon: '⏰' }
+    { value: 'mood_checkin', label: t('reminders.moodCheckIn'), icon: '' },
+    { value: 'medication', label: t('reminders.medication'), icon: '' },
+    { value: 'therapy', label: t('reminders.therapy'), icon: ' ' },
+    { value: 'habit', label: t('reminders.habit'), icon: '' },
+    { value: 'custom', label: t('reminders.custom'), icon: 'â°' }
   ]
 
   const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -34,9 +35,14 @@ function RemindersPage() {
   const FREE_REMINDER_LIMIT = 5
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('safespace_reminders') || '[]')
-    setReminders(saved)
+    loadReminders()
   }, [])
+
+  const loadReminders = async () => {
+    const { getReminders } = await import('../utils/storageHelpers')
+    const saved = await getReminders()
+    setReminders(saved)
+  }
 
   const handleAddClick = () => {
     if (!isPremium && reminders.length >= FREE_REMINDER_LIMIT) {
@@ -46,24 +52,27 @@ function RemindersPage() {
     setShowModal(true)
   }
 
-  const addReminder = () => {
+  const addReminder = async () => {
+    const { saveReminders } = await import('../utils/storageHelpers')
     const reminder = { ...newReminder, id: Date.now() }
     const updated = [...reminders, reminder]
-    localStorage.setItem('safespace_reminders', JSON.stringify(updated))
+    await saveReminders(updated)
     setReminders(updated)
     setShowModal(false)
     setNewReminder({ type: 'mood_checkin', title: '', time: '09:00', days: [1, 2, 3, 4, 5], enabled: true })
   }
 
-  const toggleReminder = (id) => {
+  const toggleReminder = async (id) => {
+    const { saveReminders } = await import('../utils/storageHelpers')
     const updated = reminders.map(r => r.id === id ? { ...r, enabled: !r.enabled } : r)
-    localStorage.setItem('safespace_reminders', JSON.stringify(updated))
+    await saveReminders(updated)
     setReminders(updated)
   }
 
-  const deleteReminder = (id) => {
+  const deleteReminder = async (id) => {
+    const { saveReminders } = await import('../utils/storageHelpers')
     const updated = reminders.filter(r => r.id !== id)
-    localStorage.setItem('safespace_reminders', JSON.stringify(updated))
+    await saveReminders(updated)
     setReminders(updated)
   }
 
@@ -203,7 +212,7 @@ function RemindersPage() {
                       }`}
                     >
                       {day}
-                    </button>
+                    </button >
                   ))}
                 </div>
               </div>
@@ -216,6 +225,9 @@ function RemindersPage() {
           </div>
         </div>
       )}
+
+      {/* Test component for reminder toasts */}
+      <ReminderTest />
     </div>
   
     </SafeComponent>
@@ -223,3 +235,4 @@ function RemindersPage() {
 }
 
 export default RemindersPage
+

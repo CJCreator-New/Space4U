@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Mic, Square, Play, Trash2 } from 'lucide-react'
 
 function VoiceJournal() {
@@ -7,7 +7,7 @@ function VoiceJournal() {
   const [mediaRecorder, setMediaRecorder] = useState(null)
 
   useEffect(() => {
-    const saved = localStorage.getItem('safespace_voice_journals')
+    const saved = localStorage.getItem('space4u_voice_journals')
     if (saved) setRecordings(JSON.parse(saved))
   }, [])
 
@@ -30,7 +30,7 @@ function VoiceJournal() {
         }
         const updated = [newRecording, ...recordings]
         setRecordings(updated)
-        localStorage.setItem('safespace_voice_journals', JSON.stringify(updated))
+        localStorage.setItem('space4u_voice_journals', JSON.stringify(updated))
       }
 
       recorder.startTime = Date.now()
@@ -53,7 +53,7 @@ function VoiceJournal() {
   const deleteRecording = (id) => {
     const updated = recordings.filter(r => r.id !== id)
     setRecordings(updated)
-    localStorage.setItem('safespace_voice_journals', JSON.stringify(updated))
+    localStorage.setItem('space4u_voice_journals', JSON.stringify(updated))
   }
 
   return (
@@ -112,3 +112,4 @@ function VoiceJournal() {
 }
 
 export default VoiceJournal
+

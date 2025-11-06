@@ -1,21 +1,21 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 
 function WorryScheduler({ onClose }) {
-  const [worries, setWorries] = useState(() => JSON.parse(localStorage.getItem('safespace_worry_logs') || '[]'))
+  const [worries, setWorries] = useState(() => JSON.parse(localStorage.getItem('space4u_worry_logs') || '[]'))
   const [newWorry, setNewWorry] = useState('')
   const [worryTime, setWorryTime] = useState('18:00')
 
   const addWorry = () => {
     const worry = { id: Date.now(), worry: newWorry, scheduled_time: worryTime, addressed: false, created_at: new Date().toISOString() }
     const updated = [worry, ...worries]
-    localStorage.setItem('safespace_worry_logs', JSON.stringify(updated))
+    localStorage.setItem('space4u_worry_logs', JSON.stringify(updated))
     setWorries(updated)
     setNewWorry('')
   }
 
   const toggleAddressed = (id) => {
     const updated = worries.map(w => w.id === id ? { ...w, addressed: !w.addressed } : w)
-    localStorage.setItem('safespace_worry_logs', JSON.stringify(updated))
+    localStorage.setItem('space4u_worry_logs', JSON.stringify(updated))
     setWorries(updated)
   }
 
@@ -58,3 +58,4 @@ function WorryScheduler({ onClose }) {
 }
 
 export default WorryScheduler
+

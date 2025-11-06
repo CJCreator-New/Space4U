@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+﻿import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Users, ChevronDown, Plus, Grid, List } from 'lucide-react'
@@ -44,20 +44,20 @@ function CircleFeedPage() {
     }
   }, [realtimePosts, postsLoading, sortBy, filterBy])
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300 && hasMore && !loadingMore) {
-        loadMorePosts()
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [hasMore, loadingMore, loadMorePosts])
-
   const loadCircleData = () => {
     const foundCircle = mockCircles.find(c => c.id === parseInt(circleId))
     setCircle(foundCircle)
+    setLoading(false)
+    if (!foundCircle) {
+      // If circle not found locally, navigate back to circles with a helpful message
+      const toast = document.createElement('div')
+      toast.textContent = 'Circle not found'
+      toast.className = 'fixed top-4 right-4 bg-warning text-white px-4 py-2 rounded-xl shadow-lg z-50'
+      document.body.appendChild(toast)
+      setTimeout(() => document.body.removeChild(toast), 1800)
+      // gently navigate back after short delay
+      setTimeout(() => navigate('/circles'), 900)
+    }
   }
 
 
@@ -82,6 +82,17 @@ function CircleFeedPage() {
     }, 1000)
   }, [circleId, sortBy, filterBy, page, loadingMore, hasMore])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300 && hasMore && !loadingMore) {
+        loadMorePosts()
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [hasMore, loadingMore, loadMorePosts])
+
   const sortPosts = (posts, sort) => {
     switch (sort) {
       case 'popular':
@@ -94,8 +105,8 @@ function CircleFeedPage() {
   }
 
   const filterPosts = (posts, filter) => {
-    const heartedPosts = JSON.parse(localStorage.getItem('safespace_hearted') || '[]')
-    const userPosts = JSON.parse(localStorage.getItem('safespace_user_posts') || '[]')
+    const heartedPosts = JSON.parse(localStorage.getItem('space4u_hearted') || '[]')
+    const userPosts = JSON.parse(localStorage.getItem('space4u_user_posts') || '[]')
     
     switch (filter) {
       case 'hearted':
@@ -108,18 +119,18 @@ function CircleFeedPage() {
   }
 
   const handleLeaveCircle = () => {
-    const joinedCircles = JSON.parse(localStorage.getItem('safespace_circles') || '[]')
+    const joinedCircles = JSON.parse(localStorage.getItem('space4u_user_circles') || '[]')
     const updatedCircles = joinedCircles.filter(id => id !== parseInt(circleId))
-    localStorage.setItem('safespace_circles', JSON.stringify(updatedCircles))
+    localStorage.setItem('space4u_user_circles', JSON.stringify(updatedCircles))
     navigate('/circles')
   }
 
   const handleHeartPost = (postId, isHearted) => {
-    const heartedPosts = JSON.parse(localStorage.getItem('safespace_hearted') || '[]')
+    const heartedPosts = JSON.parse(localStorage.getItem('space4u_hearted') || '[]')
     const updatedHearted = isHearted 
       ? [...heartedPosts, postId]
       : heartedPosts.filter(id => id !== postId)
-    localStorage.setItem('safespace_hearted', JSON.stringify(updatedHearted))
+    localStorage.setItem('space4u_hearted', JSON.stringify(updatedHearted))
   }
 
   const handleSharePost = () => {
@@ -282,7 +293,7 @@ function CircleFeedPage() {
         <div className="space-y-3">
           {posts.map((post) => (
             <PostCard
-              key={post.id}
+              key={post.id || post.name || Math.random()}
               post={post}
               circleColor={circle.color}
               onHeart={handleHeartPost}

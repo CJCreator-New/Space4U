@@ -1,4 +1,4 @@
-export const mockResources = {
+﻿export const mockResources = {
   breathingExercises: [
     {
       id: 'box-breathing',
@@ -117,7 +117,7 @@ Remember, seeking help is a sign of strength, not weakness.`,
     {
       id: 'science-mood-tracking',
       title: 'The Science of Mood Tracking',
-      author: 'Safespace Team',
+      author: 'space4u Team',
       readTime: 3,
       difficulty: 'Beginner',
       summary: 'Discover the research behind mood tracking and how it can improve your mental health.',
@@ -233,7 +233,7 @@ Sleep and mental health are closely linked:
 - Avoid screens or use blue light filters
 
 ### 3. Optimize Your Environment
-- Keep your bedroom cool (60-67°F)
+- Keep your bedroom cool (60-67 °F)
 - Make it as dark as possible
 - Reduce noise or use white noise
 - Invest in comfortable bedding

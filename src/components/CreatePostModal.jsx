@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { X, Tag, AlertTriangle, FileText, Check, Loader } from 'lucide-react'
+import { motion } from 'framer-motion'
+import Icon from './Icon'
 import { circleService } from '../services/circleService'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 
@@ -183,12 +184,24 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-end md:items-center justify-center z-50">
-      <div className="bg-surface w-full md:max-w-2xl md:mx-4 rounded-t-3xl md:rounded-3xl max-h-[90vh] overflow-hidden animate-slide-up">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end md:items-center justify-center z-50">
+      <motion.div
+        initial={{ y: "100%", opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: "100%", opacity: 0 }}
+        transition={{ 
+          type: "spring", 
+          stiffness: 300, 
+          damping: 30,
+          duration: 0.4
+        }}
+        className="bg-surface w-full md:max-w-2xl md:mx-4 rounded-t-3xl md:rounded-3xl max-h-[90vh] overflow-hidden shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
         {showSuccess ? (
           <div className="p-8 text-center">
             <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="text-success" size={32} />
+              <Icon name="check" size={32} className="text-success" />
             </div>
             <h3 className="text-xl font-semibold text-text-primary mb-2">Posted!</h3>
             <p className="text-text-secondary">Your voice matters ❤️</p>
@@ -206,7 +219,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                     onClick={() => setShowDrafts(!showDrafts)}
                     className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-full text-sm text-text-secondary hover:bg-gray-200 transition-colors"
                   >
-                    <FileText size={14} />
+                    <Icon name="file-text" size={14} />
                     Drafts ({drafts.length})
                   </button>
                 )}
@@ -215,7 +228,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                 onClick={handleClose}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
-                <X size={20} />
+                <Icon name="x" size={20} />
               </button>
             </div>
 
@@ -249,7 +262,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                         onClick={() => deleteDraft(draft.id)}
                         className="p-1 text-text-secondary hover:text-danger transition-colors"
                       >
-                        <X size={16} />
+                        <Icon name="x" size={16} />
                       </button>
                     </div>
                   ))}
@@ -275,7 +288,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                       onClick={() => setShowTagSelector(!showTagSelector)}
                       className="flex items-center gap-2 px-3 py-2 text-text-secondary hover:text-primary hover:bg-primary/10 rounded-xl transition-colors"
                     >
-                      <Tag size={16} />
+                      <Icon name="tag" size={16} />
                       Add tags
                     </button>
                     <button
@@ -286,7 +299,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                           : 'text-text-secondary hover:text-warning hover:bg-warning/10'
                       }`}
                     >
-                      <AlertTriangle size={16} />
+                      <Icon name="alert-triangle" size={16} />
                       Trigger warning
                     </button>
                   </div>
@@ -364,7 +377,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                           onClick={() => removeTag(tag)}
                           className="hover:bg-white/20 rounded-full p-0.5 transition-colors"
                         >
-                          <X size={12} />
+                          <Icon name="x" size={12} />
                         </button>
                       </span>
                     ))}
@@ -394,7 +407,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
                 >
                   {isPosting ? (
                     <div className="flex items-center justify-center gap-2">
-                      <Loader className="animate-spin" size={16} />
+                      <Icon name="loader" size={16} className="animate-spin" />
                       Posting...
                     </div>
                   ) : (
@@ -422,7 +435,7 @@ function CreatePostModal({ isOpen, onClose, circle, onPostCreated }) {
             </div>
           </>
         )}
-      </div>
+      </motion.div>
     </div>
   )
 }

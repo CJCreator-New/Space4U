@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Globe } from 'lucide-react'
+import { FaGlobe } from '../config/icons'
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇬🇧' },
@@ -28,7 +28,7 @@ function LanguageSwitcher() {
   return (
     <div className="relative group">
       <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface hover:bg-surface-hover transition-colors">
-        <Globe className="w-5 h-5" />
+        <FaGlobe className="w-5 h-5" />
         <span className="text-sm font-medium">
           {languages.find(l => l.code === i18n.language)?.flag || '🌐'}
         </span>

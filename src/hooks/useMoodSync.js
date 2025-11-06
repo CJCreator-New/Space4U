@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { moodService } from '../services/moodService'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 
@@ -12,7 +12,7 @@ export function useMoodSync() {
     if (user) {
       loadMoods()
     } else {
-      const localMoods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+      const localMoods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
       setMoods(localMoods)
       setLoading(false)
     }
@@ -27,7 +27,7 @@ export function useMoodSync() {
         return acc
       }, {})
       setMoods(moodsObj)
-      localStorage.setItem('safespace_moods', JSON.stringify(moodsObj))
+      localStorage.setItem('space4u_moods', JSON.stringify(moodsObj))
     }
     setLoading(false)
   }
@@ -35,7 +35,7 @@ export function useMoodSync() {
   async function saveMood(date, moodData) {
     const newMoods = { ...moods, [date]: moodData }
     setMoods(newMoods)
-    localStorage.setItem('safespace_moods', JSON.stringify(newMoods))
+    localStorage.setItem('space4u_moods', JSON.stringify(newMoods))
 
     if (user) {
       setSyncing(true)
@@ -46,3 +46,4 @@ export function useMoodSync() {
 
   return { moods, loading, syncing, saveMood, refreshMoods: loadMoods }
 }
+

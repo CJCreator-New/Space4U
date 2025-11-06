@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Moon, TrendingUp, Clock } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
@@ -7,7 +7,7 @@ function SleepAnalytics() {
   const [stats, setStats] = useState({ avgQuality: 0, avgHours: 0, sleepDebt: 0 })
 
   useEffect(() => {
-    const logs = JSON.parse(localStorage.getItem('safespace_sleep_logs') || '[]')
+    const logs = JSON.parse(localStorage.getItem('space4u_sleep_logs') || '[]')
     const last30 = logs.slice(-30)
 
     const chartData = last30.map(log => ({
@@ -78,21 +78,21 @@ function SleepAnalytics() {
           {stats.avgHours < 7 && (
             <div className="p-4 bg-orange-50 border border-orange-200 rounded-xl">
               <p className="text-sm text-orange-800">
-                💤 You're averaging {stats.avgHours} hours. Aim for 7-9 hours for optimal health.
+                 You're averaging {stats.avgHours} hours. Aim for 7-9 hours for optimal health.
               </p>
             </div>
           )}
           {stats.avgQuality < 3 && (
             <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
               <p className="text-sm text-blue-800">
-                🌙 Your sleep quality is below average. Try establishing a bedtime routine.
+                 Your sleep quality is below average. Try establishing a bedtime routine.
               </p>
             </div>
           )}
           {stats.sleepDebt > 10 && (
             <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
               <p className="text-sm text-red-800">
-                ⚠️ High sleep debt detected. Prioritize rest this week.
+                âš ï¸ High sleep debt detected. Prioritize rest this week.
               </p>
             </div>
           )}
@@ -103,3 +103,4 @@ function SleepAnalytics() {
 }
 
 export default SleepAnalytics
+

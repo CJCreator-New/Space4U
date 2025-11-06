@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useSupabaseAuth } from '../../contexts/AuthContext'
 import WelcomeScreen from './WelcomeScreen'
 import CountryStep from './CountryStep'
@@ -44,7 +44,7 @@ function OnboardingFlow({ onComplete }) {
   const handleSkip = () => {
     const defaultData = {
       username: `user_${Date.now()}`,
-      avatar: '🐻',
+      avatar: '',
       interests: ['General Wellness']
     }
     completeOnboarding({ ...userData, ...defaultData })
@@ -54,8 +54,8 @@ function OnboardingFlow({ onComplete }) {
     if (!user) return
     
     saveUserCountry(finalData.country || 'US')
-    localStorage.setItem(`safespace_user_${user.id}`, JSON.stringify(finalData))
-    localStorage.setItem(`safespace_onboarding_complete_${user.id}`, 'true')
+    localStorage.setItem(`space4u_user_${user.id}`, JSON.stringify(finalData))
+    localStorage.setItem(`space4u_onboarding_complete_${user.id}`, 'true')
     onComplete()
   }
 

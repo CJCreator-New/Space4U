@@ -1,7 +1,7 @@
-// Core Personalization Engine - Privacy-First, Local-Only Processing
+﻿// Core Personalization Engine - Privacy-First, Local-Only Processing
 
 export const initPersonalization = () => {
-  const existing = localStorage.getItem('safespace_personalization')
+  const existing = localStorage.getItem('space4u_personalization')
   if (!existing) {
     const defaultConfig = {
       enabled: true,
@@ -11,25 +11,25 @@ export const initPersonalization = () => {
       insights: { moodPatterns: { triggers: [], positiveInfluences: [] }, effectiveStrategies: [], seasonalPatterns: [] },
       preferences: { dashboardLayout: 'adaptive', recommendationFrequency: 'medium', helpLevel: 'full' }
     }
-    localStorage.setItem('safespace_personalization', JSON.stringify(defaultConfig))
+    localStorage.setItem('space4u_personalization', JSON.stringify(defaultConfig))
     return defaultConfig
   }
   return JSON.parse(existing)
 }
 
 export const getPersonalization = () => {
-  return JSON.parse(localStorage.getItem('safespace_personalization') || '{}')
+  return JSON.parse(localStorage.getItem('space4u_personalization') || '{}')
 }
 
 export const updatePersonalization = (updates) => {
   const current = getPersonalization()
   const updated = { ...current, ...updates, lastUpdated: new Date().toISOString() }
-  localStorage.setItem('safespace_personalization', JSON.stringify(updated))
+  localStorage.setItem('space4u_personalization', JSON.stringify(updated))
   return updated
 }
 
 export const resetPersonalization = () => {
-  localStorage.removeItem('safespace_personalization')
+  localStorage.removeItem('space4u_personalization')
   return initPersonalization()
 }
 
@@ -41,3 +41,4 @@ export const isPersonalizationEnabled = () => {
 export const togglePersonalization = (enabled) => {
   return updatePersonalization({ enabled })
 }
+

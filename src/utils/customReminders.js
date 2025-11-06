@@ -3,7 +3,7 @@
 export const REMINDER_TYPES = {
   mood: { id: 'mood', label: 'Mood Check-in', icon: '😊' },
   gratitude: { id: 'gratitude', label: 'Gratitude Journal', icon: '🙏' },
-  habit: { id: 'habit', label: 'Habit Tracker', icon: '✓' },
+  habit: { id: 'habit', label: 'Habit Tracker', icon: '✔' },
   breathing: { id: 'breathing', label: 'Breathing Exercise', icon: '🧘' },
   custom: { id: 'custom', label: 'Custom Reminder', icon: '⏰' }
 }
@@ -59,11 +59,11 @@ export const toggleReminder = (id) => {
 }
 
 export const getReminders = () => {
-  return JSON.parse(localStorage.getItem('safespace_custom_reminders') || '[]')
+  return JSON.parse(localStorage.getItem('space4u_custom_reminders') || '[]')
 }
 
 export const saveReminders = (reminders) => {
-  localStorage.setItem('safespace_custom_reminders', JSON.stringify(reminders))
+  localStorage.setItem('space4u_custom_reminders', JSON.stringify(reminders))
 }
 
 export const shouldShowReminder = (reminder) => {

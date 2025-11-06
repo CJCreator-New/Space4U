@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { X } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import DisclaimerBanner from '../wellness/DisclaimerBanner'
@@ -44,11 +44,11 @@ function SleepHygieneTracker({ onClose }) {
     if (user) {
       console.log('Saving to database:', data)
     } else {
-      const saved = JSON.parse(localStorage.getItem('safespace_sleep_logs') || '[]')
+      const saved = JSON.parse(localStorage.getItem('space4u_sleep_logs') || '[]')
       const existing = saved.findIndex(s => s.date === log.date)
       if (existing >= 0) saved[existing] = { ...data, id: saved[existing].id }
       else saved.push({ ...data, id: Date.now() })
-      localStorage.setItem('safespace_sleep_logs', JSON.stringify(saved))
+      localStorage.setItem('space4u_sleep_logs', JSON.stringify(saved))
     }
     onClose()
   }
@@ -164,3 +164,4 @@ function SleepHygieneTracker({ onClose }) {
 }
 
 export default SleepHygieneTracker
+

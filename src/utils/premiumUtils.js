@@ -1,5 +1,5 @@
-export const getPremiumStatus = () => {
-  const premiumData = JSON.parse(localStorage.getItem('safespace_premium') || '{}')
+﻿export const getPremiumStatus = () => {
+  const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
   
   if (!premiumData.isPremium) {
     return { isPremium: false, trialActive: false, daysLeft: 0 }
@@ -19,7 +19,7 @@ export const getPremiumStatus = () => {
 }
 
 export const cancelPremium = () => {
-  const premiumData = JSON.parse(localStorage.getItem('safespace_premium') || '{}')
+  const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
   
   // Keep premium until billing date
   const updatedData = {
@@ -28,12 +28,12 @@ export const cancelPremium = () => {
     willCancelAt: premiumData.nextBillingDate
   }
   
-  localStorage.setItem('safespace_premium', JSON.stringify(updatedData))
+  localStorage.setItem('space4u_premium', JSON.stringify(updatedData))
   return updatedData
 }
 
 export const reactivatePremium = () => {
-  const premiumData = JSON.parse(localStorage.getItem('safespace_premium') || '{}')
+  const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
   
   const updatedData = {
     ...premiumData,
@@ -41,12 +41,12 @@ export const reactivatePremium = () => {
     willCancelAt: null
   }
   
-  localStorage.setItem('safespace_premium', JSON.stringify(updatedData))
+  localStorage.setItem('space4u_premium', JSON.stringify(updatedData))
   return updatedData
 }
 
 export const checkAndUpdatePremiumStatus = () => {
-  const premiumData = JSON.parse(localStorage.getItem('safespace_premium') || '{}')
+  const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
   
   if (!premiumData.isPremium) return false
 
@@ -58,13 +58,13 @@ export const checkAndUpdatePremiumStatus = () => {
     const trialEnd = new Date(premiumData.trialEndsAt)
     if (now > trialEnd) {
       premiumData.trialActive = false
-      localStorage.setItem('safespace_premium', JSON.stringify(premiumData))
+      localStorage.setItem('space4u_premium', JSON.stringify(premiumData))
     }
   }
 
   // Check if subscription should be cancelled
   if (premiumData.willCancelAt && now > billingDate) {
-    localStorage.removeItem('safespace_premium')
+    localStorage.removeItem('space4u_premium')
     return false
   }
 
@@ -85,6 +85,7 @@ export const startFreeTrial = () => {
     startedAt: now.toISOString()
   }
   
-  localStorage.setItem('safespace_premium', JSON.stringify(premiumData))
+  localStorage.setItem('space4u_premium', JSON.stringify(premiumData))
   return premiumData
 }
+

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { DEFAULT_TAGS } from '../constants/tags'
 
 /**
@@ -15,7 +15,7 @@ export function useTags() {
 
   const loadTags = () => {
     try {
-      const customTags = JSON.parse(localStorage.getItem('safespace_custom_tags') || '[]')
+      const customTags = JSON.parse(localStorage.getItem('space4u_custom_tags') || '[]')
       setTags([...DEFAULT_TAGS, ...customTags])
     } catch (error) {
       console.error('Error loading tags:', error)
@@ -27,7 +27,7 @@ export function useTags() {
 
   const createTag = (label, color = 'gray', category = 'custom') => {
     try {
-      const customTags = JSON.parse(localStorage.getItem('safespace_custom_tags') || '[]')
+      const customTags = JSON.parse(localStorage.getItem('space4u_custom_tags') || '[]')
       
       const newTag = {
         id: `custom_${Date.now()}`,
@@ -39,7 +39,7 @@ export function useTags() {
       }
 
       const updatedCustomTags = [...customTags, newTag]
-      localStorage.setItem('safespace_custom_tags', JSON.stringify(updatedCustomTags))
+      localStorage.setItem('space4u_custom_tags', JSON.stringify(updatedCustomTags))
       
       setTags([...DEFAULT_TAGS, ...updatedCustomTags])
       return { success: true, tag: newTag }
@@ -51,10 +51,10 @@ export function useTags() {
 
   const deleteTag = (tagId) => {
     try {
-      const customTags = JSON.parse(localStorage.getItem('safespace_custom_tags') || '[]')
+      const customTags = JSON.parse(localStorage.getItem('space4u_custom_tags') || '[]')
       const updatedCustomTags = customTags.filter(tag => tag.id !== tagId)
       
-      localStorage.setItem('safespace_custom_tags', JSON.stringify(updatedCustomTags))
+      localStorage.setItem('space4u_custom_tags', JSON.stringify(updatedCustomTags))
       setTags([...DEFAULT_TAGS, ...updatedCustomTags])
       
       return { success: true }
@@ -82,3 +82,4 @@ export function useTags() {
     refreshTags: loadTags
   }
 }
+

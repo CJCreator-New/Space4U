@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Brain, Heart, Moon, Shield, ClipboardList, Wind, Activity, TrendingUp, Clock, Star, Crown, Lock } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -40,7 +40,7 @@ function TherapeuticToolsPage() {
   }))
 
   useEffect(() => {
-    const stats = JSON.parse(localStorage.getItem('safespace_tool_usage') || '{}')
+    const stats = JSON.parse(localStorage.getItem('space4u_tool_usage') || '{}')
     setToolStats(stats)
   }, [])
 
@@ -49,9 +49,9 @@ function TherapeuticToolsPage() {
       navigate('/premium')
       return
     }
-    const stats = JSON.parse(localStorage.getItem('safespace_tool_usage') || '{}')
+    const stats = JSON.parse(localStorage.getItem('space4u_tool_usage') || '{}')
     stats[tool.id] = (stats[tool.id] || 0) + 1
-    localStorage.setItem('safespace_tool_usage', JSON.stringify(stats))
+    localStorage.setItem('space4u_tool_usage', JSON.stringify(stats))
     setToolStats(stats)
     setActiveTool(tool.id)
   }
@@ -188,3 +188,4 @@ function TherapeuticToolsPage() {
 }
 
 export default TherapeuticToolsPage
+

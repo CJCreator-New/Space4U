@@ -18,8 +18,8 @@ export const requestNotificationPermission = async () => {
 }
 
 export const scheduleReminder = (time, message) => {
-  const settings = JSON.parse(localStorage.getItem('safespace_settings') || '{}')
-  const reminders = JSON.parse(localStorage.getItem('safespace_reminders') || '[]')
+  const settings = JSON.parse(localStorage.getItem('space4u_settings') || '{}')
+  const reminders = JSON.parse(localStorage.getItem('space4u_reminders') || '[]')
   
   const reminder = {
     id: Date.now(),
@@ -30,13 +30,13 @@ export const scheduleReminder = (time, message) => {
   }
   
   reminders.push(reminder)
-  localStorage.setItem('safespace_reminders', JSON.stringify(reminders))
+  localStorage.setItem('space4u_reminders', JSON.stringify(reminders))
   
   return reminder
 }
 
 export const checkReminders = () => {
-  const reminders = JSON.parse(localStorage.getItem('safespace_reminders') || '[]')
+  const reminders = JSON.parse(localStorage.getItem('space4u_reminders') || '[]')
   const now = new Date()
   const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`
   
@@ -59,10 +59,10 @@ export const showNotification = (message, options = {}) => {
 }
 
 export const checkDailyMoodReminder = () => {
-  const settings = JSON.parse(localStorage.getItem('safespace_settings') || '{}')
+  const settings = JSON.parse(localStorage.getItem('space4u_settings') || '{}')
   if (!settings.notifications?.dailyReminder) return
   
-  const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+  const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
   const today = new Date().toISOString().split('T')[0]
   
   if (!moods[today]) {
@@ -81,7 +81,7 @@ export const checkDailyMoodReminder = () => {
 }
 
 export const checkStreakReminder = () => {
-  const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+  const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
   const dates = Object.keys(moods).sort()
   
   if (dates.length === 0) return

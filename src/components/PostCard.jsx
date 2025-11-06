@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Heart, MessageCircle, Share, MoreHorizontal, Send } from 'lucide-react'
+import Icon from './Icon'
 import { formatRelativeTime, truncateText } from '../utils/helpers'
 import { addPoints, POINT_VALUES } from '../utils/badgeSystem'
 import { useRealtimeComments } from '../hooks/useRealtimeComments'
@@ -60,13 +60,13 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
           <p className="text-xs text-text-secondary">Posted {post.timestamp}</p>
         </div>
         <button className="p-1 hover:bg-gray-100 rounded-full">
-          <MoreHorizontal size={16} className="text-text-secondary" />
+          <Icon name="more-horizontal" size={16} className="text-text-secondary" />
         </button>
       </div>
 
       {/* Post Content */}
       <div className="mb-3">
-        <p className="text-text-primary leading-relaxed">
+        <p className="text-text-primary leading-relaxed font-readable">
           {shouldTruncate && !isExpanded 
             ? truncateText(post.content, 200)
             : post.content
@@ -106,10 +106,10 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
               : 'text-text-secondary hover:text-red-500 hover:bg-red-50'
           }`}
         >
-          <Heart 
+          <Icon 
+            name="heart" 
             size={20} 
             className={`transition-transform duration-200 ${isHearted ? 'scale-110' : ''}`}
-            fill={isHearted ? 'currentColor' : 'none'}
           />
           <span className="text-sm">{heartCount}</span>
         </button>
@@ -118,7 +118,7 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
           onClick={() => setShowComments(!showComments)}
           className="flex items-center gap-2 px-3 py-1 rounded-lg text-text-secondary hover:text-primary hover:bg-primary/10 transition-colors"
         >
-          <MessageCircle size={20} />
+          <Icon name="message-circle" size={20} />
           <span className="text-sm">{comments.length || post.commentCount || 0}</span>
         </button>
 
@@ -126,7 +126,7 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
           onClick={handleShare}
           className="flex items-center gap-2 px-3 py-1 rounded-lg text-text-secondary hover:text-primary hover:bg-primary/10 transition-colors"
         >
-          <Share size={20} />
+          <Icon name="share" size={20} />
         </button>
       </div>
 
@@ -159,7 +159,7 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
                         Reply
                       </button>
                       <button className="flex items-center gap-1 text-xs text-text-secondary hover:text-red-500">
-                        <Heart size={12} />
+                        <Icon name="heart" size={12} />
                         {comment.hearts}
                       </button>
                     </div>
@@ -199,7 +199,7 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                <Send size={16} className={posting ? 'animate-pulse' : ''} />
+                <Icon name="send" size={16} className={posting ? 'animate-pulse' : ''} />
               </button>
             </div>
           </div>

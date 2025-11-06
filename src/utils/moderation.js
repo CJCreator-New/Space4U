@@ -1,4 +1,4 @@
-// Content Moderation System
+﻿// Content Moderation System
 
 export const REPORT_REASONS = {
   spam: 'Spam or misleading',
@@ -9,7 +9,7 @@ export const REPORT_REASONS = {
 }
 
 export const reportPost = (postId, reason, details, reporterId) => {
-  const reports = JSON.parse(localStorage.getItem('safespace_reports') || '[]')
+  const reports = JSON.parse(localStorage.getItem('space4u_reports') || '[]')
   
   const report = {
     id: Date.now(),
@@ -22,13 +22,13 @@ export const reportPost = (postId, reason, details, reporterId) => {
   }
   
   reports.push(report)
-  localStorage.setItem('safespace_reports', JSON.stringify(reports))
+  localStorage.setItem('space4u_reports', JSON.stringify(reports))
   
   return report
 }
 
 export const blockUser = (userId, blockedUserId) => {
-  const blocks = JSON.parse(localStorage.getItem('safespace_blocks') || '{}')
+  const blocks = JSON.parse(localStorage.getItem('space4u_blocks') || '{}')
   
   if (!blocks[userId]) {
     blocks[userId] = []
@@ -38,28 +38,28 @@ export const blockUser = (userId, blockedUserId) => {
     blocks[userId].push(blockedUserId)
   }
   
-  localStorage.setItem('safespace_blocks', JSON.stringify(blocks))
+  localStorage.setItem('space4u_blocks', JSON.stringify(blocks))
   return blocks[userId]
 }
 
 export const unblockUser = (userId, blockedUserId) => {
-  const blocks = JSON.parse(localStorage.getItem('safespace_blocks') || '{}')
+  const blocks = JSON.parse(localStorage.getItem('space4u_blocks') || '{}')
   
   if (blocks[userId]) {
     blocks[userId] = blocks[userId].filter(id => id !== blockedUserId)
   }
   
-  localStorage.setItem('safespace_blocks', JSON.stringify(blocks))
+  localStorage.setItem('space4u_blocks', JSON.stringify(blocks))
   return blocks[userId] || []
 }
 
 export const isBlocked = (userId, targetUserId) => {
-  const blocks = JSON.parse(localStorage.getItem('safespace_blocks') || '{}')
+  const blocks = JSON.parse(localStorage.getItem('space4u_blocks') || '{}')
   return blocks[userId]?.includes(targetUserId) || false
 }
 
 export const hidePost = (postId, userId) => {
-  const hidden = JSON.parse(localStorage.getItem('safespace_hidden_posts') || '{}')
+  const hidden = JSON.parse(localStorage.getItem('space4u_hidden_posts') || '{}')
   
   if (!hidden[userId]) {
     hidden[userId] = []
@@ -69,23 +69,23 @@ export const hidePost = (postId, userId) => {
     hidden[userId].push(postId)
   }
   
-  localStorage.setItem('safespace_hidden_posts', JSON.stringify(hidden))
+  localStorage.setItem('space4u_hidden_posts', JSON.stringify(hidden))
   return hidden[userId]
 }
 
 export const isHidden = (postId, userId) => {
-  const hidden = JSON.parse(localStorage.getItem('safespace_hidden_posts') || '{}')
+  const hidden = JSON.parse(localStorage.getItem('space4u_hidden_posts') || '{}')
   return hidden[userId]?.includes(postId) || false
 }
 
 export const getBlockedUsers = (userId) => {
-  const blocks = JSON.parse(localStorage.getItem('safespace_blocks') || '{}')
+  const blocks = JSON.parse(localStorage.getItem('space4u_blocks') || '{}')
   return blocks[userId] || []
 }
 
 export const filterBlockedContent = (posts, userId) => {
   const blockedUsers = getBlockedUsers(userId)
-  const hidden = JSON.parse(localStorage.getItem('safespace_hidden_posts') || '{}')
+  const hidden = JSON.parse(localStorage.getItem('space4u_hidden_posts') || '{}')
   const hiddenPosts = hidden[userId] || []
   
   return posts.filter(post => 
@@ -93,3 +93,4 @@ export const filterBlockedContent = (posts, userId) => {
     !hiddenPosts.includes(post.id)
   )
 }
+

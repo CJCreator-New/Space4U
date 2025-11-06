@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
   Edit, TrendingUp, Users, Award, Clock, MessageCircle, Heart, 
@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
 import MicroInteraction from '../components/common/MicroInteraction'
+import OnboardingTip from '../components/common/OnboardingTip'
 import { 
   BADGES, 
   LEVELS, 
@@ -14,7 +15,7 @@ import {
   getProgressToNextLevel
 } from '../utils/badgeSystem'
 
-const AVATARS = ['😊', '😎', '🌟', '🦋', '🌸', '🌈', '🎨', '📚', '🎵', '☕', '🌙', '⭐']
+const AVATARS = ['', '', '', '', '', '', '', '', '', 'â˜•', '', 'â­']
 
 function ProfilePage() {
   const navigate = useNavigate()
@@ -39,17 +40,19 @@ function ProfilePage() {
     loadUserData()
   }, [])
 
-  const loadUserData = () => {
-    const userData = JSON.parse(localStorage.getItem('safespace_user') || '{}')
-    setUser(userData)
+  const loadUserData = async () => {
+    const { getUserProfile } = await import('../utils/storageHelpers')
+    const userData = await getUserProfile()
+    const safeUserData = userData || {}
+    setUser(safeUserData)
     setEditForm({
-      username: userData.username || '',
-      avatar: userData.avatar || '😊',
-      bio: userData.bio || '',
-      interests: userData.interests || []
+      username: safeUserData.username || '',
+      avatar: safeUserData.avatar || '',
+      bio: safeUserData.bio || '',
+      interests: safeUserData.interests || []
     })
     
-    const badges = initializeBadgeSystem()
+    const badges = await initializeBadgeSystem()
     setBadgeData(badges)
     
     calculateStats()
@@ -57,14 +60,15 @@ function ProfilePage() {
     loadCircles()
     loadSavedPosts()
     
-    const dismissedBanner = localStorage.getItem('safespace_premium_banner_dismissed')
+    const dismissedBanner = localStorage.getItem('space4u_premium_banner_dismissed')
     setShowPremiumBanner(!dismissedBanner)
   }
 
-  const calculateStats = () => {
-    const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
-    const posts = JSON.parse(localStorage.getItem('safespace_user_posts') || '[]')
-    const userCircles = JSON.parse(localStorage.getItem('safespace_user_circles') || '[]')
+  const calculateStats = async () => {
+    const { storage } = await import('../services/storage')
+    const moods = await storage.get('space4u_moods') || {}
+    const posts = await storage.get('space4u_user_posts') || []
+    const userCircles = await storage.get('space4u_user_circles') || []
     
     const moodEntries = Object.values(moods)
     const currentStreak = calculateStreak(moods)
@@ -112,21 +116,22 @@ function ProfilePage() {
 
   const loadActivities = () => {
     const activities = [
-      { type: 'mood', text: 'Logged mood 😊', time: '2 hours ago', icon: '😊' },
-      { type: 'post', text: 'Posted in Anxiety Support', time: '5 hours ago', icon: '💬' },
-      { type: 'badge', text: 'Earned "Week Warrior" badge 🔥', time: '1 day ago', icon: '🏆' },
-      { type: 'circle', text: 'Joined Work & Career circle', time: '2 days ago', icon: '👥' },
-      { type: 'mood', text: 'Logged mood 😐', time: '1 day ago', icon: '😐' },
-      { type: 'exercise', text: 'Completed breathing exercise', time: '3 days ago', icon: '🧘' },
-      { type: 'post', text: 'Posted in Daily Check-in', time: '4 days ago', icon: '💬' },
-      { type: 'mood', text: 'Logged mood 🙂', time: '4 days ago', icon: '🙂' }
+      { type: 'mood', text: 'Logged mood ', time: '2 hours ago', icon: '' },
+      { type: 'post', text: 'Posted in Anxiety Support', time: '5 hours ago', icon: '' },
+      { type: 'badge', text: 'Earned "Week Warrior" badge ', time: '1 day ago', icon: '' },
+      { type: 'circle', text: 'Joined Work & Career circle', time: '2 days ago', icon: '' },
+      { type: 'mood', text: 'Logged mood ', time: '1 day ago', icon: '' },
+      { type: 'exercise', text: 'Completed breathing exercise', time: '3 days ago', icon: '' },
+      { type: 'post', text: 'Posted in Daily Check-in', time: '4 days ago', icon: '' },
+      { type: 'mood', text: 'Logged mood ', time: '4 days ago', icon: '' }
     ]
     setActivities(activities)
   }
 
-  const loadCircles = () => {
-    const userCircles = JSON.parse(localStorage.getItem('safespace_user_circles') || '[]')
-    const allCircles = JSON.parse(localStorage.getItem('safespace_circles') || '[]')
+  const loadCircles = async () => {
+    const { storage } = await import('../services/storage')
+    const userCircles = await storage.get('space4u_user_circles') || []
+    const allCircles = await storage.get('space4u_circles') || []
     
     const joinedCircles = allCircles.filter(circle => 
       userCircles.includes(circle.id)
@@ -138,22 +143,24 @@ function ProfilePage() {
     setCircles(joinedCircles)
   }
 
-  const loadSavedPosts = () => {
-    const heartedPosts = JSON.parse(localStorage.getItem('safespace_hearted_posts') || '[]')
-    const allPosts = JSON.parse(localStorage.getItem('safespace_posts') || '[]')
+  const loadSavedPosts = async () => {
+    const { storage } = await import('../services/storage')
+    const heartedPosts = await storage.get('space4u_hearted_posts') || []
+    const allPosts = await storage.get('space4u_posts') || []
     
     const saved = allPosts.filter(post => heartedPosts.includes(post.id)).slice(0, 3)
     setSavedPosts(saved)
   }
 
-  const handleEditProfile = () => {
+  const handleEditProfile = async () => {
+    const { saveUserProfile } = await import('../utils/storageHelpers')
     const updatedUser = {
       ...user,
       ...editForm,
       updatedAt: new Date().toISOString()
     }
     
-    localStorage.setItem('safespace_user', JSON.stringify(updatedUser))
+    await saveUserProfile(updatedUser)
     setUser(updatedUser)
     setShowEditModal(false)
     
@@ -170,9 +177,9 @@ function ProfilePage() {
     
     // Clear all user data
     const keysToRemove = [
-      'safespace_user', 'safespace_moods', 'safespace_user_posts',
-      'safespace_user_circles', 'safespace_badges', 'safespace_hearted_posts',
-      'safespace_onboarding_completed'
+      'space4u_user', 'space4u_moods', 'space4u_user_posts',
+      'space4u_user_circles', 'space4u_badges', 'space4u_hearted_posts',
+      'space4u_onboarding_completed'
     ]
     
     keysToRemove.forEach(key => localStorage.removeItem(key))
@@ -183,11 +190,11 @@ function ProfilePage() {
 
   const exportData = () => {
     const userData = {
-      profile: JSON.parse(localStorage.getItem('safespace_user') || '{}'),
-      moods: JSON.parse(localStorage.getItem('safespace_moods') || '{}'),
-      posts: JSON.parse(localStorage.getItem('safespace_user_posts') || '[]'),
-      circles: JSON.parse(localStorage.getItem('safespace_user_circles') || '[]'),
-      badges: JSON.parse(localStorage.getItem('safespace_badges') || '{}'),
+      profile: JSON.parse(localStorage.getItem('space4u_user') || '{}'),
+      moods: JSON.parse(localStorage.getItem('space4u_moods') || '{}'),
+      posts: JSON.parse(localStorage.getItem('space4u_user_posts') || '[]'),
+      circles: JSON.parse(localStorage.getItem('space4u_user_circles') || '[]'),
+      badges: JSON.parse(localStorage.getItem('space4u_badges') || '{}'),
       exportedAt: new Date().toISOString()
     }
     
@@ -195,7 +202,7 @@ function ProfilePage() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `safespace-data-${new Date().toISOString().split('T')[0]}.json`
+    a.download = `space4u-data-${new Date().toISOString().split('T')[0]}.json`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
@@ -203,7 +210,7 @@ function ProfilePage() {
   }
 
   const dismissPremiumBanner = () => {
-    localStorage.setItem('safespace_premium_banner_dismissed', 'true')
+    localStorage.setItem('space4u_premium_banner_dismissed', 'true')
     setShowPremiumBanner(false)
   }
 
@@ -234,6 +241,8 @@ function ProfilePage() {
 
   return (
     <div className="max-w-4xl mx-auto">
+      <OnboardingTip page="profile" />
+      
       {/* Premium Banner */}
       {showPremiumBanner && (
         <div className="bg-gradient-to-r from-primary to-primary-light text-white p-4 rounded-xl mb-6 relative">
@@ -265,7 +274,7 @@ function ProfilePage() {
                    height: '120px',
                    borderColor: badgeData?.totalPoints >= 500 ? '#FFD700' : 'rgba(255,255,255,0.3)'
                  }}>
-              {user.avatar || '😊'}
+              {user.avatar || ''}
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
@@ -307,7 +316,7 @@ function ProfilePage() {
           <div className="space-y-3">
             <div>
               <p className="text-sm text-text-secondary">Current streak</p>
-              <p className="text-xl font-bold">{stats.currentStreak} days 🔥</p>
+              <p className="text-xl font-bold">{stats.currentStreak} days</p>
             </div>
             <div>
               <p className="text-sm text-text-secondary">Total mood logs</p>
@@ -315,7 +324,7 @@ function ProfilePage() {
             </div>
             <div>
               <p className="text-sm text-text-secondary">Average mood this week</p>
-              <p className="text-xl font-bold">{stats.avgMoodThisWeek.toFixed(1)} 🙂</p>
+              <p className="text-xl font-bold">{stats.avgMoodThisWeek.toFixed(1)}</p>
             </div>
           </div>
           <MicroInteraction type="press">
@@ -493,7 +502,7 @@ function ProfilePage() {
             { icon: Globe, label: 'Language', onClick: () => {} },
             { icon: HelpCircle, label: 'Help & Support', onClick: () => {} },
             { icon: Book, label: 'Resource Library', onClick: () => navigate('/resources') },
-            { icon: Info, label: 'About Safespace', onClick: () => {} }
+            { icon: Info, label: 'About space4u', onClick: () => {} }
           ].map((item, index) => (
             <button
               key={index}

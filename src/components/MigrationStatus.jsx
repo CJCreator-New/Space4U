@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { CheckCircle, Upload, AlertCircle } from 'lucide-react'
+﻿import { useState, useEffect } from 'react'
+import { CheckCircle, Upload, AlertCircle } from '../config/icons'
 import { fullMigrationService } from '../services/fullMigrationService'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 
@@ -15,9 +15,9 @@ function MigrationStatus() {
   }, [user])
 
   function checkMigrationNeeded() {
-    const hasMoods = localStorage.getItem('safespace_moods')
-    const hasProfile = localStorage.getItem('safespace_user_profile')
-    const hasBadges = localStorage.getItem('safespace_badges')
+    const hasMoods = localStorage.getItem('space4u_moods')
+    const hasProfile = localStorage.getItem('space4u_user_profile')
+    const hasBadges = localStorage.getItem('space4u_badges')
     
     if (hasMoods || hasProfile || hasBadges) {
       setStatus('needed')
@@ -80,3 +80,4 @@ function MigrationStatus() {
 }
 
 export default MigrationStatus
+

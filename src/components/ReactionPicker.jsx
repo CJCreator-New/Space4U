@@ -1,9 +1,9 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { REACTIONS, toggleReaction, getPostReactions, getUserReaction } from '../utils/reactions'
 
 function ReactionPicker({ postId, onReact }) {
   const [showPicker, setShowPicker] = useState(false)
-  const userId = JSON.parse(localStorage.getItem('safespace_user') || '{}').username || 'anonymous'
+  const userId = JSON.parse(localStorage.getItem('space4u_user') || '{}').username || 'anonymous'
   const reactions = getPostReactions(postId)
   const userReaction = getUserReaction(postId, userId)
 
@@ -28,7 +28,7 @@ function ReactionPicker({ postId, onReact }) {
             : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'
         }`}
       >
-        <span className="text-lg">{userReaction ? REACTIONS[userReaction].emoji : '👍'}</span>
+        <span className="text-lg">{userReaction ? REACTIONS[userReaction].emoji : ''}</span>
         {getTotalCount() > 0 && (
           <span className="text-sm font-medium">{getTotalCount()}</span>
         )}
@@ -78,3 +78,4 @@ function ReactionPicker({ postId, onReact }) {
 }
 
 export default ReactionPicker
+

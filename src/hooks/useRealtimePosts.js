@@ -36,12 +36,21 @@ export function useRealtimePosts(circleId) {
       return
     }
 
-    const { data } = await supabase
-      .from('posts')
-      .select('*, profiles(username, avatar_url)')
-      .eq('circle_id', circleId)
-      .order('created_at', { ascending: false })
-    setPosts(data || [])
+    try {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*, profiles(username, avatar_url)')
+        .eq('circle_id', circleId)
+        .order('created_at', { ascending: false })
+      
+      if (error) throw error
+      setPosts(data || [])
+    } catch (error) {
+      // Fallback to mock data if Supabase tables don't exist
+      console.log('Using mock data (Supabase tables not set up yet)')
+      const circlePosts = mockPosts.filter(p => p.circleId === parseInt(circleId))
+      setPosts(circlePosts)
+    }
     setLoading(false)
   }
 

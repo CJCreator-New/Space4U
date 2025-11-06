@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Plus, CheckCircle2, Circle, TrendingUp, Crown } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -9,20 +9,28 @@ import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
 import ResearchCard from '../components/wellness/ResearchCard'
 import { disclaimers } from '../data/disclaimers'
 import { researchCitations } from '../data/researchCitations'
+import HabitCompletionEffect from '../components/common/HabitCompletionEffect'
+import HabitHeatMap from '../components/HabitHeatMap'
 
 function HabitTrackerPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [habits, setHabits] = useState([])
   const [showModal, setShowModal] = useState(false)
-  const [newHabit, setNewHabit] = useState({ name: '', icon: '🎯', color: 'blue', frequency: 'daily' })
+  const [newHabit, setNewHabit] = useState({ name: '', icon: '', color: 'blue', frequency: 'daily' })
+  const [showCompletionEffect, setShowCompletionEffect] = useState(false)
   const { isPremium } = getPremiumStatus()
   const FREE_HABIT_LIMIT = 5
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('safespace_habits') || '[]')
-    setHabits(saved)
+    loadHabits()
   }, [])
+
+  const loadHabits = async () => {
+    const { getHabits } = await import('../utils/storageHelpers')
+    const saved = await getHabits()
+    setHabits(saved)
+  }
 
   const handleAddClick = () => {
     if (!isPremium && habits.length >= FREE_HABIT_LIMIT) {
@@ -32,26 +40,35 @@ function HabitTrackerPage() {
     setShowModal(true)
   }
 
-  const addHabit = () => {
+  const addHabit = async () => {
+    const { saveHabits } = await import('../utils/storageHelpers')
     const habit = { ...newHabit, id: Date.now(), completions: {} }
     const updated = [...habits, habit]
-    localStorage.setItem('safespace_habits', JSON.stringify(updated))
+    await saveHabits(updated)
     setHabits(updated)
     setShowModal(false)
-    setNewHabit({ name: '', icon: '🎯', color: 'blue', frequency: 'daily' })
+    setNewHabit({ name: '', icon: '', color: 'blue', frequency: 'daily' })
   }
 
-  const toggleCompletion = (habitId) => {
+  const toggleCompletion = async (habitId) => {
+    const { saveHabits } = await import('../utils/storageHelpers')
     const today = new Date().toISOString().split('T')[0]
     const updated = habits.map(h => {
       if (h.id === habitId) {
         const completions = { ...h.completions }
+        const wasCompleted = completions[today]
         completions[today] = !completions[today]
+
+        // Show completion effect if habit was just completed (not uncompleted)
+        if (!wasCompleted && completions[today]) {
+          setShowCompletionEffect(true)
+        }
+
         return { ...h, completions }
       }
       return h
     })
-    localStorage.setItem('safespace_habits', JSON.stringify(updated))
+    await saveHabits(updated)
     setHabits(updated)
   }
 
@@ -119,32 +136,35 @@ function HabitTrackerPage() {
           </button>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {habits.map(habit => (
-            <div key={habit.id} className="card p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={() => toggleCompletion(habit.id)}
-                    className="text-4xl hover:scale-110 transition-transform"
-                  >
-                    {habit.completions[today] ? (
-                      <CheckCircle2 className="w-10 h-10 text-green-500" />
-                    ) : (
-                      <Circle className="w-10 h-10 text-text-secondary" />
-                    )}
-                  </button>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{habit.icon}</span>
-                      <h3 className="text-xl font-semibold">{habit.name}</h3>
+            <div key={habit.id} className="space-y-4">
+              <div className="card p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => toggleCompletion(habit.id)}
+                      className="btn-micro text-4xl hover:scale-110 transition-transform"
+                    >
+                      {habit.completions[today] ? (
+                        <CheckCircle2 className="w-10 h-10 text-green-500" />
+                      ) : (
+                        <Circle className="w-10 h-10 text-text-secondary" />
+                      )}
+                    </button>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">{habit.icon}</span>
+                        <h3 className="text-xl font-semibold">{habit.name}</h3>
+                      </div>
+                      <p className="text-text-secondary text-sm">
+                        {t('habits.streakInfo', { streak: getStreak(habit), total: Object.values(habit.completions).filter(Boolean).length })}
+                      </p>
                     </div>
-                    <p className="text-text-secondary text-sm">
-                      {t('habits.streakInfo', { streak: getStreak(habit), total: Object.values(habit.completions).filter(Boolean).length })}
-                    </p>
                   </div>
                 </div>
               </div>
+              <HabitHeatMap habitId={habit.id} habitName={habit.name} />
             </div>
           ))}
         </div>
@@ -167,7 +187,7 @@ function HabitTrackerPage() {
               <div>
                 <label className="block text-sm font-medium mb-2">{t('habits.modal.iconLabel')}</label>
                 <div className="flex gap-2 flex-wrap">
-                  {['🎯', '💪', '🧘', '📚', '💧', '🏃', '🎨', '🎵'].map(icon => (
+                  {['', '', '', '', '', '', '', ''].map(icon => (
                     <button
                       key={icon}
                       onClick={() => setNewHabit({ ...newHabit, icon })}
@@ -187,9 +207,16 @@ function HabitTrackerPage() {
         </div>
       )}
     </div>
-  
+
+    {/* Habit completion effect */}
+    <HabitCompletionEffect
+      show={showCompletionEffect}
+      onComplete={() => setShowCompletionEffect(false)}
+    />
+
     </SafeComponent>
   )
 }
 
 export default HabitTrackerPage
+

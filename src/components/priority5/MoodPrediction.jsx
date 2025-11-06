@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { TrendingDown, AlertTriangle, Sparkles } from 'lucide-react'
 
 function MoodPrediction() {
@@ -8,7 +8,7 @@ function MoodPrediction() {
   useEffect(() => {
     if (!isPremium) return
 
-    const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+    const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
     const entries = Object.values(moods).sort((a, b) => new Date(a.date) - new Date(b.date))
     
     if (entries.length < 7) return
@@ -34,7 +34,7 @@ function MoodPrediction() {
     setPredictions(next7Days)
   }, [isPremium])
 
-  const moodEmojis = ['😢', '😕', '😐', '🙂', '😊']
+  const moodEmojis = ['', '', '', '', '']
 
   if (!isPremium) {
     return (
@@ -46,16 +46,16 @@ function MoodPrediction() {
         </p>
         <ul className="text-left max-w-md mx-auto mb-6 space-y-2">
           <li className="flex items-center gap-2">
-            <span>✓</span> 7-day mood predictions
+            <span>âœ“</span> 7-day mood predictions
           </li>
           <li className="flex items-center gap-2">
-            <span>✓</span> Risk alerts for low mood periods
+            <span>âœ“</span> Risk alerts for low mood periods
           </li>
           <li className="flex items-center gap-2">
-            <span>✓</span> Preventive suggestions
+            <span>âœ“</span> Preventive suggestions
           </li>
           <li className="flex items-center gap-2">
-            <span>✓</span> Confidence scores
+            <span>âœ“</span> Confidence scores
           </li>
         </ul>
         <a
@@ -115,3 +115,4 @@ function MoodPrediction() {
 }
 
 export default MoodPrediction
+

@@ -1,0 +1,5072 @@
+[
+  {
+    "file": "ProfilePage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\ProfilePage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        },
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 701
+  },
+  {
+    "file": "CircleFeedPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\CircleFeedPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 5,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 343
+  },
+  {
+    "file": "CirclesPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\CirclesPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 768
+  },
+  {
+    "file": "GamificationPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\GamificationPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 361
+  },
+  {
+    "file": "HomePage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\HomePage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 287
+  },
+  {
+    "file": "InsightsPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\InsightsPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 566
+  },
+  {
+    "file": "WellnessDashboardPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\WellnessDashboardPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 4,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 236
+  },
+  {
+    "file": "ConfettiEffect.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\ConfettiEffect.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 2,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 56
+  },
+  {
+    "file": "CreatePostModal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\CreatePostModal.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 443
+  },
+  {
+    "file": "EnhancedMoodTrends.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\mood\\EnhancedMoodTrends.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 359
+  },
+  {
+    "file": "MoodCalendar.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\MoodCalendar.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "TODO comments found",
+          "count": 1,
+          "severity": "warning",
+          "fix": "Complete or remove TODOs"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 327
+  },
+  {
+    "file": "CrisisSafetyPlan.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\therapeutic\\CrisisSafetyPlan.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "Console logs found",
+          "count": 1,
+          "severity": "warning",
+          "fix": "Remove console.logs before production"
+        },
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 215
+  },
+  {
+    "file": "EnhancedHomePage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\EnhancedHomePage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 10,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 350
+  },
+  {
+    "file": "GratitudeJournalPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\GratitudeJournalPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 361
+  },
+  {
+    "file": "HabitTrackerPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\HabitTrackerPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 212
+  },
+  {
+    "file": "PremiumSuccessPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\PremiumSuccessPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 106
+  },
+  {
+    "file": "RemindersPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\RemindersPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 231
+  },
+  {
+    "file": "ResourceLibraryPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\ResourceLibraryPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 408
+  },
+  {
+    "file": "SettingsPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\SettingsPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 4,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 1445
+  },
+  {
+    "file": "TherapeuticToolsPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\TherapeuticToolsPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 192
+  },
+  {
+    "file": "UltraEnhancedHomePage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\UltraEnhancedHomePage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 7,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 235
+  },
+  {
+    "file": "WellnessPlanPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\WellnessPlanPage.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 223
+  },
+  {
+    "file": "FloatingParticles.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\animations\\FloatingParticles.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 48
+  },
+  {
+    "file": "BreathingExercisePlayer.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\BreathingExercisePlayer.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 187
+  },
+  {
+    "file": "DashboardOnboarding.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\dashboard\\DashboardOnboarding.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 139
+  },
+  {
+    "file": "ProgressOverviewWidget.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\dashboard\\ProgressOverviewWidget.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "TODO comments found",
+          "count": 1,
+          "severity": "warning",
+          "fix": "Complete or remove TODOs"
+        },
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 238
+  },
+  {
+    "file": "GratitudeEntryModal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\gratitude\\GratitudeEntryModal.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 199
+  },
+  {
+    "file": "MoodTimeline.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\home\\MoodTimeline.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 109
+  },
+  {
+    "file": "MigrationStatus.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\MigrationStatus.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "Console logs found",
+          "count": 1,
+          "severity": "warning",
+          "fix": "Remove console.logs before production"
+        },
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 84
+  },
+  {
+    "file": "EnhancedMoodTracker.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\mood\\EnhancedMoodTracker.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 331
+  },
+  {
+    "file": "MoodTrends.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\MoodTrends.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 332
+  },
+  {
+    "file": "PageWrapper.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\PageWrapper.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 48
+  },
+  {
+    "file": "MoodResponsiveLayout.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\personalization\\MoodResponsiveLayout.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 40
+  },
+  {
+    "file": "PostCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\PostCard.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 212
+  },
+  {
+    "file": "AccountabilityPartner.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority4\\AccountabilityPartner.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 161
+  },
+  {
+    "file": "PeerSupport.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority4\\PeerSupport.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 162
+  },
+  {
+    "file": "SupportRequests.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority4\\SupportRequests.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 181
+  },
+  {
+    "file": "SleepAnalytics.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority5\\SleepAnalytics.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 107
+  },
+  {
+    "file": "PWASettings.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority7\\PWASettings.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 135
+  },
+  {
+    "file": "ReminderManager.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\ReminderManager.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 192
+  },
+  {
+    "file": "BreathingExercise.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\resources\\BreathingExercise.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 213
+  },
+  {
+    "file": "CBTThoughtRecord.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\therapeutic\\CBTThoughtRecord.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "Console logs found",
+          "count": 1,
+          "severity": "warning",
+          "fix": "Remove console.logs before production"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 231
+  },
+  {
+    "file": "SleepHygieneTracker.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\therapeutic\\SleepHygieneTracker.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "Console logs found",
+          "count": 1,
+          "severity": "warning",
+          "fix": "Remove console.logs before production"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 168
+  },
+  {
+    "file": "BookmarksPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\BookmarksPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 71
+  },
+  {
+    "file": "EmotionTrackerPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\EmotionTrackerPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 266
+  },
+  {
+    "file": "GesturesDemoPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\GesturesDemoPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "Console logs found",
+          "count": 3,
+          "severity": "warning",
+          "fix": "Remove console.logs before production"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 123
+  },
+  {
+    "file": "PremiumFeaturesPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\PremiumFeaturesPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 130
+  },
+  {
+    "file": "ResourceDetailPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\ResourceDetailPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 137
+  },
+  {
+    "file": "MilestoneCelebration.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\analytics\\MilestoneCelebration.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 68
+  },
+  {
+    "file": "AnimatedCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\animations\\AnimatedCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 56
+  },
+  {
+    "file": "SuccessAnimation.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\animations\\SuccessAnimation.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 71
+  },
+  {
+    "file": "EnhancedLoginPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\auth\\EnhancedLoginPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 331
+  },
+  {
+    "file": "LoginPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\auth\\LoginPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 286
+  },
+  {
+    "file": "BadgeCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\BadgeCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 85
+  },
+  {
+    "file": "BadgeUnlockModal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\BadgeUnlockModal.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 2,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 157
+  },
+  {
+    "file": "CircleCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\CircleCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 140
+  },
+  {
+    "file": "AnimatedNumber.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\AnimatedNumber.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 31
+  },
+  {
+    "file": "BottomSheet.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\BottomSheet.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 2,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 39
+  },
+  {
+    "file": "FABMenu.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\FABMenu.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 62
+  },
+  {
+    "file": "IconLibrary.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\IconLibrary.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 74
+  },
+  {
+    "file": "LiveRegion.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\LiveRegion.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 3,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 36
+  },
+  {
+    "file": "LoadingState.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\LoadingState.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 103
+  },
+  {
+    "file": "Modal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\Modal.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 2,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 71
+  },
+  {
+    "file": "OnboardingTip.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\OnboardingTip.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 94
+  },
+  {
+    "file": "ProgressBar.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\ProgressBar.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 27
+  },
+  {
+    "file": "ReminderScheduler.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\ReminderScheduler.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 67
+  },
+  {
+    "file": "SwipeableListItem.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\SwipeableListItem.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 3,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 72
+  },
+  {
+    "file": "SwipeableView.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\SwipeableView.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 61
+  },
+  {
+    "file": "VirtualList.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\VirtualList.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 3,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 38
+  },
+  {
+    "file": "CrisisSupport.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\CrisisSupport.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 3,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 228
+  },
+  {
+    "file": "DashboardSidebar.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\dashboard\\DashboardSidebar.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 4,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 119
+  },
+  {
+    "file": "MotivationalQuoteWidget.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\dashboard\\MotivationalQuoteWidget.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 193
+  },
+  {
+    "file": "QuickActionsCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\dashboard\\QuickActionsCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 3,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 71
+  },
+  {
+    "file": "RecentMoodsWidget.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\dashboard\\RecentMoodsWidget.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 175
+  },
+  {
+    "file": "ExportImportModal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\ExportImportModal.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 140
+  },
+  {
+    "file": "GlobalSearch.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\GlobalSearch.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 159
+  },
+  {
+    "file": "GratitudeStats.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\gratitude\\GratitudeStats.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 100
+  },
+  {
+    "file": "DailyTipWidget.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\home\\DailyTipWidget.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 70
+  },
+  {
+    "file": "WelcomeBanner.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\home\\WelcomeBanner.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 72
+  },
+  {
+    "file": "InstallPrompt.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\InstallPrompt.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 2,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 57
+  },
+  {
+    "file": "ModernLayout.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\modern\\ModernLayout.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 56
+  },
+  {
+    "file": "ModernNavigation.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\modern\\ModernNavigation.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 3,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 179
+  },
+  {
+    "file": "MoodTracker.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\MoodTracker.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 355
+  },
+  {
+    "file": "OnboardingComplete.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\OnboardingComplete.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 123
+  },
+  {
+    "file": "AdaptiveDashboard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\personalization\\AdaptiveDashboard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 161
+  },
+  {
+    "file": "ProgressCelebration.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\personalization\\ProgressCelebration.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 68
+  },
+  {
+    "file": "CustomThemes.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\premium\\CustomThemes.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 72
+  },
+  {
+    "file": "PredictiveAlerts.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\premium\\PredictiveAlerts.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 87
+  },
+  {
+    "file": "StreakInsurance.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\premium\\StreakInsurance.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 69
+  },
+  {
+    "file": "AllComponents.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority2\\AllComponents.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 407
+  },
+  {
+    "file": "MedicationTracker.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority2\\MedicationTracker.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 114
+  },
+  {
+    "file": "TriggerTracker.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority2\\TriggerTracker.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 119
+  },
+  {
+    "file": "WorryScheduler.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority2\\WorryScheduler.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 62
+  },
+  {
+    "file": "MoodSuggestions.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority4\\MoodSuggestions.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 158
+  },
+  {
+    "file": "MoodPrediction.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority5\\MoodPrediction.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 119
+  },
+  {
+    "file": "TagAnalytics.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority5\\TagAnalytics.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 94
+  },
+  {
+    "file": "CrisisHotlines.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority6\\CrisisHotlines.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 107
+  },
+  {
+    "file": "OfflineMode.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority7\\OfflineMode.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 4,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 108
+  },
+  {
+    "file": "VoiceJournal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority7\\VoiceJournal.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 116
+  },
+  {
+    "file": "QuickActions.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\QuickActions.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 64
+  },
+  {
+    "file": "RequestHelpModal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\resources\\RequestHelpModal.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 64
+  },
+  {
+    "file": "ThemeCustomizer.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\ThemeCustomizer.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 3,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        },
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 77
+  },
+  {
+    "file": "DBTSkillsModule.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\therapeutic\\DBTSkillsModule.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "Console logs found",
+          "count": 1,
+          "severity": "warning",
+          "fix": "Remove console.logs before production"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 131
+  },
+  {
+    "file": "MentalHealthAssessments.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\therapeutic\\MentalHealthAssessments.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "Console logs found",
+          "count": 1,
+          "severity": "warning",
+          "fix": "Remove console.logs before production"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 240
+  },
+  {
+    "file": "MindfulnessExercises.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\therapeutic\\MindfulnessExercises.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "Console logs found",
+          "count": 1,
+          "severity": "warning",
+          "fix": "Remove console.logs before production"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 145
+  },
+  {
+    "file": "BookmarkButton.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\tools\\BookmarkButton.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 45
+  },
+  {
+    "file": "RecommendedSection.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\tools\\RecommendedSection.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 89
+  },
+  {
+    "file": "TrendingPosts.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\TrendingPosts.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 84
+  },
+  {
+    "file": "CrisisResources.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\wellness\\CrisisResources.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 2,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 82
+  },
+  {
+    "file": "AdvancedAnalyticsPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\AdvancedAnalyticsPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 162
+  },
+  {
+    "file": "AuthPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\AuthPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 159
+  },
+  {
+    "file": "CopingSkillsPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\CopingSkillsPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 176
+  },
+  {
+    "file": "DemoHubPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\DemoHubPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 81
+  },
+  {
+    "file": "MoodTrackingPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\MoodTrackingPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 102
+  },
+  {
+    "file": "NativeDemoPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\NativeDemoPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 215
+  },
+  {
+    "file": "NotificationsPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\NotificationsPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 272
+  },
+  {
+    "file": "PerformanceDemoPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\PerformanceDemoPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 198
+  },
+  {
+    "file": "PersonalizationPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\PersonalizationPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 167
+  },
+  {
+    "file": "PremiumManagePage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\PremiumManagePage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 183
+  },
+  {
+    "file": "PremiumPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\PremiumPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 448
+  },
+  {
+    "file": "Priority2FeaturesPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\Priority2FeaturesPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 106
+  },
+  {
+    "file": "ProfessionalPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\ProfessionalPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 71
+  },
+  {
+    "file": "SocialHubPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\SocialHubPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 71
+  },
+  {
+    "file": "TechnicalFeaturesPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\TechnicalFeaturesPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 70
+  },
+  {
+    "file": "VisualDemoPage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\pages\\VisualDemoPage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 182
+  },
+  {
+    "file": "AdvancedInsightsPanel.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\AdvancedInsightsPanel.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 138
+  },
+  {
+    "file": "FilterBar.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\analytics\\FilterBar.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 68
+  },
+  {
+    "file": "ConfettiExplosion.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\animations\\ConfettiExplosion.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 67
+  },
+  {
+    "file": "GlowingButton.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\animations\\GlowingButton.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 47
+  },
+  {
+    "file": "MoodWave.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\animations\\MoodWave.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 66
+  },
+  {
+    "file": "BiometricPrompt.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\BiometricPrompt.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 70
+  },
+  {
+    "file": "Button.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\Button.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 60
+  },
+  {
+    "file": "ChartSkeleton.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\ChartSkeleton.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 24
+  },
+  {
+    "file": "ConfirmModal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\ConfirmModal.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 54
+  },
+  {
+    "file": "CountUp.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\CountUp.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [
+        {
+          "type": "useEffect without cleanup function",
+          "severity": "warning",
+          "fix": "Add cleanup function if needed (intervals, listeners, etc.)"
+        }
+      ],
+      "suggestions": []
+    },
+    "lineCount": 19
+  },
+  {
+    "file": "Disclaimer.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\Disclaimer.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 61
+  },
+  {
+    "file": "EmptyState.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\EmptyState.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 149
+  },
+  {
+    "file": "EnhancedEmptyState.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\EnhancedEmptyState.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 50
+  },
+  {
+    "file": "ErrorState.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\ErrorState.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 72
+  },
+  {
+    "file": "FAB.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\FAB.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 23
+  },
+  {
+    "file": "FeedbackToast.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\FeedbackToast.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 57
+  },
+  {
+    "file": "FormInput.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\FormInput.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 73
+  },
+  {
+    "file": "HabitCompletionEffect.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\HabitCompletionEffect.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 122
+  },
+  {
+    "file": "Icon.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\Icon.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        }
+      ]
+    },
+    "lineCount": 33
+  },
+  {
+    "file": "InfoTooltip.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\InfoTooltip.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 50
+  },
+  {
+    "file": "KeyboardAvoidingView.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\KeyboardAvoidingView.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        }
+      ]
+    },
+    "lineCount": 19
+  },
+  {
+    "file": "KeyboardHelpModal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\KeyboardHelpModal.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 70
+  },
+  {
+    "file": "LazyImage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\LazyImage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 29
+  },
+  {
+    "file": "LevelUpCelebration.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\LevelUpCelebration.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 198
+  },
+  {
+    "file": "LimitWarningBanner.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\LimitWarningBanner.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 32
+  },
+  {
+    "file": "MicroInteraction.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\MicroInteraction.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 33
+  },
+  {
+    "file": "NavigationMap.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\NavigationMap.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 137
+  },
+  {
+    "file": "PageLoader.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\PageLoader.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 34
+  },
+  {
+    "file": "PageTransition.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\PageTransition.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 51
+  },
+  {
+    "file": "PremiumFeatureCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\PremiumFeatureCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 23
+  },
+  {
+    "file": "ReminderTest.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\ReminderTest.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 71
+  },
+  {
+    "file": "Shimmer.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\Shimmer.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 3,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        }
+      ]
+    },
+    "lineCount": 56
+  },
+  {
+    "file": "Skeleton.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\Skeleton.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Inline styles found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider using Tailwind classes"
+        }
+      ]
+    },
+    "lineCount": 19
+  },
+  {
+    "file": "SkeletonLoader.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\SkeletonLoader.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 25
+  },
+  {
+    "file": "StreakCelebration.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\StreakCelebration.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 176
+  },
+  {
+    "file": "Toast.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\Toast.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 42
+  },
+  {
+    "file": "Tooltip.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\Tooltip.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 54
+  },
+  {
+    "file": "XPCounter.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\XPCounter.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 119
+  },
+  {
+    "file": "CountrySelector.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\CountrySelector.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 76
+  },
+  {
+    "file": "AnimatedButton.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\dashboard\\AnimatedButton.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 28
+  },
+  {
+    "file": "DashboardWidgets.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\dashboard\\DashboardWidgets.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 74
+  },
+  {
+    "file": "FeatureGroupCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\dashboard\\FeatureGroupCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 62
+  },
+  {
+    "file": "QuickActionsWidget.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\dashboard\\QuickActionsWidget.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 150
+  },
+  {
+    "file": "ErrorBoundary.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\ErrorBoundary.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 3,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 98
+  },
+  {
+    "file": "EnhancedCardExample.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\examples\\EnhancedCardExample.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 33
+  },
+  {
+    "file": "IconShowcase.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\examples\\IconShowcase.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 49
+  },
+  {
+    "file": "FilterModal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\FilterModal.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 86
+  },
+  {
+    "file": "GratitudeCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\gratitude\\GratitudeCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 93
+  },
+  {
+    "file": "StreakDisplay.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\gratitude\\StreakDisplay.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 53
+  },
+  {
+    "file": "WeeklySummary.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\gratitude\\WeeklySummary.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 80
+  },
+  {
+    "file": "AnnouncementBanner.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\home\\AnnouncementBanner.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 54
+  },
+  {
+    "file": "HeroSection.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\home\\HeroSection.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 87
+  },
+  {
+    "file": "QuickMoodCheckIn.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\home\\QuickMoodCheckIn.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 82
+  },
+  {
+    "file": "TrendingContent.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\home\\TrendingContent.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 139
+  },
+  {
+    "file": "Icon.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\Icon.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Possible missing React keys in .map()",
+          "severity": "critical",
+          "fix": "Add unique key prop to mapped elements"
+        }
+      ],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 34
+  },
+  {
+    "file": "LanguageSwitcher.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\LanguageSwitcher.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 56
+  },
+  {
+    "file": "Layout.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\Layout.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 45
+  },
+  {
+    "file": "LazyLoadErrorBoundary.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\LazyLoadErrorBoundary.jsx",
+    "issues": {
+      "critical": [
+        {
+          "type": "Direct window object usage",
+          "count": 1,
+          "severity": "critical",
+          "fix": "Add typeof window !== \"undefined\" check"
+        }
+      ],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 57
+  },
+  {
+    "file": "MobileNavigation.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\mobile\\MobileNavigation.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 101
+  },
+  {
+    "file": "MobileOptimizedButton.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\mobile\\MobileOptimizedButton.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 52
+  },
+  {
+    "file": "SwipeableCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\mobile\\SwipeableCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 70
+  },
+  {
+    "file": "TagSelector.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\mood\\TagSelector.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 142
+  },
+  {
+    "file": "MoodScaleSelector.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\MoodScaleSelector.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 71
+  },
+  {
+    "file": "Navigation.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\Navigation.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 121
+  },
+  {
+    "file": "NotificationCenter.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\NotificationCenter.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 232
+  },
+  {
+    "file": "NotificationTestPanel.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\NotificationTestPanel.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 177
+  },
+  {
+    "file": "AgeConfirmationStep.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\AgeConfirmationStep.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 64
+  },
+  {
+    "file": "AvatarStep.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\AvatarStep.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 62
+  },
+  {
+    "file": "CountryStep.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\CountryStep.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 67
+  },
+  {
+    "file": "EnhancedAgeConfirmationStep.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\EnhancedAgeConfirmationStep.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 130
+  },
+  {
+    "file": "EnhancedAvatarStep.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\EnhancedAvatarStep.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 94
+  },
+  {
+    "file": "EnhancedCountryStep.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\EnhancedCountryStep.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 110
+  },
+  {
+    "file": "EnhancedInterestStep.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\EnhancedInterestStep.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 126
+  },
+  {
+    "file": "EnhancedOnboardingFlow.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\EnhancedOnboardingFlow.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 104
+  },
+  {
+    "file": "EnhancedUsernameStep.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\EnhancedUsernameStep.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 167
+  },
+  {
+    "file": "EnhancedWelcomeScreen.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\EnhancedWelcomeScreen.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 79
+  },
+  {
+    "file": "InterestStep.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\InterestStep.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 84
+  },
+  {
+    "file": "OnboardingFlow.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\OnboardingFlow.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 81
+  },
+  {
+    "file": "UsernameStep.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\UsernameStep.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 77
+  },
+  {
+    "file": "WelcomeScreen.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\WelcomeScreen.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 31
+  },
+  {
+    "file": "OnboardingTour.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\OnboardingTour.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 136
+  },
+  {
+    "file": "OptimizedImage.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\OptimizedImage.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 65
+  },
+  {
+    "file": "ContextualTooltip.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\personalization\\ContextualTooltip.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 79
+  },
+  {
+    "file": "InsightCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\personalization\\InsightCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 61
+  },
+  {
+    "file": "SmartCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\personalization\\SmartCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 91
+  },
+  {
+    "file": "PrivateGroups.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\premium\\PrivateGroups.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 79
+  },
+  {
+    "file": "WellnessBreakdown.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\premium\\WellnessBreakdown.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 79
+  },
+  {
+    "file": "PremiumBadge.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\PremiumBadge.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 24
+  },
+  {
+    "file": "PremiumPaywall.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\PremiumPaywall.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 50
+  },
+  {
+    "file": "JournalingPrompts.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority2\\JournalingPrompts.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 74
+  },
+  {
+    "file": "SelfCompassion.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority2\\SelfCompassion.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 54
+  },
+  {
+    "file": "TherapyPrep.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority2\\TherapyPrep.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 75
+  },
+  {
+    "file": "DataExport.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority6\\DataExport.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 149
+  },
+  {
+    "file": "TherapistPortal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\priority6\\TherapistPortal.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 55
+  },
+  {
+    "file": "ComparisonTable.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\professional\\ComparisonTable.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 64
+  },
+  {
+    "file": "FAQSection.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\professional\\FAQSection.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 72
+  },
+  {
+    "file": "ReactionPicker.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\ReactionPicker.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 82
+  },
+  {
+    "file": "ReportModal.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\ReportModal.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 109
+  },
+  {
+    "file": "SplashScreen.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\SplashScreen.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 80
+  },
+  {
+    "file": "TrackMood.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\TrackMood.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 69
+  },
+  {
+    "file": "DisclaimerBanner.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\wellness\\DisclaimerBanner.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 51
+  },
+  {
+    "file": "EducationalTooltip.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\wellness\\EducationalTooltip.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 29
+  },
+  {
+    "file": "EvidenceBadge.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\wellness\\EvidenceBadge.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 32
+  },
+  {
+    "file": "ResearchCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\wellness\\ResearchCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": [
+        {
+          "type": "Long functions found",
+          "count": 1,
+          "severity": "suggestion",
+          "fix": "Consider breaking into smaller functions"
+        }
+      ]
+    },
+    "lineCount": 31
+  },
+  {
+    "file": "index.js",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\auth\\index.js",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 2
+  },
+  {
+    "file": "AnimatedButton.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\AnimatedButton.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 20
+  },
+  {
+    "file": "AnimatedCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\AnimatedCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 19
+  },
+  {
+    "file": "Card.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\Card.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 19
+  },
+  {
+    "file": "ReminderContainer.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\ReminderContainer.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 24
+  },
+  {
+    "file": "ReminderToast.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\common\\ReminderToast.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 118
+  },
+  {
+    "file": "SpringAnimatedCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\dashboard\\SpringAnimatedCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 25
+  },
+  {
+    "file": "index.js",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\modern\\index.js",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 5
+  },
+  {
+    "file": "ModernButton.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\modern\\ModernButton.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 21
+  },
+  {
+    "file": "ModernCard.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\modern\\ModernCard.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 25
+  },
+  {
+    "file": "OfflineBanner.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\OfflineBanner.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 9
+  },
+  {
+    "file": "ProgressIndicator.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\onboarding\\ProgressIndicator.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 16
+  },
+  {
+    "file": "ProtectedRoute.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\ProtectedRoute.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 23
+  },
+  {
+    "file": "SafeComponent.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\SafeComponent.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 35
+  },
+  {
+    "file": "Skeleton.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\Skeleton.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 9
+  },
+  {
+    "file": "provider.jsx",
+    "path": "C:\\Users\\HP\\OneDrive\\mobile app\\Space4U Mobile\\src\\components\\ui\\provider.jsx",
+    "issues": {
+      "critical": [],
+      "warnings": [],
+      "suggestions": []
+    },
+    "lineCount": 4
+  }
+]

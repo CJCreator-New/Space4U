@@ -1,130 +1,389 @@
 import { useState, useEffect } from 'react'
-import { X, Plus, Trash2 } from 'lucide-react'
+import { X, Plus, Trash2, Sparkles, BookOpen, Tag, Mic } from 'lucide-react'
+import { useForm, useFieldArray } from 'react-hook-form'
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  VStack,
+  HStack,
+  Input,
+  Textarea,
+  Text,
+  IconButton,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderMark,
+  Box,
+  FormControl,
+  FormLabel,
+  useColorModeValue,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Wrap,
+  WrapItem,
+  Badge,
+  Card,
+  CardBody,
+  Grid,
+  GridItem,
+  useToast,
+} from '@chakra-ui/react'
+import VoiceRecorder from './VoiceRecorder'
+import { GRATITUDE_CATEGORIES, GRATITUDE_TEMPLATES } from '../../data/gratitudeCategories'
 
-function GratitudeEntryModal({ entry, onClose, onSave }) {
-  const [formData, setFormData] = useState({
-    date: new Date().toISOString().split('T')[0],
-    items: ['', '', ''],
-    mood_rating: 3,
-    notes: ''
+function GratitudeEntryModal({ isOpen, onClose, onSave, entry, isPremium }) {
+  const bgColor = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const toast = useToast()
+
+  const { register, control, handleSubmit, watch, setValue, reset } = useForm({
+    defaultValues: {
+      date: new Date().toISOString().split('T')[0],
+      items: [{ text: '' }, { text: '' }, { text: '' }],
+      mood_rating: 3,
+      notes: '',
+      categories: [],
+      template: null
+    }
   })
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'items'
+  })
+
+  const [selectedCategories, setSelectedCategories] = useState([])
+  const [selectedTemplate, setSelectedTemplate] = useState(null)
+  const [voiceRecording, setVoiceRecording] = useState(null)
+
   useEffect(() => {
-    if (entry) setFormData(entry)
-  }, [entry])
+    if (entry) {
+      const categories = entry.categories || []
+      const template = entry.template || null
+      const recording = entry.voiceRecording || null
+      setSelectedCategories(categories)
+      setSelectedTemplate(template)
+      setVoiceRecording(recording)
 
-  const updateItem = (index, value) => {
-    const newItems = [...formData.items]
-    newItems[index] = value
-    setFormData({ ...formData, items: newItems })
-  }
-
-  const addItem = () => {
-    if (formData.items.length < 5) {
-      setFormData({ ...formData, items: [...formData.items, ''] })
+      reset({
+        date: entry.date,
+        items: entry.items.map(text => ({ text })),
+        mood_rating: entry.mood_rating || 3,
+        notes: entry.notes || '',
+        categories: categories,
+        template: template
+      })
+    } else {
+      setSelectedCategories([])
+      setSelectedTemplate(null)
+      setVoiceRecording(null)
+      reset({
+        date: new Date().toISOString().split('T')[0],
+        items: [{ text: '' }, { text: '' }, { text: '' }],
+        mood_rating: 3,
+        notes: '',
+        categories: [],
+        template: null
+      })
     }
-  }
+  }, [entry, reset])
 
-  const removeItem = (index) => {
-    if (formData.items.length > 1) {
-      setFormData({ ...formData, items: formData.items.filter((_, i) => i !== index) })
-    }
-  }
+  const onSubmit = (data) => {
+    const filledItems = data.items.filter(item => item.text.trim())
+    if (filledItems.length === 0) return
 
-  const handleSubmit = () => {
-    const filledItems = formData.items.filter(item => item.trim())
-    if (filledItems.length === 0) return alert('Add at least one gratitude item')
-    
     onSave({
-      ...formData,
-      items: filledItems,
+      ...data,
+      items: filledItems.map(item => item.text),
+      categories: selectedCategories,
+      template: selectedTemplate,
+      voiceRecording: voiceRecording,
       id: entry?.id || Date.now()
+    })
+
+    toast({
+      title: "Gratitude entry saved!",
+      description: "Your gratitude entry has been recorded.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
     })
   }
 
+  const handleCategoryToggle = (categoryId) => {
+    setSelectedCategories(prev =>
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    )
+  }
+
+  const handleTemplateSelect = (template) => {
+    setSelectedTemplate(template.id)
+    setValue('items', template.items.map(text => ({ text })))
+    toast({
+      title: "Template applied!",
+      description: `Using the ${template.name} template.`,
+      status: "info",
+      duration: 2000,
+      isClosable: true,
+    })
+  }
+
+  const moodRating = watch('mood_rating')
+
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-surface rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-surface border-b border-border p-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Gratitude Entry</h2>
-          <button onClick={onClose} className="p-2 hover:bg-hover rounded-lg">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+    <Modal isOpen={isOpen} onClose={onClose} size="2xl" isCentered>
+      <ModalOverlay backdropFilter="blur(4px)" />
+      <ModalContent bg={bgColor} borderRadius="2xl" borderColor={borderColor} borderWidth={1} maxH="90vh" overflow="hidden">
+        <ModalHeader borderBottomWidth={1} borderColor={borderColor}>
+          <HStack>
+            <Sparkles size={20} />
+            <Text>Gratitude Entry</Text>
+          </HStack>
+        </ModalHeader>
+        <ModalCloseButton />
 
-        <div className="p-6 space-y-6">
-          <div>
-            <label className="block text-sm font-medium mb-2">Date</label>
-            <input
-              type="date"
-              value={formData.date}
-              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              className="input w-full"
-            />
-          </div>
+        <ModalBody p={0} overflowY="auto">
+          <Tabs variant="soft-rounded" colorScheme="pink" isFitted>
+            <TabList p={4} bg={useColorModeValue('gray.50', 'gray.700')}>
+              <Tab>
+                <HStack spacing={2}>
+                  <BookOpen size={16} />
+                  <Text>Entry</Text>
+                </HStack>
+              </Tab>
+              <Tab>
+                <HStack spacing={2}>
+                  <Tag size={16} />
+                  <Text>Categories</Text>
+                </HStack>
+              </Tab>
+              <Tab>
+                <HStack spacing={2}>
+                  <Sparkles size={16} />
+                  <Text>Templates</Text>
+                </HStack>
+              </Tab>
+              <Tab>
+                <HStack spacing={2}>
+                  <Mic size={16} />
+                  <Text>Voice</Text>
+                </HStack>
+              </Tab>
+            </TabList>
 
-          <div>
-            <label className="block text-sm font-medium mb-2">What are you grateful for?</label>
-            {formData.items.map((item, i) => (
-              <div key={i} className="flex gap-2 mb-3">
-                <span className="text-2xl mt-1">✨</span>
-                <input
-                  value={item}
-                  onChange={(e) => updateItem(i, e.target.value)}
-                  className="input flex-1"
-                  placeholder={`Gratitude #${i + 1}`}
+            <TabPanels p={6}>
+              <TabPanel>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <VStack spacing={6} align="stretch">
+                    <FormControl>
+                      <FormLabel>Date</FormLabel>
+                      <Input
+                        type="date"
+                        {...register('date')}
+                        bg={bgColor}
+                        borderColor={borderColor}
+                        _hover={{ borderColor: 'blue.300' }}
+                        _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
+                      />
+                    </FormControl>
+
+                    <FormControl>
+                      <FormLabel>Gratitude Items</FormLabel>
+                      <VStack spacing={3} align="stretch">
+                        {fields.map((field, index) => (
+                          <HStack key={field.id} spacing={3}>
+                            <Input
+                              placeholder={`What are you grateful for? (${index + 1})`}
+                              {...register(`items.${index}.text`)}
+                              bg={bgColor}
+                              borderColor={borderColor}
+                              _hover={{ borderColor: 'blue.300' }}
+                              _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
+                            />
+                            {fields.length > 1 && (
+                              <IconButton
+                                icon={<Trash2 />}
+                                size="sm"
+                                colorScheme="red"
+                                variant="ghost"
+                                onClick={() => remove(index)}
+                                aria-label="Remove item"
+                              />
+                            )}
+                          </HStack>
+                        ))}
+                        {fields.length < 5 && (
+                          <Button
+                            leftIcon={<Plus />}
+                            size="sm"
+                            variant="outline"
+                            onClick={() => append({ text: '' })}
+                            alignSelf="flex-start"
+                          >
+                            Add Item
+                          </Button>
+                        )}
+                      </VStack>
+                    </FormControl>
+
+                    <FormControl>
+                      <FormLabel>How are you feeling today? ({moodRating}/5)</FormLabel>
+                      <Box px={4} py={2}>
+                        <Slider
+                          min={1}
+                          max={5}
+                          step={1}
+                          value={moodRating}
+                          onChange={(value) => setValue('mood_rating', value)}
+                          colorScheme="pink"
+                        >
+                          <SliderTrack>
+                            <SliderFilledTrack />
+                          </SliderTrack>
+                          <SliderThumb />
+                          {[1, 2, 3, 4, 5].map((value) => (
+                            <SliderMark key={value} value={value} mt={2} fontSize="sm">
+                              {value}
+                            </SliderMark>
+                          ))}
+                        </Slider>
+                      </Box>
+                    </FormControl>
+
+                    <FormControl>
+                      <FormLabel>Notes (Optional)</FormLabel>
+                      <Textarea
+                        placeholder="Any additional thoughts or reflections..."
+                        {...register('notes')}
+                        bg={bgColor}
+                        borderColor={borderColor}
+                        _hover={{ borderColor: 'blue.300' }}
+                        _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px blue.500' }}
+                        rows={3}
+                      />
+                    </FormControl>
+
+                    <HStack spacing={3} justify="flex-end" pt={4}>
+                      <Button variant="ghost" onClick={onClose}>
+                        Cancel
+                      </Button>
+                      <Button
+                        type="submit"
+                        colorScheme="pink"
+                        isDisabled={!fields.some((_, index) => watch(`items.${index}.text`)?.trim())}
+                      >
+                        Save Entry
+                      </Button>
+                    </HStack>
+                  </VStack>
+                </form>
+              </TabPanel>
+
+              <TabPanel>
+                <VStack spacing={4} align="stretch">
+                  <Text fontSize="sm" color="gray.600">
+                    Select categories that relate to your gratitude items (optional)
+                  </Text>
+                  <Wrap spacing={3}>
+                    {GRATITUDE_CATEGORIES.map((category) => (
+                      <WrapItem key={category.id}>
+                        <Button
+                          variant={selectedCategories.includes(category.id) ? "solid" : "outline"}
+                          colorScheme={category.color}
+                          size="sm"
+                          onClick={() => handleCategoryToggle(category.id)}
+                          leftIcon={<Text fontSize="lg">{category.icon}</Text>}
+                          borderRadius="full"
+                        >
+                          {category.name}
+                        </Button>
+                      </WrapItem>
+                    ))}
+                  </Wrap>
+                  {selectedCategories.length > 0 && (
+                    <Box>
+                      <Text fontSize="sm" fontWeight="semibold" mb={2}>Selected Categories:</Text>
+                      <Wrap spacing={2}>
+                        {selectedCategories.map(catId => {
+                          const category = GRATITUDE_CATEGORIES.find(c => c.id === catId)
+                          return (
+                            <WrapItem key={catId}>
+                              <Badge colorScheme={category.color} borderRadius="full" px={3} py={1}>
+                                {category.icon} {category.name}
+                              </Badge>
+                            </WrapItem>
+                          )
+                        })}
+                      </Wrap>
+                    </Box>
+                  )}
+                </VStack>
+              </TabPanel>
+
+              <TabPanel>
+                <VStack spacing={4} align="stretch">
+                  <Text fontSize="sm" color="gray.600">
+                    Choose a template to get started with pre-filled gratitude items
+                  </Text>
+                  <Grid templateColumns="repeat(auto-fit, minmax(250px, 1fr))" gap={4}>
+                    {GRATITUDE_TEMPLATES.map((template) => (
+                      <GridItem key={template.id}>
+                        <Card
+                          cursor="pointer"
+                          onClick={() => handleTemplateSelect(template)}
+                          bg={selectedTemplate === template.id ? 'pink.50' : bgColor}
+                          borderColor={selectedTemplate === template.id ? 'pink.300' : borderColor}
+                          borderWidth={2}
+                          _hover={{ shadow: 'md', transform: 'translateY(-2px)' }}
+                          transition="all 0.2s"
+                        >
+                          <CardBody>
+                            <VStack spacing={2} align="stretch">
+                              <HStack>
+                                <Sparkles size={16} color="pink" />
+                                <Text fontWeight="semibold">{template.name}</Text>
+                              </HStack>
+                              <Text fontSize="sm" color="gray.600">{template.description}</Text>
+                              <VStack spacing={1} align="stretch">
+                                {template.items.slice(0, 2).map((item, i) => (
+                                  <Text key={i} fontSize="xs" color="gray.500">• {item}</Text>
+                                ))}
+                                {template.items.length > 2 && (
+                                  <Text fontSize="xs" color="gray.500">• +{template.items.length - 2} more...</Text>
+                                )}
+                              </VStack>
+                            </VStack>
+                          </CardBody>
+                        </Card>
+                      </GridItem>
+                    ))}
+                  </Grid>
+                </VStack>
+              </TabPanel>
+
+              <TabPanel>
+                <VoiceRecorder
+                  onSaveRecording={setVoiceRecording}
+                  isDisabled={false}
                 />
-                {formData.items.length > 1 && (
-                  <button onClick={() => removeItem(i)} className="p-2 hover:bg-hover rounded-lg">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-            ))}
-            {formData.items.length < 5 && (
-              <button onClick={addItem} className="btn-secondary text-sm w-full">
-                <Plus className="w-4 h-4" /> Add Another
-              </button>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">How do you feel? (1-5)</label>
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map(rating => (
-                <button
-                  key={rating}
-                  onClick={() => setFormData({ ...formData, mood_rating: rating })}
-                  className={`flex-1 py-3 rounded-xl font-medium transition-colors ${
-                    formData.mood_rating === rating
-                      ? 'bg-primary text-white'
-                      : 'bg-hover text-text-secondary hover:bg-hover/80'
-                  }`}
-                >
-                  {['😔', '😕', '😊', '😄', '🤩'][rating - 1]}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">Additional Notes (Optional)</label>
-            <textarea
-              value={formData.notes}
-              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              className="input w-full h-24"
-              placeholder="Any reflections or thoughts..."
-            />
-          </div>
-        </div>
-
-        <div className="sticky bottom-0 bg-surface border-t border-border p-6">
-          <button onClick={handleSubmit} className="btn-primary w-full">
-            Save Entry
-          </button>
-        </div>
-      </div>
-    </div>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   )
 }
 

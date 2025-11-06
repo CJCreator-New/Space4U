@@ -1,15 +1,15 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Plus } from 'lucide-react'
 
 function TherapyPrep({ onClose }) {
-  const [sessions, setSessions] = useState(() => JSON.parse(localStorage.getItem('safespace_therapy_sessions') || '[]'))
+  const [sessions, setSessions] = useState(() => JSON.parse(localStorage.getItem('space4u_therapy_sessions') || '[]'))
   const [showModal, setShowModal] = useState(false)
   const [newSession, setNewSession] = useState({ session_date: '', topics_to_discuss: [''], goals: [''] })
 
   const addSession = () => {
     const session = { ...newSession, id: Date.now() }
     const updated = [session, ...sessions]
-    localStorage.setItem('safespace_therapy_sessions', JSON.stringify(updated))
+    localStorage.setItem('space4u_therapy_sessions', JSON.stringify(updated))
     setSessions(updated)
     setShowModal(false)
     setNewSession({ session_date: '', topics_to_discuss: [''], goals: [''] })
@@ -71,3 +71,4 @@ function TherapyPrep({ onClose }) {
 }
 
 export default TherapyPrep
+

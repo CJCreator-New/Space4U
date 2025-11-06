@@ -1,4 +1,4 @@
-// Global Search Utility
+﻿// Global Search Utility
 
 export const searchAll = (query) => {
   if (!query || query.length < 2) return []
@@ -7,7 +7,7 @@ export const searchAll = (query) => {
   const lowerQuery = query.toLowerCase()
   
   // Search moods
-  const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+  const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
   Object.entries(moods).forEach(([date, mood]) => {
     if (mood.note?.toLowerCase().includes(lowerQuery) || mood.label?.toLowerCase().includes(lowerQuery)) {
       results.push({
@@ -21,10 +21,20 @@ export const searchAll = (query) => {
     }
   })
   
-  // Search circles
-  const circles = JSON.parse(localStorage.getItem('safespace_user_circles') || '[]')
-  circles.forEach(circle => {
-    if (circle.name?.toLowerCase().includes(lowerQuery) || circle.description?.toLowerCase().includes(lowerQuery)) {
+  // Search circles (be tolerant of stored shapes: either array of ids or array of circle objects)
+  const rawUserCircles = JSON.parse(localStorage.getItem('space4u_user_circles') || '[]')
+  let userCircles = []
+  if (rawUserCircles.length > 0 && typeof rawUserCircles[0] === 'number') {
+    // If stored as ids, map to full objects using global circle list
+    const allCircles = JSON.parse(localStorage.getItem('space4u_circles') || '[]')
+    userCircles = rawUserCircles.map(id => allCircles.find(c => c.id === id)).filter(Boolean)
+  } else {
+    userCircles = rawUserCircles
+  }
+
+  userCircles.forEach(circle => {
+    if (!circle) return
+    if ((circle.name && circle.name.toLowerCase().includes(lowerQuery)) || (circle.description && circle.description.toLowerCase().includes(lowerQuery))) {
       results.push({
         type: 'circle',
         title: circle.name,
@@ -36,7 +46,7 @@ export const searchAll = (query) => {
   })
   
   // Search posts
-  const posts = JSON.parse(localStorage.getItem('safespace_user_posts') || '[]')
+  const posts = JSON.parse(localStorage.getItem('space4u_user_posts') || '[]')
   posts.forEach(post => {
     if (post.content?.toLowerCase().includes(lowerQuery)) {
       results.push({
@@ -45,13 +55,13 @@ export const searchAll = (query) => {
         description: post.content.slice(0, 100),
         date: post.createdAt,
         link: `/circles/${post.circleId}`,
-        icon: '📝'
+        icon: ''
       })
     }
   })
   
   // Search gratitude
-  const gratitude = JSON.parse(localStorage.getItem('safespace_gratitude') || '[]')
+  const gratitude = JSON.parse(localStorage.getItem('space4u_gratitude') || '[]')
   gratitude.forEach(entry => {
     if (entry.text?.toLowerCase().includes(lowerQuery)) {
       results.push({
@@ -60,13 +70,13 @@ export const searchAll = (query) => {
         description: entry.text,
         date: entry.date,
         link: '/gratitude',
-        icon: '🙏'
+        icon: ''
       })
     }
   })
   
   // Search habits
-  const habits = JSON.parse(localStorage.getItem('safespace_habits') || '[]')
+  const habits = JSON.parse(localStorage.getItem('space4u_habits') || '[]')
   habits.forEach(habit => {
     if (habit.name?.toLowerCase().includes(lowerQuery)) {
       results.push({
@@ -74,7 +84,7 @@ export const searchAll = (query) => {
         title: habit.name,
         description: `${habit.streak || 0} day streak`,
         link: '/habits',
-        icon: habit.icon || '✓'
+        icon: habit.icon || 'âœ“'
       })
     }
   })
@@ -113,15 +123,16 @@ export const filterMoods = (moods, filters) => {
 }
 
 export const getRecentSearches = () => {
-  return JSON.parse(localStorage.getItem('safespace_recent_searches') || '[]')
+  return JSON.parse(localStorage.getItem('space4u_recent_searches') || '[]')
 }
 
 export const saveSearch = (query) => {
   const recent = getRecentSearches()
   const updated = [query, ...recent.filter(q => q !== query)].slice(0, 5)
-  localStorage.setItem('safespace_recent_searches', JSON.stringify(updated))
+  localStorage.setItem('space4u_recent_searches', JSON.stringify(updated))
 }
 
 export const clearRecentSearches = () => {
-  localStorage.removeItem('safespace_recent_searches')
+  localStorage.removeItem('space4u_recent_searches')
 }
+

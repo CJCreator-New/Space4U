@@ -47,14 +47,14 @@ export const getMoodScale = (scaleId = 'scale5') => {
 }
 
 export const getUserMoodScale = () => {
-  const settings = JSON.parse(localStorage.getItem('safespace_settings') || '{}')
+  const settings = JSON.parse(localStorage.getItem('space4u_settings') || '{}')
   return settings.moodScale || 'scale5'
 }
 
 export const setUserMoodScale = (scaleId) => {
-  const settings = JSON.parse(localStorage.getItem('safespace_settings') || '{}')
+  const settings = JSON.parse(localStorage.getItem('space4u_settings') || '{}')
   settings.moodScale = scaleId
-  localStorage.setItem('safespace_settings', JSON.stringify(settings))
+  localStorage.setItem('space4u_settings', JSON.stringify(settings))
 }
 
 export const convertMoodValue = (value, fromScale, toScale) => {

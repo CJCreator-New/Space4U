@@ -1,4 +1,4 @@
-// Queue for offline actions
+﻿// Queue for offline actions
 class OfflineQueue {
   constructor() {
     this.queue = this.loadQueue()
@@ -94,9 +94,9 @@ class OfflineQueue {
     console.log('Syncing mood log:', data)
     
     // For now, just ensure it's in localStorage
-    const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+    const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
     moods[data.date] = data
-    localStorage.setItem('safespace_moods', JSON.stringify(moods))
+    localStorage.setItem('space4u_moods', JSON.stringify(moods))
   }
 
   async syncPost(data) {
@@ -104,9 +104,9 @@ class OfflineQueue {
     console.log('Syncing post:', data)
     
     // For now, just ensure it's in localStorage
-    const posts = JSON.parse(localStorage.getItem('safespace_user_posts') || '[]')
+    const posts = JSON.parse(localStorage.getItem('space4u_user_posts') || '[]')
     posts.push(data)
-    localStorage.setItem('safespace_user_posts', JSON.stringify(posts))
+    localStorage.setItem('space4u_user_posts', JSON.stringify(posts))
   }
 
   async syncComment(data) {

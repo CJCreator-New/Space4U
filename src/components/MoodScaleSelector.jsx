@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Check } from 'lucide-react'
+import { Check } from '../config/icons'
 import { MOOD_SCALES, getUserMoodScale, setUserMoodScale } from '../utils/moodScales'
 
 function MoodScaleSelector({ onSelect }) {

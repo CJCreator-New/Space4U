@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 
 const PROMPTS = [
   { id: 1, prompt: 'What am I grateful for today?', category: 'gratitude' },
@@ -16,12 +16,12 @@ const PROMPTS = [
 function JournalingPrompts({ onClose }) {
   const [selectedPrompt, setSelectedPrompt] = useState(null)
   const [entry, setEntry] = useState('')
-  const [entries, setEntries] = useState(() => JSON.parse(localStorage.getItem('safespace_journal_entries') || '[]'))
+  const [entries, setEntries] = useState(() => JSON.parse(localStorage.getItem('space4u_journal_entries') || '[]'))
 
   const saveEntry = () => {
     const newEntry = { id: Date.now(), prompt: selectedPrompt.prompt, entry, created_at: new Date().toISOString() }
     const updated = [newEntry, ...entries]
-    localStorage.setItem('safespace_journal_entries', JSON.stringify(updated))
+    localStorage.setItem('space4u_journal_entries', JSON.stringify(updated))
     setEntries(updated)
     setSelectedPrompt(null)
     setEntry('')
@@ -70,3 +70,4 @@ function JournalingPrompts({ onClose }) {
 }
 
 export default JournalingPrompts
+

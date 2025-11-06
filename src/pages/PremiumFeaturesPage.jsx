@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Shield, Palette, TrendingUp, AlertTriangle, Users, Crown } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
@@ -16,7 +16,7 @@ function PremiumFeaturesPage() {
 
   useEffect(() => {
     try {
-      const premiumData = JSON.parse(localStorage.getItem('safespace_premium') || '{}')
+      const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
       setIsPremium(premiumData.isPremium || false)
     } catch (err) {
       console.error('Error loading premium status:', err)
@@ -126,3 +126,4 @@ function PremiumFeaturesPage() {
 }
 
 export default PremiumFeaturesPage
+

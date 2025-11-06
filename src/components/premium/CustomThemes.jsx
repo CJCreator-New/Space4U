@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Palette, Check } from 'lucide-react'
 
 function CustomThemes() {
@@ -17,7 +17,7 @@ function CustomThemes() {
 
   const applyTheme = (themeId) => {
     setActiveTheme(themeId)
-    localStorage.setItem('safespace_theme', themeId)
+    localStorage.setItem('space4u_theme', themeId)
   }
 
   return (
@@ -68,3 +68,4 @@ function CustomThemes() {
 }
 
 export default CustomThemes
+

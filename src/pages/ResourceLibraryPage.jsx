@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Search, Heart, Play, Book, Phone, AlertTriangle, Clock, User, Bookmark } from 'lucide-react'
+import RequestHelpModal from '../components/resources/RequestHelpModal'
 import { mockResources } from '../data/mockResources'
 import BreathingExercise from '../components/resources/BreathingExercise'
 import { addPoints, POINT_VALUES } from '../utils/badgeSystem'
@@ -13,13 +15,31 @@ function ResourceLibraryPage() {
   const debouncedSearch = useDebounce(searchQuery, 300)
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false)
   const [bookmarks, setBookmarks] = useState([])
+  const [showHelpModal, setShowHelpModal] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [recommended, setRecommended] = useState([])
+  const [categoryFilter, setCategoryFilter] = useState('all')
+  const navigate = useNavigate()
 
 
   useEffect(() => {
-    const savedBookmarks = JSON.parse(localStorage.getItem('safespace_bookmarks') || '[]')
+    const savedBookmarks = JSON.parse(localStorage.getItem('space4u_bookmarks') || '[]')
     setBookmarks(savedBookmarks)
     setTimeout(() => setLoading(false), 500)
+
+    // build recommendations from user interests
+    const user = JSON.parse(localStorage.getItem('space4u_user') || '{}')
+    const interests = user.interests || []
+    if (interests.length > 0) {
+      const all = [
+        ...mockResources.breathingExercises,
+        ...mockResources.meditations,
+        ...mockResources.articles,
+        ...mockResources.selfHelpGuides
+      ]
+      const recs = all.filter(item => (item.tags || item.theme || item.summary || '').toString().toLowerCase().split(/[,\s]+/).some(t => interests.includes(t))).slice(0,4)
+      setRecommended(recs)
+    }
   }, [])
 
   const toggleBookmark = (resourceId, category) => {
@@ -29,7 +49,7 @@ function ResourceLibraryPage() {
       : [...bookmarks, bookmarkId]
     
     setBookmarks(newBookmarks)
-    localStorage.setItem('safespace_bookmarks', JSON.stringify(newBookmarks))
+    localStorage.setItem('space4u_bookmarks', JSON.stringify(newBookmarks))
   }
 
   const isBookmarked = (resourceId, category) => {
@@ -38,6 +58,10 @@ function ResourceLibraryPage() {
 
   const filterResources = (resources, category) => {
     let filtered = resources
+    // Apply category filter across cards (support 'all', 'crisis', 'therapy', 'self-care', 'peer-support')
+    if (categoryFilter && categoryFilter !== 'all') {
+      filtered = filtered.filter(resource => ((resource.tags || []).includes(categoryFilter) || (resource.type && resource.type === categoryFilter) || (resource.category && resource.category === categoryFilter)))
+    }
 
     if (debouncedSearch) {
       filtered = filtered.filter(resource =>
@@ -84,7 +108,7 @@ function ResourceLibraryPage() {
     <SafeComponent>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {meditations.map((meditation) => (
-          <div key={meditation.id} className="card p-6 hover:shadow-lg transition-shadow">
+          <div key={meditation.id || meditation.name || Math.random()} className="card p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <h3 className="font-bold text-text-primary mb-2">{meditation.title}</h3>
@@ -132,7 +156,7 @@ function ResourceLibraryPage() {
     return (
       <div className="grid gap-4 md:grid-cols-2">
         {articles.map((article) => (
-          <div key={article.id} className="card p-6 hover:shadow-lg transition-shadow">
+          <div key={article.id || article.name || Math.random()} className="card p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <h3 className="font-bold text-text-primary mb-2">{article.title}</h3>
@@ -194,7 +218,7 @@ function ResourceLibraryPage() {
           <h3 className="text-xl font-semibold text-text-primary mb-4">Crisis Helplines</h3>
           <div className="grid gap-4 md:grid-cols-2">
             {mockResources.crisisResources.map((resource) => (
-              <div key={resource.id} className="card p-6">
+              <div key={resource.id || resource.name || Math.random()} className="card p-6">
                 <h4 className="font-bold text-text-primary mb-2">{resource.name}</h4>
                 <p className="text-text-secondary text-sm mb-4">{resource.description}</p>
                 
@@ -241,7 +265,7 @@ function ResourceLibraryPage() {
           <h3 className="text-xl font-semibold text-text-primary mb-4">Self-Help Guides</h3>
           <div className="grid gap-4">
             {mockResources.selfHelpGuides.map((guide) => (
-              <div key={guide.id} className="card p-6">
+              <div key={guide.id || guide.name || Math.random()} className="card p-6">
                 <h4 className="font-bold text-text-primary mb-2">{guide.title}</h4>
                 <p className="text-text-secondary text-sm mb-4">{guide.description}</p>
                 <ol className="space-y-2">
@@ -263,10 +287,10 @@ function ResourceLibraryPage() {
   }
 
   const tabs = [
-    { id: 'breathing', label: 'Breathing Exercises', icon: '🫁' },
-    { id: 'meditation', label: 'Guided Meditations', icon: '🧘' },
-    { id: 'articles', label: 'Articles & Tips', icon: '📚' },
-    { id: 'crisis', label: 'Crisis Resources', icon: '🆘' }
+    { id: 'breathing', label: 'Breathing Exercises', icon: '' },
+    { id: 'meditation', label: 'Guided Meditations', icon: '' },
+    { id: 'articles', label: 'Articles & Tips', icon: '' },
+    { id: 'crisis', label: 'Crisis Resources', icon: '' }
   ]
 
   return (
@@ -274,8 +298,16 @@ function ResourceLibraryPage() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-text-primary mb-2">Resource Library</h1>
-        <p className="text-text-secondary">Tools and resources for your mental health journey</p>
+        <div className="flex items-start justify-between gap-4 mb-2">
+          <div>
+            <h1 className="text-3xl font-bold text-text-primary mb-2">Resource Library</h1>
+            <p className="text-text-secondary">Tools and resources for your mental health journey</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <button onClick={() => setShowHelpModal(true)} className="px-4 py-2 bg-danger text-white rounded-xl hover:opacity-95">Request Help</button>
+            <button onClick={() => navigate('/profile')} className="px-4 py-2 border rounded-xl">My Profile</button>
+          </div>
+        </div>
       </div>
 
       {/* Search and Filters */}
@@ -308,8 +340,8 @@ function ResourceLibraryPage() {
       {/* Category Tabs */}
       <div className="flex gap-2 mb-6 overflow-x-auto">
         {tabs.map((tab) => (
-          <button
-            key={tab.id}
+            <button
+              key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-2 px-4 py-3 rounded-xl font-medium whitespace-nowrap transition-colors ${
               activeTab === tab.id
@@ -325,11 +357,47 @@ function ResourceLibraryPage() {
 
       {/* Content */}
       <div className="mb-6">
+        {/* Recommended for you */}
+        {recommended && recommended.length > 0 && (
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-text-primary mb-3">Recommended for you</h3>
+            <div className="grid gap-4 md:grid-cols-4">
+              {recommended.map((r, i) => (
+                <div key={r.id || i}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => navigate(`/resources/${(r.category || r.type || 'misc')}-${r.id}`)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/resources/${(r.category || r.type || 'misc')}-${r.id}`) }}
+                  className="card p-4 bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-100 hover:shadow-lg transition-shadow cursor-pointer"
+                >
+                  <h4 className="font-semibold text-text-primary mb-1">{r.title || r.name}</h4>
+                  <p className="text-sm text-text-secondary mb-2">{r.summary || r.description || r.theme}</p>
+                  <div className="text-xs text-text-secondary">{(r.tags || []).slice(0,3).join(', ')}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Quick category selector */}
+        <div className="flex items-center gap-3 mb-4">
+          <label className="text-sm text-text-secondary">Filter:</label>
+          <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)} className="px-3 py-2 border rounded-xl text-sm">
+            <option value="all">All</option>
+            <option value="crisis">Crisis</option>
+            <option value="self-help">Self-care</option>
+            <option value="anxiety">Anxiety</option>
+            <option value="sleep">Sleep</option>
+          </select>
+        </div>
+
         {activeTab === 'breathing' && renderBreathingExercises()}
         {activeTab === 'meditation' && renderMeditations()}
         {activeTab === 'articles' && renderArticles()}
         {activeTab === 'crisis' && renderCrisisResources()}
       </div>
+
+      <RequestHelpModal isOpen={showHelpModal} onClose={() => setShowHelpModal(false)} defaultNumber={'988'} />
 
     </div>
     </SafeComponent>

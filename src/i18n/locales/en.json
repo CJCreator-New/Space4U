@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "home": "Home",
     "circles": "Circles",
@@ -124,7 +124,7 @@
     "tryAdjustingFilters": "Try adjusting your filters",
     "clearFilters": "Clear Filters",
     "loadingMore": "Loading more posts...",
-    "caughtUp": "You've caught up! 🎉",
+    "caughtUp": "You've caught up! ",
     "linkCopied": "Link copied!"
   },
   "insights": {
@@ -179,7 +179,7 @@
   },
   "settings": {
     "title": "Settings",
-    "subtitle": "Customize your Safespace experience",
+    "subtitle": "Customize your space4u experience",
     "general": "General",
     "language": "Language",
     "selectLanguage": "Select Language",
@@ -290,16 +290,16 @@
     "currentStreak": "Current Streak",
     "streakDays": "{{count}} days",
     "totalEntries": "Total Entries",
+    "entries": "entries",
+    "days": "days",
+    "weeklyGoal": "Weekly Goal",
+    "thisWeek": "this week",
     "thisMonth": "This Month",
-    "empty": {
-      "title": "Start Your Gratitude Journey",
-      "description": "Research shows that practicing gratitude can improve mental health and overall well-being.",
-      "benefitsTitle": "Daily gratitude practice can help you:",
-      "benefit1": "Increase positive emotions and life satisfaction",
-      "benefit2": "Reduce stress and improve sleep quality",
-      "benefit3": "Strengthen relationships and social connections",
-      "benefit4": "Build resilience during challenging times"
-    },
+    "recentEntries": "Recent Entries",
+    "noEntries": "No Entries Yet",
+    "startJourney": "Start your gratitude journey today",
+    "addFirstEntry": "Add First Entry",
+
     "guidelines": {
       "title": "Optimal Practice Guidelines",
       "tip1": "Write 3-5 entries per session (Emmons & McCullough, 2003)",
@@ -338,7 +338,7 @@
     "price": "Price",
     "unlockUnlimited": "Unlock unlimited features, custom themes, and advanced analytics",
     "trialDaysLeft": "Trial: {{days}} days left",
-    "welcomeToPremium": "Welcome to Premium! 🎉",
+    "welcomeToPremium": "Welcome to Premium! ",
     "trialEndsOn": "Your trial ends on {{date}}",
     "reminderBeforeCharge": "We'll send a reminder before charging",
     "accessTo": "You now have access to:",
@@ -812,9 +812,10 @@
     "emailPlaceholder": "your@email.com",
     "passwordPlaceholder": "••••••••",
     "usernamePlaceholder": "Choose a username",
-    "configError": "⚠️ Configuration Error",
+    "configError": "âš ï¸ Configuration Error",
     "contactAdmin": "Please contact the administrator or check your .env file.",
     "authUnavailable": "Authentication is currently unavailable. Please try again later.",
     "checkEmail": "Check your email to confirm your account!"
   }
 }
+

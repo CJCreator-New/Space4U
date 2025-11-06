@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { X, Plus, Trash2 } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 
@@ -15,7 +15,7 @@ function CrisisSafetyPlan({ onClose }) {
   })
 
   useEffect(() => {
-    const saved = localStorage.getItem('safespace_crisis_plan')
+    const saved = localStorage.getItem('space4u_crisis_plan')
     if (saved) setPlan(JSON.parse(saved))
   }, [])
 
@@ -38,7 +38,7 @@ function CrisisSafetyPlan({ onClose }) {
     if (user) {
       console.log('Saving to database:', plan)
     } else {
-      localStorage.setItem('safespace_crisis_plan', JSON.stringify(plan))
+      localStorage.setItem('space4u_crisis_plan', JSON.stringify(plan))
     }
     onClose()
   }
@@ -211,3 +211,4 @@ function CrisisSafetyPlan({ onClose }) {
 }
 
 export default CrisisSafetyPlan
+

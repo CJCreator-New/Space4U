@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Lightbulb, ThumbsUp, ThumbsDown } from 'lucide-react'
 
 function MoodSuggestions() {
@@ -7,7 +7,7 @@ function MoodSuggestions() {
   const [history, setHistory] = useState([])
 
   useEffect(() => {
-    const saved = localStorage.getItem('safespace_suggestion_history')
+    const saved = localStorage.getItem('space4u_suggestion_history')
     if (saved) setHistory(JSON.parse(saved))
   }, [])
 
@@ -53,11 +53,11 @@ function MoodSuggestions() {
     }
     const updated = [entry, ...history].slice(0, 50)
     setHistory(updated)
-    localStorage.setItem('safespace_suggestion_history', JSON.stringify(updated))
+    localStorage.setItem('space4u_suggestion_history', JSON.stringify(updated))
   }
 
   const moodLabels = ['Very Low', 'Low', 'Neutral', 'Good', 'Great']
-  const moodEmojis = ['😢', '😕', '😐', '🙂', '😊']
+  const moodEmojis = ['', '', '', '', '']
 
   return (
     <div className="space-y-6">
@@ -154,3 +154,4 @@ function MoodSuggestions() {
 }
 
 export default MoodSuggestions
+

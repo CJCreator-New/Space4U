@@ -77,7 +77,7 @@ Space4U is a comprehensive mental health support web application that provides u
 - ✅ **Offline Mode** - Full offline functionality
 - ✅ **PWA Enhancement** - Install prompts, push notifications
 
-### 👑 Premium Features (5 New)
+### 💡 Premium Features (5 New)
 - ✅ **Streak Insurance** - 2 free streak freezes/month
 - ✅ **Custom Themes** - 8 beautiful color themes
 - ✅ **Wellness Breakdown** - Detailed analytics
@@ -410,7 +410,7 @@ location.reload()
 
 # Enable premium for testing
 # In browser console:
-localStorage.setItem('safespace_premium', JSON.stringify({isPremium: true}))
+localStorage.setItem('space4u_premium', JSON.stringify({isPremium: true}))
 location.reload()
 ```
 
@@ -512,7 +512,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Voice commands
 - Biometric authentication
 
-## 🌍 Community
+## 🌐 Community
 
 - **Discord**: [Join our community](https://discord.gg/space4u)
 - **Twitter**: [@Space4U_App](https://twitter.com/space4u_app)

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Tag, TrendingUp } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
@@ -7,7 +7,7 @@ function TagAnalytics() {
   const [moodFilter, setMoodFilter] = useState('all')
 
   useEffect(() => {
-    const moods = JSON.parse(localStorage.getItem('safespace_moods') || '{}')
+    const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
     const moodEntries = Object.values(moods)
     
     const tagFrequency = {}
@@ -31,7 +31,7 @@ function TagAnalytics() {
     setTagData(data)
   }, [moodFilter])
 
-  const moodEmojis = ['😢', '😕', '😐', '🙂', '😊']
+  const moodEmojis = ['', '', '', '', '']
 
   return (
     <div className="space-y-6">
@@ -90,3 +90,4 @@ function TagAnalytics() {
 }
 
 export default TagAnalytics
+

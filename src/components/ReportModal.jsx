@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { X, AlertTriangle, Check } from 'lucide-react'
+﻿import { useState } from 'react'
+import { X, AlertTriangle, Check } from '../config/icons'
 import { REPORT_REASONS, reportPost } from '../utils/moderation'
 
 function ReportModal({ isOpen, onClose, postId }) {
@@ -10,7 +10,7 @@ function ReportModal({ isOpen, onClose, postId }) {
   if (!isOpen) return null
 
   const handleSubmit = () => {
-    const userId = JSON.parse(localStorage.getItem('safespace_user') || '{}').username || 'anonymous'
+    const userId = JSON.parse(localStorage.getItem('space4u_user') || '{}').username || 'anonymous'
     reportPost(postId, reason, details, userId)
     setSubmitted(true)
     setTimeout(() => {
@@ -105,3 +105,4 @@ function ReportModal({ isOpen, onClose, postId }) {
 }
 
 export default ReportModal
+

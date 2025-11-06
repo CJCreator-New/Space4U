@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Shield, Zap, CheckCircle } from 'lucide-react'
 
 function StreakInsurance() {
   const [freezes, setFreezes] = useState({ used: 0, total: 2 })
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('safespace_streak_freezes') || '{"used":0,"total":2}')
+    const saved = JSON.parse(localStorage.getItem('space4u_streak_freezes') || '{"used":0,"total":2}')
     setFreezes(saved)
   }, [])
 
   const useFreeze = () => {
     if (freezes.used >= freezes.total) return
     const updated = { ...freezes, used: freezes.used + 1 }
-    localStorage.setItem('safespace_streak_freezes', JSON.stringify(updated))
+    localStorage.setItem('space4u_streak_freezes', JSON.stringify(updated))
     setFreezes(updated)
   }
 
@@ -65,3 +65,4 @@ function StreakInsurance() {
 }
 
 export default StreakInsurance
+

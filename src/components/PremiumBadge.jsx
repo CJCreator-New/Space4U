@@ -1,4 +1,4 @@
-import { Crown } from 'lucide-react'
+import { HeroCrown } from '../config/icons'
 import { checkPremiumStatus } from '../utils/premiumManager'
 
 function PremiumBadge({ size = 'sm' }) {
@@ -14,7 +14,7 @@ function PremiumBadge({ size = 'sm' }) {
 
   return (
     <div className={`inline-flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full font-medium ${sizeClasses[size]}`}>
-      <Crown size={size === 'sm' ? 12 : size === 'md' ? 14 : 16} />
+      <HeroCrown size={size === 'sm' ? 12 : size === 'md' ? 14 : 16} />
       <span>{trialActive ? 'Trial' : 'Premium'}</span>
     </div>
   )

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import DisclaimerBanner from '../wellness/DisclaimerBanner'
 import ResearchCard from '../wellness/ResearchCard'
@@ -7,14 +7,14 @@ import { disclaimers } from '../../data/disclaimers'
 import { researchCitations } from '../../data/researchCitations'
 
 function MedicationTracker({ onClose }) {
-  const [meds, setMeds] = useState(() => JSON.parse(localStorage.getItem('safespace_medications') || '[]'))
+  const [meds, setMeds] = useState(() => JSON.parse(localStorage.getItem('space4u_medications') || '[]'))
   const [showModal, setShowModal] = useState(false)
   const [newMed, setNewMed] = useState({ name: '', dosage: '', frequency: 'daily', times: ['09:00'] })
 
   const addMed = () => {
     const med = { ...newMed, id: Date.now(), logs: {} }
     const updated = [...meds, med]
-    localStorage.setItem('safespace_medications', JSON.stringify(updated))
+    localStorage.setItem('space4u_medications', JSON.stringify(updated))
     setMeds(updated)
     setShowModal(false)
     setNewMed({ name: '', dosage: '', frequency: 'daily', times: ['09:00'] })
@@ -30,7 +30,7 @@ function MedicationTracker({ onClose }) {
       }
       return m
     })
-    localStorage.setItem('safespace_medications', JSON.stringify(updated))
+    localStorage.setItem('space4u_medications', JSON.stringify(updated))
     setMeds(updated)
   }
 
@@ -64,7 +64,7 @@ function MedicationTracker({ onClose }) {
                 <p className="text-sm text-text-secondary">Times: {med.times.join(', ')}</p>
               </div>
               <button onClick={() => toggleTaken(med.id)} className={`px-6 py-3 rounded-xl font-medium ${med.logs[today] ? 'bg-green-500 text-white' : 'bg-hover'}`}>
-                {med.logs[today] ? '✓ Taken' : 'Mark Taken'}
+                {med.logs[today] ? 'âœ“ Taken' : 'Mark Taken'}
               </button>
             </div>
           </div>
@@ -110,3 +110,4 @@ function MedicationTracker({ onClose }) {
 }
 
 export default MedicationTracker
+

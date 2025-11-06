@@ -1,8 +1,9 @@
-// Mood analysis utility functions
+﻿// Mood analysis utility functions
 
 export const calculateAverageMood = (moods, dateRange) => {
   if (moods.length === 0) return 0
-  return moods.reduce((sum, mood) => sum + mood.mood, 0) / moods.length
+  const sum = moods.reduce((sum, mood) => sum + (Number(mood.mood) || 0), 0)
+  return sum / moods.length
 }
 
 export const detectWeekdayPatterns = (moods) => {
@@ -17,8 +18,9 @@ export const detectWeekdayPatterns = (moods) => {
 
   const patterns = {}
   Object.entries(weekdayMoods).forEach(([day, moodValues]) => {
-    const avg = moodValues.reduce((sum, mood) => sum + mood, 0) / moodValues.length
-    patterns[dayNames[day]] = { average: avg, count: moodValues.length }
+    const count = moodValues.length || 0
+    const avg = count > 0 ? (moodValues.reduce((sum, mood) => sum + mood, 0) / count) : 0
+    patterns[dayNames[day]] = { average: avg, count }
   })
 
   return patterns
@@ -50,7 +52,7 @@ export const calculateConsistencyScore = (moods, totalDays) => {
 export const calculateStreak = (moods) => {
   if (moods.length === 0) return { current: 0, longest: 0 }
   
-  const sortedDates = moods.map(m => m.date).sort()
+  const sortedDates = moods.map(m => m.date).sort((a, b) => new Date(a) - new Date(b))
   let currentStreak = 1
   let longestStreak = 1
   let tempStreak = 1
@@ -105,27 +107,26 @@ export const detectMoodTriggers = (moods) => {
 
   // Detect negative patterns
   Object.entries(weekdayPatterns).forEach(([day, data]) => {
-    if (data.average < overallAvg - 0.5 && data.count >= 2) {
+    if (data && typeof data.average === 'number' && data.count >= 2 && data.average < overallAvg - 0.5) {
       triggers.negative.push(`Often on ${day}s`)
     }
   })
 
   // Detect positive patterns
   Object.entries(weekdayPatterns).forEach(([day, data]) => {
-    if (data.average > overallAvg + 0.5 && data.count >= 2) {
+    if (data && typeof data.average === 'number' && data.count >= 2 && data.average > overallAvg + 0.5) {
       triggers.positive.push(`${day}s boost your mood`)
     }
   })
 
   // Weekend vs weekday analysis
   const weekendDays = ['Saturday', 'Sunday']
-  const weekdayAvg = Object.entries(weekdayPatterns)
-    .filter(([day]) => !weekendDays.includes(day))
-    .reduce((sum, [, data]) => sum + data.average, 0) / 5
+  // Compute weekday and weekend averages safely
+  const weekdays = Object.entries(weekdayPatterns).filter(([day]) => !weekendDays.includes(day)).map(([, data]) => data && data.average ? data.average : 0)
+  const weekends = Object.entries(weekdayPatterns).filter(([day]) => weekendDays.includes(day)).map(([, data]) => data && data.average ? data.average : 0)
 
-  const weekendAvg = Object.entries(weekdayPatterns)
-    .filter(([day]) => weekendDays.includes(day))
-    .reduce((sum, [, data]) => sum + data.average, 0) / 2
+  const weekdayAvg = weekdays.length > 0 ? weekdays.reduce((s, v) => s + v, 0) / weekdays.length : 0
+  const weekendAvg = weekends.length > 0 ? weekends.reduce((s, v) => s + v, 0) / weekends.length : 0
 
   if (weekendAvg > weekdayAvg + 0.5) {
     triggers.positive.push('Weekends lift your spirits')
@@ -149,7 +150,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
     const percentage = Math.round((goodDays / moods.length) * 100)
     insights.push({
       type: 'positive',
-      icon: '🎉',
+      icon: '',
       title: 'You had a great week!',
       description: `Your mood was positive or better ${percentage}% of the time. That's wonderful!`,
       color: 'success'
@@ -160,7 +161,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
   if (averageMood < 2.5) {
     insights.push({
       type: 'support',
-      icon: '🤗',
+      icon: '',
       title: 'This week was challenging',
       description: 'Remember that tough times don\'t last, but resilient people like you do. Consider reaching out for support.',
       color: 'warning'
@@ -168,10 +169,10 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
   }
 
   // Monday blues detection
-  if (weekdayPatterns.Monday && weekdayPatterns.Monday.average < averageMood - 0.5) {
+  if (weekdayPatterns.Monday && typeof weekdayPatterns.Monday.average === 'number' && weekdayPatterns.Monday.average < averageMood - 0.5) {
     insights.push({
       type: 'pattern',
-      icon: '📅',
+      icon: '',
       title: 'Monday blues detected',
       description: 'Your mood tends to dip on Mondays. Consider starting your week with something you enjoy.',
       color: 'primary'
@@ -182,7 +183,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
   if (streak.current >= 7) {
     insights.push({
       type: 'habit',
-      icon: '✨',
+      icon: 'âœ¨',
       title: 'You\'re building a healthy habit',
       description: 'Consistent tracking helps identify patterns. Keep it up!',
       color: 'success'
@@ -201,7 +202,7 @@ export const generateInsights = (moods, circleActivity = [], userData = {}) => {
     if (weekendAvg > averageMood + 0.5) {
       insights.push({
         type: 'pattern',
-        icon: '🌅',
+        icon: '',
         title: 'Weekends recharge you',
         description: 'Your mood consistently improves on weekends. Make sure to prioritize rest and activities you enjoy.',
         color: 'secondary'
@@ -216,13 +217,14 @@ export const generateSuggestions = (moods, userData = {}, circleActivity = []) =
   const suggestions = []
   const averageMood = calculateAverageMood(moods)
   const streak = calculateStreak(moods)
-  const joinedCircles = JSON.parse(localStorage.getItem('safespace_circles') || '[]')
+  // Joined circles should be the user's joined circle IDs
+  const joinedCircles = JSON.parse(localStorage.getItem('space4u_user_circles') || '[]')
   const userInterests = userData.interests || []
 
   // Circle suggestions based on interests
   if (userInterests.includes('anxiety') && !joinedCircles.includes(1)) {
     suggestions.push({
-      icon: '🌊',
+      icon: '',
       title: 'Join the Anxiety Support circle',
       description: 'Connect with others who understand your experience',
       action: 'Join Circle',
@@ -233,7 +235,7 @@ export const generateSuggestions = (moods, userData = {}, circleActivity = []) =
   // Consistency suggestions
   if (streak.current < 3) {
     suggestions.push({
-      icon: '⏰',
+      icon: 'â°',
       title: 'Set a morning mood reminder',
       description: 'Daily check-ins help build awareness and track progress',
       action: 'Set Reminder',
@@ -244,7 +246,7 @@ export const generateSuggestions = (moods, userData = {}, circleActivity = []) =
   // Stress management
   if (averageMood < 3.5) {
     suggestions.push({
-      icon: '🫁',
+      icon: '',
       title: 'Try the 5-minute breathing exercise',
       description: 'Deep breathing can help reduce stress and improve mood',
       action: 'Start Exercise',
@@ -255,7 +257,7 @@ export const generateSuggestions = (moods, userData = {}, circleActivity = []) =
   // Community engagement
   if (averageMood >= 4.0 && !joinedCircles.includes(8)) {
     suggestions.push({
-      icon: '✨',
+      icon: 'âœ¨',
       title: 'Share your wins in General Wellness',
       description: 'Your positive energy could inspire others in the community',
       action: 'Share Story',
@@ -270,7 +272,8 @@ export const getMoodBreakdown = (moods) => {
   const breakdown = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
   
   moods.forEach(mood => {
-    breakdown[mood.mood]++
+    const m = Number(mood.mood)
+    if (m >= 1 && m <= 5) breakdown[m]++
   })
 
   return breakdown

@@ -1,4 +1,4 @@
-// Premium Feature Management System
+﻿// Premium Feature Management System
 
 export const PREMIUM_FEATURES = {
   UNLIMITED_HISTORY: 'unlimited_history',
@@ -14,7 +14,7 @@ export const PREMIUM_FEATURES = {
 }
 
 export const checkPremiumStatus = () => {
-  const data = localStorage.getItem('safespace_premium')
+  const data = localStorage.getItem('space4u_premium')
   if (!data) return { isPremium: false, trialActive: false }
   
   const premium = JSON.parse(data)
@@ -46,7 +46,7 @@ export const getPremiumDaysLeft = () => {
 }
 
 export const cancelPremium = () => {
-  localStorage.removeItem('safespace_premium')
+  localStorage.removeItem('space4u_premium')
 }
 
 export const upgradeToPremium = (planType) => {
@@ -58,6 +58,7 @@ export const upgradeToPremium = (planType) => {
     subscribedAt: new Date().toISOString(),
     nextBillingDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
   }
-  localStorage.setItem('safespace_premium', JSON.stringify(premiumData))
+  localStorage.setItem('space4u_premium', JSON.stringify(premiumData))
   return premiumData
 }
+

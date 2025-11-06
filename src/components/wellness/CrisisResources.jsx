@@ -8,8 +8,14 @@ function CrisisResources({ compact = false }) {
 
   useEffect(() => {
     const handleCountryChange = () => setCountryCode(getUserCountry())
-    window.addEventListener('countryChanged', handleCountryChange)
-    return () => window.removeEventListener('countryChanged', handleCountryChange)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('countryChanged', handleCountryChange)
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('countryChanged', handleCountryChange)
+      }
+    }
   }, [])
   if (compact) {
     const primaryHelpline = countryData.crisisHelplines[0]

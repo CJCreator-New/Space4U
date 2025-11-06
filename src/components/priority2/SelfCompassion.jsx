@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 
 const PROMPTS = [
   'Write a letter to yourself as if you were your best friend',
@@ -9,12 +9,12 @@ const PROMPTS = [
 
 function SelfCompassion({ onClose }) {
   const [content, setContent] = useState('')
-  const [logs, setLogs] = useState(() => JSON.parse(localStorage.getItem('safespace_self_compassion') || '[]'))
+  const [logs, setLogs] = useState(() => JSON.parse(localStorage.getItem('space4u_self_compassion') || '[]'))
 
   const saveLog = () => {
     const log = { id: Date.now(), content, created_at: new Date().toISOString() }
     const updated = [log, ...logs]
-    localStorage.setItem('safespace_self_compassion', JSON.stringify(updated))
+    localStorage.setItem('space4u_self_compassion', JSON.stringify(updated))
     setLogs(updated)
     setContent('')
   }
@@ -50,3 +50,4 @@ function SelfCompassion({ onClose }) {
 }
 
 export default SelfCompassion
+

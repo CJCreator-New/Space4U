@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { AlertCircle, Send, Heart } from 'lucide-react'
 
 function SupportRequests() {
@@ -9,7 +9,7 @@ function SupportRequests() {
   const [responseText, setResponseText] = useState('')
 
   useEffect(() => {
-    const saved = localStorage.getItem('safespace_support_requests')
+    const saved = localStorage.getItem('space4u_support_requests')
     if (saved) setRequests(JSON.parse(saved))
   }, [])
 
@@ -25,7 +25,7 @@ function SupportRequests() {
     }
     const updated = [newRequest, ...requests]
     setRequests(updated)
-    localStorage.setItem('safespace_support_requests', JSON.stringify(updated))
+    localStorage.setItem('space4u_support_requests', JSON.stringify(updated))
     setMessage('')
   }
 
@@ -45,7 +45,7 @@ function SupportRequests() {
       return r
     })
     setRequests(updated)
-    localStorage.setItem('safespace_support_requests', JSON.stringify(updated))
+    localStorage.setItem('space4u_support_requests', JSON.stringify(updated))
     setResponseText('')
   }
 
@@ -177,3 +177,4 @@ function SupportRequests() {
 }
 
 export default SupportRequests
+

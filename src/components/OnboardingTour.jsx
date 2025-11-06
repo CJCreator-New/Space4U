@@ -1,39 +1,39 @@
-import { useState } from 'react'
-import { X, ArrowRight, ArrowLeft, Check } from 'lucide-react'
+﻿import { useState } from 'react'
+import { X, ArrowRight, ArrowLeft, Check } from '../config/icons'
 
 function OnboardingTour({ onComplete }) {
   const [step, setStep] = useState(0)
 
   const steps = [
     {
-      title: 'Welcome to Space4U! 👋',
+      title: 'Welcome to Space4U! ',
       description: 'Your personal mental health companion. Let\'s take a quick tour of the key features.',
-      image: '🏠'
+      image: ' '
     },
     {
-      title: 'Track Your Mood Daily 😊',
+      title: 'Track Your Mood Daily ',
       description: 'Log how you\'re feeling each day with our simple 5-point scale. Add notes to remember what influenced your mood.',
-      image: '📊'
+      image: ''
     },
     {
-      title: 'Discover Insights 📈',
+      title: 'Discover Insights ',
       description: 'Get AI-powered insights about your mood patterns, best days, and personalized recommendations.',
-      image: '🧠'
+      image: ' '
     },
     {
-      title: 'Join Support Circles 💬',
+      title: 'Join Support Circles ',
       description: 'Connect with others who understand. Share experiences and find support in topic-based communities.',
-      image: '👥'
+      image: ''
     },
     {
-      title: 'Access Resources 📚',
+      title: 'Access Resources ',
       description: 'Explore breathing exercises, articles, crisis resources, and wellness tools whenever you need them.',
-      image: '🛠️'
+      image: ' ï¸'
     },
     {
-      title: 'Your Data is Private 🔒',
+      title: 'Your Data is Private ',
       description: 'Everything stays on your device. Export your data anytime. We never see your personal information.',
-      image: '🛡️'
+      image: ''
     }
   ]
 
@@ -42,7 +42,7 @@ function OnboardingTour({ onComplete }) {
 
   const handleNext = () => {
     if (isLastStep) {
-      localStorage.setItem('safespace_tour_completed', 'true')
+      localStorage.setItem('space4u_tour_completed', 'true')
       onComplete()
     } else {
       setStep(step + 1)
@@ -50,7 +50,7 @@ function OnboardingTour({ onComplete }) {
   }
 
   const handleSkip = () => {
-    localStorage.setItem('safespace_tour_completed', 'true')
+    localStorage.setItem('space4u_tour_completed', 'true')
     onComplete()
   }
 
@@ -80,7 +80,7 @@ function OnboardingTour({ onComplete }) {
         {/* Content */}
         <div className="text-center mb-8">
           <div className="text-6xl mb-4">{currentStep.image}</div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 font-secondary">
             {currentStep.title}
           </h2>
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -132,3 +132,4 @@ function OnboardingTour({ onComplete }) {
 }
 
 export default OnboardingTour
+

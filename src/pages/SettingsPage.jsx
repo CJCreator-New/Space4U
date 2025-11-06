@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { 
   Bell, Shield, Palette, Globe, Eye, User, HelpCircle, Info,
   Search, ChevronDown, ChevronRight, Download, Trash2, X, Check,
@@ -137,20 +137,22 @@ function SettingsPage() {
 
   useEffect(() => {
     loadSettings()
-    const premiumData = JSON.parse(localStorage.getItem('safespace_premium') || '{}')
+    const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
     setIsPremium(premiumData.isPremium || false)
   }, [])
 
-  const loadSettings = () => {
-    const saved = localStorage.getItem('safespace_settings')
-    if (saved) {
-      setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(saved) })
+  const loadSettings = async () => {
+    const { getSettings } = await import('../utils/storageHelpers')
+    const saved = await getSettings()
+    if (saved && Object.keys(saved).length > 0) {
+      setSettings({ ...DEFAULT_SETTINGS, ...saved })
     }
   }
 
-  const saveSettings = (newSettings) => {
+  const saveSettings = async (newSettings) => {
+    const { saveSettings: saveSettingsHelper } = await import('../utils/storageHelpers')
     setSettings(newSettings)
-    localStorage.setItem('safespace_settings', JSON.stringify(newSettings))
+    await saveSettingsHelper(newSettings)
     showToast('Setting saved')
   }
 
@@ -169,7 +171,7 @@ function SettingsPage() {
     const newStatus = !isPremium
     setIsPremium(newStatus)
     if (newStatus) {
-      localStorage.setItem('safespace_premium', JSON.stringify({
+      localStorage.setItem('space4u_premium', JSON.stringify({
         isPremium: true,
         plan: 'annual',
         startDate: new Date().toISOString(),
@@ -177,7 +179,7 @@ function SettingsPage() {
       }))
       showToast('Premium enabled')
     } else {
-      localStorage.removeItem('safespace_premium')
+      localStorage.removeItem('space4u_premium')
       showToast('Premium disabled')
     }
   }
@@ -199,11 +201,11 @@ function SettingsPage() {
 
   const exportData = () => {
     const userData = {
-      profile: JSON.parse(localStorage.getItem('safespace_user') || '{}'),
-      moods: JSON.parse(localStorage.getItem('safespace_moods') || '{}'),
-      posts: JSON.parse(localStorage.getItem('safespace_user_posts') || '[]'),
-      circles: JSON.parse(localStorage.getItem('safespace_user_circles') || '[]'),
-      badges: JSON.parse(localStorage.getItem('safespace_badges') || '{}'),
+      profile: JSON.parse(localStorage.getItem('space4u_user') || '{}'),
+      moods: JSON.parse(localStorage.getItem('space4u_moods') || '{}'),
+      posts: JSON.parse(localStorage.getItem('space4u_user_posts') || '[]'),
+      circles: JSON.parse(localStorage.getItem('space4u_user_circles') || '[]'),
+      badges: JSON.parse(localStorage.getItem('space4u_badges') || '{}'),
       settings: settings,
       exportedAt: new Date().toISOString()
     }
@@ -212,7 +214,7 @@ function SettingsPage() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `safespace-data-${new Date().toISOString().split('T')[0]}.json`
+    a.download = `space4u-data-${new Date().toISOString().split('T')[0]}.json`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
@@ -224,9 +226,9 @@ function SettingsPage() {
     if (deleteConfirm !== 'DELETE') return
     
     const keysToRemove = [
-      'safespace_user', 'safespace_moods', 'safespace_user_posts',
-      'safespace_user_circles', 'safespace_badges', 'safespace_hearted_posts',
-      'safespace_onboarding_completed', 'safespace_settings'
+      'space4u_user', 'space4u_moods', 'space4u_user_posts',
+      'space4u_user_circles', 'space4u_badges', 'space4u_hearted_posts',
+      'space4u_onboarding_completed', 'space4u_settings'
     ]
     
     keysToRemove.forEach(key => localStorage.removeItem(key))
@@ -273,20 +275,20 @@ function SettingsPage() {
   )
 
   const SettingRow = ({ icon: Icon, label, description, children, modified = false, premium = false, isNew = false }) => (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-4 px-4 hover:bg-gray-50 rounded-xl transition-colors">
-      <div className="flex items-center gap-3 flex-1 min-w-0">
-        <Icon className="text-text-secondary" size={20} />
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-text-primary">{label}</span>
-            {modified && <Dot className="text-primary" size={16} />}
-            {premium && <Crown className="text-yellow-500" size={16} />}
-            {isNew && <span className="bg-primary text-white text-xs px-2 py-1 rounded-full">New</span>}
+    <div className="flex flex-col gap-3 py-4 px-4 hover:bg-gray-50 rounded-xl transition-colors">
+      <div className="flex items-start gap-3 flex-1 min-w-0">
+        <Icon className="text-text-secondary flex-shrink-0 mt-0.5" size={20} />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-medium text-text-primary break-words">{label}</span>
+            {modified && <Dot className="text-primary flex-shrink-0" size={16} />}
+            {premium && <Crown className="text-yellow-500 flex-shrink-0" size={16} />}
+            {isNew && <span className="bg-primary text-white text-xs px-2 py-1 rounded-full flex-shrink-0">New</span>}
           </div>
-          {description && <p className="text-sm text-text-secondary">{description}</p>}
+          {description && <p className="text-sm text-text-secondary mt-1 break-words">{description}</p>}
         </div>
       </div>
-      <div className="flex-shrink-0 w-full sm:w-auto">
+      <div className="flex-shrink-0 w-full sm:w-auto sm:ml-8">
         {children}
       </div>
     </div>
@@ -310,7 +312,7 @@ function SettingsPage() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-text-primary mb-2">{t('settings.title')}</h1>
-        <p className="text-text-secondary">{t('settings.subtitle', 'Customize your Safespace experience')}</p>
+        <p className="text-text-secondary">{t('settings.subtitle', 'Customize your space4u experience')}</p>
       </div>
 
       {/* Search */}
@@ -378,7 +380,7 @@ function SettingsPage() {
                       type="time"
                       value={settings.notifications.reminderTime}
                       onChange={(e) => updateSetting('notifications', 'reminderTime', e.target.value)}
-                      className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
+                      className="w-full sm:w-auto px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                     />
                   </SettingRow>
                   
@@ -386,7 +388,7 @@ function SettingsPage() {
                     <select
                       value={settings.notifications.reminderDays}
                       onChange={(e) => updateSetting('notifications', 'reminderDays', e.target.value)}
-                      className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
+                      className="w-full sm:w-auto px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                     >
                       <option value="daily">Daily</option>
                       <option value="weekdays">Weekdays only</option>
@@ -504,7 +506,7 @@ function SettingsPage() {
                     }
                     updateSetting('privacy', 'autoDelete', e.target.value)
                   }}
-                  className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
+                  className="w-full sm:w-auto px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                 >
                   <option value="never">Never</option>
                   <option value="30 days">30 days</option>
@@ -551,7 +553,7 @@ function SettingsPage() {
                 description="Choose your preferred theme"
                 modified={theme !== 'auto'}
               >
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   {[
                     { value: 'light', icon: Sun, label: 'Light', action: setLightTheme },
                     { value: 'dark', icon: Moon, label: 'Dark', action: setDarkTheme },
@@ -560,8 +562,8 @@ function SettingsPage() {
                     <button
                       key={value}
                       onClick={action}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-colors ${
-                        (value === 'auto' && !localStorage.getItem('safespace_theme')) || theme === value
+                      className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition-colors ${
+                        (value === 'auto' && !localStorage.getItem('space4u_theme')) || theme === value
                           ? 'border-primary bg-primary/10 text-primary dark:border-primary-light dark:bg-primary-light/10'
                           : 'border-gray-200 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700'
                       }`}
@@ -697,19 +699,19 @@ function SettingsPage() {
                   }}
                   className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                 >
-                  <option value="en">🇬🇧 English</option>
-                  <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
-                  <option value="ta">🇮🇳 தமிழ் (Tamil)</option>
-                  <option value="te">🇮🇳 తెలుగు (Telugu)</option>
-                  <option value="bn">🇮🇳 বাংলা (Bengali)</option>
-                  <option value="mr">🇮🇳 मराठी (Marathi)</option>
-                  <option value="kn">🇮🇳 ಕನ್ನಡ (Kannada)</option>
-                  <option value="ml">🇮🇳 മലയാളം (Malayalam)</option>
-                  <option value="gu">🇮🇳 ગુજરાતી (Gujarati)</option>
+                  <option value="en"> English</option>
+                  <option value="hi"> à¤¹à¤¿à¤¨à¥à¤¦à¥€ (Hindi)</option>
+                  <option value="ta"> à®¤à®®à®¿à®´à¯ (Tamil)</option>
+                  <option value="te"> à°¤à±†à°²à±à°—à± (Telugu)</option>
+                  <option value="bn"> à¦¬à¦¾à¦‚à¦²à¦¾ (Bengali)</option>
+                  <option value="mr"> à¤®à¤°à¤¾à¤ à¥€ (Marathi)</option>
+                  <option value="kn"> à²•à²¨à³à²¨à²¡ (Kannada)</option>
+                  <option value="ml"> à´®à´²à´¯à´¾à´³à´‚ (Malayalam)</option>
+                  <option value="gu"> àª—à«àªœàª°àª¾àª¤à«€ (Gujarati)</option>
                   <option value="es">🇪🇸 Español (Spanish)</option>
                   <option value="fr">🇫🇷 Français (French)</option>
-                  <option value="de">🇩🇪 Deutsch (German)</option>
-                  <option value="ar">🇸🇦 العربية (Arabic)</option>
+                  <option value="de"> Deutsch (German)</option>
+                  <option value="ar"> Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© (Arabic)</option>
                 </select>
               </SettingRow>
             </div>
@@ -797,18 +799,18 @@ function SettingsPage() {
                 label="Email (optional)"
                 description="For account recovery only"
               >
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="email"
                     value={settings.account.email}
                     onChange={(e) => updateSetting('account', 'email', e.target.value)}
                     placeholder="your@email.com"
-                    className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
+                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                   />
                   <button 
                     disabled
                     title="Coming soon"
-                    className="px-3 py-2 text-gray-400 font-medium cursor-not-allowed"
+                    className="px-3 py-2 text-gray-400 font-medium cursor-not-allowed whitespace-nowrap"
                   >
                     Verify
                   </button>
@@ -826,7 +828,7 @@ function SettingsPage() {
                   value={settings.account.phone}
                   onChange={(e) => updateSetting('account', 'phone', e.target.value)}
                   placeholder="+91 98765 43210"
-                  className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
                   disabled
                 />
               </SettingRow>
@@ -1286,7 +1288,7 @@ function SettingsPage() {
               ))}
               
               <div className="p-4 text-center">
-                <p className="text-text-secondary">Made with ❤️ for mental health</p>
+                <p className="text-text-secondary">Made with â¤ï¸ for mental health</p>
               </div>
             </div>
           )}

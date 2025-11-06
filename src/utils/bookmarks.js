@@ -1,7 +1,7 @@
-// Post Bookmarking System
+﻿// Post Bookmarking System
 
 export const addBookmark = (postId, userId) => {
-  const bookmarks = JSON.parse(localStorage.getItem('safespace_bookmarks') || '{}')
+  const bookmarks = JSON.parse(localStorage.getItem('space4u_bookmarks') || '{}')
   
   if (!bookmarks[userId]) {
     bookmarks[userId] = []
@@ -12,18 +12,18 @@ export const addBookmark = (postId, userId) => {
     bookmarks[userId].sort((a, b) => b - a) // Most recent first
   }
   
-  localStorage.setItem('safespace_bookmarks', JSON.stringify(bookmarks))
+  localStorage.setItem('space4u_bookmarks', JSON.stringify(bookmarks))
   return bookmarks[userId]
 }
 
 export const removeBookmark = (postId, userId) => {
-  const bookmarks = JSON.parse(localStorage.getItem('safespace_bookmarks') || '{}')
+  const bookmarks = JSON.parse(localStorage.getItem('space4u_bookmarks') || '{}')
   
   if (bookmarks[userId]) {
     bookmarks[userId] = bookmarks[userId].filter(id => id !== postId)
   }
   
-  localStorage.setItem('safespace_bookmarks', JSON.stringify(bookmarks))
+  localStorage.setItem('space4u_bookmarks', JSON.stringify(bookmarks))
   return bookmarks[userId] || []
 }
 
@@ -36,12 +36,12 @@ export const toggleBookmark = (postId, userId) => {
 }
 
 export const isBookmarked = (postId, userId) => {
-  const bookmarks = JSON.parse(localStorage.getItem('safespace_bookmarks') || '{}')
+  const bookmarks = JSON.parse(localStorage.getItem('space4u_bookmarks') || '{}')
   return bookmarks[userId]?.includes(postId) || false
 }
 
 export const getUserBookmarks = (userId) => {
-  const bookmarks = JSON.parse(localStorage.getItem('safespace_bookmarks') || '{}')
+  const bookmarks = JSON.parse(localStorage.getItem('space4u_bookmarks') || '{}')
   return bookmarks[userId] || []
 }
 
@@ -53,3 +53,4 @@ export const getBookmarkedPosts = (userId, allPosts) => {
 export const getBookmarkCount = (userId) => {
   return getUserBookmarks(userId).length
 }
+

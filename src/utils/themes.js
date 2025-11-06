@@ -1,4 +1,4 @@
-// Custom Theme System
+﻿// Custom Theme System
 
 export const THEMES = {
   default: {
@@ -80,14 +80,14 @@ export const getTheme = (themeId = 'default') => {
 }
 
 export const getUserTheme = () => {
-  const settings = JSON.parse(localStorage.getItem('safespace_settings') || '{}')
+  const settings = JSON.parse(localStorage.getItem('space4u_settings') || '{}')
   return settings.customTheme || 'default'
 }
 
 export const setUserTheme = (themeId) => {
-  const settings = JSON.parse(localStorage.getItem('safespace_settings') || '{}')
+  const settings = JSON.parse(localStorage.getItem('space4u_settings') || '{}')
   settings.customTheme = themeId
-  localStorage.setItem('safespace_settings', JSON.stringify(settings))
+  localStorage.setItem('space4u_settings', JSON.stringify(settings))
   applyTheme(themeId)
 }
 
@@ -106,3 +106,4 @@ export const initTheme = () => {
   const themeId = getUserTheme()
   applyTheme(themeId)
 }
+

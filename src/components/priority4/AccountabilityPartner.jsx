@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { Users, Plus, CheckCircle, MessageSquare } from 'lucide-react'
 
 function AccountabilityPartner() {
@@ -8,7 +8,7 @@ function AccountabilityPartner() {
   const [moodRating, setMoodRating] = useState(3)
 
   useEffect(() => {
-    const saved = localStorage.getItem('safespace_accountability_pairs')
+    const saved = localStorage.getItem('space4u_accountability_pairs')
     if (saved) setPairs(JSON.parse(saved))
   }, [])
 
@@ -23,7 +23,7 @@ function AccountabilityPartner() {
     }
     const updated = [...pairs, newPair]
     setPairs(updated)
-    localStorage.setItem('safespace_accountability_pairs', JSON.stringify(updated))
+    localStorage.setItem('space4u_accountability_pairs', JSON.stringify(updated))
     setGoals('')
   }
 
@@ -43,7 +43,7 @@ function AccountabilityPartner() {
       return p
     })
     setPairs(updated)
-    localStorage.setItem('safespace_accountability_pairs', JSON.stringify(updated))
+    localStorage.setItem('space4u_accountability_pairs', JSON.stringify(updated))
     setCheckinMessage('')
     setMoodRating(3)
   }
@@ -104,7 +104,7 @@ function AccountabilityPartner() {
                   onChange={(e) => setMoodRating(parseInt(e.target.value))}
                   className="w-full"
                 />
-                <div className="text-center text-2xl">{['😢', '😕', '😐', '🙂', '😊'][moodRating - 1]}</div>
+                <div className="text-center text-2xl">{['', '', '', '', ''][moodRating - 1]}</div>
               </div>
               <textarea
                 value={checkinMessage}
@@ -131,7 +131,7 @@ function AccountabilityPartner() {
                 {pair.checkins.slice(-3).reverse().map(checkin => (
                   <div key={checkin.id} className="bg-background p-3 rounded-xl">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xl">{['😢', '😕', '😐', '🙂', '😊'][checkin.mood - 1]}</span>
+                      <span className="text-xl">{['', '', '', '', ''][checkin.mood - 1]}</span>
                       <span className="text-xs text-text-secondary">
                         {new Date(checkin.timestamp).toLocaleDateString()}
                       </span>
@@ -157,3 +157,4 @@ function AccountabilityPartner() {
 }
 
 export default AccountabilityPartner
+
