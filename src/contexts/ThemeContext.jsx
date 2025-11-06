@@ -15,8 +15,23 @@ export function ThemeProvider({ children }) {
     
     document.documentElement.classList.toggle('dark', theme === 'dark')
     localStorage.setItem('space4u_theme', theme)
+    updateStatusBar(theme)
   }, [theme])
 
+  const updateStatusBar = async (currentTheme) => {
+    if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+      try {
+        const { StatusBar, Style } = await import('@capacitor/status-bar')
+        const bgColor = currentTheme === 'dark' ? '#1F2937' : '#FFFFFF'
+        const style = currentTheme === 'dark' ? Style.Light : Style.Dark
+        
+        await StatusBar.setBackgroundColor({ color: bgColor })
+        await StatusBar.setStyle({ style })
+      } catch (error) {
+        // Silently fail on web
+      }
+    }
+  }
   const toggleTheme = () => {
     if (!FEATURES.ENABLE_DARK_MODE) return
     setTheme(prev => prev === 'light' ? 'dark' : 'light')
