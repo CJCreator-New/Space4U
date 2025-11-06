@@ -4,10 +4,12 @@ import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
 import GratitudeEntryModal from '../components/gratitude/GratitudeEntryModal'
 import GratitudeCard from '../components/gratitude/GratitudeCard'
-import GratitudeStats from '../components/gratitude/GratitudeStats'
+import GratitudeAnalytics from '../components/gratitude/GratitudeAnalytics'
 import StreakDisplay from '../components/gratitude/StreakDisplay'
-import WeeklySummary from '../components/gratitude/WeeklySummary'
+import GratitudeChallenges from '../components/gratitude/GratitudeChallenges'
 import SafeComponent from '../components/SafeComponent'
+import WeeklySummary from '../components/gratitude/WeeklySummary'
+import GratitudeStats from '../components/gratitude/GratitudeStats'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import { useNavigate } from 'react-router-dom'
 import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
@@ -15,7 +17,7 @@ import ResearchCard from '../components/wellness/ResearchCard'
 import CrisisResources from '../components/wellness/CrisisResources'
 import { disclaimers } from '../data/disclaimers'
 import { researchCitations } from '../data/researchCitations'
-import { getDailyPrompt, getRandomPrompt } from '../data/gratitudePrompts'
+import EnhancedPrompts from '../components/gratitude/EnhancedPrompts'
 import { trackEvent, EVENTS, trackPageView } from '../utils/analytics'
 import {
   Box,
@@ -58,7 +60,6 @@ function GratitudeJournalPage() {
 
   useEffect(() => {
     loadEntries()
-    setDailyPrompt(getDailyPrompt())
   }, [user])
 
   useEffect(() => {
@@ -66,13 +67,11 @@ function GratitudeJournalPage() {
     trackPageView('gratitude_journal')
   }, [])
 
-  const loadEntries = () => {
-    const saved = localStorage.getItem('space4u_gratitude_entries')
-    if (saved) {
-      const parsed = JSON.parse(saved)
-      setEntries(parsed)
-      calculateStreak(parsed)
-    }
+  const loadEntries = async () => {
+    const { getGratitudeEntries } = await import('../utils/storageHelpers')
+    const entries = await getGratitudeEntries()
+    setEntries(entries)
+    calculateStreak(entries)
   }
 
   const calculateStreak = (entries) => {
@@ -120,8 +119,9 @@ function GratitudeJournalPage() {
     setLongestStreak(Math.max(maxStreak, tempStreak))
   }
 
-  const handleSave = (entry) => {
-    const saved = JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]')
+  const handleSave = async (entry) => {
+    const { getGratitudeEntries, saveGratitudeEntries } = await import('../utils/storageHelpers')
+    const saved = await getGratitudeEntries()
     const existing = saved.findIndex(e => e.date === entry.date)
     
     if (!isPremium && existing < 0 && saved.length >= FREE_ENTRY_LIMIT) {
@@ -131,7 +131,7 @@ function GratitudeJournalPage() {
     if (existing >= 0) saved[existing] = entry
     else saved.unshift(entry)
     
-    localStorage.setItem('space4u_gratitude_entries', JSON.stringify(saved))
+    await saveGratitudeEntries(saved)
     trackEvent(EVENTS.FEATURE_USED, { feature: 'gratitude_entry_saved', isNew: existing < 0 })
     loadEntries()
     setShowModal(false)
@@ -151,10 +151,11 @@ function GratitudeJournalPage() {
     setShowModal(true)
   }
 
-  const handleDelete = (date) => {
-    const saved = JSON.parse(localStorage.getItem('space4u_gratitude_entries') || '[]')
+  const handleDelete = async (date) => {
+    const { getGratitudeEntries, saveGratitudeEntries } = await import('../utils/storageHelpers')
+    const saved = await getGratitudeEntries()
     const filtered = saved.filter(e => e.date !== date)
-    localStorage.setItem('space4u_gratitude_entries', JSON.stringify(filtered))
+    await saveGratitudeEntries(filtered)
     loadEntries()
   }
 
@@ -221,24 +222,13 @@ function GratitudeJournalPage() {
               </Alert>
             )}
 
-            {/* Daily Prompt */}
+            {/* Enhanced Prompts */}
             <Card bg="gradient-to-br from-purple-50 to-pink-50" borderWidth={1} borderColor="purple.200" borderRadius="xl" shadow="lg">
               <CardBody>
-                <HStack justify="space-between" mb={3}>
-                  <HStack>
-                    <Icon as={Sparkles} w={5} h={5} color="purple.500" />
-                    <Text fontWeight="semibold" color="gray.900">Today's Prompt</Text>
-                  </HStack>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setDailyPrompt(getRandomPrompt())}
-                    leftIcon={<RefreshCw size={14} />}
-                  >
-                    New
-                  </Button>
-                </HStack>
-                <Text fontSize="lg" color="gray.700" fontStyle="italic">"{dailyPrompt}"</Text>
+                <EnhancedPrompts
+                  onPromptSelect={setDailyPrompt}
+                  currentPrompt={dailyPrompt}
+                />
               </CardBody>
             </Card>
 
@@ -330,6 +320,12 @@ function GratitudeJournalPage() {
 
             {entries.length > 0 && (
               <>
+                <Box>
+                  <GratitudeChallenges entries={entries} />
+                </Box>
+                <Box>
+                  <GratitudeAnalytics entries={entries} />
+                </Box>
                 <Box>
                   <WeeklySummary entries={Object.fromEntries(entries.map(e => [e.date, e]))} />
                 </Box>

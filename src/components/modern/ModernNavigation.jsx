@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useSupabaseAuth } from '../../contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 
-const MotionBox = motion(Box);
+const MotionBox = motion.create(Box);
 
 export function ModernNavigation() {
   const { user, signOut } = useSupabaseAuth();

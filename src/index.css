@@ -39,6 +39,21 @@
   --font-readable: 'Open Sans', system-ui, -apple-system, sans-serif;
 }
 
+/* Dark Mode */
+.dark {
+  --primary: #818CF8;
+  --primary-light: #A5B4FC;
+  --primary-dark: #6366F1;
+  --secondary: #A78BFA;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --danger: #F87171;
+  --background: #0F172A;
+  --surface: #1E293B;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+}
+
 * {
   box-sizing: border-box;
 }

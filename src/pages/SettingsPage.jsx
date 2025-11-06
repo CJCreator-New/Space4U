@@ -141,16 +141,18 @@ function SettingsPage() {
     setIsPremium(premiumData.isPremium || false)
   }, [])
 
-  const loadSettings = () => {
-    const saved = localStorage.getItem('space4u_settings')
-    if (saved) {
-      setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(saved) })
+  const loadSettings = async () => {
+    const { getSettings } = await import('../utils/storageHelpers')
+    const saved = await getSettings()
+    if (saved && Object.keys(saved).length > 0) {
+      setSettings({ ...DEFAULT_SETTINGS, ...saved })
     }
   }
 
-  const saveSettings = (newSettings) => {
+  const saveSettings = async (newSettings) => {
+    const { saveSettings: saveSettingsHelper } = await import('../utils/storageHelpers')
     setSettings(newSettings)
-    localStorage.setItem('space4u_settings', JSON.stringify(newSettings))
+    await saveSettingsHelper(newSettings)
     showToast('Setting saved')
   }
 

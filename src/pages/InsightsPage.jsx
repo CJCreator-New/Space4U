@@ -1,11 +1,10 @@
 ﻿import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Brain, TrendingUp, Calendar, Target, Award, Users, Clock, Heart, Zap, Book, Info, Shield, Crown } from 'lucide-react'
+import { Brain, TrendingUp, TrendingDown, Calendar, Target, Award, Users, Clock, Heart, Zap, Book, Info, Shield, Crown, Sparkles, Activity, BarChart3, ArrowUpRight, ArrowDownRight, PieChart, CheckCircle2 } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
 import { CardSkeleton } from '../components/Skeleton'
 import { cacheManager as cache } from '../utils/cacheManager'
-import Disclaimer from '../components/common/Disclaimer'
-import PremiumPaywall from '../components/PremiumPaywall'
+
 import WellnessBreakdown from '../components/premium/WellnessBreakdown'
 import AnimatedNumber from '../components/common/AnimatedNumber'
 import OnboardingTip from '../components/common/OnboardingTip'
@@ -205,25 +204,38 @@ function InsightsPage() {
       </div>
 
       {/* Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-500 via-blue-500 to-indigo-600 p-8 mb-6 shadow-2xl">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 p-6 md:p-8 mb-6 shadow-2xl">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent"></div>
-        <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="relative z-10 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-white drop-shadow-lg mb-2">Your Insights</h1>
-            <p className="text-white/90 text-lg">AI-powered patterns and suggestions</p>
+        <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/20 rounded-full blur-3xl"></div>
+        <div className="relative z-10">
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Brain className="w-8 h-8 text-white" />
+                <h1 className="text-3xl font-bold text-white drop-shadow-lg">Your Insights</h1>
+              </div>
+              <p className="text-white/90">AI-powered patterns from your mood data</p>
+            </div>
+            {isPremium && (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium">
+                <Crown size={14} />
+                Premium
+              </div>
+            )}
           </div>
-          <div className="flex gap-2">
+          
+          <div className="flex flex-wrap gap-2">
             {['week', 'month', 'all'].map((p) => (
               <button
                 key={p}
                 onClick={() => setPeriod(p)}
-                className={`px-4 py-2 rounded-xl font-medium transition-all ${
-                  period === p ? 'bg-white text-blue-600 shadow-lg scale-105' : 'bg-white/20 text-white hover:bg-white/30 hover:scale-105'
+                className={`px-4 py-2 rounded-xl font-medium transition-all text-sm ${
+                  period === p 
+                    ? 'bg-white text-purple-600 shadow-lg' 
+                    : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
                 }`}
               >
-                {p === 'week' ? 'Week' : p === 'month' ? 'Month' : 'All'}
+                {p === 'week' ? '7 Days' : p === 'month' ? '30 Days' : 'All Time'}
               </button>
             ))}
           </div>
@@ -253,19 +265,82 @@ function InsightsPage() {
             </div>
           )}
 
-          {/* Hero Summary Card */}
-          <div className="card p-6 mb-6 hover:shadow-2xl transition-all">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-text-primary">{getPeriodLabel()} at a Glance</h2>
-              {isPremium && (
-                <div className="flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white rounded-full text-sm font-medium">
-                  <Crown size={16} />
-                  Premium
+          {/* Key Metrics Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="card p-4 hover:shadow-lg transition-all">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                  <Heart className="w-4 h-4 text-purple-600" />
+                </div>
+                <span className="text-xs text-text-secondary">Avg Mood</span>
+              </div>
+              <div className="text-2xl font-bold text-text-primary">
+                <AnimatedNumber value={parseFloat(analysis.averageMood.toFixed(1))} duration={1000} decimals={1} />
+                <span className="text-sm text-text-secondary">/5</span>
+              </div>
+              {analysis.trend !== 0 && (
+                <div className={`flex items-center gap-1 text-xs mt-1 ${analysis.trend > 0 ? 'text-success' : 'text-warning'}`}>
+                  {analysis.trend > 0 ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+                  {Math.abs(analysis.trend).toFixed(1)}
                 </div>
               )}
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="card p-4 hover:shadow-lg transition-all">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-orange-600" />
+                </div>
+                <span className="text-xs text-text-secondary">Streak</span>
+              </div>
+              <div className="text-2xl font-bold text-text-primary">
+                <AnimatedNumber value={analysis.streak.current} duration={800} />
+                <span className="text-sm text-text-secondary"> days</span>
+              </div>
+              <div className="text-xs text-text-secondary mt-1">Best: {analysis.streak.longest}</div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="card p-4 hover:shadow-lg transition-all">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                  <Target className="w-4 h-4 text-green-600" />
+                </div>
+                <span className="text-xs text-text-secondary">Consistency</span>
+              </div>
+              <div className="text-2xl font-bold text-text-primary">
+                <AnimatedNumber value={analysis.consistencyScore} duration={800} />
+                <span className="text-sm text-text-secondary">%</span>
+              </div>
+              <div className="text-xs text-text-secondary mt-1">{analysis.totalEntries} entries</div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="card p-4 hover:shadow-lg transition-all">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                  <Award className="w-4 h-4 text-blue-600" />
+                </div>
+                <span className="text-xs text-text-secondary">Best Day</span>
+              </div>
+              <div className="text-xl font-bold text-text-primary">
+                {analysis.best?.emoji || '😊'}
+              </div>
+              <div className="text-xs text-text-secondary mt-1 truncate">
+                {analysis.best ? new Date(analysis.best.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A'}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Mood Distribution */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="card p-6 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-text-primary flex items-center gap-2">
+                <PieChart className="w-5 h-5 text-primary" />
+                {getPeriodLabel()} Overview
+              </h2>
+              <InfoTooltip content="Your mood distribution shows patterns in your emotional well-being." />
             </div>
             
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 gap-6">
               {/* Average Mood */}
               <div className="text-center">
                 <div className="text-4xl mb-2">{moodLabels[Math.round(analysis.averageMood)]?.emoji}</div>
@@ -341,12 +416,15 @@ function InsightsPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Patterns We've Noticed */}
           {analysis.insights.length > 0 && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white drop-shadow-lg mb-4">Patterns We've Noticed</h2>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mb-6">
+              <h2 className="text-xl font-semibold text-text-primary mb-4 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-primary" />
+                Patterns We've Noticed
+              </h2>
               <div className="grid gap-4 md:grid-cols-2">
                 {analysis.insights.map((insight, index) => (
                   <div key={index} className="card p-4 hover:scale-105 hover:shadow-2xl transition-all">
@@ -380,7 +458,7 @@ function InsightsPage() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Mood Triggers */}
@@ -424,8 +502,11 @@ function InsightsPage() {
 
           {/* Personalized Suggestions */}
           {analysis.suggestions.length > 0 && (
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white drop-shadow-lg mb-4">Try This Week</h2>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mb-6">
+              <h2 className="text-xl font-semibold text-text-primary mb-4 flex items-center gap-2">
+                <Activity className="w-5 h-5 text-primary" />
+                Personalized Suggestions
+              </h2>
               <div className="grid gap-4 md:grid-cols-2">
                 {analysis.suggestions.map((suggestion, index) => (
                   <div key={index} className="card p-4">
@@ -458,7 +539,7 @@ function InsightsPage() {
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Best & Worst Days */}

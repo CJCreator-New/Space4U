@@ -177,9 +177,10 @@ export const POINT_VALUES = {
   badgeUnlock: 10
 }
 
-export const initializeBadgeSystem = () => {
-  const existing = localStorage.getItem('space4u_badges')
-  if (!existing) {
+export const initializeBadgeSystem = async () => {
+  const { getBadges, saveBadges } = await import('./storageHelpers')
+  const existing = await getBadges()
+  if (!existing || Object.keys(existing).length === 0) {
     const initialData = {
       badges: Object.values(BADGES).map(badge => ({
         id: badge.id,
@@ -192,10 +193,10 @@ export const initializeBadgeSystem = () => {
       totalPoints: 0,
       level: 'beginner'
     }
-    localStorage.setItem('space4u_badges', JSON.stringify(initialData))
+    await saveBadges(initialData)
     return initialData
   }
-  return JSON.parse(existing)
+  return existing
 }
 
 export const calculateUserLevel = memoize((points) => {
@@ -225,8 +226,9 @@ export const getProgressToNextLevel = memoize((points) => {
   return { progress, pointsNeeded, nextLevel: nextLevelKey }
 })
 
-export const checkBadgeProgress = (badgeId, currentProgress) => {
-  const badgeData = JSON.parse(localStorage.getItem('space4u_badges'))
+export const checkBadgeProgress = async (badgeId, currentProgress) => {
+  const { getBadges, saveBadges } = await import('./storageHelpers')
+  const badgeData = await getBadges()
   const badge = badgeData.badges.find(b => b.id === badgeId)
   
   if (!badge || badge.unlocked) return null
@@ -243,7 +245,7 @@ export const checkBadgeProgress = (badgeId, currentProgress) => {
     unlocked = true
   }
   
-  localStorage.setItem('space4u_badges', JSON.stringify(badgeData))
+  await saveBadges(badgeData)
   
   return {
     badge: BADGES[badgeId],
@@ -253,17 +255,19 @@ export const checkBadgeProgress = (badgeId, currentProgress) => {
   }
 }
 
-export const addPoints = (points, reason) => {
-  const badgeData = JSON.parse(localStorage.getItem('space4u_badges'))
+export const addPoints = async (points, reason) => {
+  const { getBadges, saveBadges } = await import('./storageHelpers')
+  const badgeData = await getBadges()
   badgeData.totalPoints += points
   badgeData.level = calculateUserLevel(badgeData.totalPoints)
-  localStorage.setItem('space4u_badges', JSON.stringify(badgeData))
+  await saveBadges(badgeData)
   
   return badgeData.totalPoints
 }
 
-export const checkMoodLogBadges = () => {
-  const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
+export const checkMoodLogBadges = async () => {
+  const { storage } = await import('../services/storage')
+  const moods = await storage.get('space4u_moods') || {}
   const moodCount = Object.keys(moods).length
   
   const results = []

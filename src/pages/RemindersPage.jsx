@@ -35,9 +35,14 @@ function RemindersPage() {
   const FREE_REMINDER_LIMIT = 5
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('space4u_reminders') || '[]')
-    setReminders(saved)
+    loadReminders()
   }, [])
+
+  const loadReminders = async () => {
+    const { getReminders } = await import('../utils/storageHelpers')
+    const saved = await getReminders()
+    setReminders(saved)
+  }
 
   const handleAddClick = () => {
     if (!isPremium && reminders.length >= FREE_REMINDER_LIMIT) {
@@ -47,24 +52,27 @@ function RemindersPage() {
     setShowModal(true)
   }
 
-  const addReminder = () => {
+  const addReminder = async () => {
+    const { saveReminders } = await import('../utils/storageHelpers')
     const reminder = { ...newReminder, id: Date.now() }
     const updated = [...reminders, reminder]
-    localStorage.setItem('space4u_reminders', JSON.stringify(updated))
+    await saveReminders(updated)
     setReminders(updated)
     setShowModal(false)
     setNewReminder({ type: 'mood_checkin', title: '', time: '09:00', days: [1, 2, 3, 4, 5], enabled: true })
   }
 
-  const toggleReminder = (id) => {
+  const toggleReminder = async (id) => {
+    const { saveReminders } = await import('../utils/storageHelpers')
     const updated = reminders.map(r => r.id === id ? { ...r, enabled: !r.enabled } : r)
-    localStorage.setItem('space4u_reminders', JSON.stringify(updated))
+    await saveReminders(updated)
     setReminders(updated)
   }
 
-  const deleteReminder = (id) => {
+  const deleteReminder = async (id) => {
+    const { saveReminders } = await import('../utils/storageHelpers')
     const updated = reminders.filter(r => r.id !== id)
-    localStorage.setItem('space4u_reminders', JSON.stringify(updated))
+    await saveReminders(updated)
     setReminders(updated)
   }
 

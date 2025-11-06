@@ -40,9 +40,10 @@ function ProfilePage() {
     loadUserData()
   }, [])
 
-  const loadUserData = () => {
-    const userData = JSON.parse(localStorage.getItem('space4u_user') || '{}')
-    setUser(userData)
+  const loadUserData = async () => {
+    const { getUserProfile } = await import('../utils/storageHelpers')
+    const userData = await getUserProfile()
+    setUser(userData || {})
     setEditForm({
       username: userData.username || '',
       avatar: userData.avatar || '',
@@ -62,10 +63,11 @@ function ProfilePage() {
     setShowPremiumBanner(!dismissedBanner)
   }
 
-  const calculateStats = () => {
-    const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
-    const posts = JSON.parse(localStorage.getItem('space4u_user_posts') || '[]')
-    const userCircles = JSON.parse(localStorage.getItem('space4u_user_circles') || '[]')
+  const calculateStats = async () => {
+    const { storage } = await import('../services/storage')
+    const moods = await storage.get('space4u_moods') || {}
+    const posts = await storage.get('space4u_user_posts') || []
+    const userCircles = await storage.get('space4u_user_circles') || []
     
     const moodEntries = Object.values(moods)
     const currentStreak = calculateStreak(moods)
@@ -125,9 +127,10 @@ function ProfilePage() {
     setActivities(activities)
   }
 
-  const loadCircles = () => {
-    const userCircles = JSON.parse(localStorage.getItem('space4u_user_circles') || '[]')
-    const allCircles = JSON.parse(localStorage.getItem('space4u_circles') || '[]')
+  const loadCircles = async () => {
+    const { storage } = await import('../services/storage')
+    const userCircles = await storage.get('space4u_user_circles') || []
+    const allCircles = await storage.get('space4u_circles') || []
     
     const joinedCircles = allCircles.filter(circle => 
       userCircles.includes(circle.id)
@@ -139,22 +142,24 @@ function ProfilePage() {
     setCircles(joinedCircles)
   }
 
-  const loadSavedPosts = () => {
-    const heartedPosts = JSON.parse(localStorage.getItem('space4u_hearted_posts') || '[]')
-    const allPosts = JSON.parse(localStorage.getItem('space4u_posts') || '[]')
+  const loadSavedPosts = async () => {
+    const { storage } = await import('../services/storage')
+    const heartedPosts = await storage.get('space4u_hearted_posts') || []
+    const allPosts = await storage.get('space4u_posts') || []
     
     const saved = allPosts.filter(post => heartedPosts.includes(post.id)).slice(0, 3)
     setSavedPosts(saved)
   }
 
-  const handleEditProfile = () => {
+  const handleEditProfile = async () => {
+    const { saveUserProfile } = await import('../utils/storageHelpers')
     const updatedUser = {
       ...user,
       ...editForm,
       updatedAt: new Date().toISOString()
     }
     
-    localStorage.setItem('space4u_user', JSON.stringify(updatedUser))
+    await saveUserProfile(updatedUser)
     setUser(updatedUser)
     setShowEditModal(false)
     

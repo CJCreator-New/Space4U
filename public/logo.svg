@@ -1,0 +1,31 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366F1;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#A855F7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:0.9" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="120" fill="url(#bgGradient)"/>
+  
+  <!-- Heart icon -->
+  <path d="M256 416C256 416 96 320 96 208C96 155.2 138.4 112 192 112C217.6 112 240.8 121.6 256 137.6C271.2 121.6 294.4 112 320 112C373.6 112 416 155.2 416 208C416 320 256 416 256 416Z" 
+        fill="url(#heartGradient)" 
+        stroke="white" 
+        stroke-width="8"/>
+  
+  <!-- Sparkle top right -->
+  <circle cx="380" cy="132" r="12" fill="white" opacity="0.9"/>
+  <path d="M380 112 L380 152 M360 132 L400 132" stroke="white" stroke-width="8" stroke-linecap="round" opacity="0.9"/>
+  
+  <!-- Sparkle bottom left -->
+  <circle cx="140" cy="360" r="8" fill="white" opacity="0.7"/>
+  <path d="M140 348 L140 372 M128 360 L152 360" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+</svg>

@@ -1,4 +1,4 @@
-import { Edit2, Trash2, Calendar } from 'lucide-react'
+import { Edit2, Trash2, Calendar, Play, Mic } from 'lucide-react'
 import {
   Card,
   CardBody,
@@ -9,8 +9,11 @@ import {
   Box,
   useColorModeValue,
   Badge,
+  Wrap,
+  WrapItem,
 } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
+import { GRATITUDE_CATEGORIES } from '../../data/gratitudeCategories'
 
 function GratitudeCard({ entry, onEdit, onDelete, isPremium }) {
   const bgColor = useColorModeValue('white', 'gray.800')
@@ -75,6 +78,44 @@ function GratitudeCard({ entry, onEdit, onDelete, isPremium }) {
               </HStack>
             ))}
           </VStack>
+
+          {entry.categories && entry.categories.length > 0 && (
+            <Box mb={4}>
+              <Wrap spacing={2}>
+                {entry.categories.map(catId => {
+                  const category = GRATITUDE_CATEGORIES.find(c => c.id === catId)
+                  return category ? (
+                    <WrapItem key={catId}>
+                      <Badge
+                        colorScheme={category.color}
+                        variant="subtle"
+                        borderRadius="full"
+                        px={2}
+                        py={1}
+                        fontSize="xs"
+                      >
+                        {category.icon} {category.name}
+                      </Badge>
+                    </WrapItem>
+                  ) : null
+                })}
+              </Wrap>
+            </Box>
+          )}
+
+          {entry.voiceRecording && (
+            <Box mb={4}>
+              <HStack spacing={2} p={3} bg="blue.50" borderRadius="md" border="1px solid" borderColor="blue.200">
+                <Mic size={16} color="blue" />
+                <Text fontSize="sm" color="blue.700" flex={1}>
+                  Voice recording ({Math.floor(entry.voiceRecording.duration / 60)}:{(entry.voiceRecording.duration % 60).toString().padStart(2, '0')})
+                </Text>
+                <Button size="xs" variant="ghost" colorScheme="blue" leftIcon={<Play size={12} />}>
+                  Play
+                </Button>
+              </HStack>
+            </Box>
+          )}
 
           {entry.notes && (
             <Box pt={4} borderTopWidth={1} borderColor={borderColor}>

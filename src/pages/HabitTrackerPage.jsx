@@ -22,9 +22,14 @@ function HabitTrackerPage() {
   const FREE_HABIT_LIMIT = 5
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('space4u_habits') || '[]')
-    setHabits(saved)
+    loadHabits()
   }, [])
+
+  const loadHabits = async () => {
+    const { getHabits } = await import('../utils/storageHelpers')
+    const saved = await getHabits()
+    setHabits(saved)
+  }
 
   const handleAddClick = () => {
     if (!isPremium && habits.length >= FREE_HABIT_LIMIT) {
@@ -34,16 +39,18 @@ function HabitTrackerPage() {
     setShowModal(true)
   }
 
-  const addHabit = () => {
+  const addHabit = async () => {
+    const { saveHabits } = await import('../utils/storageHelpers')
     const habit = { ...newHabit, id: Date.now(), completions: {} }
     const updated = [...habits, habit]
-    localStorage.setItem('space4u_habits', JSON.stringify(updated))
+    await saveHabits(updated)
     setHabits(updated)
     setShowModal(false)
     setNewHabit({ name: '', icon: '', color: 'blue', frequency: 'daily' })
   }
 
-  const toggleCompletion = (habitId) => {
+  const toggleCompletion = async (habitId) => {
+    const { saveHabits } = await import('../utils/storageHelpers')
     const today = new Date().toISOString().split('T')[0]
     const updated = habits.map(h => {
       if (h.id === habitId) {
@@ -60,7 +67,7 @@ function HabitTrackerPage() {
       }
       return h
     })
-    localStorage.setItem('space4u_habits', JSON.stringify(updated))
+    await saveHabits(updated)
     setHabits(updated)
   }
 
