@@ -22,6 +22,8 @@ import OnboardingTour from './components/OnboardingTour'
 import SplashScreen from './components/SplashScreen'
 import ReminderContainer from './components/common/ReminderContainer'
 import ReminderScheduler from './components/common/ReminderScheduler'
+import PremiumDay6Banner from './components/PremiumDay6Banner'
+import MobileMenu from './components/MobileMenu'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { initNotifications, requestNotificationPermission } from './utils/notifications'
 import { safeStorage } from './utils/safeStorage'
@@ -176,6 +178,8 @@ function AppContent() {
     <>
       <LiveRegion />
       <MigrationStatus />
+      <PremiumDay6Banner />
+      <MobileMenu />
       <GlobalSearch isOpen={showSearch} onClose={() => setShowSearch(false)} />
       {user && isOnboardingComplete && <QuickActions />}
       <KeyboardHelpModal 

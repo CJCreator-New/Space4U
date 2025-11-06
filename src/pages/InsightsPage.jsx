@@ -24,6 +24,7 @@ import {
   getMoodBreakdown
 } from '../utils/moodAnalysis'
 import TrackMood from '../components/TrackMood'
+import MoodTrendChart from '../components/MoodTrendChart'
 import { motion } from 'framer-motion'
 
 const moodLabels = {
@@ -329,6 +330,9 @@ function InsightsPage() {
               </div>
             </motion.div>
           </div>
+
+          {/* Mood Trend Chart */}
+          <MoodTrendChart moods={moods} />
 
           {/* Mood Distribution */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="card p-6 mb-6">

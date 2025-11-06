@@ -112,11 +112,11 @@ function EnhancedMoodTracker({ onMoodLogged }) {
         animate={{ opacity: 1, scale: 1 }}
         className="card p-6 mb-6 text-center"
       >
-        <div className="text-4xl mb-4">
+        <div className="text-4xl mb-4">🎉</div>
         <h3 className="text-xl font-semibold mb-2">Mood logged!</h3>
         {streak > 1 && (
           <p className="text-gray-600">
-            {streak} day streak! Keep it up 
+            {streak} day streak! Keep it up 🔥
           </p>
         )}
       </MotionDiv>

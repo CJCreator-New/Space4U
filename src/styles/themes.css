@@ -9,7 +9,7 @@
   --background: #FFFFFF;
   --surface: #F9FAFB;
   --text-primary: #111827;
-  --text-secondary: #6B7280;
+  --text-secondary: #4B5563; /* WCAG AA compliant (was #6B7280) */
   --border: #E5E7EB;
   --border-light: #F3F4F6;
 }
@@ -110,4 +110,148 @@
 
 .dark .toast-warning {
   @apply bg-orange-600;
+}
+
+/* ===== Phase 2: Micro-interactions & Visual Polish ===== */
+
+/* 2.1 Button Micro-interactions */
+.btn-micro {
+  @apply transition-all duration-200 ease-out;
+}
+
+.btn-micro:hover:not(:disabled) {
+  @apply scale-[1.02];
+}
+
+.btn-micro:active:not(:disabled) {
+  @apply scale-[0.98];
+}
+
+.btn-micro:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Success checkmark animation */
+@keyframes checkmark {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 1;
+  }
+}
+
+.btn-success-checkmark {
+  animation: checkmark 300ms ease-out forwards;
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btn-loading {
+  @apply pointer-events-none opacity-70;
+}
+
+.btn-loading::after {
+  content: '';
+  @apply inline-block w-4 h-4 ml-2 border-2 border-current border-t-transparent rounded-full;
+  animation: spin 600ms linear infinite;
+}
+
+/* 2.2 Page Transitions */
+.page-fade-enter {
+  opacity: 0;
+}
+
+.page-fade-enter-active {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}
+
+.page-fade-exit {
+  opacity: 1;
+}
+
+.page-fade-exit-active {
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+/* Modal slide transitions */
+.modal-slide-enter {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.modal-slide-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 250ms ease-out, opacity 250ms ease-out;
+}
+
+.modal-slide-exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.modal-slide-exit-active {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 250ms ease-in, opacity 250ms ease-in;
+}
+
+/* Tab switch animations */
+.tab-fade {
+  animation: tabFade 200ms ease-in;
+}
+
+@keyframes tabFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 2.3 Mood Logging Celebration */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.mood-bounce {
+  animation: bounce 500ms ease-in-out;
+}
+
+/* Streak counter animation */
+@keyframes countUp {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.streak-count-up {
+  animation: countUp 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }

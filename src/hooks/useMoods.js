@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+﻿import { useState, useEffect, useMemo, useCallback } from 'react'
 import { supabase } from '../utils/supabase'
 import { storage } from '../services/storage'
 import { FEATURES } from '../config/features'
@@ -11,7 +11,7 @@ export function useMoods() {
     loadMoods()
   }, [])
 
-  const loadMoods = async () => {
+  const loadMoods = useCallback(async () => {
     try {
       // Use storage adapter (defaults to localStorage)
       const moodsData = await storage.get('space4u_moods')
@@ -44,9 +44,9 @@ export function useMoods() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
-  const saveMood = async (date, moodData) => {
+  const saveMood = useCallback(async (date, moodData) => {
     try {
       const updatedMoods = { ...moods, [date]: moodData }
       
@@ -73,8 +73,14 @@ export function useMoods() {
       console.error('Error saving mood:', error)
       return { success: false, error }
     }
-  }
+  }, [moods])
 
-  return { moods, loading, saveMood, refreshMoods: loadMoods }
+  // Memoize the return object to prevent unnecessary re-renders
+  return useMemo(() => ({
+    moods,
+    loading,
+    saveMood,
+    refreshMoods: loadMoods
+  }), [moods, loading, saveMood, loadMoods])
 }
 

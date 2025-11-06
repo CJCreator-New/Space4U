@@ -43,15 +43,16 @@ function ProfilePage() {
   const loadUserData = async () => {
     const { getUserProfile } = await import('../utils/storageHelpers')
     const userData = await getUserProfile()
-    setUser(userData || {})
+    const safeUserData = userData || {}
+    setUser(safeUserData)
     setEditForm({
-      username: userData.username || '',
-      avatar: userData.avatar || '',
-      bio: userData.bio || '',
-      interests: userData.interests || []
+      username: safeUserData.username || '',
+      avatar: safeUserData.avatar || '',
+      bio: safeUserData.bio || '',
+      interests: safeUserData.interests || []
     })
     
-    const badges = initializeBadgeSystem()
+    const badges = await initializeBadgeSystem()
     setBadgeData(badges)
     
     calculateStats()

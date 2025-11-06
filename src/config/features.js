@@ -7,7 +7,7 @@ export const FEATURES = {
   // Backend Integration
   USE_BACKEND: true,              // Toggle Supabase backend (default: localStorage)
   ENABLE_REALTIME: false,          // Real-time updates via WebSocket
-  ENABLE_SYNC: false,              // Cross-device sync
+  ENABLE_SYNC: true,              // Cross-device sync
   
   // UI Enhancements (Safe to enable)
   ENABLE_DARK_MODE: true,          // Dark mode theme

@@ -10,6 +10,7 @@ import ResearchCard from '../components/wellness/ResearchCard'
 import { disclaimers } from '../data/disclaimers'
 import { researchCitations } from '../data/researchCitations'
 import HabitCompletionEffect from '../components/common/HabitCompletionEffect'
+import HabitHeatMap from '../components/HabitHeatMap'
 
 function HabitTrackerPage() {
   const navigate = useNavigate()
@@ -135,32 +136,35 @@ function HabitTrackerPage() {
           </button>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {habits.map(habit => (
-            <div key={habit.id} className="card p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={() => toggleCompletion(habit.id)}
-                    className="text-4xl hover:scale-110 transition-transform"
-                  >
-                    {habit.completions[today] ? (
-                      <CheckCircle2 className="w-10 h-10 text-green-500" />
-                    ) : (
-                      <Circle className="w-10 h-10 text-text-secondary" />
-                    )}
-                  </button>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-2xl">{habit.icon}</span>
-                      <h3 className="text-xl font-semibold">{habit.name}</h3>
+            <div key={habit.id} className="space-y-4">
+              <div className="card p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => toggleCompletion(habit.id)}
+                      className="btn-micro text-4xl hover:scale-110 transition-transform"
+                    >
+                      {habit.completions[today] ? (
+                        <CheckCircle2 className="w-10 h-10 text-green-500" />
+                      ) : (
+                        <Circle className="w-10 h-10 text-text-secondary" />
+                      )}
+                    </button>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">{habit.icon}</span>
+                        <h3 className="text-xl font-semibold">{habit.name}</h3>
+                      </div>
+                      <p className="text-text-secondary text-sm">
+                        {t('habits.streakInfo', { streak: getStreak(habit), total: Object.values(habit.completions).filter(Boolean).length })}
+                      </p>
                     </div>
-                    <p className="text-text-secondary text-sm">
-                      {t('habits.streakInfo', { streak: getStreak(habit), total: Object.values(habit.completions).filter(Boolean).length })}
-                    </p>
                   </div>
                 </div>
               </div>
+              <HabitHeatMap habitId={habit.id} habitName={habit.name} />
             </div>
           ))}
         </div>

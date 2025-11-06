@@ -1,20 +1,22 @@
+import { useMemo } from 'react'
 import { TrendingUp, Brain, Target, Lightbulb, Calendar } from 'lucide-react'
-import { 
-  calculateMoodCorrelations, 
-  predictNextMood, 
+import {
+  calculateMoodCorrelations,
+  predictNextMood,
   detectMoodPatterns,
   generatePersonalizedInsights,
   generateRecommendations
 } from '../utils/advancedAnalytics'
 
 function AdvancedInsightsPanel({ moods }) {
-  if (moods.length < 7) return null
+  // Memoize all expensive calculations to prevent re-computation on every render
+  const correlations = useMemo(() => calculateMoodCorrelations(moods), [moods])
+  const prediction = useMemo(() => predictNextMood(moods), [moods])
+  const patterns = useMemo(() => detectMoodPatterns(moods), [moods])
+  const insights = useMemo(() => generatePersonalizedInsights(moods, {}), [moods])
+  const recommendations = useMemo(() => generateRecommendations(moods, patterns), [moods, patterns])
 
-  const correlations = calculateMoodCorrelations(moods)
-  const prediction = predictNextMood(moods)
-  const patterns = detectMoodPatterns(moods)
-  const insights = generatePersonalizedInsights(moods, {})
-  const recommendations = generateRecommendations(moods, patterns)
+  if (moods.length < 7) return null
 
   return (
     <div className="space-y-6">

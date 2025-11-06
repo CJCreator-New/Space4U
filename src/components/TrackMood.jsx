@@ -1,11 +1,14 @@
 ﻿import { useState } from 'react'
 import { api } from '../utils/supabase'
 import { motion } from 'framer-motion'
+import confetti from 'canvas-confetti'
+import { toast } from '../utils/toast'
 
 function TrackMood({ onSaved }) {
   const [rating, setRating] = useState(3)
   const [note, setNote] = useState('')
   const [saving, setSaving] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const emojiMap = { 1: '', 2: '', 3: '', 4: '', 5: '' }
 
@@ -29,9 +32,25 @@ function TrackMood({ onSaved }) {
           await api.saveMood(stored[today])
         }
       } catch (e) {
-        // ignore backend errors for now
         console.warn('Remote save failed', e)
       }
+
+      // Show success state
+      setShowSuccess(true)
+      
+      // Trigger confetti celebration
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6']
+      })
+
+      // Show success toast
+      toast.success('Mood saved successfully! 🎉')
+
+      // Reset success state after animation
+      setTimeout(() => setShowSuccess(false), 1000)
 
       if (onSaved) onSaved()
     } catch (err) {
@@ -55,10 +74,25 @@ function TrackMood({ onSaved }) {
       <textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder="Add a note (optional)" className="w-full p-3 border border-gray-200 rounded-xl mb-3 resize-none" rows={3} />
 
       <div className="flex gap-2">
-        <button onClick={handleSave} disabled={saving} className="px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors">
-          {saving ? 'Saving...' : 'Save Mood'}
+        <button 
+          onClick={handleSave} 
+          disabled={saving || showSuccess} 
+          className={`btn-micro px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors flex items-center gap-2 ${saving ? 'btn-loading' : ''}`}
+        >
+          {showSuccess ? (
+            <span className="btn-success-checkmark">✓</span>
+          ) : saving ? (
+            'Saving'
+          ) : (
+            'Save Mood'
+          )}
         </button>
-        <button onClick={() => { setRating(3); setNote('') }} className="px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50">Reset</button>
+        <button 
+          onClick={() => { setRating(3); setNote('') }} 
+          className="btn-micro px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50"
+        >
+          Reset
+        </button>
       </div>
     </motion.div>
   )

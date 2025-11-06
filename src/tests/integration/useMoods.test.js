@@ -3,6 +3,17 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { useMoods } from '../../hooks/useMoods'
 import { FEATURES } from '../../config/features'
 
+// Mock the entire storage module
+vi.mock('../../services/storage', () => ({
+  storage: {
+    get: vi.fn(),
+    set: vi.fn()
+  }
+}))
+
+// Import after mocking
+import { storage } from '../../services/storage'
+
 // Mock supabase
 vi.mock('../../utils/supabase', () => ({
   supabase: {
@@ -15,7 +26,16 @@ vi.mock('../../utils/supabase', () => ({
 describe('useMoods Hook Integration', () => {
   beforeEach(() => {
     localStorage.clear()
-    FEATURES.USE_BACKEND = false
+    vi.clearAllMocks()
+    // Mock storage to use localStorage behavior for tests
+    storage.get.mockImplementation((key) => {
+      const item = localStorage.getItem(key)
+      return item ? JSON.parse(item) : null
+    })
+    storage.set.mockImplementation((key, value) => {
+      localStorage.setItem(key, JSON.stringify(value))
+      return Promise.resolve()
+    })
   })
 
   it('should load moods from localStorage', async () => {
@@ -67,6 +87,8 @@ describe('useMoods Hook Integration', () => {
     const moodData = { mood: 3, note: 'Okay day' }
     await result.current.saveMood('2024-01-15', moodData)
 
-    expect(result.current.moods['2024-01-15']).toEqual(moodData)
+    await waitFor(() => {
+      expect(result.current.moods['2024-01-15']).toEqual(moodData)
+    })
   })
 })

@@ -3,6 +3,7 @@ import { TrendingUp, Heart, Target, Brain, Smile, Crown } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
 import PremiumPaywall from '../components/PremiumPaywall'
 import WellnessBreakdown from '../components/premium/WellnessBreakdown'
+import WellnessChart from '../components/WellnessChart'
 import { getPremiumStatus } from '../utils/premiumUtils'
 import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
 import ResearchCard from '../components/wellness/ResearchCard'
@@ -138,6 +139,16 @@ function WellnessDashboardPage() {
           </PremiumPaywall>
         </div>
       )}
+
+      {/* Wellness Dimension Chart */}
+      <div className="mb-8">
+        <WellnessChart scores={{
+          mood: Math.round((metrics.mood / 20) * 25),
+          habit: Math.round((metrics.habits / 20) * 25),
+          gratitude: Math.round((metrics.gratitude / 20) * 25),
+          emotion: Math.round((metrics.emotions / 20) * 25)
+        }} />
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <div className="card p-6">

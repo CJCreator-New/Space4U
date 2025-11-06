@@ -29,14 +29,14 @@ export class SupabaseAdapter extends StorageAdapter {
       .select('value')
       .eq('user_id', user.id)
       .eq('key', key)
-      .single()
+      .limit(1)
 
     if (error) {
-      if (error.code === 'PGRST116') return null // Not found
-      throw error
+      console.error('Supabase get error:', error)
+      return null
     }
 
-    return data?.value || null
+    return data?.[0]?.value || null
   }
 
   async set(key, value) {
@@ -115,9 +115,14 @@ export class SupabaseAdapter extends StorageAdapter {
     if (!this.client) return false
     
     try {
-      const { data, error } = await this.client
+      const user = await this.getUser()
+      if (!user) return false
+      
+      // Try a simple query that should work if RLS is configured
+      const { error } = await this.client
         .from(this.tableName)
-        .select('count')
+        .select('id')
+        .eq('user_id', user.id)
         .limit(1)
       
       return !error
