@@ -119,13 +119,7 @@ export default function QuickActionsWidget() {
             </div>
 
             {/* Hover Arrow */}
-            <motion.div
-              className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity"
-              initial={{ x: -5 }}
-              whileHover={{ x: 0 }}
-            >
-              <span className={`text-sm font-bold ${action.color}`}>→</span>
-            </motion.div>
+
           </motion.button>
         ))}
       </div>

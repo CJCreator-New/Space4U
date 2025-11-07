@@ -5,28 +5,33 @@ import { ArrowLeft, Users, ChevronDown, Plus, Grid, List } from 'lucide-react'
 import { mockCircles } from '../data/mockCircles'
 import { mockPosts } from '../data/mockPosts'
 import PostCard from '../components/PostCard'
+import { useSupabaseAuth } from '../contexts/AuthContext'
+import FacebookStylePostComposer from '../components/FacebookStylePostComposer'
 
 // Lazy load modals
 const CreatePostModal = lazy(() => import('../components/CreatePostModal'))
 import { formatNumber } from '../utils/helpers'
 import SafeComponent from '../components/SafeComponent'
-import { useCirclesSWR } from '../hooks/useCirclesSWR'
-import { usePostsSWR } from '../hooks/usePostsSWR'
-import { useUserCirclesSWR } from '../hooks/useUserCirclesSWR'
-import { useHeartedPostsSWR } from '../hooks/useHeartedPostsSWR'
+// import { useCirclesSWR } from '../hooks/useCirclesSWR'
+// import { usePostsSWR } from '../hooks/usePostsSWR'
+// import { useUserCirclesSWR } from '../hooks/useUserCirclesSWR'
+// import { useHeartedPostsSWR } from '../hooks/useHeartedPostsSWR'
 
 function CircleFeedPage() {
   const { t } = useTranslation()
   const { circleId } = useParams()
   const navigate = useNavigate()
   const { user } = useSupabaseAuth()
-  const { circles: allCircles } = useCirclesSWR()
-  const { posts: allPosts } = usePostsSWR()
-  const { leaveCircle } = useUserCirclesSWR()
-  const { heartedPosts, toggleHeartPost } = useHeartedPostsSWR()
+  // const { circles: allCircles } = useCirclesSWR()
+  // const { posts: allPosts } = usePostsSWR()
+  // const { leaveCircle } = useUserCirclesSWR()
+  // const { heartedPosts, toggleHeartPost } = useHeartedPostsSWR()
   const [circle, setCircle] = useState(null)
-  const { posts: realtimePosts, loading: postsLoading } = useRealtimePosts(circleId)
-  const onlineCount = useOnlineUsers(circleId)
+  // const { posts: realtimePosts, loading: postsLoading } = useRealtimePosts(circleId)
+  // const onlineCount = useOnlineUsers(circleId)
+  const heartedPosts = []
+  const allPosts = []
+  const onlineCount = 0
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
@@ -43,13 +48,11 @@ function CircleFeedPage() {
   }, [circleId])
 
   useEffect(() => {
-    if (!postsLoading) {
-      const sortedPosts = sortPosts(realtimePosts, sortBy)
-      const filteredPosts = filterPosts(sortedPosts, filterBy)
-      setPosts(filteredPosts)
-      setLoading(false)
-    }
-  }, [realtimePosts, postsLoading, sortBy, filterBy])
+    const circlePosts = mockPosts.filter(post => post.circleId === parseInt(circleId))
+    const sortedPosts = sortPosts(circlePosts, sortBy)
+    const filteredPosts = filterPosts(sortedPosts, filterBy)
+    setPosts(filteredPosts.slice(0, 10))
+  }, [circleId, sortBy, filterBy])
 
   const loadCircleData = () => {
     const foundCircle = mockCircles.find(c => c.id === parseInt(circleId))
@@ -123,14 +126,18 @@ function CircleFeedPage() {
   }, [heartedPosts, allPosts])
 
   const handleLeaveCircle = async () => {
-    const result = await leaveCircle(parseInt(circleId))
-    if (result.success) {
-      navigate('/circles')
-    }
+    // Remove from localStorage
+    const joined = JSON.parse(localStorage.getItem('space4u_user_circles') || '[]')
+    const updated = joined.filter(id => id !== circleId)
+    localStorage.setItem('space4u_user_circles', JSON.stringify(updated))
+    navigate('/circles')
   }
 
   const handleHeartPost = async (postId, isHearted) => {
-    await toggleHeartPost(postId, isHearted)
+    // Toggle heart in localStorage
+    const hearted = JSON.parse(localStorage.getItem('space4u_hearted_posts') || '[]')
+    const updated = isHearted ? hearted.filter(id => id !== postId) : [...hearted, postId]
+    localStorage.setItem('space4u_hearted_posts', JSON.stringify(updated))
   }
 
   const handleSharePost = () => {
@@ -269,6 +276,9 @@ function CircleFeedPage() {
           </div>
         </div>
       </div>
+
+      {/* Facebook-Style Post Composer */}
+      <FacebookStylePostComposer circle={circle} onPostCreated={handlePostCreated} />
 
       {/* Posts Feed */}
       {posts.length === 0 ? (

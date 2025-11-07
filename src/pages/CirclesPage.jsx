@@ -1,6 +1,6 @@
-﻿import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react'
+﻿import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, Filter, Users, Shield, Heart, AlertTriangle, Info, Crown, Lock, Sparkles, Activity, TrendingUp, ArrowRight } from 'lucide-react'
+import { Search, Filter, Users, Shield, Heart, AlertTriangle, Info, Crown, Lock, Sparkles, Activity, TrendingUp, ArrowRight, Plus } from 'lucide-react'
 import { mockCircles } from '../data/mockCircles'
 import CircleCard from '../components/CircleCard'
 import FilterModal from '../components/FilterModal'
@@ -217,6 +217,7 @@ function CirclesPage() {
   const { isPremium } = getPremiumStatus()
   const isMountedRef = useRef(true)
   const feedbackTimerRef = useRef(null)
+  const [showQuickPost, setShowQuickPost] = useState(false)
   
   const FREE_CIRCLE_LIMIT = 3
 
@@ -434,12 +435,11 @@ function CirclesPage() {
     })
 
     if (matched.length > 0) {
-      return matched.slice(0, 4)
+      return matched
     }
 
     return [...state.circles]
       .sort((a, b) => (b.unreadCount || 0) - (a.unreadCount || 0))
-      .slice(0, 4)
   }
 
   const filteredCircles = getFilteredCircles()
@@ -831,6 +831,23 @@ function CirclesPage() {
         </div>
       </div>
     </div>
+
+    {/* Quick Post FAB - Only show if user has joined circles */}
+    {state.joinedCircles.length > 0 && (
+      <button
+        onClick={() => {
+          // Navigate to first joined circle to post
+          const firstCircle = state.circles.find(c => state.joinedCircles.includes(String(c.id)))
+          if (firstCircle) {
+            navigate(`/circles/${firstCircle.id}`)
+          }
+        }}
+        className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-50 hover:scale-110"
+        title="Create post"
+      >
+        <Plus size={24} />
+      </button>
+    )}
     </SafeComponent>
   )
 }
