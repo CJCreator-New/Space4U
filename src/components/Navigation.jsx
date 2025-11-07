@@ -1,4 +1,5 @@
-﻿import { NavLink } from 'react-router-dom'
+﻿import { memo, useCallback, useMemo } from 'react'
+import { NavLink } from 'react-router-dom'
 import { Home, Users, Brain, User, Activity, Heart, Sparkles, Building2, LogOut, LogIn } from '../config/icons'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 import { useTranslation } from 'react-i18next'
@@ -6,7 +7,7 @@ import { useFeatureFlag } from '../config/featureFlags'
 import { ModernNavigation } from './modern/ModernNavigation'
 import Logo from './Logo'
 
-function Navigation() {
+const Navigation = memo(function Navigation() {
   const useModernUI = useFeatureFlag('ENABLE_MODERN_UI');
 
   if (useModernUI) {
@@ -17,7 +18,7 @@ function Navigation() {
   const { user, signOut } = useSupabaseAuth()
   const { t } = useTranslation()
 
-  const navItems = [
+  const navItems = useMemo(() => [
     { path: '/', icon: Home, label: t('common.home') },
     { path: '/circles', icon: Users, label: t('common.circles') },
     { path: '/insights', icon: Brain, label: t('common.insights') },
@@ -26,11 +27,11 @@ function Navigation() {
     { path: '/analytics', icon: Sparkles, label: t('common.analytics') },
     { path: '/professional', icon: Building2, label: t('common.professional') },
     { path: '/profile', icon: User, label: t('common.profile') },
-  ]
+  ], [t])
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     await signOut()
-  }
+  }, [signOut])
   return (
     <>
       {/* Mobile Bottom Navigation */}
@@ -118,6 +119,6 @@ function Navigation() {
       </nav>
     </>
   )
-}
+})
 
 export default Navigation

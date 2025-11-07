@@ -122,14 +122,28 @@ export const measureWebVitals = () => {
   }).observe({ entryTypes: ['layout-shift'] })
 }
 
-// Initialize monitoring
+// Initialize monitoring with cleanup
+let monitoringInterval = null
+
 export const initPerformanceMonitoring = () => {
   if (process.env.NODE_ENV === 'development') {
     measureWebVitals()
     
+    // Clear existing interval
+    if (monitoringInterval) clearInterval(monitoringInterval)
+    
     // Log report every 30 seconds
-    setInterval(() => {
+    monitoringInterval = setInterval(() => {
       perfMonitor.logReport()
     }, 30000)
+    
+    // Return cleanup function
+    return () => {
+      if (monitoringInterval) {
+        clearInterval(monitoringInterval)
+        monitoringInterval = null
+      }
+    }
   }
+  return () => {} // No-op cleanup for production
 }

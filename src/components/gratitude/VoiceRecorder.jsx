@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Mic, MicOff, Play, Pause, Trash2, Save } from 'lucide-react'
 import {
   Box,
@@ -33,6 +33,34 @@ function VoiceRecorder({ onSaveRecording, isDisabled }) {
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const toast = useToast()
+
+  // Cleanup media resources on unmount
+  useEffect(() => {
+    return () => {
+      // Stop any ongoing recording
+      if (mediaRecorderRef.current && isRecording) {
+        mediaRecorderRef.current.stop()
+      }
+
+      // Stop media stream tracks
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop())
+      }
+
+      // Clear intervals
+      if (recordingIntervalRef.current) {
+        clearInterval(recordingIntervalRef.current)
+      }
+      if (playbackIntervalRef.current) {
+        clearInterval(playbackIntervalRef.current)
+      }
+
+      // Revoke object URLs to prevent memory leaks
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl)
+      }
+    }
+  }, [isRecording, audioUrl])
 
   const startRecording = async () => {
     try {

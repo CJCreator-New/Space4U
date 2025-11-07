@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useReducer } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { addPoints, POINT_VALUES, checkMoodLogBadges } from '../utils/badgeSystem'
 import { queueMoodLog } from '../utils/offlineQueue'
@@ -35,15 +35,40 @@ const moods = [
   { emoji: '😰', label: 'Struggling', value: 1, color: '#EF4444' },
 ]
 
+const initialMoodState = {
+  selectedMood: null,
+  showNote: false,
+  isLogged: false,
+  showSuccess: false,
+  todaysMood: null,
+  streak: 0,
+  storageError: false,
+  unlockedBadges: []
+}
+
+const moodReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_SELECTED_MOOD':
+      return { ...state, selectedMood: action.payload, showNote: true }
+    case 'SET_SHOW_SUCCESS':
+      return { ...state, showSuccess: action.payload }
+    case 'SET_TODAYS_MOOD':
+      return { ...state, todaysMood: action.payload, isLogged: true }
+    case 'SET_STREAK':
+      return { ...state, streak: action.payload }
+    case 'SET_STORAGE_ERROR':
+      return { ...state, storageError: action.payload }
+    case 'SET_UNLOCKED_BADGES':
+      return { ...state, unlockedBadges: action.payload }
+    case 'RESET_MOOD_STATE':
+      return { ...initialMoodState }
+    default:
+      return state
+  }
+}
+
 function MoodTracker({ onMoodLogged }) {
-  const [selectedMood, setSelectedMood] = useState(null)
-  const [showNote, setShowNote] = useState(false)
-  const [isLogged, setIsLogged] = useState(false)
-  const [showSuccess, setShowSuccess] = useState(false)
-  const [todaysMood, setTodaysMood] = useState(null)
-  const [streak, setStreak] = useState(0)
-  const [storageError, setStorageError] = useState(false)
-  const [unlockedBadges, setUnlockedBadges] = useState([])
+  const [moodState, dispatch] = useReducer(moodReducer, initialMoodState)
 
   const { control, handleSubmit, watch, setValue, reset } = useForm({
     mode: 'onBlur',
@@ -85,8 +110,7 @@ function MoodTracker({ onMoodLogged }) {
     const todayMood = moodsData[today]
     
     if (todayMood) {
-      setTodaysMood(todayMood)
-      setIsLogged(true)
+      dispatch({ type: 'SET_TODAYS_MOOD', payload: todayMood })
     }
     
     calculateStreak(moodsData)
@@ -108,12 +132,11 @@ function MoodTracker({ onMoodLogged }) {
       }
     }
     
-    setStreak(streakCount)
+    dispatch({ type: 'SET_STREAK', payload: streakCount })
   }
 
   const handleMoodSelect = useCallback((mood) => {
-    setSelectedMood(mood)
-    setShowNote(true)
+    dispatch({ type: 'SET_SELECTED_MOOD', payload: mood })
     announce(`Selected ${mood.label} mood`)
   }, [])
 
@@ -134,7 +157,7 @@ function MoodTracker({ onMoodLogged }) {
     queueMoodLog({ ...moodData, date: today })
     
     // Show success immediately
-    setShowSuccess(true)
+    dispatch({ type: 'SET_SHOW_SUCCESS', payload: true })
     calculateStreak({ ...moodsData, [today]: moodData })
     announce('Mood logged successfully!')
     
@@ -145,24 +168,22 @@ function MoodTracker({ onMoodLogged }) {
       const newlyUnlocked = badgeResults.filter(r => r.unlocked)
       
       if (newlyUnlocked.length > 0) {
-        setUnlockedBadges(newlyUnlocked)
+        dispatch({ type: 'SET_UNLOCKED_BADGES', payload: newlyUnlocked })
       }
     }, 0)
     
     // Reduce success animation time
     setTimeout(() => {
-      setShowSuccess(false)
-      setTodaysMood(moodData)
-      setIsLogged(true)
-      setSelectedMood(null)
-      setShowNote(false)
+      dispatch({ type: 'SET_SHOW_SUCCESS', payload: false })
+      dispatch({ type: 'SET_TODAYS_MOOD', payload: moodData })
+      dispatch({ type: 'RESET_MOOD_STATE' })
       reset()
       onMoodLogged?.()
     }, 2000)
   }, [getMoodEmoji, getMoodLabel, saveMood, today, moodsData, reset, onMoodLogged])
 
   const handleCloseBadgeModal = () => {
-    setUnlockedBadges([])
+    dispatch({ type: 'SET_UNLOCKED_BADGES', payload: [] })
   }
 
   const handleUpdate = () => {
@@ -173,7 +194,7 @@ function MoodTracker({ onMoodLogged }) {
   const remainingChars = 200 - note.length
   const charCountColor = remainingChars < 20 ? 'text-danger' : remainingChars < 50 ? 'text-warning' : 'text-text-secondary'
 
-  if (showSuccess) {
+  if (moodState.showSuccess) {
     return (
       <Box
         as={motion.div}
@@ -193,16 +214,16 @@ function MoodTracker({ onMoodLogged }) {
         <Text fontSize="xl" fontWeight="semibold" mb={2}>
           Mood logged!
         </Text>
-        {streak > 1 && (
+        {moodState.streak > 1 && (
           <Text color="gray.600">
-            {streak} day streak! Keep it up 🔥
+            {moodState.streak} day streak! Keep it up 🔥
           </Text>
         )}
       </Box>
     )
   }
 
-  if (isLogged && todaysMood) {
+  if (moodState.isLogged && moodState.todaysMood) {
     return (
       <Box
         p={6}
@@ -215,7 +236,7 @@ function MoodTracker({ onMoodLogged }) {
       >
         <HStack justify="space-between" align="start">
           <HStack gap={3}>
-            <Text fontSize="3xl">{todaysMood.emoji}</Text>
+            <Text fontSize="3xl">{moodState.todaysMood.emoji}</Text>
             <Box>
               <Text fontWeight="semibold">
                 Today's mood: {todaysMood.label}
@@ -277,8 +298,7 @@ function MoodTracker({ onMoodLogged }) {
                 colorScheme="blue"
                 onChange={(value) => {
                   field.onChange(value)
-                  setSelectedMood(moods.find(m => m.value === value))
-                  setShowNote(true)
+                  dispatch({ type: 'SET_SELECTED_MOOD', payload: moods.find(m => m.value === value) })
                 }}
               >
                 <SliderTrack>
@@ -299,14 +319,14 @@ function MoodTracker({ onMoodLogged }) {
               </Slider>
             )}
           />
-          {selectedMood && (
+          {moodState.selectedMood && (
             <Text fontSize="xs" color="gray.600" mt={1}>
-              {selectedMood.label}
+              {moodState.selectedMood.label}
             </Text>
           )}
         </FormControl>
 
-        {showNote && (
+        {moodState.showNote && (
           <VStack spacing={4} align="stretch">
             <Controller
               name="tags"

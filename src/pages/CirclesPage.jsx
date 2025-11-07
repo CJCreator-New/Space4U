@@ -1,9 +1,10 @@
-﻿import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+﻿import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, Filter, Users, Shield, Heart, AlertTriangle, Info, Crown, Lock, Sparkles, Activity, TrendingUp, ArrowRight } from 'lucide-react'
 import { mockCircles } from '../data/mockCircles'
 import CircleCard from '../components/CircleCard'
 import FilterModal from '../components/FilterModal'
+import VirtualizedList from '../components/common/VirtualizedList'
 import { formatNumber } from '../utils/helpers'
 import EmptyState from '../components/common/EmptyState'
 import LoadingState from '../components/common/LoadingState'
@@ -140,20 +141,79 @@ const normalizeCircleRecord = (circle, index, joinedLookup) => {
   }
 }
 
+const initialState = {
+  activeTab: 'discover',
+  searchQuery: '',
+  showFilters: false,
+  filters: { category: 'all', sort: 'recommended' },
+  joinedCircles: [],
+  circles: [],
+  loading: true,
+  feedback: null,
+  joinCelebration: null
+}
+
+const circlesReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_ACTIVE_TAB':
+      return { ...state, activeTab: action.payload }
+    case 'SET_SEARCH_QUERY':
+      return { ...state, searchQuery: action.payload }
+    case 'SET_SHOW_FILTERS':
+      return { ...state, showFilters: action.payload }
+    case 'SET_FILTERS':
+      return { ...state, filters: action.payload }
+    case 'SET_JOINED_CIRCLES':
+      return { ...state, joinedCircles: action.payload }
+    case 'SET_CIRCLES':
+      return { ...state, circles: action.payload }
+    case 'SET_LOADING':
+      return { ...state, loading: action.payload }
+    case 'SET_FEEDBACK':
+      return { ...state, feedback: action.payload }
+    case 'SET_JOIN_CELEBRATION':
+      return { ...state, joinCelebration: action.payload }
+    case 'JOIN_CIRCLE':
+      const { circleId, targetCircle } = action.payload
+      const idKey = String(circleId)
+      if (state.joinedCircles.includes(idKey)) return state
+      const newJoined = [...state.joinedCircles, idKey]
+      return {
+        ...state,
+        joinedCircles: newJoined,
+        circles: state.circles.map(circle =>
+          String(circle.id) === idKey
+            ? { ...circle, members: (Number(circle.members) || 0) + 1, isJoined: true }
+            : circle
+        ),
+        joinCelebration: {
+          id: idKey,
+          name: targetCircle?.name ?? 'circle',
+          highlight: targetCircle?.highlight,
+          featuredPost: targetCircle?.featuredPost
+        }
+      }
+    case 'LEAVE_CIRCLE':
+      const leaveIdKey = String(action.payload)
+      const filteredJoined = state.joinedCircles.filter(id => id !== leaveIdKey)
+      return {
+        ...state,
+        joinedCircles: filteredJoined,
+        circles: state.circles.map(circle =>
+          String(circle.id) === leaveIdKey
+            ? { ...circle, members: Math.max(0, (Number(circle.members) || 0) - 1), isJoined: false }
+            : circle
+        )
+      }
+    default:
+      return state
+  }
+}
+
 function CirclesPage() {
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState('discover')
-  const [searchQuery, setSearchQuery] = useState('')
-  const debouncedSearch = useDebounce(searchQuery, 300)
-  const [showFilters, setShowFilters] = useState(false)
-  const [filters, setFilters] = useState({ category: 'all', sort: 'recommended' })
-  const [joinedCircles, setJoinedCircles] = useState([])
-  const [circles, setCircles] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [feedback, setFeedback] = useState(null)
-  const feedbackTimerRef = useRef(null)
-  const isMountedRef = useRef(true)
-  const [joinCelebration, setJoinCelebration] = useState(null)
+  const [state, dispatch] = useReducer(circlesReducer, initialState)
+  const debouncedSearch = useDebounce(state.searchQuery, 300)
   const { isPremium } = getPremiumStatus()
   
   const FREE_CIRCLE_LIMIT = 3
@@ -172,14 +232,14 @@ function CirclesPage() {
     if (feedbackTimerRef.current) {
       clearTimeout(feedbackTimerRef.current)
     }
-    setFeedback({ message, tone })
-    feedbackTimerRef.current = setTimeout(() => setFeedback(null), 2400)
+    dispatch({ type: 'SET_FEEDBACK', payload: { message, tone } })
+    feedbackTimerRef.current = setTimeout(() => dispatch({ type: 'SET_FEEDBACK', payload: null }), 2400)
   }
 
   const loadData = useCallback(async ({ showLoading = false } = {}) => {
     try {
       if (showLoading) {
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', payload: true })
       }
 
       let savedJoinedRaw
@@ -195,7 +255,7 @@ function CirclesPage() {
       if (!isMountedRef.current) {
         return
       }
-      setJoinedCircles(normalizedJoined)
+      dispatch({ type: 'SET_JOINED_CIRCLES', payload: normalizedJoined })
       const joinedLookup = new Set(normalizedJoined)
 
       let storedFallback
@@ -217,7 +277,7 @@ function CirclesPage() {
         if (!isMountedRef.current) {
           return
         }
-        setCircles(processedCircles)
+        dispatch({ type: 'SET_CIRCLES', payload: processedCircles })
         localStorage.setItem('space4u_circles', JSON.stringify(processedCircles))
       } catch (fetchError) {
         console.error('Failed to load circles', fetchError)
@@ -227,11 +287,11 @@ function CirclesPage() {
         if (!isMountedRef.current) {
           return
         }
-        setCircles(processedCircles)
+        dispatch({ type: 'SET_CIRCLES', payload: processedCircles })
       }
     } finally {
       if (isMountedRef.current) {
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', payload: false })
       }
     }
   }, [])
@@ -255,32 +315,25 @@ function CirclesPage() {
 
   const handleJoinCircle = (circleId) => {
     const idKey = String(circleId)
-    if (!isPremium && joinedCircles.length >= FREE_CIRCLE_LIMIT) {
+    if (!isPremium && state.joinedCircles.length >= FREE_CIRCLE_LIMIT) {
       navigate('/premium')
       return
     }
     try {
-      if (joinedCircles.includes(idKey)) return
+      if (state.joinedCircles.includes(idKey)) return
       trackEvent(EVENTS.CIRCLE_JOINED, { circleId: idKey, source: 'circle_card' })
 
-      const targetCircle = circles.find(circle => String(circle.id) === idKey)
-      const newJoined = [...joinedCircles, idKey]
-      setJoinedCircles(newJoined)
+      const targetCircle = state.circles.find(circle => String(circle.id) === idKey)
+      const newJoined = [...state.joinedCircles, idKey]
+      dispatch({ type: 'SET_JOINED_CIRCLES', payload: newJoined })
       localStorage.setItem('space4u_user_circles', JSON.stringify(newJoined))
 
-      setCircles(prev => prev.map(circle => 
-        String(circle.id) === idKey 
-          ? { ...circle, members: (Number(circle.members) || 0) + 1, isJoined: true }
-          : circle
-      ))
+      dispatch({
+        type: 'JOIN_CIRCLE',
+        payload: { circleId, targetCircle }
+      })
 
       showFeedback('Joined circle', 'success')
-      setJoinCelebration({
-        id: idKey,
-        name: targetCircle?.name ?? 'circle',
-        highlight: targetCircle?.highlight,
-        featuredPost: targetCircle?.featuredPost
-      })
       trackEvent(EVENTS.CIRCLE_JOIN_CTA_SHOWN, { circleId: idKey })
     } catch (err) {
       console.error('Failed to join circle', err)
@@ -291,32 +344,44 @@ function CirclesPage() {
     const idKey = String(circleId)
     try {
       trackEvent(EVENTS.CIRCLE_LEFT, { circleId: idKey })
-      const newJoined = joinedCircles.filter(id => id !== idKey)
-      setJoinedCircles(newJoined)
+      const newJoined = state.joinedCircles.filter(id => id !== idKey)
+      dispatch({ type: 'SET_JOINED_CIRCLES', payload: newJoined })
       localStorage.setItem('space4u_user_circles', JSON.stringify(newJoined))
 
-      setCircles(prev => prev.map(circle => 
-        String(circle.id) === idKey 
-          ? { ...circle, members: Math.max(0, (Number(circle.members) || 0) - 1), isJoined: false }
-          : circle
-      ))
+      dispatch({ type: 'LEAVE_CIRCLE', payload: circleId })
 
       showFeedback('Left circle', 'warning')
-      setJoinCelebration((current) => (current?.id === idKey ? null : current))
+      dispatch({ type: 'SET_JOIN_CELEBRATION', payload: state.joinCelebration?.id === idKey ? null : state.joinCelebration })
     } catch (err) {
       console.error('Failed to leave circle', err)
     }
   }
 
+  const handleTabChange = (tab) => {
+    dispatch({ type: 'SET_ACTIVE_TAB', payload: tab })
+  }
+
+  const handleSearchChange = (query) => {
+    dispatch({ type: 'SET_SEARCH_QUERY', payload: query })
+  }
+
+  const handleShowFilters = (show) => {
+    dispatch({ type: 'SET_SHOW_FILTERS', payload: show })
+  }
+
+  const handleFiltersChange = (filters) => {
+    dispatch({ type: 'SET_FILTERS', payload: filters })
+  }
+
   const handleCircleClick = (circleId, source = 'card') => {
     const idKey = String(circleId)
     trackEvent(EVENTS.CIRCLE_VIEWED, { circleId: idKey, source })
-    setJoinCelebration(null)
+    dispatch({ type: 'SET_JOIN_CELEBRATION', payload: null })
     navigate(`/circles/${idKey}`)
   }
 
   const getFilteredCircles = () => {
-    let filtered = [...circles]
+    let filtered = [...state.circles]
 
     // Filter by debounced search query
     if (debouncedSearch) {
@@ -327,17 +392,17 @@ function CirclesPage() {
     }
 
     // Filter by category
-    if (filters.category !== 'all') {
-      filtered = filtered.filter(circle => circle.category === filters.category)
+    if (state.filters.category !== 'all') {
+      filtered = filtered.filter(circle => circle.category === state.filters.category)
     }
 
     // Filter by tab
-    if (activeTab === 'my-circles') {
-      filtered = filtered.filter(circle => joinedCircles.includes(String(circle.id)))
+    if (state.activeTab === 'my-circles') {
+      filtered = filtered.filter(circle => state.joinedCircles.includes(String(circle.id)))
     }
 
     // Sort
-    switch (filters.sort) {
+    switch (state.filters.sort) {
       case 'members':
         filtered = [...filtered].sort((a, b) => (b.members || 0) - (a.members || 0))
         break
@@ -380,7 +445,7 @@ function CirclesPage() {
   const circleStats = useMemo(() => {
     const totalMembers = circles.reduce((acc, circle) => acc + (Number(circle.members) || 0), 0)
     const activeCircles = circles.filter(circle => (circle.unreadCount || 0) > 0).length
-    const joinedCount = joinedCircles.length
+    const joinedCount = state.joinedCircles.length
 
     return {
       totalMembers,
@@ -419,7 +484,7 @@ function CirclesPage() {
     <div aria-live="polite" aria-atomic="true" className="sr-only">
       {feedback?.message}
     </div>
-    {feedback && (
+    {state.feedback && (
       <div
         className={`fixed top-6 right-6 z-50 rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-xl transition-all ${
           feedback.tone === 'warning' ? 'bg-warning' : 'bg-success'
@@ -477,7 +542,7 @@ function CirclesPage() {
               </div>
             </div>
             <button
-              onClick={() => setActiveTab('discover')}
+              onClick={() => handleTabChange('discover')}
               className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-white/90 px-4 py-2 text-sm font-semibold text-purple-600 transition hover:bg-white"
             >
               Discover circles
@@ -501,14 +566,14 @@ function CirclesPage() {
         </div>
       </div>
 
-      {joinCelebration && (
+      {state.joinCelebration && (
         <div className="card mb-6 border border-primary/20 bg-primary/5 p-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-3">
               <Sparkles className="h-5 w-5 text-primary mt-0.5" aria-hidden />
               <div>
-                <p className="font-semibold text-text-primary">You're in! {joinCelebration.name} is ready for you.</p>
-                {joinCelebration.highlight && (
+                <p className="font-semibold text-text-primary">You're in! {state.joinCelebration.name} is ready for you.</p>
+                {state.joinCelebration.highlight && (
                   <p className="mt-1 text-sm text-text-secondary">{joinCelebration.highlight}</p>
                 )}
                 {joinCelebration.featuredPost && (
@@ -571,13 +636,13 @@ function CirclesPage() {
               type="text"
               placeholder="Search circles..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               aria-label="Search circles"
               className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary outline-none transition-colors"
             />
           </div>
           <button
-            onClick={() => setShowFilters(true)}
+            onClick={() => handleShowFilters(true)}
             aria-label="Open filters"
             className="px-4 py-3 border-2 border-gray-200 rounded-xl hover:border-primary transition-colors"
           >
@@ -600,7 +665,7 @@ function CirclesPage() {
                 }`}
                 onClick={() => {
                   trackEvent(EVENTS.CIRCLE_SORT_SELECTED, { sort: option.id, isActive })
-                  setFilters((prev) => ({ ...prev, sort: option.id }))
+                  handleFiltersChange({ ...state.filters, sort: option.id })
                 }}
               >
                 {option.label}
@@ -612,9 +677,9 @@ function CirclesPage() {
         {/* Tab Navigation */}
         <div className="flex gap-1 mb-6">
           <button
-            onClick={() => setActiveTab('discover')}
+            onClick={() => handleTabChange('discover')}
             className={`px-6 py-2 rounded-xl font-medium transition-colors ${
-              activeTab === 'discover'
+              state.activeTab === 'discover'
                 ? 'bg-primary text-white'
                 : 'text-text-secondary hover:text-text-primary'
             }`}
@@ -622,9 +687,9 @@ function CirclesPage() {
             Discover
           </button>
           <button
-            onClick={() => setActiveTab('my-circles')}
+            onClick={() => handleTabChange('my-circles')}
             className={`px-6 py-2 rounded-xl font-medium transition-colors ${
-              activeTab === 'my-circles'
+              state.activeTab === 'my-circles'
                 ? 'bg-primary text-white'
                 : 'text-text-secondary hover:text-text-primary'
             }`}
@@ -635,7 +700,7 @@ function CirclesPage() {
       </div>
 
       {/* Recommended Circles */}
-      {activeTab === 'discover' && recommendedCircles.length > 0 && (
+      {state.activeTab === 'discover' && recommendedCircles.length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-text-primary mb-4">Recommended for You</h2>
           <div className="flex gap-4 overflow-x-auto pb-2">
@@ -655,12 +720,12 @@ function CirclesPage() {
       )}
 
       {/* Empty States */}
-      {activeTab === 'my-circles' && joinedCircles.length === 0 ? (
+      {state.activeTab === 'my-circles' && state.joinedCircles.length === 0 ? (
         <EmptyState
           icon="🌐"
           title="No Circles Yet"
           description="Join circles to connect with supportive communities and share your journey"
-          action={() => setActiveTab('discover')}
+          action={() => handleTabChange('discover')}
           actionLabel="Discover Circles"
           showPreview={true}
           previewType="post"
@@ -670,7 +735,7 @@ function CirclesPage() {
           icon=""
           title="No Results Found"
           description={`No circles match "${debouncedSearch}". Try different keywords or browse all circles.`}
-          action={() => setSearchQuery('')}
+          action={() => handleSearchChange('')}
           actionLabel="Clear Search"
         />
       ) : filteredCircles.length === 0 ? (
@@ -680,28 +745,32 @@ function CirclesPage() {
           description="Check back soon for new support circles"
         />
       ) : (
-        /* Circle Grid */
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filteredCircles.map((circle, index) => (
-            <div key={circle.id || index} className="stagger-item" style={{ animationDelay: `${index * 50}ms` }}>
+        /* Virtualized Circle List */
+        <VirtualizedList
+          items={filteredCircles}
+          itemHeight={220} // Approximate height of CircleCard + margin
+          containerHeight={Math.min(filteredCircles.length * 220, 600)} // Dynamic height based on content
+          renderItem={(circle, actualIndex) => (
+            <div className="px-1 stagger-item" style={{ animationDelay: `${actualIndex * 50}ms` }}>
               <CircleCard
                 circle={circle}
                 isJoined={joinedCircles.includes(String(circle.id))}
                 onJoin={handleJoinCircle}
                 onLeave={handleLeaveCircle}
-                onClick={(id) => handleCircleClick(id, 'grid_card')}
+                onClick={(id) => handleCircleClick(id, 'virtual_list')}
               />
             </div>
-          ))}
-        </div>
+          )}
+          className="space-y-4"
+        />
       )}
 
       {/* Filter Modal */}
       <FilterModal
-        isOpen={showFilters}
-        onClose={() => setShowFilters(false)}
+        isOpen={state.showFilters}
+        onClose={() => handleShowFilters(false)}
         filters={filters}
-        onFiltersChange={setFilters}
+        onFiltersChange={handleFiltersChange}
       />
 
       {/* Community Guidelines & Safety */}

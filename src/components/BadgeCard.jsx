@@ -1,19 +1,25 @@
+import { memo, useCallback, useMemo } from 'react'
 import { Lock, Share } from 'lucide-react'
 
-function BadgeCard({ badge, badgeData, onClick, onShare }) {
+const BadgeCard = memo(function BadgeCard({ badge, badgeData, onClick, onShare }) {
   const isUnlocked = badgeData?.unlocked || false
   const progress = badgeData?.progress || 0
   const requirement = badgeData?.requirement || badge.requirement
-  const progressPercent = (progress / requirement) * 100
 
-  const handleShare = (e) => {
+  const progressPercent = useMemo(() => (progress / requirement) * 100, [progress, requirement])
+
+  const handleClick = useCallback(() => {
+    onClick?.(badge)
+  }, [onClick, badge])
+
+  const handleShare = useCallback((e) => {
     e.stopPropagation()
     onShare?.(badge)
-  }
+  }, [onShare, badge])
 
   return (
     <div
-      onClick={() => onClick?.(badge)}
+      onClick={handleClick}
       className={`card p-4 cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${
         isUnlocked ? '' : 'opacity-50'
       }`}
@@ -80,6 +86,6 @@ function BadgeCard({ badge, badgeData, onClick, onShare }) {
       </div>
     </div>
   )
-}
+})
 
 export default BadgeCard

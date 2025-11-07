@@ -1,8 +1,9 @@
+import { memo, useCallback } from 'react'
 import { formatNumber } from '../utils/helpers'
 import { motion } from 'framer-motion'
 import { Users, MessageCircle, Sparkles, Clock, Star, ArrowRight } from 'lucide-react'
 
-function CircleCard({ circle, isJoined, onJoin, onLeave, onClick, onReport }) {
+const CircleCard = memo(function CircleCard({ circle, isJoined, onJoin, onLeave, onClick, onReport }) {
   const {
     tags = [],
     unreadCount = 0,
@@ -11,18 +12,31 @@ function CircleCard({ circle, isJoined, onJoin, onLeave, onClick, onReport }) {
     highlight
   } = circle
 
-  const handleJoinClick = (e) => {
+  const handleJoinClick = useCallback((e) => {
     e.stopPropagation()
     if (isJoined) {
       onLeave(circle.id)
     } else {
       onJoin(circle.id)
     }
-  }
+  }, [isJoined, onLeave, onJoin, circle.id])
+
+  const handleClick = useCallback(() => {
+    onClick(circle.id)
+  }, [onClick, circle.id])
+
+  const handleReport = useCallback((e) => {
+    e.stopPropagation()
+    if (onReport) onReport(circle)
+  }, [onReport, circle])
+
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === 'Enter') onClick(circle.id)
+  }, [onClick, circle.id])
 
   return (
     <motion.div
-      onClick={() => onClick(circle.id)}
+      onClick={handleClick}
       className="card relative p-5 cursor-pointer transition-all duration-200 border-l-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/80"
       style={{ borderLeftColor: circle.color }}
       initial={{ opacity: 0, y: 6 }}
@@ -31,7 +45,7 @@ function CircleCard({ circle, isJoined, onJoin, onLeave, onClick, onReport }) {
       role="button"
       tabIndex={0}
       aria-label={`${circle.name} circle card`}
-      onKeyDown={(e) => { if (e.key === 'Enter') onClick(circle.id) }}
+      onKeyDown={handleKeyDown}
     >
       <div className="absolute top-3 right-3 flex items-center gap-1.5 flex-shrink-0">
         {unreadCount > 0 && (
@@ -44,7 +58,7 @@ function CircleCard({ circle, isJoined, onJoin, onLeave, onClick, onReport }) {
           </span>
         )}
         <button
-          onClick={(e) => { e.stopPropagation(); if (onReport) onReport(circle) }}
+          onClick={handleReport}
           aria-label={`Report ${circle.name}`}
           className="text-xs font-medium text-text-secondary hover:text-danger focus:outline-none focus-visible:ring-2 focus-visible:ring-danger/70 rounded-lg px-2 py-1 whitespace-nowrap"
         >
@@ -139,6 +153,6 @@ function CircleCard({ circle, isJoined, onJoin, onLeave, onClick, onReport }) {
       </div>
     </motion.div>
   )
-}
+})
 
 export default CircleCard

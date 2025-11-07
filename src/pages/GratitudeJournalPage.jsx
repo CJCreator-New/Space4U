@@ -55,6 +55,8 @@ function GratitudeJournalPage() {
   const [streak, setStreak] = useState(0)
   const [longestStreak, setLongestStreak] = useState(0)
   const [dailyPrompt, setDailyPrompt] = useState('')
+  const [selectedPrompts, setSelectedPrompts] = useState([])
+  const [promptThoughts, setPromptThoughts] = useState({})
   const { isPremium } = getPremiumStatus()
   
   const FREE_ENTRY_LIMIT = 10
@@ -240,8 +242,9 @@ function GratitudeJournalPage() {
             <Card bg="gradient-to-br from-purple-50 to-pink-50" borderWidth={1} borderColor="purple.200" borderRadius="xl" shadow="lg">
               <CardBody>
                 <EnhancedPrompts
-                  onPromptSelect={setDailyPrompt}
-                  currentPrompt={dailyPrompt}
+                  onPromptSelect={setSelectedPrompts}
+                  selectedPrompts={selectedPrompts}
+                  onPromptThoughtsChange={setPromptThoughts}
                 />
               </CardBody>
             </Card>
@@ -378,6 +381,8 @@ function GratitudeJournalPage() {
           onSave={handleSave}
           entry={selectedEntry}
           isPremium={isPremium}
+          selectedPrompts={selectedPrompts}
+          promptThoughts={promptThoughts}
         />
       </Container>
     </SafeComponent>

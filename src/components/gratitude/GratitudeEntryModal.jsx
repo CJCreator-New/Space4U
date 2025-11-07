@@ -41,7 +41,7 @@ import {
 import VoiceRecorder from './VoiceRecorder'
 import { GRATITUDE_CATEGORIES, GRATITUDE_TEMPLATES } from '../../data/gratitudeCategories'
 
-function GratitudeEntryModal({ isOpen, onClose, onSave, entry, isPremium }) {
+function GratitudeEntryModal({ isOpen, onClose, onSave, entry, isPremium, selectedPrompts = [], promptThoughts = {} }) {
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
   const toast = useToast()
@@ -53,7 +53,9 @@ function GratitudeEntryModal({ isOpen, onClose, onSave, entry, isPremium }) {
       mood_rating: 3,
       notes: '',
       categories: [],
-      template: null
+      template: null,
+      selectedPrompts: selectedPrompts,
+      promptThoughts: promptThoughts
     }
   })
 
@@ -65,15 +67,21 @@ function GratitudeEntryModal({ isOpen, onClose, onSave, entry, isPremium }) {
   const [selectedCategories, setSelectedCategories] = useState([])
   const [selectedTemplate, setSelectedTemplate] = useState(null)
   const [voiceRecording, setVoiceRecording] = useState(null)
+  const [currentSelectedPrompts, setCurrentSelectedPrompts] = useState(selectedPrompts)
+  const [currentPromptThoughts, setCurrentPromptThoughts] = useState(promptThoughts)
 
   useEffect(() => {
     if (entry) {
       const categories = entry.categories || []
       const template = entry.template || null
       const recording = entry.voiceRecording || null
+      const entryPrompts = entry.selectedPrompts || selectedPrompts
+      const entryThoughts = entry.promptThoughts || promptThoughts
       setSelectedCategories(categories)
       setSelectedTemplate(template)
       setVoiceRecording(recording)
+      setCurrentSelectedPrompts(entryPrompts)
+      setCurrentPromptThoughts(entryThoughts)
 
       reset({
         date: entry.date,
@@ -81,22 +89,28 @@ function GratitudeEntryModal({ isOpen, onClose, onSave, entry, isPremium }) {
         mood_rating: entry.mood_rating || 3,
         notes: entry.notes || '',
         categories: categories,
-        template: template
+        template: template,
+        selectedPrompts: entryPrompts,
+        promptThoughts: entryThoughts
       })
     } else {
       setSelectedCategories([])
       setSelectedTemplate(null)
       setVoiceRecording(null)
+      setCurrentSelectedPrompts(selectedPrompts)
+      setCurrentPromptThoughts(promptThoughts)
       reset({
         date: new Date().toISOString().split('T')[0],
         items: [{ text: '' }, { text: '' }, { text: '' }],
         mood_rating: 3,
         notes: '',
         categories: [],
-        template: null
+        template: null,
+        selectedPrompts: selectedPrompts,
+        promptThoughts: promptThoughts
       })
     }
-  }, [entry, reset])
+  }, [entry, reset, selectedPrompts, promptThoughts])
 
   const onSubmit = (data) => {
     const filledItems = data.items.filter(item => item.text.trim())
@@ -108,6 +122,8 @@ function GratitudeEntryModal({ isOpen, onClose, onSave, entry, isPremium }) {
       categories: selectedCategories,
       template: selectedTemplate,
       voiceRecording: voiceRecording,
+      selectedPrompts: currentSelectedPrompts,
+      promptThoughts: currentPromptThoughts,
       id: entry?.id || Date.now()
     })
 
@@ -274,6 +290,39 @@ function GratitudeEntryModal({ isOpen, onClose, onSave, entry, isPremium }) {
                         rows={3}
                       />
                     </FormControl>
+
+                    {currentSelectedPrompts.length > 0 && (
+                      <FormControl>
+                        <FormLabel>Selected Prompts & Thoughts</FormLabel>
+                        <VStack spacing={3} align="stretch">
+                          {currentSelectedPrompts.map((prompt, index) => (
+                            <Card key={index} bg="purple.50" borderColor="purple.200" borderWidth={1} borderRadius="md">
+                              <CardBody py={3}>
+                                <VStack spacing={2} align="stretch">
+                                  <Text fontSize="sm" fontWeight="medium" color="purple.800">
+                                    {prompt}
+                                  </Text>
+                                  <Textarea
+                                    placeholder="Your thoughts on this prompt..."
+                                    value={currentPromptThoughts[prompt] || ''}
+                                    onChange={(e) => {
+                                      const newThoughts = { ...currentPromptThoughts, [prompt]: e.target.value }
+                                      setCurrentPromptThoughts(newThoughts)
+                                    }}
+                                    bg="white"
+                                    borderColor="purple.200"
+                                    _hover={{ borderColor: 'purple.300' }}
+                                    _focus={{ borderColor: 'purple.500', boxShadow: '0 0 0 1px purple.500' }}
+                                    rows={2}
+                                    size="sm"
+                                  />
+                                </VStack>
+                              </CardBody>
+                            </Card>
+                          ))}
+                        </VStack>
+                      </FormControl>
+                    )}
 
                     <HStack spacing={3} justify="flex-end" pt={4}>
                       <Button variant="ghost" onClick={onClose}>

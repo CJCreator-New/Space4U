@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 function AnimatedNumber({ value, duration = 1000, className = '' }) {
   const [displayValue, setDisplayValue] = useState(0)
+  const animationRef = useRef(null)
 
   useEffect(() => {
     const start = displayValue
@@ -17,11 +18,23 @@ function AnimatedNumber({ value, duration = 1000, className = '' }) {
       setDisplayValue(current)
       
       if (progress < 1) {
-        requestAnimationFrame(animate)
+        animationRef.current = requestAnimationFrame(animate)
       }
     }
 
+    // Cancel any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current)
+    }
+
     animate()
+
+    // Cleanup on unmount or value change
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+    }
   }, [value, duration])
 
   return <span className={className}>{displayValue}</span>

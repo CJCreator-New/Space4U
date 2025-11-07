@@ -1,4 +1,4 @@
-import { useState, memo, useCallback } from 'react'
+import { useState, memo, useCallback, useReducer } from 'react'
 import Icon from './Icon'
 import OptimizedAvatar from './OptimizedAvatar'
 import { formatRelativeTime, truncateText } from '../utils/helpers'
@@ -8,31 +8,67 @@ import { circleService } from '../services/circleService'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 import { useDebounce } from '../hooks/useDebounce'
 
+const initialPostState = {
+  isHearted: false,
+  heartCount: 0,
+  showComments: false,
+  newComment: '',
+  isExpanded: false,
+  posting: false
+}
+
+const postReducer = (state, action) => {
+  switch (action.type) {
+    case 'INIT_STATE':
+      return {
+        ...state,
+        isHearted: action.payload.isHearted,
+        heartCount: action.payload.hearts
+      }
+    case 'TOGGLE_HEART':
+      const newHearted = !state.isHearted
+      return {
+        ...state,
+        isHearted: newHearted,
+        heartCount: newHearted ? state.heartCount + 1 : state.heartCount - 1
+      }
+    case 'TOGGLE_COMMENTS':
+      return { ...state, showComments: !state.showComments }
+    case 'SET_NEW_COMMENT':
+      return { ...state, newComment: action.payload }
+    case 'TOGGLE_EXPANDED':
+      return { ...state, isExpanded: !state.isExpanded }
+    case 'SET_POSTING':
+      return { ...state, posting: action.payload }
+    case 'RESET_COMMENT':
+      return { ...state, newComment: '', posting: false }
+    default:
+      return state
+  }
+}
+
 const PostCard = memo(function PostCard({ post, circleColor, onHeart, onShare }) {
   const { user } = useSupabaseAuth()
-  const [isHearted, setIsHearted] = useState(post.isHearted)
-  const [heartCount, setHeartCount] = useState(post.hearts)
-  const [showComments, setShowComments] = useState(false)
-  const [newComment, setNewComment] = useState('')
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [posting, setPosting] = useState(false)
+  const [postState, dispatch] = useReducer(postReducer, {
+    ...initialPostState,
+    isHearted: post.isHearted,
+    heartCount: post.hearts
+  })
 
-  const { comments, loading: commentsLoading } = useRealtimeComments(showComments ? post.id : null)
+  const { comments, loading: commentsLoading } = useRealtimeComments(postState.showComments ? post.id : null)
   const shouldTruncate = post.content.length > 200
 
   // Debounce comment input
-  const debouncedComment = useDebounce(newComment, 300)
+  const debouncedComment = useDebounce(postState.newComment, 300)
 
   const handleHeart = useCallback(() => {
-    const newHearted = !isHearted
-    setIsHearted(newHearted)
-    setHeartCount(prev => newHearted ? prev + 1 : prev - 1)
-    onHeart?.(post.id, newHearted)
+    dispatch({ type: 'TOGGLE_HEART' })
+    onHeart?.(post.id, !postState.isHearted)
     
-    if (newHearted) {
+    if (!postState.isHearted) {
       addPoints(POINT_VALUES.heartReceived, 'Heart received')
     }
-  }, [isHearted, onHeart, post.id])
+  }, [postState.isHearted, onHeart, post.id])
 
   const handleShare = useCallback(() => {
     navigator.clipboard.writeText(`${window.location.origin}/circle/${post.circleId}/post/${post.id}`)
@@ -40,18 +76,17 @@ const PostCard = memo(function PostCard({ post, circleColor, onHeart, onShare })
   }, [post.circleId, post.id, onShare])
 
   const handleAddComment = useCallback(async () => {
-    if (!newComment.trim() || !user || posting) return
+    if (!postState.newComment.trim() || !user || postState.posting) return
 
-    setPosting(true)
+    dispatch({ type: 'SET_POSTING', payload: true })
     try {
-      await circleService.createComment(user.id, post.id, newComment.trim(), false)
-      setNewComment('')
+      await circleService.createComment(user.id, post.id, postState.newComment.trim(), false)
+      dispatch({ type: 'RESET_COMMENT' })
     } catch (error) {
       console.error('Failed to add comment:', error)
-    } finally {
-      setPosting(false)
+      dispatch({ type: 'SET_POSTING', payload: false })
     }
-  }, [debouncedComment, user, posting])
+  }, [debouncedComment, user, postState.posting, postState.newComment, post.id])
 
   return (
     <div className="card p-4 mb-3" style={{ borderBottomColor: circleColor, borderBottomWidth: '2px' }}>
@@ -75,17 +110,17 @@ const PostCard = memo(function PostCard({ post, circleColor, onHeart, onShare })
       {/* Post Content */}
       <div className="mb-3">
         <p className="text-text-primary leading-relaxed font-readable">
-          {shouldTruncate && !isExpanded 
+          {shouldTruncate && !postState.isExpanded 
             ? truncateText(post.content, 200)
             : post.content
           }
         </p>
         {shouldTruncate && (
           <button
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={() => dispatch({ type: 'TOGGLE_EXPANDED' })}
             className="text-primary text-sm mt-1 hover:underline"
           >
-            {isExpanded ? 'Show less' : 'Read more'}
+            {postState.isExpanded ? 'Show less' : 'Read more'}
           </button>
         )}
       </div>
@@ -109,7 +144,7 @@ const PostCard = memo(function PostCard({ post, circleColor, onHeart, onShare })
         <button
           onClick={handleHeart}
           className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-all ${
-            isHearted 
+            postState.isHearted 
               ? 'text-red-500 bg-red-50' 
               : 'text-text-secondary hover:text-red-500 hover:bg-red-50'
           }`}
@@ -117,13 +152,13 @@ const PostCard = memo(function PostCard({ post, circleColor, onHeart, onShare })
           <Icon 
             name="heart" 
             size={20} 
-            className={`transition-transform duration-200 ${isHearted ? 'scale-110' : ''}`}
+            className={`transition-transform duration-200 ${postState.isHearted ? 'scale-110' : ''}`}
           />
-          <span className="text-sm">{heartCount}</span>
+          <span className="text-sm">{postState.heartCount}</span>
         </button>
 
         <button
-          onClick={() => setShowComments(!showComments)}
+          onClick={() => dispatch({ type: 'TOGGLE_COMMENTS' })}
           className="flex items-center gap-2 px-3 py-1 rounded-lg text-text-secondary hover:text-primary hover:bg-primary/10 transition-colors"
         >
           <Icon name="message-circle" size={20} />
@@ -139,7 +174,7 @@ const PostCard = memo(function PostCard({ post, circleColor, onHeart, onShare })
       </div>
 
       {/* Comments Section */}
-      {showComments && (
+      {postState.showComments && (
         <div className="mt-4 pt-4 border-t border-gray-100">
           {commentsLoading ? (
             <div className="text-center py-4">
@@ -198,22 +233,22 @@ const PostCard = memo(function PostCard({ post, circleColor, onHeart, onShare })
             <div className="flex-1 flex gap-2">
               <input
                 type="text"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
+                value={postState.newComment}
+                onChange={(e) => dispatch({ type: 'SET_NEW_COMMENT', payload: e.target.value })}
                 placeholder="Add a comment..."
                 className="flex-1 px-3 py-2 border border-gray-200 rounded-xl focus:border-primary outline-none text-sm"
                 maxLength={300}
               />
               <button
                 onClick={handleAddComment}
-                disabled={!newComment.trim() || posting}
+                disabled={!postState.newComment.trim() || postState.posting}
                 className={`p-2 rounded-xl transition-colors ${
-                  newComment.trim() && !posting
+                  postState.newComment.trim() && !postState.posting
                     ? 'bg-primary text-white hover:bg-primary/90'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                <Icon name="send" size={16} className={posting ? 'animate-pulse' : ''} />
+                <Icon name="send" size={16} className={postState.posting ? 'animate-pulse' : ''} />
               </button>
             </div>
           </div>

@@ -1,48 +1,71 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo, useReducer } from 'react'
 import { Search, X, Clock, TrendingUp } from '../config/icons'
 import { useNavigate } from 'react-router-dom'
 import { searchAll, getRecentSearches, saveSearch, clearRecentSearches } from '../utils/search'
 
+// Reducer for search state management
+function searchReducer(state, action) {
+  switch (action.type) {
+    case 'SET_QUERY':
+      return { ...state, query: action.payload }
+    case 'SET_RESULTS':
+      return { ...state, results: action.payload }
+    case 'SET_RECENT_SEARCHES':
+      return { ...state, recentSearches: action.payload }
+    case 'CLEAR_RECENT_SEARCHES':
+      return { ...state, recentSearches: [] }
+    default:
+      return state
+  }
+}
+
+const initialSearchState = {
+  query: '',
+  results: [],
+  recentSearches: []
+}
+
 function GlobalSearch({ isOpen, onClose }) {
-  const [query, setQuery] = useState('')
-  const [results, setResults] = useState([])
-  const [recentSearches, setRecentSearches] = useState([])
+  const [searchState, dispatch] = useReducer(searchReducer, initialSearchState)
   const inputRef = useRef(null)
   const navigate = useNavigate()
 
   useEffect(() => {
     if (isOpen) {
       inputRef.current?.focus()
-      setRecentSearches(getRecentSearches())
+      dispatch({ type: 'SET_RECENT_SEARCHES', payload: getRecentSearches() })
     }
   }, [isOpen])
 
-  useEffect(() => {
-    if (query.length >= 2) {
-      const searchResults = searchAll(query)
-      setResults(searchResults)
-    } else {
-      setResults([])
+  // Memoize search results to avoid unnecessary recalculations
+  const searchResults = useMemo(() => {
+    if (searchState.query.length >= 2) {
+      return searchAll(searchState.query)
     }
-  }, [query])
+    return []
+  }, [searchState.query])
 
-  const handleSearch = (searchQuery) => {
-    setQuery(searchQuery)
+  useEffect(() => {
+    dispatch({ type: 'SET_RESULTS', payload: searchResults })
+  }, [searchResults])
+
+  const handleSearch = useCallback((searchQuery) => {
+    dispatch({ type: 'SET_QUERY', payload: searchQuery })
     if (searchQuery.length >= 2) {
       saveSearch(searchQuery)
     }
-  }
+  }, [])
 
-  const handleResultClick = (result) => {
-    saveSearch(query)
+  const handleResultClick = useCallback((result) => {
+    saveSearch(searchState.query)
     navigate(result.link)
     onClose()
-  }
+  }, [searchState.query, navigate, onClose])
 
-  const handleClearRecent = () => {
+  const handleClearRecent = useCallback(() => {
     clearRecentSearches()
-    setRecentSearches([])
-  }
+    dispatch({ type: 'CLEAR_RECENT_SEARCHES' })
+  }, [])
 
   if (!isOpen) return null
 
@@ -56,7 +79,7 @@ function GlobalSearch({ isOpen, onClose }) {
             <input
               ref={inputRef}
               type="text"
-              value={query}
+              value={searchState.query}
               onChange={(e) => handleSearch(e.target.value)}
               placeholder="Search moods, circles, posts, habits..."
               className="w-full pl-10 pr-10 py-3 bg-gray-50 dark:bg-gray-900 rounded-xl outline-none focus:ring-2 focus:ring-primary dark:text-white"
@@ -72,7 +95,7 @@ function GlobalSearch({ isOpen, onClose }) {
 
         {/* Results */}
         <div className="flex-1 overflow-y-auto p-4">
-          {query.length < 2 && recentSearches.length > 0 && (
+          {searchState.query.length < 2 && searchState.recentSearches.length > 0 && (
             <div className="mb-4">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 flex items-center gap-2">
@@ -87,7 +110,7 @@ function GlobalSearch({ isOpen, onClose }) {
                 </button>
               </div>
               <div className="space-y-2">
-                {recentSearches.map((search, idx) => (
+                {searchState.recentSearches.map((search, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleSearch(search)}
@@ -100,16 +123,16 @@ function GlobalSearch({ isOpen, onClose }) {
             </div>
           )}
 
-          {query.length >= 2 && results.length === 0 && (
+          {searchState.query.length >= 2 && searchState.results.length === 0 && (
             <div className="text-center py-8 text-gray-500 dark:text-gray-400">
               <Search size={48} className="mx-auto mb-3 opacity-50" />
-              <p>No results found for "{query}"</p>
+              <p>No results found for "{searchState.query}"</p>
             </div>
           )}
 
-          {results.length > 0 && (
+          {searchState.results.length > 0 && (
             <div className="space-y-2">
-              {results.map((result, idx) => (
+              {searchState.results.map((result, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleResultClick(result)}
@@ -146,7 +169,7 @@ function GlobalSearch({ isOpen, onClose }) {
             <span>Press <kbd className="px-2 py-1 bg-white dark:bg-gray-800 rounded border">Esc</kbd> to close</span>
             <span className="flex items-center gap-1">
               <TrendingUp size={12} />
-              {results.length} results
+              {searchState.results.length} results
             </span>
           </div>
         </div>
