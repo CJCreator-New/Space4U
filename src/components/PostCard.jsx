@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useState, memo, useCallback } from 'react'
 import Icon from './Icon'
+import OptimizedAvatar from './OptimizedAvatar'
 import { formatRelativeTime, truncateText } from '../utils/helpers'
 import { addPoints, POINT_VALUES } from '../utils/badgeSystem'
 import { useRealtimeComments } from '../hooks/useRealtimeComments'
 import { circleService } from '../services/circleService'
 import { useSupabaseAuth } from '../contexts/AuthContext'
+import { useDebounce } from '../hooks/useDebounce'
 
-function PostCard({ post, circleColor, onHeart, onShare }) {
+const PostCard = memo(function PostCard({ post, circleColor, onHeart, onShare }) {
   const { user } = useSupabaseAuth()
   const [isHearted, setIsHearted] = useState(post.isHearted)
   const [heartCount, setHeartCount] = useState(post.hearts)
@@ -18,7 +20,10 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
   const { comments, loading: commentsLoading } = useRealtimeComments(showComments ? post.id : null)
   const shouldTruncate = post.content.length > 200
 
-  const handleHeart = () => {
+  // Debounce comment input
+  const debouncedComment = useDebounce(newComment, 300)
+
+  const handleHeart = useCallback(() => {
     const newHearted = !isHearted
     setIsHearted(newHearted)
     setHeartCount(prev => newHearted ? prev + 1 : prev - 1)
@@ -27,14 +32,14 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
     if (newHearted) {
       addPoints(POINT_VALUES.heartReceived, 'Heart received')
     }
-  }
+  }, [isHearted, onHeart, post.id])
 
-  const handleShare = () => {
+  const handleShare = useCallback(() => {
     navigator.clipboard.writeText(`${window.location.origin}/circle/${post.circleId}/post/${post.id}`)
     onShare?.()
-  }
+  }, [post.circleId, post.id, onShare])
 
-  const handleAddComment = async () => {
+  const handleAddComment = useCallback(async () => {
     if (!newComment.trim() || !user || posting) return
 
     setPosting(true)
@@ -46,15 +51,18 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
     } finally {
       setPosting(false)
     }
-  }
+  }, [debouncedComment, user, posting])
 
   return (
     <div className="card p-4 mb-3" style={{ borderBottomColor: circleColor, borderBottomWidth: '2px' }}>
       {/* Author Header */}
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-lg">
-          {post.author.avatar}
-        </div>
+        <OptimizedAvatar
+          src={post.author.avatarUrl}
+          fallback={post.author.avatar}
+          alt={`${post.author.username}'s avatar`}
+          size={40}
+        />
         <div className="flex-1">
           <p className="font-semibold text-sm text-text-primary">{post.author.username}</p>
           <p className="text-xs text-text-secondary">Posted {post.timestamp}</p>
@@ -100,7 +108,7 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
       <div className="flex items-center gap-4 py-2 border-t border-gray-100">
         <button
           onClick={handleHeart}
-          className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-all duration-200 ${
+          className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-all ${
             isHearted 
               ? 'text-red-500 bg-red-50' 
               : 'text-text-secondary hover:text-red-500 hover:bg-red-50'
@@ -141,9 +149,12 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
             <div className="space-y-3 mb-4">
               {comments.slice(0, 5).map((comment) => (
                 <div key={comment.id} className="flex gap-3">
-                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-sm flex-shrink-0">
-                    {comment.author.avatar}
-                  </div>
+                  <OptimizedAvatar
+                    src={comment.profiles?.avatar_url}
+                    fallback={comment.author.avatar}
+                    alt={`${comment.profiles?.username || 'Anonymous'}'s avatar`}
+                    size={32}
+                  />
                   <div className="flex-1">
                     <div className="bg-gray-50 rounded-xl p-3">
                       <p className="font-medium text-sm text-text-primary mb-1">
@@ -178,9 +189,12 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
 
           {/* Add Comment */}
           <div className="flex gap-3">
-            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-sm flex-shrink-0">
-              🐻
-            </div>
+            <OptimizedAvatar
+              src={user?.avatar_url}
+              fallback="🐻"
+              alt="Your avatar"
+              size={32}
+            />
             <div className="flex-1 flex gap-2">
               <input
                 type="text"
@@ -207,6 +221,14 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
       )}
     </div>
   )
-}
+}, (prevProps, nextProps) => {
+  // Custom comparison for optimal re-rendering
+  return (
+    prevProps.post.id === nextProps.post.id &&
+    prevProps.post.hearts === nextProps.post.hearts &&
+    prevProps.post.commentCount === nextProps.post.commentCount &&
+    prevProps.circleColor === nextProps.circleColor
+  )
+})
 
 export default PostCard

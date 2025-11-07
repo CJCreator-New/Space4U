@@ -1,10 +1,14 @@
 import { Outlet } from 'react-router-dom'
-import Navigation from './Navigation'
-import LanguageSwitcher from './LanguageSwitcher'
-import NotificationCenter from './NotificationCenter'
+import { Suspense, lazy } from 'react'
 import CrisisSupport from './CrisisSupport'
 import { useFeatureFlag } from '../config/featureFlags'
 import { ModernLayout } from './modern/ModernLayout'
+import PageLoader from './common/PageLoader'
+
+// Lazy load heavy components
+const Navigation = lazy(() => import('./Navigation'))
+const LanguageSwitcher = lazy(() => import('./LanguageSwitcher'))
+const NotificationCenter = lazy(() => import('./NotificationCenter'))
 
 function Layout() {
   const useModernUI = useFeatureFlag('ENABLE_MODERN_UI');
@@ -24,12 +28,18 @@ function Layout() {
       </a>
       
       <div className="md:flex">
-        <Navigation />
+        <Suspense fallback={<div className="w-64 bg-surface animate-pulse" />}>
+          <Navigation />
+        </Suspense>
         <main id="main-content" className="flex-1 pb-20 md:pb-0 md:ml-64">
           <div className="p-4 md:p-6">
             <div className="flex justify-end items-center gap-3 mb-4">
-              <NotificationCenter />
-              <LanguageSwitcher />
+              <Suspense fallback={<div className="w-8 h-8 bg-surface animate-pulse rounded-full" />}>
+                <NotificationCenter />
+              </Suspense>
+              <Suspense fallback={<div className="w-20 h-8 bg-surface animate-pulse rounded" />}>
+                <LanguageSwitcher />
+              </Suspense>
             </div>
             <Outlet />
           </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { addPoints, POINT_VALUES, checkMoodLogBadges } from '../utils/badgeSystem'
 import { queueMoodLog } from '../utils/offlineQueue'
@@ -46,6 +46,7 @@ function MoodTracker({ onMoodLogged }) {
   const [unlockedBadges, setUnlockedBadges] = useState([])
 
   const { control, handleSubmit, watch, setValue, reset } = useForm({
+    mode: 'onBlur',
     defaultValues: {
       mood: 3,
       note: '',
@@ -70,15 +71,15 @@ function MoodTracker({ onMoodLogged }) {
 
   const { moods: moodsData, saveMood } = useMoods()
 
-  const getMoodEmoji = (value) => {
+  const getMoodEmoji = useCallback((value) => {
     const mood = moods.find(m => m.value === value)
     return mood?.emoji || '😐'
-  }
+  }, [])
 
-  const getMoodLabel = (value) => {
+  const getMoodLabel = useCallback((value) => {
     const mood = moods.find(m => m.value === value)
     return mood?.label || 'Okay'
-  }
+  }, [])
 
   useEffect(() => {
     const todayMood = moodsData[today]
@@ -110,13 +111,13 @@ function MoodTracker({ onMoodLogged }) {
     setStreak(streakCount)
   }
 
-  const handleMoodSelect = (mood) => {
+  const handleMoodSelect = useCallback((mood) => {
     setSelectedMood(mood)
     setShowNote(true)
     announce(`Selected ${mood.label} mood`)
-  }
+  }, [])
 
-  const handleLogMood = async (data) => {
+  const handleLogMood = useCallback(async (data) => {
     const moodData = {
       mood: data.mood,
       emoji: getMoodEmoji(data.mood),
@@ -132,19 +133,23 @@ function MoodTracker({ onMoodLogged }) {
     // Queue for offline sync
     queueMoodLog({ ...moodData, date: today })
     
-    // Add points and check for badge unlocks
-    addPoints(POINT_VALUES.moodLog, 'Mood logged')
-    const badgeResults = checkMoodLogBadges()
-    const newlyUnlocked = badgeResults.filter(r => r.unlocked)
-    
-    if (newlyUnlocked.length > 0) {
-      setUnlockedBadges(newlyUnlocked)
-    }
-    
+    // Show success immediately
     setShowSuccess(true)
     calculateStreak({ ...moodsData, [today]: moodData })
     announce('Mood logged successfully!')
     
+    // Defer badge checks to not block UI
+    setTimeout(() => {
+      addPoints(POINT_VALUES.moodLog, 'Mood logged')
+      const badgeResults = checkMoodLogBadges()
+      const newlyUnlocked = badgeResults.filter(r => r.unlocked)
+      
+      if (newlyUnlocked.length > 0) {
+        setUnlockedBadges(newlyUnlocked)
+      }
+    }, 0)
+    
+    // Reduce success animation time
     setTimeout(() => {
       setShowSuccess(false)
       setTodaysMood(moodData)
@@ -153,8 +158,8 @@ function MoodTracker({ onMoodLogged }) {
       setShowNote(false)
       reset()
       onMoodLogged?.()
-    }, 3000)
-  }
+    }, 2000)
+  }, [getMoodEmoji, getMoodLabel, saveMood, today, moodsData, reset, onMoodLogged])
 
   const handleCloseBadgeModal = () => {
     setUnlockedBadges([])
@@ -172,8 +177,9 @@ function MoodTracker({ onMoodLogged }) {
     return (
       <Box
         as={motion.div}
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
         p={6}
         mb={6}
         textAlign="center"

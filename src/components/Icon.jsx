@@ -8,26 +8,12 @@ const toPascalCase = (value) => (
     .join('')
 )
 
-const resolveIconName = (name, library) => {
-  if (typeof name !== 'string' || name.length === 0) {
-    return name
-  }
-
-  const hasInlineUppercase = /[A-Z]/.test(name) && !name.includes('-') && !name.includes('_')
-  let resolved = hasInlineUppercase ? name : toPascalCase(name)
-
-  if ((library === 'hero-solid' || library === 'hero-outline') && !resolved.endsWith('Icon')) {
-    resolved = `${resolved}Icon`
-  }
-
-  return resolved
-}
-
-const Icon = ({ name, library = 'lucide', ...props }) => {
-  const resolvedName = resolveIconName(name, library)
-  return <BaseIcon name={resolvedName} library={library} {...props} />
+const Icon = ({ name, ...props }) => {
+  const resolvedName = typeof name === 'string' && name.length > 0
+    ? (/[A-Z]/.test(name) && !name.includes('-') && !name.includes('_') ? name : toPascalCase(name))
+    : name
+  return <BaseIcon name={resolvedName} {...props} />
 }
 
 export default Icon
-export { Icon as IconComponent } from './common/IconLibrary'
-export { Icons } from './common/IconLibrary'
+export { Icon as IconComponent, Icons } from './common/IconLibrary'

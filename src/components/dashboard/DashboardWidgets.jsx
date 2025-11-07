@@ -1,8 +1,15 @@
+import { memo } from 'react'
 import { motion } from 'framer-motion'
 import RecentMoodsWidget from './RecentMoodsWidget'
 import MotivationalQuoteWidget from './MotivationalQuoteWidget'
 import ProgressOverviewWidget from './ProgressOverviewWidget'
 import QuickActionsWidget from './QuickActionsWidget'
+
+// Memoize child widgets
+const MemoizedRecentMoods = memo(RecentMoodsWidget)
+const MemoizedMotivationalQuote = memo(MotivationalQuoteWidget)
+const MemoizedProgressOverview = memo(ProgressOverviewWidget)
+const MemoizedQuickActions = memo(QuickActionsWidget)
 
 export default function DashboardWidgets() {
   const containerVariants = {
@@ -10,22 +17,17 @@ export default function DashboardWidgets() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
+        staggerChildren: 0.05,
+        delayChildren: 0.1
       }
     }
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
-      }
+      transition: { duration: 0.2 }
     }
   }
 
@@ -41,7 +43,7 @@ export default function DashboardWidgets() {
         variants={itemVariants}
         className="animate__animated animate__fadeInUp"
       >
-        <MotivationalQuoteWidget />
+        <MemoizedMotivationalQuote />
       </motion.div>
 
       {/* Second Row - Quick Actions & Progress (Side by Side on Desktop) */}
@@ -50,14 +52,14 @@ export default function DashboardWidgets() {
           variants={itemVariants}
           className="animate__animated animate__fadeInLeft"
         >
-          <QuickActionsWidget />
+          <MemoizedQuickActions />
         </motion.div>
 
         <motion.div
           variants={itemVariants}
           className="animate__animated animate__fadeInRight"
         >
-          <ProgressOverviewWidget />
+          <MemoizedProgressOverview />
         </motion.div>
       </div>
 
@@ -66,7 +68,7 @@ export default function DashboardWidgets() {
         variants={itemVariants}
         className="animate__animated animate__fadeInUp"
       >
-        <RecentMoodsWidget />
+        <MemoizedRecentMoods />
       </motion.div>
     </motion.div>
   )

@@ -9,6 +9,7 @@ import DisclaimerBanner from '../components/wellness/DisclaimerBanner'
 import ResearchCard from '../components/wellness/ResearchCard'
 import { disclaimers } from '../data/disclaimers'
 import { researchCitations } from '../data/researchCitations'
+import { usePagination } from '../hooks/usePagination'
 
 const EMOTIONS = {
   joy: { color: 'yellow', secondary: ['Optimistic', 'Proud', 'Content', 'Playful'] },
@@ -24,21 +25,38 @@ const EMOTIONS = {
 function EmotionTrackerPage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const [logs, setLogs] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [entry, setEntry] = useState({ primary_emotion: '', secondary_emotions: [], intensity: 5, trigger: '' })
   const { isPremium } = getPremiumStatus()
 
+  // Load all logs for pagination
+  const [allLogs, setAllLogs] = useState([])
+  
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('space4u_emotion_logs') || '[]')
-    setLogs(saved)
+    setAllLogs(saved)
   }, [])
+
+  // Use pagination hook
+  const {
+    data: logs,
+    hasMore,
+    loadMore,
+    isFirstPage,
+    isLastPage,
+    pageInfo
+  } = usePagination({
+    data: allLogs,
+    pageSize: 20,
+    infinite: true,
+    sortFn: (a, b) => new Date(b.created_at) - new Date(a.created_at) // Newest first
+  })
 
   const saveEntry = () => {
     const newEntry = { ...entry, id: Date.now(), created_at: new Date().toISOString() }
-    const updated = [newEntry, ...logs]
+    const updated = [newEntry, ...allLogs]
     localStorage.setItem('space4u_emotion_logs', JSON.stringify(updated))
-    setLogs(updated)
+    setAllLogs(updated)
     setShowModal(false)
     setEntry({ primary_emotion: '', secondary_emotions: [], intensity: 5, trigger: '' })
   }
@@ -72,7 +90,7 @@ function EmotionTrackerPage() {
         <ResearchCard citations={researchCitations.emotions} title="Why Naming Emotions Helps" />
       </div>
 
-      {isPremium && logs.length > 0 && (
+      {isPremium && allLogs.length > 0 && (
         <div className="card p-6 mb-6 bg-gradient-to-r from-purple-50 to-pink-50">
           <div className="flex items-center gap-3 mb-4">
             <BarChart3 className="w-6 h-6 text-purple-600" />
@@ -80,12 +98,12 @@ function EmotionTrackerPage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">{logs.length}</div>
+              <div className="text-2xl font-bold text-purple-600">{allLogs.length}</div>
               <div className="text-sm text-gray-600">{t('emotions.analytics.totalLogs')}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-purple-600">
-                {logs.length > 0 ? Math.round(logs.reduce((sum, l) => sum + l.intensity, 0) / logs.length) : 0}
+                {allLogs.length > 0 ? Math.round(allLogs.reduce((sum, l) => sum + l.intensity, 0) / allLogs.length) : 0}
               </div>
               <div className="text-sm text-gray-600">{t('emotions.analytics.avgIntensity')}</div>
             </div>
@@ -167,7 +185,20 @@ function EmotionTrackerPage() {
               {log.trigger && <p className="text-text-secondary">{t('emotions.triggerLabel', { trigger: log.trigger })}</p>}
             </div>
           ))}
-          {!isPremium && logs.length > 30 && (
+          
+          {/* Load More Button */}
+          {hasMore && (
+            <div className="text-center py-4">
+              <button
+                onClick={loadMore}
+                className="btn-secondary"
+              >
+                Load More Emotions
+              </button>
+            </div>
+          )}
+          
+          {!isPremium && allLogs.length > 30 && (
             <PremiumPaywall
               feature={t('emotions.premium.feature')}
               description={t('emotions.premium.description')}

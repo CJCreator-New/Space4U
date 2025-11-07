@@ -23,7 +23,7 @@ import {
   generateSuggestions,
   getMoodBreakdown
 } from '../utils/moodAnalysis'
-import TrackMood from '../components/TrackMood'
+import { useMoodsSWR } from '../hooks/useMoodsSWR'
 import MoodTrendChart from '../components/MoodTrendChart'
 import { motion } from 'framer-motion'
 
@@ -38,34 +38,17 @@ const moodLabels = {
 function InsightsPage() {
   const navigate = useNavigate()
   const [period, setPeriod] = useState('week')
-  const [moods, setMoods] = useState([])
   const [analysis, setAnalysis] = useState(null)
-  const [loading, setLoading] = useState(true)
   const { isPremium } = getPremiumStatus()
 
-  useEffect(() => {
-    loadMoodData()
-  }, [period])
+  // Use SWR hook for mood data
+  const { allMoods, loading: moodsLoading } = useMoodsSWR()
 
-  useEffect(() => {
-    // Track page view only once on mount
-    trackPageView('insights')
-  }, [])
+  // Filter moods based on period using SWR data
+  const moods = useMemo(() => {
+    if (!allMoods || Object.keys(allMoods).length === 0) return []
 
-  // expose load for child components
-
-  const loadMoodData = async () => {
-    const cacheKey = `insights_${period}`
-    const cached = cache.get(cacheKey)
-    
-    if (cached) {
-      setMoods(cached.moods)
-      setAnalysis(cached.analysis)
-      setLoading(false)
-      return
-    }
-    const savedMoods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
-    const moodEntries = Object.entries(savedMoods).map(([date, mood]) => ({
+    const moodEntries = Object.entries(allMoods).map(([date, mood]) => ({
       date,
       mood: mood.mood,
       emoji: mood.emoji,
@@ -77,7 +60,7 @@ function InsightsPage() {
     // Filter by period
     const now = new Date()
     let filteredMoods = moodEntries
-    
+
     if (period === 'week') {
       const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
       filteredMoods = moodEntries.filter(m => new Date(m.date) >= weekAgo)
@@ -86,17 +69,26 @@ function InsightsPage() {
       filteredMoods = moodEntries.filter(m => new Date(m.date) >= monthAgo)
     }
 
-  setMoods(filteredMoods)
-    
-    if (filteredMoods.length >= 3) {
-      const analysisData = analyzeData(filteredMoods, moodEntries)
-      cache.set(cacheKey, { moods: filteredMoods, analysis: analysisData }, 300000)
+    return filteredMoods
+  }, [allMoods, period])
+
+  // Analyze data when moods change
+  useEffect(() => {
+    if (moods.length >= 3) {
+      const analysisData = analyzeData(moods, Object.values(allMoods).map(mood => ({
+        date: Object.keys(allMoods).find(key => allMoods[key] === mood),
+        ...mood
+      })))
+      setAnalysis(analysisData)
     } else {
       setAnalysis(null)
     }
-    
-    setLoading(false)
-  }
+  }, [moods, allMoods])
+
+  useEffect(() => {
+    // Track page view only once on mount
+    trackPageView('insights')
+  }, [])
 
   const analyzeData = (currentMoods, allMoods) => {
     const userData = JSON.parse(localStorage.getItem('space4u_user') || '{}')
@@ -162,7 +154,7 @@ function InsightsPage() {
     }
   }
 
-  if (loading) {
+  if (moodsLoading) {
     return (
       <SafeComponent>
         <div className="max-w-4xl mx-auto animate-fade-in">

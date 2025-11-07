@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo, useCallback, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Lightbulb, RefreshCw } from 'lucide-react'
 
+// Cache tips array
 const tips = [
   { text: "Take 3 deep breaths when feeling overwhelmed", category: "Mindfulness" },
   { text: "Gratitude journaling can boost mood by 25%", category: "Wellness" },
@@ -13,7 +14,7 @@ const tips = [
   { text: "Set boundaries - saying no is self-care", category: "Self-Care" },
 ]
 
-export default function DailyTipWidget() {
+const DailyTipWidget = memo(function DailyTipWidget() {
   const [tip, setTip] = useState(tips[0])
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -22,14 +23,14 @@ export default function DailyTipWidget() {
     setTip(randomTip)
   }, [])
 
-  const refreshTip = () => {
+  const refreshTip = useCallback(() => {
     setIsRefreshing(true)
     setTimeout(() => {
       const randomTip = tips[Math.floor(Math.random() * tips.length)]
       setTip(randomTip)
       setIsRefreshing(false)
     }, 300)
-  }
+  }, [])
 
   return (
     <motion.div
@@ -48,8 +49,8 @@ export default function DailyTipWidget() {
           </div>
         </div>
         <motion.button
-          whileHover={{ scale: 1.1, rotate: 180 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={refreshTip}
           className="p-2 hover:bg-amber-100 dark:hover:bg-amber-800 rounded-lg transition-colors"
         >
@@ -66,4 +67,6 @@ export default function DailyTipWidget() {
       </motion.p>
     </motion.div>
   )
-}
+})
+
+export default DailyTipWidget

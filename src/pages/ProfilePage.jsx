@@ -1,19 +1,17 @@
-﻿import { useState, useEffect } from 'react'
+﻿import { useState, useEffect, useMemo, useCallback, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { 
-  Edit, TrendingUp, Users, Award, Clock, MessageCircle, Heart, 
-  ChevronRight, Bell, Shield, Globe, HelpCircle, Info, Download, 
+import {
+  Edit, TrendingUp, Users, Award, Clock, MessageCircle, Heart,
+  ChevronRight, Bell, Shield, Globe, HelpCircle, Info, Download,
   Trash2, X, Check, Eye, Calendar, Target, Book, Settings, Crown
 } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
 import MicroInteraction from '../components/common/MicroInteraction'
 import OnboardingTip from '../components/common/OnboardingTip'
-import { 
-  BADGES, 
-  LEVELS, 
-  initializeBadgeSystem, 
-  getProgressToNextLevel
-} from '../utils/badgeSystem'
+import OptimizedAvatar from '../components/OptimizedAvatar'
+import { useMoodsSWR } from '../hooks/useMoodsSWR'
+import { useCirclesSWR } from '../hooks/useCirclesSWR'
+import { usePostsSWR } from '../hooks/usePostsSWR'
 
 const AVATARS = ['', '', '', '', '', '', '', '', '', 'â˜•', '', 'â­']
 
@@ -21,10 +19,9 @@ function ProfilePage() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
   const [badgeData, setBadgeData] = useState(null)
-  const [stats, setStats] = useState(null)
-  const [activities, setActivities] = useState([])
-  const [circles, setCircles] = useState([])
-  const [savedPosts, setSavedPosts] = useState([])
+  const { moods: allMoods } = useMoodsSWR()
+  const { circles: allCircles } = useCirclesSWR()
+  const { posts: allPosts } = usePostsSWR()
   const [showEditModal, setShowEditModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState('')
@@ -38,11 +35,19 @@ function ProfilePage() {
 
   useEffect(() => {
     loadUserData()
-  }, [])
+  }, [allMoods, allCircles, allPosts])
 
-  const loadUserData = async () => {
+  const loadUserData = useCallback(async () => {
     const { getUserProfile } = await import('../utils/storageHelpers')
-    const userData = await getUserProfile()
+    const { storage } = await import('../services/storage')
+
+    // Get user data and other non-SWR data
+    const [userData, badges, dismissedBanner] = await Promise.all([
+      getUserProfile(),
+      initializeBadgeSystem(),
+      Promise.resolve(localStorage.getItem('space4u_premium_banner_dismissed'))
+    ])
+
     const safeUserData = userData || {}
     setUser(safeUserData)
     setEditForm({
@@ -51,25 +56,19 @@ function ProfilePage() {
       bio: safeUserData.bio || '',
       interests: safeUserData.interests || []
     })
-    
-    const badges = await initializeBadgeSystem()
-    setBadgeData(badges)
-    
-    calculateStats()
-    loadActivities()
-    loadCircles()
-    loadSavedPosts()
-    
-    const dismissedBanner = localStorage.getItem('space4u_premium_banner_dismissed')
-    setShowPremiumBanner(!dismissedBanner)
-  }
 
-  const calculateStats = async () => {
-    const { storage } = await import('../services/storage')
-    const moods = await storage.get('space4u_moods') || {}
-    const posts = await storage.get('space4u_user_posts') || []
+    setBadgeData(badges)
+
+    // Use SWR data for calculations
     const userCircles = await storage.get('space4u_user_circles') || []
-    
+    calculateStats(allMoods, allPosts, userCircles)
+    loadActivities()
+    loadCircles(userCircles, allCircles)
+    loadSavedPosts(allPosts)
+    setShowPremiumBanner(!dismissedBanner)
+  }, [allMoods, allCircles, allPosts])
+
+  const calculateStats = useCallback((moods = {}, posts = [], userCircles = []) => {
     const moodEntries = Object.values(moods)
     const currentStreak = calculateStreak(moods)
     const thisWeekMoods = moodEntries.filter(mood => {
@@ -93,7 +92,7 @@ function ProfilePage() {
       postsCreated: posts.length,
       heartsReceived
     })
-  }
+  }, [])
 
   const calculateStreak = (moods) => {
     const today = new Date()
@@ -128,29 +127,24 @@ function ProfilePage() {
     setActivities(activities)
   }
 
-  const loadCircles = async () => {
-    const { storage } = await import('../services/storage')
-    const userCircles = await storage.get('space4u_user_circles') || []
-    const allCircles = await storage.get('space4u_circles') || []
-    
-    const joinedCircles = allCircles.filter(circle => 
+  const loadCircles = useCallback(async (userCircles = [], allCirclesData = []) => {
+    const joinedCircles = allCirclesData.filter(circle =>
       userCircles.includes(circle.id)
     ).map(circle => ({
       ...circle,
       unreadCount: Math.floor(Math.random() * 5) // Mock unread count
     }))
-    
-    setCircles(joinedCircles)
-  }
 
-  const loadSavedPosts = async () => {
+    setCircles(joinedCircles)
+  }, [])
+
+  const loadSavedPosts = useCallback(async (posts = []) => {
     const { storage } = await import('../services/storage')
     const heartedPosts = await storage.get('space4u_hearted_posts') || []
-    const allPosts = await storage.get('space4u_posts') || []
-    
-    const saved = allPosts.filter(post => heartedPosts.includes(post.id)).slice(0, 3)
+
+    const saved = posts.filter(post => heartedPosts.includes(post.id)).slice(0, 3)
     setSavedPosts(saved)
-  }
+  }, [])
 
   const handleEditProfile = async () => {
     const { saveUserProfile } = await import('../utils/storageHelpers')
@@ -214,14 +208,22 @@ function ProfilePage() {
     setShowPremiumBanner(false)
   }
 
-  const getCurrentLevel = () => {
+  // Memoize expensive calculations
+  const currentLevel = useMemo(() => {
     if (!badgeData) return LEVELS.beginner
     return LEVELS[badgeData.level] || LEVELS.beginner
-  }
+  }, [badgeData])
 
-  const currentLevel = getCurrentLevel()
-  const nextLevelProgress = badgeData ? getProgressToNextLevel(badgeData.totalPoints) : { progress: 0 }
-  const unlockedCount = badgeData?.badges.filter(b => b.unlocked).length || 0
+  const nextLevelProgress = useMemo(() => 
+    badgeData ? getProgressToNextLevel(badgeData.totalPoints) : { progress: 0 },
+    [badgeData]
+  )
+
+  const unlockedCount = useMemo(() => 
+    badgeData?.badges.filter(b => b.unlocked).length || 0,
+    [badgeData]
+  )
+
   const totalBadges = Object.keys(BADGES).length
 
   if (!user || !stats) {
@@ -268,13 +270,17 @@ function ProfilePage() {
       <div className="bg-gradient-to-r from-primary to-primary-light text-white p-6 rounded-xl mb-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
-            <div className="w-30 h-30 bg-white/20 rounded-full flex items-center justify-center text-4xl border-4"
-                 style={{ 
-                   width: '120px', 
-                   height: '120px',
-                   borderColor: badgeData?.totalPoints >= 500 ? '#FFD700' : 'rgba(255,255,255,0.3)'
-                 }}>
-              {user.avatar || ''}
+            <div className="relative">
+              <OptimizedAvatar
+                src={user.avatar_url}
+                fallback={user.avatar}
+                alt={`${user.username || 'Anonymous User'}'s avatar`}
+                size={120}
+                className="border-4"
+                style={{
+                  borderColor: badgeData?.totalPoints >= 500 ? '#FFD700' : 'rgba(255,255,255,0.3)'
+                }}
+              />
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">

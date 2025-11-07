@@ -5,11 +5,10 @@ import {
   Sun, Moon, Monitor, Type, Zap, Volume2, Mail, Smartphone,
   ExternalLink, RotateCcw, Crown, Dot, Keyboard, Upload, Lock,
   Database, Cloud, Users as UsersIcon, Heart, Calendar, Settings as SettingsIcon,
-  Fingerprint, HardDrive, Battery, Gauge, Filter, Target, Home, Smile, Layout
+  Fingerprint, HardDrive, Battery, Gauge, Filter, Target, Home, Smile, Layout, Archive
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '../hooks/useTheme'
-import ExportImportModal from '../components/ExportImportModal'
 import SafeComponent from '../components/SafeComponent'
 import CountrySelector from '../components/CountrySelector'
 import { getUserCountry, getCountryData } from '../data/countryData'
@@ -134,12 +133,24 @@ function SettingsPage() {
   const [isPremium, setIsPremium] = useState(false)
   const [showExportModal, setShowExportModal] = useState(false)
   const [userCountry, setUserCountry] = useState(getUserCountry())
+  const [archivingInProgress, setArchivingInProgress] = useState(false)
+  const [archivingStats, setArchivingStats] = useState(null)
+  const [ExportImportModal, setExportImportModal] = useState(null)
 
   useEffect(() => {
     loadSettings()
     const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
     setIsPremium(premiumData.isPremium || false)
   }, [])
+
+  // Load ExportImportModal dynamically when needed
+  useEffect(() => {
+    if (showExportModal && !ExportImportModal) {
+      import('../components/ExportImportModal').then(module => {
+        setExportImportModal(() => module.default)
+      })
+    }
+  }, [showExportModal, ExportImportModal])
 
   const loadSettings = async () => {
     const { getSettings } = await import('../utils/storageHelpers')
@@ -247,6 +258,21 @@ function SettingsPage() {
   const handleAutoDelete = () => {
     setShowAutoDeleteModal(false)
     showToast('Auto-delete setting updated')
+  }
+
+  const handleDataArchiving = async () => {
+    setArchivingInProgress(true)
+    try {
+      const { runDataArchiving } = await import('../utils/dataArchiving')
+      const results = await runDataArchiving()
+      setArchivingStats(results.results)
+      showToast(`Data archiving completed. Archived ${results.results.gratitude?.archived || 0} gratitude entries, ${results.results.emotions?.archived || 0} emotion logs, ${results.results.moods?.archived || 0} mood entries.`)
+    } catch (error) {
+      console.error('Archiving failed:', error)
+      showToast('Data archiving failed. Please try again.')
+    } finally {
+      setArchivingInProgress(false)
+    }
   }
 
   const isSettingModified = (category, key) => {
@@ -962,6 +988,23 @@ function SettingsPage() {
                   onChange={(value) => updateSetting('storage', 'offlineMode', value)}
                 />
               </SettingRow>
+              <SettingRow icon={Archive} label="Data archiving" description="Archive old data to save space">
+                <button
+                  onClick={handleDataArchiving}
+                  disabled={archivingInProgress}
+                  className="px-3 py-2 text-primary font-medium hover:underline disabled:opacity-50"
+                >
+                  {archivingInProgress ? 'Archiving...' : 'Archive Old Data'}
+                </button>
+              </SettingRow>
+              {archivingStats && (
+                <div className="px-4 py-2 text-sm text-gray-600 bg-gray-50 rounded-lg">
+                  <div className="font-medium mb-1">Last archiving results:</div>
+                  <div>Gratitude: {archivingStats.gratitude?.archived || 0} archived</div>
+                  <div>Emotions: {archivingStats.emotions?.archived || 0} archived</div>
+                  <div>Moods: {archivingStats.moods?.archived || 0} archived</div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -1400,7 +1443,7 @@ function SettingsPage() {
       )}
 
       {/* Export/Import Modal */}
-      <ExportImportModal isOpen={showExportModal} onClose={() => setShowExportModal(false)} />
+      {ExportImportModal && <ExportImportModal isOpen={showExportModal} onClose={() => setShowExportModal(false)} />}
 
       {/* Auto Delete Confirmation Modal */}
       {showAutoDeleteModal && (

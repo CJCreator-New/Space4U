@@ -1,15 +1,15 @@
-﻿import { useState, useEffect } from 'react'
+﻿import { useState, useEffect, useMemo } from 'react'
 import { Tag, TrendingUp } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { useMoodsSWR } from '../../hooks/useMoodsSWR'
 
 function TagAnalytics() {
-  const [tagData, setTagData] = useState([])
   const [moodFilter, setMoodFilter] = useState('all')
+  const { allMoods } = useMoodsSWR()
 
-  useEffect(() => {
-    const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
-    const moodEntries = Object.values(moods)
-    
+  const tagData = useMemo(() => {
+    const moodEntries = Object.values(allMoods)
+
     const tagFrequency = {}
     moodEntries.forEach(entry => {
       if (entry.tags) {
@@ -23,13 +23,11 @@ function TagAnalytics() {
       }
     })
 
-    const data = Object.values(tagFrequency)
+    return Object.values(tagFrequency)
       .filter(item => moodFilter === 'all' || item.mood === parseInt(moodFilter))
       .sort((a, b) => b.count - a.count)
       .slice(0, 10)
-
-    setTagData(data)
-  }, [moodFilter])
+  }, [allMoods, moodFilter])
 
   const moodEmojis = ['', '', '', '', '']
 

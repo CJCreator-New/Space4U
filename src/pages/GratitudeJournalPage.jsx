@@ -19,6 +19,7 @@ import { disclaimers } from '../data/disclaimers'
 import { researchCitations } from '../data/researchCitations'
 import EnhancedPrompts from '../components/gratitude/EnhancedPrompts'
 import { trackEvent, EVENTS, trackPageView } from '../utils/analytics'
+import { usePagination } from '../hooks/usePagination'
 import {
   Box,
   Container,
@@ -48,7 +49,7 @@ function GratitudeJournalPage() {
   const { user } = useAuth()
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const [entries, setEntries] = useState([])
+  const [allEntries, setAllEntries] = useState([])
   const [showModal, setShowModal] = useState(false)
   const [selectedEntry, setSelectedEntry] = useState(null)
   const [streak, setStreak] = useState(0)
@@ -57,6 +58,19 @@ function GratitudeJournalPage() {
   const { isPremium } = getPremiumStatus()
   
   const FREE_ENTRY_LIMIT = 10
+
+  // Use pagination hook
+  const {
+    data: entries,
+    hasMore,
+    loadMore,
+    pageInfo
+  } = usePagination({
+    data: allEntries,
+    pageSize: 15,
+    infinite: true,
+    sortFn: (a, b) => new Date(b.date) - new Date(a.date) // Newest first
+  })
 
   useEffect(() => {
     loadEntries()
@@ -70,7 +84,7 @@ function GratitudeJournalPage() {
   const loadEntries = async () => {
     const { getGratitudeEntries } = await import('../utils/storageHelpers')
     const entries = await getGratitudeEntries()
-    setEntries(entries)
+    setAllEntries(entries)
     calculateStreak(entries)
   }
 
@@ -139,7 +153,7 @@ function GratitudeJournalPage() {
   }
   
   const handleAddClick = () => {
-    if (!isPremium && entries.length >= FREE_ENTRY_LIMIT && !todayEntry) {
+    if (!isPremium && allEntries.length >= FREE_ENTRY_LIMIT && !todayEntry) {
       navigate('/premium')
       return
     }
@@ -159,7 +173,7 @@ function GratitudeJournalPage() {
     loadEntries()
   }
 
-  const todayEntry = entries.find(e => e.date === new Date().toISOString().split('T')[0])
+  const todayEntry = allEntries.find(e => e.date === new Date().toISOString().split('T')[0])
 
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
@@ -203,7 +217,7 @@ function GratitudeJournalPage() {
               </Button>
             </Flex>
 
-            {!isPremium && entries.length >= FREE_ENTRY_LIMIT && (
+            {!isPremium && allEntries.length >= FREE_ENTRY_LIMIT && (
               <Alert status="warning" borderRadius="xl">
                 <AlertIcon />
                 <Box flex="1">
@@ -255,7 +269,7 @@ function GratitudeJournalPage() {
                     <Icon as={Calendar} w={5} h={5} color="blue.500" />
                     <Text color="gray.600">{t('gratitude totalEntries')}</Text>
                   </HStack>
-                  <Heading size="2xl" color="blue.500">{entries.length}</Heading>
+                  <Heading size="2xl" color="blue.500">{allEntries.length}</Heading>
                   <Text fontSize="sm" color="gray.500">{t('gratitude entries')}</Text>
                 </CardBody>
               </Card>
@@ -267,7 +281,7 @@ function GratitudeJournalPage() {
                     <Text color="gray.600">{t('gratitude weeklyGoal')}</Text>
                   </HStack>
                   <Heading size="2xl" color="green.500">
-                    {Math.min(7, entries.filter(e => {
+                    {Math.min(7, allEntries.filter(e => {
                       const entryDate = new Date(e.date)
                       const weekAgo = new Date()
                       weekAgo.setDate(weekAgo.getDate() - 7)
@@ -281,7 +295,7 @@ function GratitudeJournalPage() {
 
             <VStack spacing={4} align="stretch">
               <Heading size="lg">{t('gratitude recentEntries')}</Heading>
-              {entries.length === 0 ? (
+              {allEntries.length === 0 ? (
                 <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl" shadow="lg">
                   <CardBody textAlign="center" py={12}>
                     <Icon as={BookOpen} w={12} h={12} color="gray.400" mb={4} />
@@ -318,21 +332,39 @@ function GratitudeJournalPage() {
               )}
             </VStack>
 
-            {entries.length > 0 && (
+            {allEntries.length > 0 && (
               <>
                 <Box>
-                  <GratitudeChallenges entries={entries} />
+                  <GratitudeChallenges entries={allEntries} />
                 </Box>
                 <Box>
-                  <GratitudeAnalytics entries={entries} />
+                  <GratitudeAnalytics entries={allEntries} />
                 </Box>
                 <Box>
-                  <WeeklySummary entries={Object.fromEntries(entries.map(e => [e.date, e]))} />
+                  <WeeklySummary entries={Object.fromEntries(allEntries.map(e => [e.date, e]))} />
                 </Box>
                 <Box>
-                  <GratitudeStats entries={entries} />
+                  <GratitudeStats entries={allEntries} />
                 </Box>
               </>
+            )}
+
+            {/* Load More Button */}
+            {hasMore && (
+              <Box textAlign="center" py={4}>
+                <Button
+                  onClick={loadMore}
+                  colorScheme="blue"
+                  variant="outline"
+                  size="lg"
+                  leftIcon={<RefreshCw />}
+                  isLoading={false}
+                  _hover={{ transform: 'scale(1.05)' }}
+                  transition="all 0.2s"
+                >
+                  {t('common.loadMore')}
+                </Button>
+              </Box>
             )}
           </VStack>
         </motion.div>

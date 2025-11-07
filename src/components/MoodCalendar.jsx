@@ -1,6 +1,7 @@
-﻿import { useState, useEffect } from 'react'
+﻿import { useState, useEffect, useMemo } from 'react'
 import { ChevronLeft, ChevronRight, X, Edit, Trash2 } from '../config/icons'
 import { useMoods } from '../hooks/useMoods'
+import { DEFAULT_DATE_RANGE } from '../utils/dateRangeUtils'
 
 const moodColors = {
   5: '#10B981', // Amazing - green
@@ -21,9 +22,22 @@ const moodLabels = {
 function MoodCalendar() {
   const [view, setView] = useState('week')
   const [currentDate, setCurrentDate] = useState(new Date())
-  const { moods, loading } = useMoods()
+  const { moods, loading } = useMoods('all') // Load all mood data for calendar navigation
   const [selectedDay, setSelectedDay] = useState(null)
   const [showModal, setShowModal] = useState(false)
+
+  // Memoize date calculations
+  const weekDates = useMemo(() => getWeekDates(currentDate), [currentDate])
+  const monthDates = useMemo(() => getMonthDates(currentDate), [currentDate])
+  const weekRange = useMemo(() => {
+    const start = weekDates[0]
+    const end = weekDates[6]
+    return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+  }, [weekDates])
+  const monthYear = useMemo(() => 
+    currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+    [currentDate]
+  )
 
   const getWeekDates = (date) => {
     const week = []
@@ -104,16 +118,7 @@ function MoodCalendar() {
     }
   }
 
-  const getWeekRange = () => {
-    const weekDates = getWeekDates(currentDate)
-    const start = weekDates[0]
-    const end = weekDates[6]
-    return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
-  }
 
-  const getMonthYear = () => {
-    return currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-  }
 
   if (loading) {
     return (
@@ -184,7 +189,7 @@ function MoodCalendar() {
             <ChevronLeft size={20} />
           </button>
           <span className="font-medium text-text-primary">
-            {view === 'week' ? getWeekRange() : getMonthYear()}
+            {view === 'week' ? weekRange : monthYear}
           </span>
           <button
             onClick={() => view === 'week' ? navigateWeek(1) : navigateMonth(1)}
@@ -196,7 +201,7 @@ function MoodCalendar() {
 
         {view === 'week' ? (
           <div className="grid grid-cols-7 gap-2">
-            {getWeekDates(currentDate).map((date, index) => {
+            {weekDates.map((date, index) => {
               const dateKey = formatDateKey(date)
               const dayMood = moods[dateKey]
               const dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
@@ -232,7 +237,7 @@ function MoodCalendar() {
                 {day}
               </div>
             ))}
-            {getMonthDates(currentDate).map((date, index) => {
+            {monthDates.map((date, index) => {
               const dateKey = formatDateKey(date)
               const dayMood = moods[dateKey]
               const isCurrentMonth = isSameMonth(date, currentDate)
