@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+﻿import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Brain, TrendingUp, TrendingDown, Calendar, Target, Award, Users, Clock, Heart, Zap, Book, Info, Shield, Crown, Sparkles, Activity, BarChart3, ArrowUpRight, ArrowDownRight, PieChart, CheckCircle2 } from 'lucide-react'
 import SafeComponent from '../components/SafeComponent'
@@ -178,9 +178,6 @@ function InsightsPage() {
     <div className="max-w-4xl mx-auto animate-fade-in">
       <OnboardingTip page="insights" />
       
-      <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
-        <TrackMood onSaved={loadMoodData} />
-      </motion.div>
       {/* Disclaimer Banner */}
       <div className="card p-4 bg-blue-50 border border-blue-200 mb-6">
         <div className="flex gap-3">

@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from 'react'
-import { Shield, Palette, TrendingUp, AlertTriangle, Users, Crown } from 'lucide-react'
+import { Shield, Palette, TrendingUp, AlertTriangle, Users, Crown, BarChart3 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
 import StreakInsurance from '../components/premium/StreakInsurance'
@@ -7,12 +7,16 @@ import CustomThemes from '../components/premium/CustomThemes'
 import WellnessBreakdown from '../components/premium/WellnessBreakdown'
 import PredictiveAlerts from '../components/premium/PredictiveAlerts'
 import PrivateGroups from '../components/premium/PrivateGroups'
+import AnalyticsTiles from '../components/premium/AnalyticsTiles'
 
 function PremiumFeaturesPage() {
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState('streak')
+  const [activeTab, setActiveTab] = useState('analytics') // Changed default to analytics
   const [isPremium, setIsPremium] = useState(false)
   const [loading, setLoading] = useState(true)
+
+  // Mock user object - in real app this would come from context/auth
+  const user = { isPremium }
 
   useEffect(() => {
     try {
@@ -36,6 +40,7 @@ function PremiumFeaturesPage() {
   }
 
   const tabs = [
+    { id: 'analytics', label: 'Analytics Dashboard', icon: BarChart3 },
     { id: 'streak', label: 'Streak Insurance', icon: Shield },
     { id: 'themes', label: 'Custom Themes', icon: Palette },
     { id: 'wellness', label: 'Wellness Breakdown', icon: TrendingUp },
@@ -114,6 +119,7 @@ function PremiumFeaturesPage() {
 
       <SafeComponent>
         <div>
+          {activeTab === 'analytics' && <AnalyticsTiles user={user} />}
           {activeTab === 'streak' && <StreakInsurance />}
           {activeTab === 'themes' && <CustomThemes />}
           {activeTab === 'wellness' && <WellnessBreakdown />}

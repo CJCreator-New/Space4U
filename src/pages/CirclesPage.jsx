@@ -215,6 +215,8 @@ function CirclesPage() {
   const [state, dispatch] = useReducer(circlesReducer, initialState)
   const debouncedSearch = useDebounce(state.searchQuery, 300)
   const { isPremium } = getPremiumStatus()
+  const isMountedRef = useRef(true)
+  const feedbackTimerRef = useRef(null)
   
   const FREE_CIRCLE_LIMIT = 3
 
@@ -423,7 +425,7 @@ function CirclesPage() {
     const user = JSON.parse(localStorage.getItem('space4u_user') || '{}')
     const userInterests = user.interests || []
     
-    const matched = circles.filter(circle => {
+    const matched = state.circles.filter(circle => {
       if (userInterests.includes('anxiety') && circle.name.includes('Anxiety')) return true
       if (userInterests.includes('depression') && circle.name.includes('Depression')) return true
       if (userInterests.includes('work') && circle.name.includes('Work')) return true
@@ -435,7 +437,7 @@ function CirclesPage() {
       return matched.slice(0, 4)
     }
 
-    return [...circles]
+    return [...state.circles]
       .sort((a, b) => (b.unreadCount || 0) - (a.unreadCount || 0))
       .slice(0, 4)
   }
@@ -443,8 +445,8 @@ function CirclesPage() {
   const filteredCircles = getFilteredCircles()
   const recommendedCircles = getRecommendedCircles()
   const circleStats = useMemo(() => {
-    const totalMembers = circles.reduce((acc, circle) => acc + (Number(circle.members) || 0), 0)
-    const activeCircles = circles.filter(circle => (circle.unreadCount || 0) > 0).length
+    const totalMembers = state.circles.reduce((acc, circle) => acc + (Number(circle.members) || 0), 0)
+    const activeCircles = state.circles.filter(circle => (circle.unreadCount || 0) > 0).length
     const joinedCount = state.joinedCircles.length
 
     return {
@@ -452,7 +454,7 @@ function CirclesPage() {
       activeCircles,
       joinedCount
     }
-  }, [circles, joinedCircles])
+  }, [state.circles, state.joinedCircles])
   const sortShortcuts = [
     { id: 'recommended', label: 'Recommended' },
     { id: 'active', label: 'Active now' },
@@ -460,7 +462,7 @@ function CirclesPage() {
     { id: 'growth', label: 'Growing fast' }
   ]
 
-  if (loading) {
+  if (state.loading) {
     return (
     <SafeComponent>
       <div className="max-w-6xl mx-auto">
@@ -482,15 +484,15 @@ function CirclesPage() {
   return (
     <SafeComponent>
     <div aria-live="polite" aria-atomic="true" className="sr-only">
-      {feedback?.message}
+      {state.feedback?.message}
     </div>
     {state.feedback && (
       <div
         className={`fixed top-6 right-6 z-50 rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-xl transition-all ${
-          feedback.tone === 'warning' ? 'bg-warning' : 'bg-success'
+          state.feedback.tone === 'warning' ? 'bg-warning' : 'bg-success'
         }`}
       >
-        {feedback.message}
+        {state.feedback.message}
       </div>
     )}
     <div className="max-w-6xl mx-auto">
@@ -574,11 +576,11 @@ function CirclesPage() {
               <div>
                 <p className="font-semibold text-text-primary">You're in! {state.joinCelebration.name} is ready for you.</p>
                 {state.joinCelebration.highlight && (
-                  <p className="mt-1 text-sm text-text-secondary">{joinCelebration.highlight}</p>
+                  <p className="mt-1 text-sm text-text-secondary">{state.joinCelebration.highlight}</p>
                 )}
-                {joinCelebration.featuredPost && (
+                {state.joinCelebration.featuredPost && (
                   <p className="mt-2 text-xs text-text-secondary">
-                    Latest highlight: <span className="font-medium text-text-primary">{joinCelebration.featuredPost.title}</span>
+                    Latest highlight: <span className="font-medium text-text-primary">{state.joinCelebration.featuredPost.title}</span>
                   </p>
                 )}
               </div>
@@ -586,8 +588,8 @@ function CirclesPage() {
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <button
                 onClick={() => {
-                  trackEvent(EVENTS.CIRCLE_JOIN_CTA_CLICKED, { circleId: joinCelebration.id })
-                  handleCircleClick(joinCelebration.id, 'join_celebration_cta')
+                  trackEvent(EVENTS.CIRCLE_JOIN_CTA_CLICKED, { circleId: state.joinCelebration.id })
+                  handleCircleClick(state.joinCelebration.id, 'join_celebration_cta')
                 }}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
               >
@@ -596,8 +598,8 @@ function CirclesPage() {
               </button>
               <button
                 onClick={() => {
-                  trackEvent(EVENTS.CIRCLE_JOIN_CTA_DISMISSED, { circleId: joinCelebration.id })
-                  setJoinCelebration(null)
+                  trackEvent(EVENTS.CIRCLE_JOIN_CTA_DISMISSED, { circleId: state.joinCelebration.id })
+                  dispatch({ type: 'SET_JOIN_CELEBRATION', payload: null })
                 }}
                 className="inline-flex items-center justify-center rounded-xl border border-primary/40 px-3 py-2 text-xs font-semibold text-primary transition hover:bg-primary/10"
               >
@@ -610,7 +612,7 @@ function CirclesPage() {
 
       <div className="mb-6">
         {/* Premium Limit Warning */}
-        {!isPremium && joinedCircles.length >= FREE_CIRCLE_LIMIT && (
+        {!isPremium && state.joinedCircles.length >= FREE_CIRCLE_LIMIT && (
           <div className="card p-4 bg-gradient-to-r from-yellow-50 to-orange-50 border border-orange-200 mb-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -635,7 +637,7 @@ function CirclesPage() {
             <input
               type="text"
               placeholder="Search circles..."
-              value={searchQuery}
+              value={state.searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
               aria-label="Search circles"
               className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary outline-none transition-colors"
@@ -652,7 +654,7 @@ function CirclesPage() {
 
         <div className="mb-6 flex flex-wrap items-center gap-2" role="group" aria-label="Sort circles">
           {sortShortcuts.map((option) => {
-            const isActive = filters.sort === option.id
+            const isActive = state.filters.sort === option.id
             return (
               <button
                 key={option.id}
@@ -694,7 +696,7 @@ function CirclesPage() {
                 : 'text-text-secondary hover:text-text-primary'
             }`}
           >
-            My Circles ({joinedCircles.length})
+            My Circles ({state.joinedCircles.length})
           </button>
         </div>
       </div>
@@ -708,7 +710,7 @@ function CirclesPage() {
               <div key={circle.id || circle.name || Math.random()} className="flex-shrink-0 w-64">
                 <CircleCard
                   circle={circle}
-                  isJoined={joinedCircles.includes(String(circle.id))}
+                  isJoined={state.joinedCircles.includes(String(circle.id))}
                   onJoin={handleJoinCircle}
                   onLeave={handleLeaveCircle}
                   onClick={(id) => handleCircleClick(id, 'recommended_carousel')}
@@ -754,7 +756,7 @@ function CirclesPage() {
             <div className="px-1 stagger-item" style={{ animationDelay: `${actualIndex * 50}ms` }}>
               <CircleCard
                 circle={circle}
-                isJoined={joinedCircles.includes(String(circle.id))}
+                isJoined={state.joinedCircles.includes(String(circle.id))}
                 onJoin={handleJoinCircle}
                 onLeave={handleLeaveCircle}
                 onClick={(id) => handleCircleClick(id, 'virtual_list')}
@@ -769,7 +771,7 @@ function CirclesPage() {
       <FilterModal
         isOpen={state.showFilters}
         onClose={() => handleShowFilters(false)}
-        filters={filters}
+        filters={state.filters}
         onFiltersChange={handleFiltersChange}
       />
 

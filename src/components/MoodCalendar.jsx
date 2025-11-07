@@ -57,19 +57,7 @@ function MoodCalendar() {
   const [calendarState, dispatch] = useReducer(calendarReducer, initialCalendarState)
   const { moods, loading } = useMoods('all') // Load all mood data for calendar navigation
 
-  // Memoize date calculations
-  const weekDates = useMemo(() => getWeekDates(calendarState.currentDate), [calendarState.currentDate])
-  const monthDates = useMemo(() => getMonthDates(calendarState.currentDate), [calendarState.currentDate])
-  const weekRange = useMemo(() => {
-    const start = weekDates[0]
-    const end = weekDates[6]
-    return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
-  }, [weekDates])
-  const monthYear = useMemo(() => 
-    calendarState.currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
-    [calendarState.currentDate]
-  )
-
+  // Helper functions
   const getWeekDates = (date) => {
     const week = []
     const startOfWeek = new Date(date)
@@ -102,6 +90,19 @@ function MoodCalendar() {
     
     return dates
   }
+
+  // Memoize date calculations
+  const weekDates = useMemo(() => getWeekDates(calendarState.currentDate), [calendarState.currentDate])
+  const monthDates = useMemo(() => getMonthDates(calendarState.currentDate), [calendarState.currentDate])
+  const weekRange = useMemo(() => {
+    const start = weekDates[0]
+    const end = weekDates[6]
+    return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+  }, [weekDates])
+  const monthYear = useMemo(() => 
+    calendarState.currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+    [calendarState.currentDate]
+  )
 
   const formatDateKey = (date) => {
     return date.toISOString().split('T')[0]

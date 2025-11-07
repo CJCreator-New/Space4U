@@ -12,6 +12,7 @@ import OptimizedAvatar from '../components/OptimizedAvatar'
 import { useMoodsSWR } from '../hooks/useMoodsSWR'
 import { useCirclesSWR } from '../hooks/useCirclesSWR'
 import { usePostsSWR } from '../hooks/usePostsSWR'
+import { BADGES, LEVELS, getProgressToNextLevel, initializeBadgeSystem } from '../utils/badgeSystem'
 
 const AVATARS = ['', '', '', '', '', '', '', '', '', 'â˜•', '', 'â­']
 
@@ -26,6 +27,10 @@ function ProfilePage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState('')
   const [showPremiumBanner, setShowPremiumBanner] = useState(true)
+  const [stats, setStats] = useState(null)
+  const [activities, setActivities] = useState([])
+  const [circles, setCircles] = useState([])
+  const [savedPosts, setSavedPosts] = useState([])
   const [editForm, setEditForm] = useState({
     username: '',
     avatar: '',

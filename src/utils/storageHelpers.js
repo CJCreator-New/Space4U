@@ -94,3 +94,18 @@ export async function getEmotionLogs() {
 export async function saveEmotionLogs(logs) {
   await storage.set('space4u_emotion_logs', logs)
 }
+
+/**
+ * Get badges
+ */
+export async function getBadges() {
+  const badges = await storage.get('space4u_badges')
+  return badges || null
+}
+
+/**
+ * Save badges
+ */
+export async function saveBadges(badges) {
+  await storage.set('space4u_badges', badges)
+}
