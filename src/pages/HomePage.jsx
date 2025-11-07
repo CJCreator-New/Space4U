@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+﻿import { useState, useEffect, useMemo, lazy, Suspense } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Crown, Sparkles, Smile, Heart, BookOpen, BarChart, Trophy, MessageCircle, TrendingUp } from 'lucide-react'
@@ -17,25 +17,18 @@ import {
   HStack,
   Icon,
   useColorModeValue,
+  Skeleton,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
 } from '@chakra-ui/react'
 import MoodTracker from '../components/MoodTracker'
-import MoodCalendar from '../components/MoodCalendar'
-import MoodTrends from '../components/MoodTrends'
 import SafeComponent from '../components/SafeComponent'
-import AdaptiveDashboard from '../components/personalization/AdaptiveDashboard'
 import FABMenu from '../components/common/FABMenu'
 import MicroInteraction from '../components/common/MicroInteraction'
-import NotificationTestPanel from '../components/NotificationTestPanel'
-import DashboardWidgets from '../components/dashboard/DashboardWidgets'
-import HeroSection from '../components/home/HeroSection'
 import QuickMoodCheckIn from '../components/home/QuickMoodCheckIn'
 import DailyTipWidget from '../components/home/DailyTipWidget'
-import TrendingContent from '../components/home/TrendingContent'
-import AnnouncementBanner from '../components/home/AnnouncementBanner'
 import WelcomeBanner from '../components/home/WelcomeBanner'
 import MoodTimeline from '../components/home/MoodTimeline'
 import OnboardingTip from '../components/common/OnboardingTip'
@@ -44,6 +37,18 @@ import { getPremiumStatus } from '../utils/premiumUtils'
 import { initPersonalization } from '../utils/personalizationEngine'
 import { trackFeatureUsage } from '../utils/usageTracker'
 import { trackEvent, EVENTS, trackPageView } from '../utils/analytics'
+
+// Lazy load heavy components
+const MoodCalendar = lazy(() => import('../components/MoodCalendar'))
+const MoodTrends = lazy(() => import('../components/MoodTrends'))
+const DashboardWidgets = lazy(() => import('../components/dashboard/DashboardWidgets'))
+const AdaptiveDashboard = lazy(() => import('../components/personalization/AdaptiveDashboard'))
+
+const LoadingFallback = () => (
+  <Box mb={6}>
+    <Skeleton height="200px" borderRadius="xl" />
+  </Box>
+)
 
 function HomePage() {
   const { t } = useTranslation()
@@ -55,19 +60,26 @@ function HomePage() {
   const [showNavMap, setShowNavMap] = useState(false)
   const { isPremium, trialActive, daysLeft } = getPremiumStatus()
 
+  // Memoize user data
+  const userData = useMemo(() => {
+    try {
+      const data = localStorage.getItem('space4u_user')
+      return data ? JSON.parse(data) : null
+    } catch {
+      return null
+    }
+  }, [])
+
   useEffect(() => {
     try {
-      const userData = localStorage.getItem('space4u_user')
-      if (userData) {
-        setUser(JSON.parse(userData))
-      }
+      setUser(userData)
       initPersonalization()
       trackPageView('home')
     } catch (err) {
       console.error('Error loading user data:', err)
       setError(t('errors.failedToLoad'))
     }
-  }, [])
+  }, [userData])
 
   const handleMoodLogged = () => {
     try {
@@ -222,20 +234,26 @@ function HomePage() {
         <DailyTipWidget />
       </Box>
       
-      <Box mb={6}>
-        <DashboardWidgets />
-      </Box>
+      <Suspense fallback={<LoadingFallback />}>
+        <Box mb={6}>
+          <DashboardWidgets />
+        </Box>
+      </Suspense>
       
       <SafeComponent>
-        <Box mb={6}>
-          <MoodCalendar key={refreshKey} />
-        </Box>
+        <Suspense fallback={<LoadingFallback />}>
+          <Box mb={6}>
+            <MoodCalendar key={refreshKey} />
+          </Box>
+        </Suspense>
       </SafeComponent>
       
       <SafeComponent>
-        <Box mb={6}>
-          <MoodTrends key={refreshKey} />
-        </Box>
+        <Suspense fallback={<LoadingFallback />}>
+          <Box mb={6}>
+            <MoodTrends key={refreshKey} />
+          </Box>
+        </Suspense>
       </SafeComponent>
       
       {/* Collapsible Wellness Tools */}

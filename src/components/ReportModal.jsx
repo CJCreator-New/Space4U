@@ -1,30 +1,48 @@
-﻿import { useState } from 'react'
+﻿import { useState, useReducer } from 'react'
 import { X, AlertTriangle, Check } from '../config/icons'
 import { REPORT_REASONS, reportPost } from '../utils/moderation'
 
+// Reducer for report state management
+function reportReducer(state, action) {
+  switch (action.type) {
+    case 'SET_REASON':
+      return { ...state, reason: action.payload }
+    case 'SET_DETAILS':
+      return { ...state, details: action.payload }
+    case 'SET_SUBMITTED':
+      return { ...state, submitted: action.payload }
+    case 'RESET_REPORT':
+      return { reason: '', details: '', submitted: false }
+    default:
+      return state
+  }
+}
+
+const initialReportState = {
+  reason: '',
+  details: '',
+  submitted: false
+}
+
 function ReportModal({ isOpen, onClose, postId }) {
-  const [reason, setReason] = useState('')
-  const [details, setDetails] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [reportState, dispatch] = useReducer(reportReducer, initialReportState)
 
   if (!isOpen) return null
 
   const handleSubmit = () => {
     const userId = JSON.parse(localStorage.getItem('space4u_user') || '{}').username || 'anonymous'
-    reportPost(postId, reason, details, userId)
-    setSubmitted(true)
+    reportPost(postId, reportState.reason, reportState.details, userId)
+    dispatch({ type: 'SET_SUBMITTED', payload: true })
     setTimeout(() => {
       onClose()
-      setSubmitted(false)
-      setReason('')
-      setDetails('')
+      dispatch({ type: 'RESET_REPORT' })
     }, 2000)
   }
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
-        {submitted ? (
+        {reportState.submitted ? (
           <div className="text-center py-8">
             <Check className="mx-auto text-green-500 mb-4" size={48} />
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
@@ -58,8 +76,8 @@ function ReportModal({ isOpen, onClose, postId }) {
                         type="radio"
                         name="reason"
                         value={key}
-                        checked={reason === key}
-                        onChange={(e) => setReason(e.target.value)}
+                        checked={reportState.reason === key}
+                        onChange={(e) => dispatch({ type: 'SET_REASON', payload: e.target.value })}
                         className="text-primary"
                       />
                       <span className="text-sm text-gray-900 dark:text-white">{label}</span>
@@ -73,8 +91,8 @@ function ReportModal({ isOpen, onClose, postId }) {
                   Additional details (optional)
                 </label>
                 <textarea
-                  value={details}
-                  onChange={(e) => setDetails(e.target.value)}
+                  value={reportState.details}
+                  onChange={(e) => dispatch({ type: 'SET_DETAILS', payload: e.target.value })}
                   placeholder="Provide more context..."
                   className="w-full p-3 border dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white resize-none"
                   rows={3}
@@ -91,7 +109,7 @@ function ReportModal({ isOpen, onClose, postId }) {
               </button>
               <button
                 onClick={handleSubmit}
-                disabled={!reason}
+                disabled={!reportState.reason}
                 className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Submit Report

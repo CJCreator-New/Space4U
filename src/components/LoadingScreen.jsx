@@ -1,6 +1,7 @@
+import { memo } from 'react'
 import Logo from './Logo'
 
-function LoadingScreen({ message = 'Loading...' }) {
+const LoadingScreen = memo(function LoadingScreen({ message = 'Loading...' }) {
   return (
     <div className="fixed inset-0 bg-background flex items-center justify-center z-50">
       <div className="text-center">
@@ -11,6 +12,6 @@ function LoadingScreen({ message = 'Loading...' }) {
       </div>
     </div>
   )
-}
+})
 
 export default LoadingScreen

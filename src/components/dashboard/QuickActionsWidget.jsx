@@ -1,17 +1,9 @@
 import { Zap, Heart, Brain, Activity, BookOpen, Users, MessageCircle, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { useSpring, animated } from 'react-spring'
 import { useNavigate } from 'react-router-dom'
 
 export default function QuickActionsWidget() {
   const navigate = useNavigate()
-
-  // Spring animation for the container
-  const containerSpring = useSpring({
-    from: { opacity: 0, transform: 'translateY(20px)' },
-    to: { opacity: 1, transform: 'translateY(0px)' },
-    config: { tension: 280, friction: 20 }
-  })
 
   const quickActions = [
     {
@@ -73,12 +65,13 @@ export default function QuickActionsWidget() {
   ]
 
   return (
-    <animated.div style={containerSpring}>
-      <motion.div
-        className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
-        whileHover={{ y: -2 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      >
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+      whileHover={{ y: -2 }}
+    >
       {/* Header */}
       <div className="flex items-center gap-3 mb-5">
         <div className="p-2 bg-gradient-to-br from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 rounded-lg">
@@ -144,6 +137,5 @@ export default function QuickActionsWidget() {
         </p>
       </div>
     </motion.div>
-    </animated.div>
   )
 }

@@ -1,17 +1,17 @@
-﻿import { useState, useEffect } from 'react'
+﻿import { useState, useEffect, useMemo } from 'react'
 import { TrendingDown, AlertTriangle, Sparkles } from 'lucide-react'
+import { useMoodsSWR } from '../../hooks/useMoodsSWR'
 
 function MoodPrediction() {
-  const [predictions, setPredictions] = useState([])
   const [isPremium] = useState(false)
+  const { allMoods } = useMoodsSWR()
 
-  useEffect(() => {
-    if (!isPremium) return
+  const predictions = useMemo(() => {
+    if (!isPremium) return []
 
-    const moods = JSON.parse(localStorage.getItem('space4u_moods') || '{}')
-    const entries = Object.values(moods).sort((a, b) => new Date(a.date) - new Date(b.date))
-    
-    if (entries.length < 7) return
+    const entries = Object.values(allMoods).sort((a, b) => new Date(a.date) - new Date(b.date))
+
+    if (entries.length < 7) return []
 
     const last7 = entries.slice(-7)
     const avgMood = last7.reduce((sum, e) => sum + e.mood, 0) / 7
@@ -31,8 +31,8 @@ function MoodPrediction() {
       })
     }
 
-    setPredictions(next7Days)
-  }, [isPremium])
+    return next7Days
+  }, [isPremium, allMoods])
 
   const moodEmojis = ['', '', '', '', '']
 

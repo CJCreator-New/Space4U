@@ -2,21 +2,27 @@
 import { supabase } from '../utils/supabase'
 import { storage } from '../services/storage'
 import { FEATURES } from '../config/features'
+import { filterMoodsByDateRange, DEFAULT_DATE_RANGE } from '../utils/dateRangeUtils'
 
-export function useMoods() {
-  const [moods, setMoods] = useState({})
+export function useMoods(dateRange = DEFAULT_DATE_RANGE) {
+  const [allMoods, setAllMoods] = useState({})
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     loadMoods()
   }, [])
 
+  // Filter moods based on date range
+  const moods = useMemo(() => {
+    return filterMoodsByDateRange(allMoods, dateRange)
+  }, [allMoods, dateRange])
+
   const loadMoods = useCallback(async () => {
     try {
       // Use storage adapter (defaults to localStorage)
       const moodsData = await storage.get('space4u_moods')
-      setMoods(moodsData || {})
-      
+      setAllMoods(moodsData || {})
+
       // If backend enabled and user authenticated, sync from Supabase
       if (FEATURES.USE_BACKEND) {
         const { data: { user } } = await supabase.auth.getUser()
@@ -32,7 +38,7 @@ export function useMoods() {
               acc[mood.date] = mood
               return acc
             }, {})
-            setMoods(moodsObj)
+            setAllMoods(moodsObj)
             // Sync to local storage
             await storage.set('space4u_moods', moodsObj)
           }
@@ -40,7 +46,7 @@ export function useMoods() {
       }
     } catch (error) {
       console.error('Error loading moods:', error)
-      setMoods({})
+      setAllMoods({})
     } finally {
       setLoading(false)
     }
@@ -48,12 +54,12 @@ export function useMoods() {
 
   const saveMood = useCallback(async (date, moodData) => {
     try {
-      const updatedMoods = { ...moods, [date]: moodData }
-      
+      const updatedMoods = { ...allMoods, [date]: moodData }
+
       // Save to storage adapter (localStorage by default)
       await storage.set('space4u_moods', updatedMoods)
-      setMoods(updatedMoods)
-      
+      setAllMoods(updatedMoods)
+
       // If backend enabled, also save to Supabase
       if (FEATURES.USE_BACKEND) {
         const { data: { user } } = await supabase.auth.getUser()
@@ -67,17 +73,18 @@ export function useMoods() {
             }])
         }
       }
-      
+
       return { success: true }
     } catch (error) {
       console.error('Error saving mood:', error)
       return { success: false, error }
     }
-  }, [moods])
+  }, [allMoods])
 
   // Memoize the return object to prevent unnecessary re-renders
   return useMemo(() => ({
     moods,
+    allMoods,
     loading,
     saveMood,
     refreshMoods: loadMoods

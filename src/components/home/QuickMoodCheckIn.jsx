@@ -1,6 +1,7 @@
-﻿import { useState } from 'react'
+﻿import { useState, memo, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Smile, Meh, Frown, Check } from 'lucide-react'
+import { useDebounce } from '../../hooks/useDebounce'
 
 const moods = [
   { emoji: '', label: 'Great', value: 5, color: 'from-green-400 to-emerald-500' },
@@ -10,11 +11,11 @@ const moods = [
   { emoji: '', label: 'Struggling', value: 1, color: 'from-red-400 to-rose-500' },
 ]
 
-export default function QuickMoodCheckIn({ onMoodLogged }) {
+const QuickMoodCheckIn = memo(function QuickMoodCheckIn({ onMoodLogged }) {
   const [selectedMood, setSelectedMood] = useState(null)
   const [saved, setSaved] = useState(false)
 
-  const handleMoodSelect = (mood) => {
+  const handleMoodSelect = useCallback((mood) => {
     setSelectedMood(mood)
     setSaved(true)
     
@@ -25,7 +26,7 @@ export default function QuickMoodCheckIn({ onMoodLogged }) {
 
     if (onMoodLogged) onMoodLogged()
     setTimeout(() => setSaved(false), 2000)
-  }
+  }, [onMoodLogged])
 
   return (
     <motion.div
@@ -43,7 +44,7 @@ export default function QuickMoodCheckIn({ onMoodLogged }) {
         {moods.map((mood) => (
           <motion.button
             key={mood.value}
-            whileHover={{ scale: 1.1, y: -4 }}
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleMoodSelect(mood)}
             className={`flex-1 p-4 rounded-xl transition-all ${
@@ -77,5 +78,7 @@ export default function QuickMoodCheckIn({ onMoodLogged }) {
       </AnimatePresence>
     </motion.div>
   )
-}
+})
+
+export default QuickMoodCheckIn
 

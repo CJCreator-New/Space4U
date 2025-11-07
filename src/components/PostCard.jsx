@@ -1,60 +1,103 @@
-import { useState } from 'react'
+import { useState, memo, useCallback, useReducer } from 'react'
 import Icon from './Icon'
+import OptimizedAvatar from './OptimizedAvatar'
 import { formatRelativeTime, truncateText } from '../utils/helpers'
 import { addPoints, POINT_VALUES } from '../utils/badgeSystem'
 import { useRealtimeComments } from '../hooks/useRealtimeComments'
 import { circleService } from '../services/circleService'
 import { useSupabaseAuth } from '../contexts/AuthContext'
+import { useDebounce } from '../hooks/useDebounce'
 
-function PostCard({ post, circleColor, onHeart, onShare }) {
+const initialPostState = {
+  isHearted: false,
+  heartCount: 0,
+  showComments: false,
+  newComment: '',
+  isExpanded: false,
+  posting: false
+}
+
+const postReducer = (state, action) => {
+  switch (action.type) {
+    case 'INIT_STATE':
+      return {
+        ...state,
+        isHearted: action.payload.isHearted,
+        heartCount: action.payload.hearts
+      }
+    case 'TOGGLE_HEART':
+      const newHearted = !state.isHearted
+      return {
+        ...state,
+        isHearted: newHearted,
+        heartCount: newHearted ? state.heartCount + 1 : state.heartCount - 1
+      }
+    case 'TOGGLE_COMMENTS':
+      return { ...state, showComments: !state.showComments }
+    case 'SET_NEW_COMMENT':
+      return { ...state, newComment: action.payload }
+    case 'TOGGLE_EXPANDED':
+      return { ...state, isExpanded: !state.isExpanded }
+    case 'SET_POSTING':
+      return { ...state, posting: action.payload }
+    case 'RESET_COMMENT':
+      return { ...state, newComment: '', posting: false }
+    default:
+      return state
+  }
+}
+
+const PostCard = memo(function PostCard({ post, circleColor, onHeart, onShare }) {
   const { user } = useSupabaseAuth()
-  const [isHearted, setIsHearted] = useState(post.isHearted)
-  const [heartCount, setHeartCount] = useState(post.hearts)
-  const [showComments, setShowComments] = useState(false)
-  const [newComment, setNewComment] = useState('')
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [posting, setPosting] = useState(false)
+  const [postState, dispatch] = useReducer(postReducer, {
+    ...initialPostState,
+    isHearted: post.isHearted,
+    heartCount: post.hearts
+  })
 
-  const { comments, loading: commentsLoading } = useRealtimeComments(showComments ? post.id : null)
+  const { comments, loading: commentsLoading } = useRealtimeComments(postState.showComments ? post.id : null)
   const shouldTruncate = post.content.length > 200
 
-  const handleHeart = () => {
-    const newHearted = !isHearted
-    setIsHearted(newHearted)
-    setHeartCount(prev => newHearted ? prev + 1 : prev - 1)
-    onHeart?.(post.id, newHearted)
+  // Debounce comment input
+  const debouncedComment = useDebounce(postState.newComment, 300)
+
+  const handleHeart = useCallback(() => {
+    dispatch({ type: 'TOGGLE_HEART' })
+    onHeart?.(post.id, !postState.isHearted)
     
-    if (newHearted) {
+    if (!postState.isHearted) {
       addPoints(POINT_VALUES.heartReceived, 'Heart received')
     }
-  }
+  }, [postState.isHearted, onHeart, post.id])
 
-  const handleShare = () => {
+  const handleShare = useCallback(() => {
     navigator.clipboard.writeText(`${window.location.origin}/circle/${post.circleId}/post/${post.id}`)
     onShare?.()
-  }
+  }, [post.circleId, post.id, onShare])
 
-  const handleAddComment = async () => {
-    if (!newComment.trim() || !user || posting) return
+  const handleAddComment = useCallback(async () => {
+    if (!postState.newComment.trim() || !user || postState.posting) return
 
-    setPosting(true)
+    dispatch({ type: 'SET_POSTING', payload: true })
     try {
-      await circleService.createComment(user.id, post.id, newComment.trim(), false)
-      setNewComment('')
+      await circleService.createComment(user.id, post.id, postState.newComment.trim(), false)
+      dispatch({ type: 'RESET_COMMENT' })
     } catch (error) {
       console.error('Failed to add comment:', error)
-    } finally {
-      setPosting(false)
+      dispatch({ type: 'SET_POSTING', payload: false })
     }
-  }
+  }, [debouncedComment, user, postState.posting, postState.newComment, post.id])
 
   return (
     <div className="card p-4 mb-3" style={{ borderBottomColor: circleColor, borderBottomWidth: '2px' }}>
       {/* Author Header */}
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-lg">
-          {post.author.avatar}
-        </div>
+        <OptimizedAvatar
+          src={post.author.avatarUrl}
+          fallback={post.author.avatar}
+          alt={`${post.author.username}'s avatar`}
+          size={40}
+        />
         <div className="flex-1">
           <p className="font-semibold text-sm text-text-primary">{post.author.username}</p>
           <p className="text-xs text-text-secondary">Posted {post.timestamp}</p>
@@ -67,17 +110,17 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
       {/* Post Content */}
       <div className="mb-3">
         <p className="text-text-primary leading-relaxed font-readable">
-          {shouldTruncate && !isExpanded 
+          {shouldTruncate && !postState.isExpanded 
             ? truncateText(post.content, 200)
             : post.content
           }
         </p>
         {shouldTruncate && (
           <button
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={() => dispatch({ type: 'TOGGLE_EXPANDED' })}
             className="text-primary text-sm mt-1 hover:underline"
           >
-            {isExpanded ? 'Show less' : 'Read more'}
+            {postState.isExpanded ? 'Show less' : 'Read more'}
           </button>
         )}
       </div>
@@ -100,8 +143,8 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
       <div className="flex items-center gap-4 py-2 border-t border-gray-100">
         <button
           onClick={handleHeart}
-          className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-all duration-200 ${
-            isHearted 
+          className={`flex items-center gap-2 px-3 py-1 rounded-lg transition-all ${
+            postState.isHearted 
               ? 'text-red-500 bg-red-50' 
               : 'text-text-secondary hover:text-red-500 hover:bg-red-50'
           }`}
@@ -109,13 +152,13 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
           <Icon 
             name="heart" 
             size={20} 
-            className={`transition-transform duration-200 ${isHearted ? 'scale-110' : ''}`}
+            className={`transition-transform duration-200 ${postState.isHearted ? 'scale-110' : ''}`}
           />
-          <span className="text-sm">{heartCount}</span>
+          <span className="text-sm">{postState.heartCount}</span>
         </button>
 
         <button
-          onClick={() => setShowComments(!showComments)}
+          onClick={() => dispatch({ type: 'TOGGLE_COMMENTS' })}
           className="flex items-center gap-2 px-3 py-1 rounded-lg text-text-secondary hover:text-primary hover:bg-primary/10 transition-colors"
         >
           <Icon name="message-circle" size={20} />
@@ -131,7 +174,7 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
       </div>
 
       {/* Comments Section */}
-      {showComments && (
+      {postState.showComments && (
         <div className="mt-4 pt-4 border-t border-gray-100">
           {commentsLoading ? (
             <div className="text-center py-4">
@@ -141,9 +184,12 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
             <div className="space-y-3 mb-4">
               {comments.slice(0, 5).map((comment) => (
                 <div key={comment.id} className="flex gap-3">
-                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-sm flex-shrink-0">
-                    {comment.author.avatar}
-                  </div>
+                  <OptimizedAvatar
+                    src={comment.profiles?.avatar_url}
+                    fallback={comment.author.avatar}
+                    alt={`${comment.profiles?.username || 'Anonymous'}'s avatar`}
+                    size={32}
+                  />
                   <div className="flex-1">
                     <div className="bg-gray-50 rounded-xl p-3">
                       <p className="font-medium text-sm text-text-primary mb-1">
@@ -178,28 +224,31 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
 
           {/* Add Comment */}
           <div className="flex gap-3">
-            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-sm flex-shrink-0">
-              🐻
-            </div>
+            <OptimizedAvatar
+              src={user?.avatar_url}
+              fallback="🐻"
+              alt="Your avatar"
+              size={32}
+            />
             <div className="flex-1 flex gap-2">
               <input
                 type="text"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
+                value={postState.newComment}
+                onChange={(e) => dispatch({ type: 'SET_NEW_COMMENT', payload: e.target.value })}
                 placeholder="Add a comment..."
                 className="flex-1 px-3 py-2 border border-gray-200 rounded-xl focus:border-primary outline-none text-sm"
                 maxLength={300}
               />
               <button
                 onClick={handleAddComment}
-                disabled={!newComment.trim() || posting}
+                disabled={!postState.newComment.trim() || postState.posting}
                 className={`p-2 rounded-xl transition-colors ${
-                  newComment.trim() && !posting
+                  postState.newComment.trim() && !postState.posting
                     ? 'bg-primary text-white hover:bg-primary/90'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                <Icon name="send" size={16} className={posting ? 'animate-pulse' : ''} />
+                <Icon name="send" size={16} className={postState.posting ? 'animate-pulse' : ''} />
               </button>
             </div>
           </div>
@@ -207,6 +256,14 @@ function PostCard({ post, circleColor, onHeart, onShare }) {
       )}
     </div>
   )
-}
+}, (prevProps, nextProps) => {
+  // Custom comparison for optimal re-rendering
+  return (
+    prevProps.post.id === nextProps.post.id &&
+    prevProps.post.hearts === nextProps.post.hearts &&
+    prevProps.post.commentCount === nextProps.post.commentCount &&
+    prevProps.circleColor === nextProps.circleColor
+  )
+})
 
 export default PostCard

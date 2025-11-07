@@ -1,19 +1,43 @@
-﻿import { useState, useEffect } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { Mic, Square, Play, Trash2 } from 'lucide-react'
 
 function VoiceJournal() {
   const [isRecording, setIsRecording] = useState(false)
   const [recordings, setRecordings] = useState([])
   const [mediaRecorder, setMediaRecorder] = useState(null)
+  const streamRef = useRef(null)
 
   useEffect(() => {
     const saved = localStorage.getItem('space4u_voice_journals')
     if (saved) setRecordings(JSON.parse(saved))
   }, [])
 
+  // Cleanup media resources on unmount
+  useEffect(() => {
+    return () => {
+      // Stop any ongoing recording
+      if (mediaRecorder && isRecording) {
+        mediaRecorder.stop()
+      }
+
+      // Stop media stream tracks
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop())
+      }
+
+      // Clean up object URLs
+      recordings.forEach(recording => {
+        if (recording.url && recording.url.startsWith('blob:')) {
+          URL.revokeObjectURL(recording.url)
+        }
+      })
+    }
+  }, [mediaRecorder, isRecording, recordings])
+
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      streamRef.current = stream
       const recorder = new MediaRecorder(stream)
       const chunks = []
 

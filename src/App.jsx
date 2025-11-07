@@ -16,17 +16,20 @@ import PageTransition from './components/common/PageTransition'
 import PageLoader from './components/common/PageLoader'
 import LiveRegion from './components/common/LiveRegion'
 import KeyboardHelpModal from './components/common/KeyboardHelpModal'
-import GlobalSearch from './components/GlobalSearch'
-import QuickActions from './components/QuickActions'
-import OnboardingTour from './components/OnboardingTour'
-import SplashScreen from './components/SplashScreen'
-import ReminderContainer from './components/common/ReminderContainer'
-import ReminderScheduler from './components/common/ReminderScheduler'
-import PremiumDay6Banner from './components/PremiumDay6Banner'
 import MobileMenu from './components/MobileMenu'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { initNotifications, requestNotificationPermission } from './utils/notifications'
+import { SWRProvider } from './utils/swrConfig.jsx'
 import { safeStorage } from './utils/safeStorage'
+
+// Lazy load heavy components
+const GlobalSearch = lazy(() => import('./components/GlobalSearch'))
+const QuickActions = lazy(() => import('./components/QuickActions'))
+const OnboardingTour = lazy(() => import('./components/OnboardingTour'))
+const SplashScreen = lazy(() => import('./components/SplashScreen'))
+const ReminderContainer = lazy(() => import('./components/common/ReminderContainer'))
+const ReminderScheduler = lazy(() => import('./components/common/ReminderScheduler'))
+const PremiumDay6Banner = lazy(() => import('./components/PremiumDay6Banner'))
 
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage'))
@@ -64,6 +67,7 @@ const VisualDemoPage = lazy(() => import('./pages/VisualDemoPage'))
 const NativeDemoPage = lazy(() => import('./pages/NativeDemoPage'))
 const PerformanceDemoPage = lazy(() => import('./pages/PerformanceDemoPage'))
 const DemoHubPage = lazy(() => import('./pages/DemoHubPage'))
+const ImagePerformanceTest = lazy(() => import('./components/ImagePerformanceTest'))
 
 function App() {
   return (
@@ -73,9 +77,11 @@ function App() {
           <AuthProvider>
             <NotificationProvider>
               <ReminderProvider>
-                <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-                  <AppContent />
-                </BrowserRouter>
+                <SWRProvider>
+                  <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                    <AppContent />
+                  </BrowserRouter>
+                </SWRProvider>
               </ReminderProvider>
             </NotificationProvider>
           </AuthProvider>
@@ -163,7 +169,11 @@ function AppContent() {
   }, [setShowKeyboardHelp])
 
   if (showSplash) {
-    return <SplashScreen onComplete={() => setShowSplash(false)} />
+    return (
+      <Suspense fallback={<PageLoader message="Loading..." />}>
+        <SplashScreen onComplete={() => setShowSplash(false)} />
+      </Suspense>
+    )
   }
 
   if (loading || isLoading) {
@@ -178,17 +188,33 @@ function AppContent() {
     <>
       <LiveRegion />
       <MigrationStatus />
-      <PremiumDay6Banner />
+      <Suspense fallback={null}>
+        <PremiumDay6Banner />
+      </Suspense>
       <MobileMenu />
-      <GlobalSearch isOpen={showSearch} onClose={() => setShowSearch(false)} />
-      {user && isOnboardingComplete && <QuickActions />}
+      <Suspense fallback={null}>
+        <GlobalSearch isOpen={showSearch} onClose={() => setShowSearch(false)} />
+      </Suspense>
+      {user && isOnboardingComplete && (
+        <Suspense fallback={null}>
+          <QuickActions />
+        </Suspense>
+      )}
       <KeyboardHelpModal 
         isOpen={showKeyboardHelp} 
         onClose={() => setShowKeyboardHelp(false)} 
       />
-      {showTour && <OnboardingTour onComplete={() => setShowTour(false)} />}
-      <ReminderContainer />
-      <ReminderScheduler />
+      {showTour && (
+        <Suspense fallback={null}>
+          <OnboardingTour onComplete={() => setShowTour(false)} />
+        </Suspense>
+      )}
+      <Suspense fallback={null}>
+        <ReminderContainer />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ReminderScheduler />
+      </Suspense>
       <LazyLoadErrorBoundary>
         <Suspense fallback={<PageLoader message="Loading page..." />}>
           <PageTransition>
@@ -228,6 +254,7 @@ function AppContent() {
               <Route path="/demo/visual" element={<VisualDemoPage />} />
               <Route path="/demo/native" element={<NativeDemoPage />} />
               <Route path="/demo/performance" element={<PerformanceDemoPage />} />
+              <Route path="/demo/image-performance" element={<ImagePerformanceTest />} />
               <Route path="/demo" element={<DemoHubPage />} />
             </Route>
           </Routes>

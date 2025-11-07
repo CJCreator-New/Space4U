@@ -26,18 +26,13 @@ const moodLabels = {
 
 function MoodTrends() {
   const [period, setPeriod] = useState('7')
-  const [chartData, setChartData] = useState([])
-  const [stats, setStats] = useState(null)
   const { moods, loading: moodsLoading } = useMoods()
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    if (!moodsLoading) {
-      loadMoodData()
-    }
-  }, [period, moods, moodsLoading])
-
-  const loadMoodData = () => {
+  // Memoize chart data transformation
+  const chartData = useMemo(() => {
+    if (moodsLoading) return []
+    
     const moodEntries = Object.entries(moods || {}).map(([date, mood]) => ({
       date,
       mood: mood.mood,
@@ -50,23 +45,34 @@ function MoodTrends() {
     const days = period === 'all' ? moodEntries.length : parseInt(period)
     const filteredData = period === 'all' ? moodEntries : moodEntries.slice(-days)
     
-    const processedData = filteredData.map(entry => ({
+    return filteredData.map(entry => ({
       ...entry,
       displayDate: new Date(entry.date).toLocaleDateString('en-US', { 
         month: 'short', 
         day: 'numeric' 
       })
     }))
+  }, [moods, period, moodsLoading])
 
-    setChartData(processedData)
-    calculateStats(processedData, moodEntries)
-    setLoading(false)
-  }
+  // Memoize all mood entries for stats
+  const allMoodEntries = useMemo(() => {
+    if (moodsLoading) return []
+    return Object.entries(moods || {}).map(([date, mood]) => ({
+      date,
+      mood: mood.mood,
+      emoji: mood.emoji,
+      label: mood.label,
+      note: mood.note,
+      timestamp: mood.timestamp
+    })).sort((a, b) => new Date(a.date) - new Date(b.date))
+  }, [moods, moodsLoading])
 
-  const calculateStats = (currentData, allData) => {
+  // Memoize stats calculations
+  const stats = useMemo(() => {
+    const currentData = chartData
+    const allData = allMoodEntries
     if (currentData.length === 0) {
-      setStats(null)
-      return
+      return null
     }
 
     const currentAvg = currentData.reduce((sum, entry) => sum + entry.mood, 0) / currentData.length
@@ -117,15 +123,21 @@ function MoodTrends() {
 
     const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-    setStats({
+    return {
       average: currentAvg,
       trend,
       bestDay,
       mostCommonMood: parseInt(mostCommonMood),
       goodDaysPercent,
       mostConsistentDay: mostConsistentDay ? dayNames[mostConsistentDay.day] : null
-    })
-  }
+    }
+  }, [chartData, allMoodEntries, period])
+
+  useEffect(() => {
+    if (!moodsLoading && chartData.length > 0) {
+      setLoading(false)
+    }
+  }, [moodsLoading, chartData])
 
   const CustomTooltip = useCallback(({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -276,8 +288,9 @@ function MoodTrends() {
                 fill="url(#moodGradient)"
                 dot={{ fill: '#4F46E5', strokeWidth: 2, r: 4 }}
                 activeDot={{ r: 6, stroke: '#4F46E5', strokeWidth: 2 }}
-                animationDuration={1000}
+                animationDuration={500}
                 animationEasing="ease-out"
+                isAnimationActive={chartData.length < 30}
               />
             </AreaChart>
           </ResponsiveContainer>

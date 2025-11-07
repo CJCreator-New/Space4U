@@ -63,7 +63,7 @@ function PremiumPage() {
         <div className="card p-6 hover:shadow-xl transition-shadow">
           <div className="text-sm font-medium text-primary mb-2">Most Flexible</div>
           <div className="mb-4">
-            <span className="text-4xl font-bold">â‚¹299</span>
+            <span className="text-4xl font-bold">₹299</span>
             <span className="text-text-secondary">/month</span>
           </div>
           <ul className="space-y-3 mb-6">
@@ -88,11 +88,11 @@ function PremiumPage() {
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-4 py-1 rounded-full text-sm font-medium">
             Best Value
           </div>
-          <div className="text-sm font-medium text-primary mb-2">Save â‚¹600 per year</div>
+          <div className="text-sm font-medium text-primary mb-2">Save ₹600 per year</div>
           <div className="mb-4">
-            <span className="text-4xl font-bold">â‚¹2,999</span>
+            <span className="text-4xl font-bold">₹2,999</span>
             <span className="text-text-secondary">/year</span>
-            <div className="text-sm text-text-secondary">â‚¹250/month</div>
+            <div className="text-sm text-text-secondary">₹250/month</div>
           </div>
           <ul className="space-y-3 mb-6">
             {['Unlimited mood history', 'Advanced AI insights', '4 live group therapy sessions', 'Priority support', 'Ad-free experience', 'Custom mood metrics', 'Export detailed reports'].map((feature, i) => (
@@ -171,7 +171,7 @@ function PremiumPage() {
             <Users className="text-primary mb-4" size={32} />
             <h3 className="text-xl font-semibold mb-2">Real Support</h3>
             <p className="text-text-secondary">
-              Affordable group therapy. Connect with licensed therapists in small groups for just â‚¹199/session.
+              Affordable group therapy. Connect with licensed therapists in small groups for just ₹199/session.
             </p>
           </div>
           
@@ -274,7 +274,7 @@ function PaymentModal({ plan, onClose, onSuccess }) {
     upiId: ''
   })
 
-  const price = plan === 'annual' ? 'â‚¹2,999' : 'â‚¹299'
+  const price = plan === 'annual' ? '₹2,999' : '₹299'
   const trialEndDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()
 
   const handleSubmit = (e) => {

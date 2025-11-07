@@ -1,18 +1,20 @@
 ﻿import { useState, useEffect } from 'react'
-import { 
+import {
   Bell, Shield, Palette, Globe, Eye, User, HelpCircle, Info,
   Search, ChevronDown, ChevronRight, Download, Trash2, X, Check,
   Sun, Moon, Monitor, Type, Zap, Volume2, Mail, Smartphone,
   ExternalLink, RotateCcw, Crown, Dot, Keyboard, Upload, Lock,
   Database, Cloud, Users as UsersIcon, Heart, Calendar, Settings as SettingsIcon,
-  Fingerprint, HardDrive, Battery, Gauge, Filter, Target, Home, Smile, Layout
+  Fingerprint, HardDrive, Battery, Gauge, Filter, Target, Home, Smile, Layout, Archive
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '../hooks/useTheme'
-import ExportImportModal from '../components/ExportImportModal'
 import SafeComponent from '../components/SafeComponent'
 import CountrySelector from '../components/CountrySelector'
 import { getUserCountry, getCountryData } from '../data/countryData'
+import NotificationSettings from '../components/settings/NotificationSettings'
+import AppearanceSettings from '../components/settings/AppearanceSettings'
+import PrivacySettings from '../components/settings/PrivacySettings'
 
 const DEFAULT_SETTINGS = {
   notifications: {
@@ -134,12 +136,24 @@ function SettingsPage() {
   const [isPremium, setIsPremium] = useState(false)
   const [showExportModal, setShowExportModal] = useState(false)
   const [userCountry, setUserCountry] = useState(getUserCountry())
+  const [archivingInProgress, setArchivingInProgress] = useState(false)
+  const [archivingStats, setArchivingStats] = useState(null)
+  const [ExportImportModal, setExportImportModal] = useState(null)
 
   useEffect(() => {
     loadSettings()
     const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
     setIsPremium(premiumData.isPremium || false)
   }, [])
+
+  // Load ExportImportModal dynamically when needed
+  useEffect(() => {
+    if (showExportModal && !ExportImportModal) {
+      import('../components/ExportImportModal').then(module => {
+        setExportImportModal(() => module.default)
+      })
+    }
+  }, [showExportModal, ExportImportModal])
 
   const loadSettings = async () => {
     const { getSettings } = await import('../utils/storageHelpers')
@@ -247,6 +261,21 @@ function SettingsPage() {
   const handleAutoDelete = () => {
     setShowAutoDeleteModal(false)
     showToast('Auto-delete setting updated')
+  }
+
+  const handleDataArchiving = async () => {
+    setArchivingInProgress(true)
+    try {
+      const { runDataArchiving } = await import('../utils/dataArchiving')
+      const results = await runDataArchiving()
+      setArchivingStats(results.results)
+      showToast(`Data archiving completed. Archived ${results.results.gratitude?.archived || 0} gratitude entries, ${results.results.emotions?.archived || 0} emotion logs, ${results.results.moods?.archived || 0} mood entries.`)
+    } catch (error) {
+      console.error('Archiving failed:', error)
+      showToast('Data archiving failed. Please try again.')
+    } finally {
+      setArchivingInProgress(false)
+    }
   }
 
   const isSettingModified = (category, key) => {
@@ -360,101 +389,11 @@ function SettingsPage() {
             onToggle={() => toggleSection('notifications')}
           />
           {expandedSections.notifications && (
-            <div className="border-t border-gray-100">
-              <SettingRow
-                icon={Bell}
-                label="Daily mood reminders"
-                description="Get reminded to log your daily mood"
-                modified={isSettingModified('notifications', 'dailyReminder')}
-              >
-                <ToggleSwitch
-                  checked={settings.notifications.dailyReminder}
-                  onChange={(value) => updateSetting('notifications', 'dailyReminder', value)}
-                />
-              </SettingRow>
-              
-              {settings.notifications.dailyReminder && (
-                <>
-                  <SettingRow icon={Bell} label="Reminder time">
-                    <input
-                      type="time"
-                      value={settings.notifications.reminderTime}
-                      onChange={(e) => updateSetting('notifications', 'reminderTime', e.target.value)}
-                      className="w-full sm:w-auto px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
-                    />
-                  </SettingRow>
-                  
-                  <SettingRow icon={Bell} label="Reminder days">
-                    <select
-                      value={settings.notifications.reminderDays}
-                      onChange={(e) => updateSetting('notifications', 'reminderDays', e.target.value)}
-                      className="w-full sm:w-auto px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
-                    >
-                      <option value="daily">Daily</option>
-                      <option value="weekdays">Weekdays only</option>
-                      <option value="custom">Custom</option>
-                    </select>
-                  </SettingRow>
-                </>
-              )}
-              
-              <SettingRow
-                icon={Bell}
-                label="Circle activity"
-                description="Notifications from your circles"
-                modified={isSettingModified('notifications', 'circleActivity')}
-              >
-                <ToggleSwitch
-                  checked={settings.notifications.circleActivity}
-                  onChange={(value) => updateSetting('notifications', 'circleActivity', value)}
-                />
-              </SettingRow>
-              
-              {settings.notifications.circleActivity && (
-                <>
-                  <SettingRow icon={Bell} label="New posts in my circles">
-                    <ToggleSwitch
-                      checked={settings.notifications.newPosts}
-                      onChange={(value) => updateSetting('notifications', 'newPosts', value)}
-                    />
-                  </SettingRow>
-                  
-                  <SettingRow icon={Bell} label="Replies to my posts">
-                    <ToggleSwitch
-                      checked={settings.notifications.replies}
-                      onChange={(value) => updateSetting('notifications', 'replies', value)}
-                    />
-                  </SettingRow>
-                  
-                  <SettingRow icon={Bell} label="Hearts on my content">
-                    <ToggleSwitch
-                      checked={settings.notifications.hearts}
-                      onChange={(value) => updateSetting('notifications', 'hearts', value)}
-                    />
-                  </SettingRow>
-                </>
-              )}
-              
-              <SettingRow
-                icon={Zap}
-                label="Wellness nudges"
-                description="Motivational reminders and streak alerts"
-                modified={isSettingModified('notifications', 'wellnessNudges')}
-              >
-                <ToggleSwitch
-                  checked={settings.notifications.wellnessNudges}
-                  onChange={(value) => updateSetting('notifications', 'wellnessNudges', value)}
-                />
-              </SettingRow>
-              
-              <SettingRow
-                icon={Bell}
-                label="Crisis alerts"
-                description="Important safety alerts (always on)"
-              >
-                <ToggleSwitch checked={true} onChange={() => {}} disabled={true} />
-              </SettingRow>
-            </div>
+            <NotificationSettings
+              settings={settings}
+              updateSetting={updateSetting}
+              isSettingModified={isSettingModified}
+            />
           )}
         </div>
 
@@ -467,73 +406,14 @@ function SettingsPage() {
             onToggle={() => toggleSection('privacy')}
           />
           {expandedSections.privacy && (
-            <div className="border-t border-gray-100">
-              <SettingRow
-                icon={Eye}
-                label="Always post anonymously"
-                description="Your identity is hidden in all interactions"
-                modified={isSettingModified('privacy', 'anonymous')}
-              >
-                <ToggleSwitch
-                  checked={settings.privacy.anonymous}
-                  onChange={(value) => updateSetting('privacy', 'anonymous', value)}
-                />
-              </SettingRow>
-              
-              <SettingRow
-                icon={Shield}
-                label="Allow analytics"
-                description="Helps us improve the app. Never includes personal data."
-                modified={isSettingModified('privacy', 'analytics')}
-              >
-                <ToggleSwitch
-                  checked={settings.privacy.analytics}
-                  onChange={(value) => updateSetting('privacy', 'analytics', value)}
-                />
-              </SettingRow>
-              
-              <SettingRow
-                icon={Trash2}
-                label="Auto-delete old data"
-                description={`Automatically delete moods older than ${settings.privacy.autoDelete === 'never' ? 'never' : settings.privacy.autoDelete}`}
-                modified={isSettingModified('privacy', 'autoDelete')}
-              >
-                <select
-                  value={settings.privacy.autoDelete}
-                  onChange={(e) => {
-                    if (e.target.value !== 'never') {
-                      setShowAutoDeleteModal(true)
-                    }
-                    updateSetting('privacy', 'autoDelete', e.target.value)
-                  }}
-                  className="w-full sm:w-auto px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
-                >
-                  <option value="never">Never</option>
-                  <option value="30 days">30 days</option>
-                  <option value="90 days">90 days</option>
-                  <option value="1 year">1 year</option>
-                </select>
-              </SettingRow>
-              
-              <SettingRow icon={Download} label="Export & Import" description="Backup or restore your data" isNew={true}>
-                <button
-                  onClick={() => setShowExportModal(true)}
-                  className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center gap-2"
-                >
-                  <Upload size={16} />
-                  Manage Data
-                </button>
-              </SettingRow>
-              
-              <SettingRow icon={Trash2} label="Delete account" description="Permanently delete your account and data">
-                <button
-                  onClick={() => setShowDeleteModal(true)}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors"
-                >
-                  Delete My Account
-                </button>
-              </SettingRow>
-            </div>
+            <PrivacySettings
+              settings={settings}
+              updateSetting={updateSetting}
+              setShowAutoDeleteModal={setShowAutoDeleteModal}
+              setShowExportModal={setShowExportModal}
+              setShowDeleteModal={setShowDeleteModal}
+              isSettingModified={isSettingModified}
+            />
           )}
         </div>
 
@@ -546,118 +426,15 @@ function SettingsPage() {
             onToggle={() => toggleSection('appearance')}
           />
           {expandedSections.appearance && (
-            <div className="border-t border-gray-100">
-              <SettingRow
-                icon={Sun}
-                label="Theme"
-                description="Choose your preferred theme"
-                modified={theme !== 'auto'}
-              >
-                <div className="flex flex-col sm:flex-row gap-2">
-                  {[
-                    { value: 'light', icon: Sun, label: 'Light', action: setLightTheme },
-                    { value: 'dark', icon: Moon, label: 'Dark', action: setDarkTheme },
-                    { value: 'auto', icon: Monitor, label: 'Auto', action: setAutoTheme }
-                  ].map(({ value, icon: Icon, label, action }) => (
-                    <button
-                      key={value}
-                      onClick={action}
-                      className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition-colors ${
-                        (value === 'auto' && !localStorage.getItem('space4u_theme')) || theme === value
-                          ? 'border-primary bg-primary/10 text-primary dark:border-primary-light dark:bg-primary-light/10'
-                          : 'border-gray-200 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700'
-                      }`}
-                    >
-                      <Icon size={16} />
-                      <span className="text-sm">{label}</span>
-                    </button>
-                  ))}
-                </div>
-              </SettingRow>
-              
-              <SettingRow
-                icon={Type}
-                label="Text size"
-                description="Adjust text size for better readability"
-                modified={isSettingModified('appearance', 'textSize')}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-sm text-text-secondary">A</span>
-                  <input
-                    type="range"
-                    min="0"
-                    max="3"
-                    value={['small', 'medium', 'large', 'extra-large'].indexOf(settings.appearance.textSize)}
-                    onChange={(e) => {
-                      const sizes = ['small', 'medium', 'large', 'extra-large']
-                      updateSetting('appearance', 'textSize', sizes[e.target.value])
-                    }}
-                    className="flex-1"
-                  />
-                  <span className="text-lg text-text-secondary">A</span>
-                </div>
-              </SettingRow>
-              
-              <SettingRow
-                icon={Zap}
-                label="Reduce motion"
-                description="Minimize animations for accessibility"
-                modified={isSettingModified('appearance', 'reduceMotion')}
-              >
-                <ToggleSwitch
-                  checked={settings.appearance.reduceMotion}
-                  onChange={(value) => updateSetting('appearance', 'reduceMotion', value)}
-                />
-              </SettingRow>
-              
-              <SettingRow icon={Layout} label="Display density">
-                <select
-                  value={settings.appearance.displayDensity}
-                  onChange={(e) => updateSetting('appearance', 'displayDensity', e.target.value)}
-                  className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
-                >
-                  <option value="compact">Compact</option>
-                  <option value="comfortable">Comfortable</option>
-                  <option value="spacious">Spacious</option>
-                </select>
-              </SettingRow>
-              
-              <SettingRow icon={Layout} label="Card layout">
-                <select
-                  value={settings.appearance.cardLayout}
-                  onChange={(e) => updateSetting('appearance', 'cardLayout', e.target.value)}
-                  className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
-                >
-                  <option value="default">Default</option>
-                  <option value="minimal">Minimal</option>
-                  <option value="detailed">Detailed</option>
-                </select>
-              </SettingRow>
-              
-              <SettingRow icon={Zap} label="Animation speed">
-                <select
-                  value={settings.appearance.animationSpeed}
-                  onChange={(e) => updateSetting('appearance', 'animationSpeed', e.target.value)}
-                  className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
-                >
-                  <option value="slow">Slow</option>
-                  <option value="normal">Normal</option>
-                  <option value="fast">Fast</option>
-                </select>
-              </SettingRow>
-              
-              <SettingRow icon={Smile} label="Emoji style">
-                <select
-                  value={settings.appearance.emojiStyle}
-                  onChange={(e) => updateSetting('appearance', 'emojiStyle', e.target.value)}
-                  className="px-3 py-2 border border-gray-200 rounded-lg focus:border-primary outline-none"
-                >
-                  <option value="native">Native</option>
-                  <option value="twitter">Twitter</option>
-                  <option value="google">Google</option>
-                </select>
-              </SettingRow>
-            </div>
+            <AppearanceSettings
+              settings={settings}
+              updateSetting={updateSetting}
+              theme={theme}
+              setLightTheme={setLightTheme}
+              setDarkTheme={setDarkTheme}
+              setAutoTheme={setAutoTheme}
+              isSettingModified={isSettingModified}
+            />
           )}
         </div>
 
@@ -962,6 +739,23 @@ function SettingsPage() {
                   onChange={(value) => updateSetting('storage', 'offlineMode', value)}
                 />
               </SettingRow>
+              <SettingRow icon={Archive} label="Data archiving" description="Archive old data to save space">
+                <button
+                  onClick={handleDataArchiving}
+                  disabled={archivingInProgress}
+                  className="px-3 py-2 text-primary font-medium hover:underline disabled:opacity-50"
+                >
+                  {archivingInProgress ? 'Archiving...' : 'Archive Old Data'}
+                </button>
+              </SettingRow>
+              {archivingStats && (
+                <div className="px-4 py-2 text-sm text-gray-600 bg-gray-50 rounded-lg">
+                  <div className="font-medium mb-1">Last archiving results:</div>
+                  <div>Gratitude: {archivingStats.gratitude?.archived || 0} archived</div>
+                  <div>Emotions: {archivingStats.emotions?.archived || 0} archived</div>
+                  <div>Moods: {archivingStats.moods?.archived || 0} archived</div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -1400,7 +1194,7 @@ function SettingsPage() {
       )}
 
       {/* Export/Import Modal */}
-      <ExportImportModal isOpen={showExportModal} onClose={() => setShowExportModal(false)} />
+      {ExportImportModal && <ExportImportModal isOpen={showExportModal} onClose={() => setShowExportModal(false)} />}
 
       {/* Auto Delete Confirmation Modal */}
       {showAutoDeleteModal && (

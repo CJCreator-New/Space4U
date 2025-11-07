@@ -1,6 +1,7 @@
-﻿import { useState, useEffect } from 'react'
+﻿import { useState, useEffect, useMemo, useReducer } from 'react'
 import { ChevronLeft, ChevronRight, X, Edit, Trash2 } from '../config/icons'
 import { useMoods } from '../hooks/useMoods'
+import { DEFAULT_DATE_RANGE } from '../utils/dateRangeUtils'
 
 const moodColors = {
   5: '#10B981', // Amazing - green
@@ -18,13 +19,45 @@ const moodLabels = {
   1: 'Struggling'
 }
 
-function MoodCalendar() {
-  const [view, setView] = useState('week')
-  const [currentDate, setCurrentDate] = useState(new Date())
-  const { moods, loading } = useMoods()
-  const [selectedDay, setSelectedDay] = useState(null)
-  const [showModal, setShowModal] = useState(false)
+const initialCalendarState = {
+  view: 'week',
+  currentDate: new Date(),
+  selectedDay: null,
+  showModal: false
+}
 
+const calendarReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_VIEW':
+      return { ...state, view: action.payload }
+    case 'SET_CURRENT_DATE':
+      return { ...state, currentDate: action.payload }
+    case 'NAVIGATE_DATE':
+      const newDate = new Date(state.currentDate)
+      if (state.view === 'week') {
+        newDate.setDate(newDate.getDate() + (action.payload * 7))
+      } else {
+        newDate.setMonth(newDate.getMonth() + action.payload)
+      }
+      return { ...state, currentDate: newDate }
+    case 'SELECT_DAY':
+      return { 
+        ...state, 
+        selectedDay: action.payload ? { date: action.payload.date, mood: action.payload.mood } : null,
+        showModal: !!action.payload
+      }
+    case 'CLOSE_MODAL':
+      return { ...state, showModal: false, selectedDay: null }
+    default:
+      return state
+  }
+}
+
+function MoodCalendar() {
+  const [calendarState, dispatch] = useReducer(calendarReducer, initialCalendarState)
+  const { moods, loading } = useMoods('all') // Load all mood data for calendar navigation
+
+  // Helper functions
   const getWeekDates = (date) => {
     const week = []
     const startOfWeek = new Date(date)
@@ -58,6 +91,19 @@ function MoodCalendar() {
     return dates
   }
 
+  // Memoize date calculations
+  const weekDates = useMemo(() => getWeekDates(calendarState.currentDate), [calendarState.currentDate])
+  const monthDates = useMemo(() => getMonthDates(calendarState.currentDate), [calendarState.currentDate])
+  const weekRange = useMemo(() => {
+    const start = weekDates[0]
+    const end = weekDates[6]
+    return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+  }, [weekDates])
+  const monthYear = useMemo(() => 
+    calendarState.currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+    [calendarState.currentDate]
+  )
+
   const formatDateKey = (date) => {
     return date.toISOString().split('T')[0]
   }
@@ -73,47 +119,33 @@ function MoodCalendar() {
   }
 
   const navigateWeek = (direction) => {
-    const newDate = new Date(currentDate)
-    newDate.setDate(newDate.getDate() + (direction * 7))
-    setCurrentDate(newDate)
+    dispatch({ type: 'NAVIGATE_DATE', payload: direction })
   }
 
   const navigateMonth = (direction) => {
-    const newDate = new Date(currentDate)
-    newDate.setMonth(newDate.getMonth() + direction)
-    setCurrentDate(newDate)
+    dispatch({ type: 'NAVIGATE_DATE', payload: direction })
   }
 
   const handleDayClick = (date) => {
     const dateKey = formatDateKey(date)
     const dayMood = moods[dateKey]
     if (dayMood) {
-      setSelectedDay({ date, mood: dayMood })
-      setShowModal(true)
+      dispatch({ type: 'SELECT_DAY', payload: { date, mood: dayMood } })
     }
   }
 
   const deleteMood = async () => {
-    if (selectedDay) {
-      const dateKey = formatDateKey(selectedDay.date)
+    if (calendarState.selectedDay) {
+      const dateKey = formatDateKey(calendarState.selectedDay.date)
       // TODO: Add delete functionality to useMoods hook
       const updatedMoods = { ...moods }
       delete updatedMoods[dateKey]
       localStorage.setItem('space4u_moods', JSON.stringify(updatedMoods))
-      setShowModal(false)
+      dispatch({ type: 'CLOSE_MODAL' })
     }
   }
 
-  const getWeekRange = () => {
-    const weekDates = getWeekDates(currentDate)
-    const start = weekDates[0]
-    const end = weekDates[6]
-    return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
-  }
 
-  const getMonthYear = () => {
-    return currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-  }
 
   if (loading) {
     return (
@@ -154,21 +186,21 @@ function MoodCalendar() {
       <div className="card p-6 mb-6 dark:bg-gray-800 dark:border-gray-700">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-semibold text-text-primary dark:text-white">
-            Your Mood This {view === 'week' ? 'Week' : 'Month'}
+            Your Mood This {calendarState.view === 'week' ? 'Week' : 'Month'}
           </h3>
           <div className="flex gap-2">
             <button
-              onClick={() => setView('week')}
+              onClick={() => dispatch({ type: 'SET_VIEW', payload: 'week' })}
               className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                view === 'week' ? 'bg-primary text-white' : 'text-text-secondary hover:text-text-primary'
+                calendarState.view === 'week' ? 'bg-primary text-white' : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               Week
             </button>
             <button
-              onClick={() => setView('month')}
+              onClick={() => dispatch({ type: 'SET_VIEW', payload: 'month' })}
               className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                view === 'month' ? 'bg-primary text-white' : 'text-text-secondary hover:text-primary'
+                calendarState.view === 'month' ? 'bg-primary text-white' : 'text-text-secondary hover:text-primary'
               }`}
             >
               Month
@@ -178,25 +210,25 @@ function MoodCalendar() {
 
         <div className="flex items-center justify-between mb-4">
           <button
-            onClick={() => view === 'week' ? navigateWeek(-1) : navigateMonth(-1)}
+            onClick={() => dispatch({ type: 'NAVIGATE_DATE', payload: -1 })}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <ChevronLeft size={20} />
           </button>
           <span className="font-medium text-text-primary">
-            {view === 'week' ? getWeekRange() : getMonthYear()}
+            {calendarState.view === 'week' ? weekRange : monthYear}
           </span>
           <button
-            onClick={() => view === 'week' ? navigateWeek(1) : navigateMonth(1)}
+            onClick={() => dispatch({ type: 'NAVIGATE_DATE', payload: 1 })}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <ChevronRight size={20} />
           </button>
         </div>
 
-        {view === 'week' ? (
+        {calendarState.view === 'week' ? (
           <div className="grid grid-cols-7 gap-2">
-            {getWeekDates(currentDate).map((date, index) => {
+            {weekDates.map((date, index) => {
               const dateKey = formatDateKey(date)
               const dayMood = moods[dateKey]
               const dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
@@ -232,10 +264,10 @@ function MoodCalendar() {
                 {day}
               </div>
             ))}
-            {getMonthDates(currentDate).map((date, index) => {
+            {monthDates.map((date, index) => {
               const dateKey = formatDateKey(date)
               const dayMood = moods[dateKey]
-              const isCurrentMonth = isSameMonth(date, currentDate)
+              const isCurrentMonth = isSameMonth(date, calendarState.currentDate)
               
               return (
                 <button
@@ -264,19 +296,19 @@ function MoodCalendar() {
         )}
       </div>
 
-      {showModal && selectedDay && (
+      {calendarState.showModal && calendarState.selectedDay && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-surface dark:bg-gray-800 rounded-2xl p-6 max-w-sm w-full">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold">
-                {selectedDay.date.toLocaleDateString('en-US', { 
+                {calendarState.selectedDay.date.toLocaleDateString('en-US', { 
                   weekday: 'long', 
                   month: 'long', 
                   day: 'numeric' 
                 })}
               </h3>
               <button
-                onClick={() => setShowModal(false)}
+                onClick={() => dispatch({ type: 'CLOSE_MODAL' })}
                 className="p-1 hover:bg-gray-100 rounded-full"
               >
                 <X size={20} />
@@ -284,20 +316,20 @@ function MoodCalendar() {
             </div>
             
             <div className="text-center mb-4">
-              <div className="text-4xl mb-2">{selectedDay.mood.emoji}</div>
+              <div className="text-4xl mb-2">{calendarState.selectedDay.mood.emoji}</div>
               <p className="text-lg font-medium text-text-primary">
-                You felt {moodLabels[selectedDay.mood.mood]}
+                You felt {moodLabels[calendarState.selectedDay.mood.mood]}
               </p>
             </div>
             
-            {selectedDay.mood.note && (
+            {calendarState.selectedDay.mood.note && (
               <div className="bg-gray-50 rounded-xl p-3 mb-4">
-                <p className="text-text-secondary text-sm">{selectedDay.mood.note}</p>
+                <p className="text-text-secondary text-sm">{calendarState.selectedDay.mood.note}</p>
               </div>
             )}
             
             <p className="text-xs text-text-secondary mb-4">
-              Logged at {new Date(selectedDay.mood.timestamp).toLocaleTimeString('en-US', {
+              Logged at {new Date(calendarState.selectedDay.mood.timestamp).toLocaleTimeString('en-US', {
                 hour: 'numeric',
                 minute: '2-digit',
                 hour12: true

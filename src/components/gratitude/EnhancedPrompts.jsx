@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { RefreshCw, Sparkles, Heart, Brain, Users, Briefcase, Leaf } from 'lucide-react'
+import { RefreshCw, Sparkles, Heart, Brain, Users, Briefcase, Leaf, X, Plus, Edit3 } from 'lucide-react'
 import {
   Box,
   VStack,
@@ -12,6 +12,14 @@ import {
   WrapItem,
   Badge,
   useColorModeValue,
+  Textarea,
+  IconButton,
+  Divider,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from '@chakra-ui/react'
 
 const PROMPT_THEMES = [
@@ -112,8 +120,10 @@ const PROMPT_THEMES = [
   }
 ]
 
-function EnhancedPrompts({ onPromptSelect, currentPrompt }) {
+function EnhancedPrompts({ onPromptSelect, currentPrompt, onPromptThoughtsChange, selectedPrompts = [] }) {
   const [selectedTheme, setSelectedTheme] = useState('general')
+  const [selectedPromptsState, setSelectedPromptsState] = useState(selectedPrompts)
+  const [promptThoughts, setPromptThoughts] = useState({})
   const bgColor = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
 
@@ -124,7 +134,50 @@ function EnhancedPrompts({ onPromptSelect, currentPrompt }) {
   }
 
   const handlePromptClick = (prompt) => {
-    onPromptSelect(prompt)
+    const isSelected = selectedPromptsState.includes(prompt)
+    let newSelectedPrompts
+
+    if (isSelected) {
+      // Remove prompt
+      newSelectedPrompts = selectedPromptsState.filter(p => p !== prompt)
+      const newThoughts = { ...promptThoughts }
+      delete newThoughts[prompt]
+      setPromptThoughts(newThoughts)
+    } else {
+      // Add prompt
+      newSelectedPrompts = [...selectedPromptsState, prompt]
+    }
+
+    setSelectedPromptsState(newSelectedPrompts)
+    onPromptSelect(newSelectedPrompts)
+
+    // Notify parent of thoughts change
+    if (onPromptThoughtsChange) {
+      onPromptThoughtsChange(promptThoughts)
+    }
+  }
+
+  const handleThoughtChange = (prompt, thought) => {
+    const newThoughts = { ...promptThoughts, [prompt]: thought }
+    setPromptThoughts(newThoughts)
+
+    if (onPromptThoughtsChange) {
+      onPromptThoughtsChange(newThoughts)
+    }
+  }
+
+  const removePrompt = (prompt) => {
+    const newSelectedPrompts = selectedPromptsState.filter(p => p !== prompt)
+    setSelectedPromptsState(newSelectedPrompts)
+    onPromptSelect(newSelectedPrompts)
+
+    const newThoughts = { ...promptThoughts }
+    delete newThoughts[prompt]
+    setPromptThoughts(newThoughts)
+
+    if (onPromptThoughtsChange) {
+      onPromptThoughtsChange(newThoughts)
+    }
   }
 
   return (
@@ -173,39 +226,93 @@ function EnhancedPrompts({ onPromptSelect, currentPrompt }) {
             <Text fontWeight="semibold">{currentTheme.name} Prompts</Text>
           </HStack>
           <VStack spacing={2} align="stretch">
-            {currentTheme.prompts.map((prompt, index) => (
-              <Button
-                key={index}
-                variant="ghost"
-                justifyContent="flex-start"
-                textAlign="left"
-                h="auto"
-                py={2}
-                px={3}
-                borderRadius="md"
-                onClick={() => handlePromptClick(prompt)}
-                _hover={{ bg: `${currentTheme.color}.50` }}
-                whiteSpace="normal"
-                wordBreak="break-word"
-              >
-                <Text fontSize="sm">{prompt}</Text>
-              </Button>
-            ))}
+            {currentTheme.prompts.map((prompt, index) => {
+              const isSelected = selectedPromptsState.includes(prompt)
+              return (
+                <Button
+                  key={index}
+                  variant={isSelected ? "solid" : "ghost"}
+                  colorScheme={isSelected ? currentTheme.color : "gray"}
+                  justifyContent="flex-start"
+                  textAlign="left"
+                  h="auto"
+                  py={2}
+                  px={3}
+                  borderRadius="md"
+                  onClick={() => handlePromptClick(prompt)}
+                  _hover={{ bg: isSelected ? `${currentTheme.color}.600` : `${currentTheme.color}.50` }}
+                  whiteSpace="normal"
+                  wordBreak="break-word"
+                  leftIcon={isSelected ? <Check size={14} /> : undefined}
+                >
+                  <Text fontSize="sm">{prompt}</Text>
+                </Button>
+              )
+            })}
           </VStack>
         </CardBody>
       </Card>
 
-      {/* Current Selection */}
-      {currentPrompt && (
+      {/* Selected Prompts with Thoughts */}
+      {selectedPromptsState.length > 0 && (
         <Card bg="purple.50" borderColor="purple.200" borderWidth={1} borderRadius="xl">
           <CardBody>
-            <HStack>
+            <HStack mb={3}>
               <Sparkles size={16} color="purple" />
-              <Box flex={1}>
-                <Text fontSize="sm" color="gray.600" mb={1}>Selected Prompt:</Text>
-                <Text fontSize="md" fontStyle="italic">"{currentPrompt}"</Text>
-              </Box>
+              <Text fontWeight="semibold" color="purple.700">
+                Selected Prompts ({selectedPromptsState.length})
+              </Text>
             </HStack>
+            <Accordion allowMultiple>
+              {selectedPromptsState.map((prompt, index) => (
+                <AccordionItem key={index} border="none">
+                  <AccordionButton
+                    _hover={{ bg: "purple.100" }}
+                    borderRadius="md"
+                    px={3}
+                    py={2}
+                  >
+                    <Box flex="1" textAlign="left">
+                      <HStack>
+                        <Text fontSize="sm" fontWeight="medium" color="purple.800">
+                          {prompt}
+                        </Text>
+                        <IconButton
+                          size="xs"
+                          variant="ghost"
+                          colorScheme="red"
+                          icon={<X size={12} />}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            removePrompt(prompt)
+                          }}
+                          aria-label="Remove prompt"
+                        />
+                      </HStack>
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                  <AccordionPanel pb={4}>
+                    <VStack spacing={2} align="stretch">
+                      <Text fontSize="xs" color="gray.600">
+                        Add your thoughts about this prompt:
+                      </Text>
+                      <Textarea
+                        placeholder="Write your thoughts here..."
+                        value={promptThoughts[prompt] || ''}
+                        onChange={(e) => handleThoughtChange(prompt, e.target.value)}
+                        size="sm"
+                        rows={3}
+                        borderRadius="md"
+                        bg="white"
+                        borderColor="purple.200"
+                        _focus={{ borderColor: "purple.300", boxShadow: "0 0 0 1px purple.300" }}
+                      />
+                    </VStack>
+                  </AccordionPanel>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </CardBody>
         </Card>
       )}

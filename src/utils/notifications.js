@@ -101,9 +101,17 @@ export const checkStreakReminder = () => {
   }
 }
 
+// Initialize notification system with cleanup
+let reminderInterval = null
+let streakInterval = null
+
 export const initNotifications = () => {
+  // Clear existing intervals
+  if (reminderInterval) clearInterval(reminderInterval)
+  if (streakInterval) clearInterval(streakInterval)
+  
   // Check reminders every minute
-  setInterval(() => {
+  reminderInterval = setInterval(() => {
     checkDailyMoodReminder()
   }, 60000)
   
@@ -114,5 +122,13 @@ export const initNotifications = () => {
       checkStreakReminder()
     }
   }
-  setInterval(checkStreak, 60000)
+  streakInterval = setInterval(checkStreak, 60000)
+  
+  // Return cleanup function
+  return () => {
+    if (reminderInterval) clearInterval(reminderInterval)
+    if (streakInterval) clearInterval(streakInterval)
+    reminderInterval = null
+    streakInterval = null
+  }
 }
