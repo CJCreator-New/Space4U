@@ -4,6 +4,7 @@ import { AuthProvider, useSupabaseAuth } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { NotificationProvider } from './contexts/NotificationContext'
 import { ReminderProvider } from './contexts/ReminderContext'
+import { PremiumProvider } from './contexts/PremiumContext'
 import { ChakraProvider } from '@chakra-ui/react'
 import Layout from './components/Layout'
 import theme from './theme'
@@ -75,15 +76,17 @@ function App() {
       <ChakraProvider theme={theme}>
         <ThemeProvider>
           <AuthProvider>
-            <NotificationProvider>
-              <ReminderProvider>
-                <SWRProvider>
-                  <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-                    <AppContent />
-                  </BrowserRouter>
-                </SWRProvider>
-              </ReminderProvider>
-            </NotificationProvider>
+            <PremiumProvider>
+              <NotificationProvider>
+                <ReminderProvider>
+                  <SWRProvider>
+                    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+                      <AppContent />
+                    </BrowserRouter>
+                  </SWRProvider>
+                </ReminderProvider>
+              </NotificationProvider>
+            </PremiumProvider>
           </AuthProvider>
         </ThemeProvider>
       </ChakraProvider>

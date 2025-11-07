@@ -1,6 +1,7 @@
-﻿import { useState } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
+import { getPremiumStatus } from '../utils/premiumUtils'
 import { 
   Crown, Check, X, Brain, Users, Download, Star, Lock, 
   CreditCard, Smartphone, ChevronDown, Shield, Sparkles
@@ -32,10 +33,21 @@ function PremiumPage() {
   const [showPaymentModal, setShowPaymentModal] = useState(false)
   const [showComparison, setShowComparison] = useState(false)
   const [expandedFaq, setExpandedFaq] = useState(null)
+  const { isPremium } = getPremiumStatus()
+
+  useEffect(() => {
+    if (isPremium) {
+      navigate('/premium/features')
+    }
+  }, [isPremium, navigate])
 
   const handleUpgrade = (plan) => {
     setSelectedPlan(plan)
     setShowPaymentModal(true)
+  }
+
+  if (isPremium) {
+    return null
   }
 
   return (
@@ -292,6 +304,10 @@ function PaymentModal({ plan, onClose, onSuccess }) {
     }
     
     localStorage.setItem('space4u_premium', JSON.stringify(premiumData))
+    
+    // Dispatch global event to update premium status across all components
+    window.dispatchEvent(new CustomEvent('premiumStatusUpdated', { detail: premiumData }))
+    
     onSuccess()
   }
 

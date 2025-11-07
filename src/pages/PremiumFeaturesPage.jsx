@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from 'react'
-import { Shield, Palette, TrendingUp, AlertTriangle, Users, Crown, BarChart3 } from 'lucide-react'
+import { Shield, Palette, TrendingUp, AlertTriangle, Users, Crown, BarChart3, Sparkles, Calendar, Award, Zap, Lock, CheckCircle } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import SafeComponent from '../components/SafeComponent'
 import StreakInsurance from '../components/premium/StreakInsurance'
@@ -8,6 +8,7 @@ import WellnessBreakdown from '../components/premium/WellnessBreakdown'
 import PredictiveAlerts from '../components/premium/PredictiveAlerts'
 import PrivateGroups from '../components/premium/PrivateGroups'
 import AnalyticsTiles from '../components/premium/AnalyticsTiles'
+import { getPremiumStatus } from '../utils/premiumUtils'
 
 function PremiumFeaturesPage() {
   const navigate = useNavigate()
@@ -20,8 +21,8 @@ function PremiumFeaturesPage() {
 
   useEffect(() => {
     try {
-      const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
-      setIsPremium(premiumData.isPremium || false)
+      const { isPremium: premium, trialActive, trialEndsAt, planType } = getPremiumStatus()
+      setIsPremium(premium)
     } catch (err) {
       console.error('Error loading premium status:', err)
     } finally {
@@ -85,36 +86,81 @@ function PremiumFeaturesPage() {
     )
   }
 
+  const premiumData = JSON.parse(localStorage.getItem('space4u_premium') || '{}')
+  const trialDaysLeft = premiumData.trialEndsAt 
+    ? Math.ceil((new Date(premiumData.trialEndsAt) - new Date()) / (1000 * 60 * 60 * 24))
+    : 0
+
   return (
     <div className="max-w-6xl mx-auto p-4 pb-24">
-      <div className="mb-6">
-        <div className="flex items-center gap-3">
-          <Crown className="text-yellow-500" size={32} />
-          <div>
-            <h1 className="text-2xl font-bold text-text-primary">Premium Features</h1>
-            <p className="text-text-secondary">Exclusive tools for premium members</p>
+      {/* Premium Status Banner */}
+      <div className="bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 text-white rounded-2xl p-6 mb-6 shadow-xl">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-4">
+            <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+              <Crown size={32} />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold mb-1">Premium Member</h1>
+              <p className="text-white/90">
+                {premiumData.trialActive 
+                  ? `${trialDaysLeft} days left in trial • ${premiumData.planType === 'annual' ? 'Annual' : 'Monthly'} plan`
+                  : `${premiumData.planType === 'annual' ? 'Annual' : 'Monthly'} plan • Active`
+                }
+              </p>
+            </div>
           </div>
+          <button
+            onClick={() => navigate('/settings')}
+            className="px-6 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl font-medium transition-colors"
+          >
+            Manage Subscription
+          </button>
         </div>
       </div>
 
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-        {tabs.map(tab => {
-          const Icon = tab.icon
+      {/* Quick Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        {[
+          { icon: Sparkles, label: 'Features Unlocked', value: '8', color: 'text-yellow-500' },
+          { icon: Calendar, label: 'Days Active', value: Math.ceil((new Date() - new Date(premiumData.subscribedAt || Date.now())) / (1000 * 60 * 60 * 24)), color: 'text-blue-500' },
+          { icon: Award, label: 'Premium Badges', value: '3', color: 'text-purple-500' },
+          { icon: Zap, label: 'Features Used', value: '5', color: 'text-green-500' }
+        ].map((stat, i) => {
+          const Icon = stat.icon
           return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-colors ${
-                activeTab === tab.id
-                  ? 'bg-primary text-white'
-                  : 'bg-surface text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              <Icon size={18} />
-              {tab.label}
-            </button>
+            <div key={i} className="card p-4">
+              <Icon className={`${stat.color} mb-2`} size={24} />
+              <div className="text-2xl font-bold text-text-primary">{stat.value}</div>
+              <div className="text-xs text-text-secondary">{stat.label}</div>
+            </div>
           )
         })}
+      </div>
+
+      {/* Feature Categories */}
+      <div className="mb-6">
+        <h2 className="text-xl font-bold text-text-primary mb-4">Your Premium Features</h2>
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          {tabs.map(tab => {
+            const Icon = tab.icon
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl font-medium whitespace-nowrap transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-gradient-to-r from-primary to-primary-light text-white shadow-lg scale-105'
+                    : 'bg-surface text-text-secondary hover:text-text-primary hover:shadow-md'
+                }`}
+              >
+                <Icon size={18} />
+                {tab.label}
+                {activeTab === tab.id && <CheckCircle size={16} />}
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       <SafeComponent>
