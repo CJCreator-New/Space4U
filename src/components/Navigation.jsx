@@ -3,18 +3,9 @@ import { NavLink } from 'react-router-dom'
 import { Home, Users, Brain, User, Activity, Heart, Sparkles, Building2, LogOut, LogIn } from '../config/icons'
 import { useSupabaseAuth } from '../contexts/AuthContext'
 import { useTranslation } from 'react-i18next'
-import { useFeatureFlag } from '../config/featureFlags'
-import { ModernNavigation } from './modern/ModernNavigation'
 import Logo from './Logo'
 
 const Navigation = memo(function Navigation() {
-  const useModernUI = useFeatureFlag('ENABLE_MODERN_UI');
-
-  if (useModernUI) {
-    return <ModernNavigation />;
-  }
-
-  // Legacy implementation
   const { user, signOut } = useSupabaseAuth()
   const { t } = useTranslation()
 
@@ -43,10 +34,9 @@ const Navigation = memo(function Navigation() {
               to={path}
               aria-label={`Navigate to ${label} page`}
               className={({ isActive }) =>
-                `flex flex-col items-center justify-center min-w-[64px] min-h-[56px] px-2 py-1 rounded-lg transition-colors active:scale-95 ${
-                  isActive
-                    ? 'text-primary'
-                    : 'text-text-secondary'
+                `flex flex-col items-center justify-center min-w-[64px] min-h-[56px] px-2 py-1 rounded-lg transition-colors active:scale-95 ${isActive
+                  ? 'text-primary'
+                  : 'text-text-secondary'
                 }`
               }
             >
@@ -58,10 +48,9 @@ const Navigation = memo(function Navigation() {
             to="/profile"
             aria-label="Navigate to Profile page"
             className={({ isActive }) =>
-              `flex flex-col items-center justify-center min-w-[64px] min-h-[56px] px-2 py-1 rounded-lg transition-colors active:scale-95 ${
-                isActive
-                  ? 'text-primary'
-                  : 'text-text-secondary'
+              `flex flex-col items-center justify-center min-w-[64px] min-h-[56px] px-2 py-1 rounded-lg transition-colors active:scale-95 ${isActive
+                ? 'text-primary'
+                : 'text-text-secondary'
               }`
             }
           >
@@ -84,10 +73,9 @@ const Navigation = memo(function Navigation() {
                 to={path}
                 aria-label={`Navigate to ${label} page`}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-2xl transition-colors ${
-                    isActive
-                      ? 'bg-primary dark:bg-primary-light text-white'
-                      : 'text-text-secondary dark:text-gray-300 hover:text-text-primary dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
+                  `flex items-center gap-3 px-4 py-3 rounded-2xl transition-colors ${isActive
+                    ? 'bg-primary dark:bg-primary-light text-white'
+                    : 'text-text-secondary dark:text-gray-300 hover:text-text-primary dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                   }`
                 }
               >

@@ -1,333 +1,138 @@
-import { useState, useEffect, useCallback, useMemo, useReducer } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { addPoints, POINT_VALUES, checkMoodLogBadges } from '../utils/badgeSystem'
-import { queueMoodLog } from '../utils/offlineQueue'
-import { useMoods } from '../hooks/useMoods'
-import { getLocalDate } from '../utils/dateHelpers'
-import { announce } from './common/LiveRegion'
-import { useFocusTrap } from '../hooks/useFocusTrap'
+import { Controller } from 'react-hook-form'
 import TagSelector from './mood/TagSelector'
-import {
-  Box,
-  Button,
-  Text,
-  Textarea,
-  VStack,
-  HStack,
-  SimpleGrid,
-  Badge,
-  useColorModeValue,
-  FormControl,
-  FormLabel,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
-} from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-
-const moods = [
-  { emoji: '😊', label: 'Amazing', value: 5, color: '#10B981' },
-  { emoji: '🙂', label: 'Good', value: 4, color: '#84CC16' },
-  { emoji: '😐', label: 'Okay', value: 3, color: '#F59E0B' },
-  { emoji: '😢', label: 'Low', value: 2, color: '#F97316' },
-  { emoji: '😰', label: 'Struggling', value: 1, color: '#EF4444' },
-]
-
-const initialMoodState = {
-  selectedMood: null,
-  showNote: false,
-  isLogged: false,
-  showSuccess: false,
-  todaysMood: null,
-  streak: 0,
-  storageError: false,
-  unlockedBadges: []
-}
-
-const moodReducer = (state, action) => {
-  switch (action.type) {
-    case 'SET_SELECTED_MOOD':
-      return { ...state, selectedMood: action.payload, showNote: true }
-    case 'SET_SHOW_SUCCESS':
-      return { ...state, showSuccess: action.payload }
-    case 'SET_TODAYS_MOOD':
-      return { ...state, todaysMood: action.payload, isLogged: true }
-    case 'SET_STREAK':
-      return { ...state, streak: action.payload }
-    case 'SET_STORAGE_ERROR':
-      return { ...state, storageError: action.payload }
-    case 'SET_UNLOCKED_BADGES':
-      return { ...state, unlockedBadges: action.payload }
-    case 'RESET_MOOD_STATE':
-      return { ...initialMoodState }
-    default:
-      return state
-  }
-}
+import { useMoodEntry } from '../hooks/useMoodEntry'
 
 function MoodTracker({ onMoodLogged }) {
-  const [moodState, dispatch] = useReducer(moodReducer, initialMoodState)
-
-  const { control, handleSubmit, watch, setValue, reset } = useForm({
-    mode: 'onBlur',
-    defaultValues: {
-      mood: 3,
-      note: '',
-      tags: []
-    }
-  })
+  const {
+    moodState,
+    form: { control, handleSubmit, watch },
+    handleMoodSelect,
+    handleLogMood,
+    handleUpdate,
+    MOODS
+  } = useMoodEntry(onMoodLogged)
 
   const watchedMood = watch('mood')
   const watchedNote = watch('note')
 
-  const today = getLocalDate()
   const now = new Date()
   const hour = now.getHours()
-  
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
-  const dateString = now.toLocaleDateString('en-US', { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  const dateString = now.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   })
-
-  const { moods: moodsData, saveMood } = useMoods()
-
-  const getMoodEmoji = useCallback((value) => {
-    const mood = moods.find(m => m.value === value)
-    return mood?.emoji || '😐'
-  }, [])
-
-  const getMoodLabel = useCallback((value) => {
-    const mood = moods.find(m => m.value === value)
-    return mood?.label || 'Okay'
-  }, [])
-
-  useEffect(() => {
-    const todayMood = moodsData[today]
-    
-    if (todayMood) {
-      dispatch({ type: 'SET_TODAYS_MOOD', payload: todayMood })
-    }
-    
-    calculateStreak(moodsData)
-  }, [today, moodsData])
-
-  const calculateStreak = (moods) => {
-    let streakCount = 0
-    const currentDate = new Date()
-    
-    for (let i = 0; i < 365; i++) {
-      const checkDate = new Date(currentDate)
-      checkDate.setDate(currentDate.getDate() - i)
-      const dateKey = checkDate.toISOString().split('T')[0]
-      
-      if (moods[dateKey]) {
-        streakCount++
-      } else {
-        break
-      }
-    }
-    
-    dispatch({ type: 'SET_STREAK', payload: streakCount })
-  }
-
-  const handleMoodSelect = useCallback((mood) => {
-    dispatch({ type: 'SET_SELECTED_MOOD', payload: mood })
-    announce(`Selected ${mood.label} mood`)
-  }, [])
-
-  const handleLogMood = useCallback(async (data) => {
-    const moodData = {
-      mood: data.mood,
-      emoji: getMoodEmoji(data.mood),
-      label: getMoodLabel(data.mood),
-      note: data.note.trim(),
-      tags: data.tags || [],
-      timestamp: new Date().toISOString()
-    }
-    
-    // Save to Supabase or localStorage
-    await saveMood(today, moodData)
-    
-    // Queue for offline sync
-    queueMoodLog({ ...moodData, date: today })
-    
-    // Show success immediately
-    dispatch({ type: 'SET_SHOW_SUCCESS', payload: true })
-    calculateStreak({ ...moodsData, [today]: moodData })
-    announce('Mood logged successfully!')
-    
-    // Defer badge checks to not block UI
-    setTimeout(() => {
-      addPoints(POINT_VALUES.moodLog, 'Mood logged')
-      const badgeResults = checkMoodLogBadges()
-      const newlyUnlocked = badgeResults.filter(r => r.unlocked)
-      
-      if (newlyUnlocked.length > 0) {
-        dispatch({ type: 'SET_UNLOCKED_BADGES', payload: newlyUnlocked })
-      }
-    }, 0)
-    
-    // Reduce success animation time
-    setTimeout(() => {
-      dispatch({ type: 'SET_SHOW_SUCCESS', payload: false })
-      dispatch({ type: 'SET_TODAYS_MOOD', payload: moodData })
-      dispatch({ type: 'RESET_MOOD_STATE' })
-      reset()
-      onMoodLogged?.()
-    }, 2000)
-  }, [getMoodEmoji, getMoodLabel, saveMood, today, moodsData, reset, onMoodLogged])
-
-  const handleCloseBadgeModal = () => {
-    dispatch({ type: 'SET_UNLOCKED_BADGES', payload: [] })
-  }
-
-  const handleUpdate = () => {
-    setIsLogged(false)
-    setTodaysMood(null)
-  }
-
-  const remainingChars = 200 - note.length
-  const charCountColor = remainingChars < 20 ? 'text-danger' : remainingChars < 50 ? 'text-warning' : 'text-text-secondary'
 
   if (moodState.showSuccess) {
     return (
-      <Box
-        as={motion.div}
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
-        p={6}
-        mb={6}
-        textAlign="center"
-        bg={useColorModeValue('white', 'gray.800')}
-        borderRadius="xl"
-        border="1px solid"
-        borderColor={useColorModeValue('gray.200', 'gray.700')}
-        shadow="md"
+        className="p-6 mb-6 text-center bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-md"
       >
-        <Text fontSize="4xl" mb={4}>🎉</Text>
-        <Text fontSize="xl" fontWeight="semibold" mb={2}>
-          Mood logged!
-        </Text>
+        <div className="text-4xl mb-4">🎉</div>
+        <div className="text-xl font-semibold mb-2">Mood logged!</div>
         {moodState.streak > 1 && (
-          <Text color="gray.600">
+          <div className="text-gray-600 dark:text-gray-400">
             {moodState.streak} day streak! Keep it up 🔥
-          </Text>
+          </div>
         )}
-      </Box>
+      </motion.div>
     )
   }
 
   if (moodState.isLogged && moodState.todaysMood) {
     return (
-      <Box
-        p={6}
-        mb={6}
-        bg={useColorModeValue('white', 'gray.800')}
-        borderRadius="xl"
-        border="1px solid"
-        borderColor={useColorModeValue('gray.200', 'gray.700')}
-        shadow="md"
-      >
-        <HStack justify="space-between" align="start">
-          <HStack gap={3}>
-            <Text fontSize="3xl">{moodState.todaysMood.emoji}</Text>
-            <Box>
-              <Text fontWeight="semibold">
-                Today's mood: {todaysMood.label}
-              </Text>
-              {todaysMood.note && (
-                <Text fontSize="sm" color="gray.600" noOfLines={1} maxW="xs">
-                  {todaysMood.note}
-                </Text>
+      <div className="p-6 mb-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-md">
+        <div className="flex justify-between items-start">
+          <div className="flex gap-3">
+            <div className="text-3xl">{moodState.todaysMood.emoji}</div>
+            <div>
+              <div className="font-semibold">
+                Today's mood: {moodState.todaysMood.label}
+              </div>
+              {moodState.todaysMood.note && (
+                <div className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1 max-w-xs">
+                  {moodState.todaysMood.note}
+                </div>
               )}
-            </Box>
-          </HStack>
-          <VStack gap={2}>
-            <Button
-              size="sm"
-              colorScheme="blue"
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <button
               onClick={handleUpdate}
+              className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
             >
               Update
-            </Button>
-            <Button variant="ghost" size="sm">
+            </button>
+            <button className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 rounded transition-colors">
               View History
-            </Button>
-          </VStack>
-        </HStack>
-      </Box>
+            </button>
+          </div>
+        </div>
+      </div>
     )
   }
 
   return (
-    <Box
-      as="form"
+    <form
       onSubmit={handleSubmit(handleLogMood)}
-      p={6}
-      mb={6}
-      bg={useColorModeValue('white', 'gray.800')}
-      borderRadius="xl"
-      border="1px solid"
-      borderColor={useColorModeValue('gray.200', 'gray.700')}
-      shadow="md"
+      className="p-6 mb-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-md"
     >
-      <VStack spacing={4} align="stretch">
-        <Box>
-          <Text fontSize="sm" color="gray.600">{dateString}</Text>
-          <Text fontSize="xl" fontWeight="semibold">{greeting}!</Text>
-          <Text mt={2}>How are you feeling right now?</Text>
-        </Box>
+      <div className="space-y-4">
+        <div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">{dateString}</div>
+          <div className="text-xl font-semibold">{greeting}!</div>
+          <div className="mt-2">How are you feeling right now?</div>
+        </div>
 
-        <FormControl>
-          <FormLabel fontSize="sm" fontWeight="medium">Select your mood</FormLabel>
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Select your mood</label>
           <Controller
             name="mood"
             control={control}
             render={({ field }) => (
-              <Slider
-                {...field}
-                min={1}
-                max={5}
-                step={1}
-                colorScheme="blue"
-                onChange={(value) => {
-                  field.onChange(value)
-                  dispatch({ type: 'SET_SELECTED_MOOD', payload: moods.find(m => m.value === value) })
-                }}
-              >
-                <SliderTrack>
-                  <SliderFilledTrack />
-                </SliderTrack>
-                <SliderThumb />
-                {moods.map((mood) => (
-                  <SliderMark
-                    key={mood.value}
-                    value={mood.value}
-                    mt={6}
-                    fontSize="sm"
-                    color={watchedMood === mood.value ? 'blue.500' : 'gray.500'}
-                  >
-                    {mood.emoji}
-                  </SliderMark>
-                ))}
-              </Slider>
+              <div className="pt-6 pb-2">
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  step="1"
+                  value={field.value}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value)
+                    field.onChange(val)
+                    handleMoodSelect(MOODS.find(m => m.value === val))
+                  }}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 accent-blue-500"
+                />
+                <div className="flex justify-between mt-2">
+                  {MOODS.map((mood) => (
+                    <div
+                      key={mood.value}
+                      className={`flex flex-col items-center transition-colors ${watchedMood === mood.value ? 'text-blue-500 scale-110' : 'text-gray-400'
+                        }`}
+                    >
+                      <span className="text-xl mb-1">{mood.emoji}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
           />
           {moodState.selectedMood && (
-            <Text fontSize="xs" color="gray.600" mt={1}>
+            <div className="text-xs text-gray-600 dark:text-gray-400 mt-1 text-center">
               {moodState.selectedMood.label}
-            </Text>
+            </div>
           )}
-        </FormControl>
+        </div>
 
         {moodState.showNote && (
-          <VStack spacing={4} align="stretch">
+          <div className="space-y-4 animate-fadeIn">
             <Controller
               name="tags"
               control={control}
@@ -340,41 +145,38 @@ function MoodTracker({ onMoodLogged }) {
               )}
             />
 
-            <FormControl>
-              <FormLabel fontSize="sm" fontWeight="medium">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
                 Add a note (optional)
-              </FormLabel>
+              </label>
               <Controller
                 name="note"
                 control={control}
                 render={({ field }) => (
-                  <Textarea
+                  <textarea
                     {...field}
                     placeholder="How are you feeling?"
                     rows={3}
                     maxLength={200}
-                    resize="none"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 resize-none"
                   />
                 )}
               />
-              <Text fontSize="xs" color="gray.500" textAlign="right" mt={1}>
+              <div className="text-xs text-gray-500 text-right">
                 {watchedNote?.length || 0}/200
-              </Text>
-            </FormControl>
+              </div>
+            </div>
 
-            <Button
+            <button
               type="submit"
-              colorScheme="blue"
-              size="lg"
-              width="full"
-              isLoading={false}
+              className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-sm"
             >
               Log Mood
-            </Button>
-          </VStack>
+            </button>
+          </div>
         )}
-      </VStack>
-    </Box>
+      </div>
+    </form>
   )
 }
 

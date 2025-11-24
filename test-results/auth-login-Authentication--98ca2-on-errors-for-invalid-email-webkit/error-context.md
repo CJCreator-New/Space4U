@@ -1,0 +1,69 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - status [ref=e3]
+  - dialog "Keyboard Shortcuts" [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - img [ref=e8]
+          - heading "Keyboard Shortcuts" [level=2] [ref=e10]
+        - button "Close keyboard shortcuts help" [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: Show keyboard shortcuts
+          - generic [ref=e18]: "?"
+        - generic [ref=e19]:
+          - generic [ref=e20]: Focus search
+          - generic [ref=e21]: /
+        - generic [ref=e22]:
+          - generic [ref=e23]: Go to Home
+          - generic [ref=e24]: h
+        - generic [ref=e25]:
+          - generic [ref=e26]: Go to Circles
+          - generic [ref=e27]: c
+        - generic [ref=e28]:
+          - generic [ref=e29]: Go to Insights
+          - generic [ref=e30]: i
+        - generic [ref=e31]:
+          - generic [ref=e32]: Go to Profile
+          - generic [ref=e33]: p
+        - generic [ref=e34]:
+          - generic [ref=e35]: Close modals
+          - generic [ref=e36]: Esc
+        - generic [ref=e37]:
+          - generic [ref=e38]: Navigate forward
+          - generic [ref=e39]: Tab
+        - generic [ref=e40]:
+          - generic [ref=e41]: Navigate backward
+          - generic [ref=e42]: Shift + Tab
+        - generic [ref=e43]:
+          - generic [ref=e44]: Activate button/link
+          - generic [ref=e45]: Enter
+      - paragraph [ref=e46]: Press ? anytime to see this help
+  - generic [ref=e49]:
+    - generic [ref=e50]:
+      - heading "Space4U" [level=1] [ref=e51]
+      - paragraph [ref=e52]: Your mental wellness journey starts here
+    - generic [ref=e53]:
+      - generic [ref=e54]:
+        - button "Login" [ref=e55] [cursor=pointer]
+        - button "Sign Up" [ref=e56] [cursor=pointer]
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - generic [ref=e59]: Email
+          - generic [ref=e60]:
+            - img [ref=e61]
+            - textbox "your@email.com" [ref=e64]
+        - generic [ref=e65]:
+          - generic [ref=e66]: Password
+          - generic [ref=e67]:
+            - img [ref=e68]
+            - textbox "••••••••" [ref=e71]
+        - button "Login" [ref=e72] [cursor=pointer]
+      - generic [ref=e73]:
+        - paragraph [ref=e74]: By continuing, you agree to our Terms & Privacy Policy
+        - paragraph [ref=e75]: Account required to access all features
+```

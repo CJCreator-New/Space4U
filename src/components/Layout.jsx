@@ -1,32 +1,20 @@
+import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
-import { Suspense, lazy } from 'react'
+import Navigation from './Navigation'
+import NotificationCenter from './NotificationCenter'
+import LanguageSwitcher from './LanguageSwitcher'
 import CrisisSupport from './CrisisSupport'
-import { useFeatureFlag } from '../config/featureFlags'
-import { ModernLayout } from './modern/ModernLayout'
-import PageLoader from './common/PageLoader'
-
-// Lazy load heavy components
-const Navigation = lazy(() => import('./Navigation'))
-const LanguageSwitcher = lazy(() => import('./LanguageSwitcher'))
-const NotificationCenter = lazy(() => import('./NotificationCenter'))
 
 function Layout() {
-  const useModernUI = useFeatureFlag('ENABLE_MODERN_UI');
-
-  if (useModernUI) {
-    return <ModernLayout />;
-  }
-
-  // Legacy implementation
   return (
-    <div className="min-h-screen bg-background dark:bg-gray-900 transition-colors">
-      <a 
-        href="#main-content" 
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg focus:shadow-lg"
+    <div className="min-h-screen bg-background">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded"
       >
         Skip to main content
       </a>
-      
+
       <div className="md:flex">
         <Suspense fallback={<div className="w-64 bg-surface animate-pulse" />}>
           <Navigation />
@@ -45,7 +33,7 @@ function Layout() {
           </div>
         </main>
       </div>
-      
+
       {/* Crisis Support - Always Available */}
       <CrisisSupport />
     </div>

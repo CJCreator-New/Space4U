@@ -1,19 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Mic, MicOff, Play, Pause, Trash2, Save } from 'lucide-react'
-import {
-  Box,
-  VStack,
-  HStack,
-  Text,
-  Button,
-  Card,
-  CardBody,
-  Progress,
-  useColorModeValue,
-  useToast,
-  Alert,
-  AlertIcon,
-} from '@chakra-ui/react'
+import { Mic, MicOff, Play, Pause, Trash2, Save, Info } from 'lucide-react'
 
 function VoiceRecorder({ onSaveRecording, isDisabled }) {
   const [isRecording, setIsRecording] = useState(false)
@@ -30,32 +16,21 @@ function VoiceRecorder({ onSaveRecording, isDisabled }) {
   const recordingIntervalRef = useRef(null)
   const playbackIntervalRef = useRef(null)
 
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
-  const toast = useToast()
-
   // Cleanup media resources on unmount
   useEffect(() => {
     return () => {
-      // Stop any ongoing recording
       if (mediaRecorderRef.current && isRecording) {
         mediaRecorderRef.current.stop()
       }
-
-      // Stop media stream tracks
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop())
       }
-
-      // Clear intervals
       if (recordingIntervalRef.current) {
         clearInterval(recordingIntervalRef.current)
       }
       if (playbackIntervalRef.current) {
         clearInterval(playbackIntervalRef.current)
       }
-
-      // Revoke object URLs to prevent memory leaks
       if (audioUrl) {
         URL.revokeObjectURL(audioUrl)
       }
@@ -94,12 +69,8 @@ function VoiceRecorder({ onSaveRecording, isDisabled }) {
 
     } catch (error) {
       console.error('Error starting recording:', error)
-      toast({
-        title: "Recording failed",
-        description: "Could not access microphone. Please check permissions.",
-        status: "error",
-        duration: 5000,
-      })
+      // Toast would be handled by parent or a global toast context
+      alert("Could not access microphone. Please check permissions.")
     }
   }
 
@@ -155,13 +126,6 @@ function VoiceRecorder({ onSaveRecording, isDisabled }) {
         duration: duration
       })
 
-      toast({
-        title: "Voice recording saved!",
-        description: "Your voice gratitude has been added to the entry.",
-        status: "success",
-        duration: 3000,
-      })
-
       // Reset state
       setAudioBlob(null)
       setAudioUrl(null)
@@ -192,116 +156,106 @@ function VoiceRecorder({ onSaveRecording, isDisabled }) {
   }
 
   return (
-    <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl">
-      <CardBody>
-        <VStack spacing={4} align="stretch">
-          <HStack justify="space-between" align="center">
-            <HStack spacing={2}>
-              <Mic size={20} color={isRecording ? "red" : "gray"} />
-              <Text fontWeight="semibold">Voice Gratitude</Text>
-            </HStack>
-            {isRecording && (
-              <Text fontSize="sm" color="red.500" fontWeight="semibold">
-                🔴 Recording...
-              </Text>
-            )}
-          </HStack>
-
-          {!audioBlob ? (
-            <VStack spacing={3}>
-              <Text fontSize="sm" color="gray.600" textAlign="center">
-                Record a voice message expressing your gratitude
-              </Text>
-
-              <Button
-                leftIcon={isRecording ? <MicOff /> : <Mic />}
-                colorScheme={isRecording ? "red" : "blue"}
-                onClick={isRecording ? stopRecording : startRecording}
-                isDisabled={isDisabled}
-                size="lg"
-                width="full"
-              >
-                {isRecording ? `Stop Recording (${formatTime(recordingTime)})` : 'Start Recording'}
-              </Button>
-
-              {isRecording && (
-                <Box width="full">
-                  <Progress
-                    value={(recordingTime % 10) * 10} // Visual indicator
-                    colorScheme="red"
-                    size="sm"
-                    borderRadius="full"
-                    isAnimated
-                  />
-                </Box>
-              )}
-            </VStack>
-          ) : (
-            <VStack spacing={3}>
-              <Text fontSize="sm" color="gray.600" textAlign="center">
-                Recording saved! ({formatTime(duration)})
-              </Text>
-
-              <HStack spacing={2} width="full">
-                <Button
-                  leftIcon={isPlaying ? <Pause /> : <Play />}
-                  size="sm"
-                  variant="outline"
-                  onClick={isPlaying ? pausePlayback : playRecording}
-                  flex={1}
-                >
-                  {isPlaying ? 'Pause' : 'Play'}
-                </Button>
-
-                <Button
-                  leftIcon={<Save />}
-                  size="sm"
-                  colorScheme="green"
-                  onClick={saveRecording}
-                  flex={1}
-                >
-                  Save
-                </Button>
-
-                <Button
-                  leftIcon={<Trash2 />}
-                  size="sm"
-                  colorScheme="red"
-                  variant="outline"
-                  onClick={deleteRecording}
-                >
-                  Delete
-                </Button>
-              </HStack>
-
-              {isPlaying && (
-                <Box width="full">
-                  <Progress
-                    value={(playbackTime / duration) * 100}
-                    colorScheme="blue"
-                    size="sm"
-                    borderRadius="full"
-                  />
-                  <HStack justify="space-between" mt={1}>
-                    <Text fontSize="xs" color="gray.500">{formatTime(playbackTime)}</Text>
-                    <Text fontSize="xs" color="gray.500">{formatTime(duration)}</Text>
-                  </HStack>
-                </Box>
-              )}
-
-              <audio ref={audioRef} src={audioUrl} preload="metadata" />
-            </VStack>
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Mic size={20} className={isRecording ? "text-red-500" : "text-gray-500"} />
+            <span className="font-semibold">Voice Gratitude</span>
+          </div>
+          {isRecording && (
+            <span className="text-sm text-red-500 font-semibold animate-pulse">
+              🔴 Recording...
+            </span>
           )}
+        </div>
 
-          <Alert status="info" borderRadius="md">
-            <AlertIcon />
-            <Text fontSize="xs">
-              Voice recordings help capture the emotion and authenticity of your gratitude practice.
-            </Text>
-          </Alert>
-        </VStack>
-      </CardBody>
-    </Card>
+        {!audioBlob ? (
+          <div className="space-y-3">
+            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+              Record a voice message expressing your gratitude
+            </p>
+
+            <button
+              onClick={isRecording ? stopRecording : startRecording}
+              disabled={isDisabled}
+              className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-medium transition-colors ${isRecording
+                  ? 'bg-red-500 hover:bg-red-600 text-white'
+                  : 'bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed'
+                }`}
+            >
+              {isRecording ? <MicOff size={20} /> : <Mic size={20} />}
+              {isRecording ? `Stop Recording (${formatTime(recordingTime)})` : 'Start Recording'}
+            </button>
+
+            {isRecording && (
+              <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-red-500 transition-all duration-300"
+                  style={{ width: `${(recordingTime % 10) * 10}%` }}
+                />
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+              Recording saved! ({formatTime(duration)})
+            </p>
+
+            <div className="flex gap-2 w-full">
+              <button
+                onClick={isPlaying ? pausePlayback : playRecording}
+                className="flex-1 flex items-center justify-center gap-2 py-2 px-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                {isPlaying ? <Pause size={16} /> : <Play size={16} />}
+                {isPlaying ? 'Pause' : 'Play'}
+              </button>
+
+              <button
+                onClick={saveRecording}
+                className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+              >
+                <Save size={16} />
+                Save
+              </button>
+
+              <button
+                onClick={deleteRecording}
+                className="flex items-center justify-center gap-2 py-2 px-3 border border-red-200 text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+              >
+                <Trash2 size={16} />
+                Delete
+              </button>
+            </div>
+
+            {isPlaying && (
+              <div className="w-full">
+                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-1">
+                  <div
+                    className="h-full bg-blue-500 transition-all duration-200"
+                    style={{ width: `${(playbackTime / duration) * 100}%` }}
+                  />
+                </div>
+                <div className="flex justify-between text-xs text-gray-500">
+                  <span>{formatTime(playbackTime)}</span>
+                  <span>{formatTime(duration)}</span>
+                </div>
+              </div>
+            )}
+
+            <audio ref={audioRef} src={audioUrl} preload="metadata" className="hidden" />
+          </div>
+        )}
+
+        <div className="flex gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg">
+          <Info size={20} className="text-blue-500 shrink-0" />
+          <p className="text-xs text-blue-700 dark:text-blue-300">
+            Voice recordings help capture the emotion and authenticity of your gratitude practice.
+          </p>
+        </div>
+      </div>
+    </div>
   )
 }
 

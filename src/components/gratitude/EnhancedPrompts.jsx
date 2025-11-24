@@ -1,26 +1,6 @@
 import { useState } from 'react'
-import { RefreshCw, Sparkles, Heart, Brain, Users, Briefcase, Leaf, X, Plus, Edit3 } from 'lucide-react'
-import {
-  Box,
-  VStack,
-  HStack,
-  Text,
-  Button,
-  Card,
-  CardBody,
-  Wrap,
-  WrapItem,
-  Badge,
-  useColorModeValue,
-  Textarea,
-  IconButton,
-  Divider,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from '@chakra-ui/react'
+import { RefreshCw, Sparkles, Heart, Brain, Users, Briefcase, Leaf, X, Check, ChevronDown, ChevronUp } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const PROMPT_THEMES = [
   {
@@ -124,8 +104,7 @@ function EnhancedPrompts({ onPromptSelect, currentPrompt, onPromptThoughtsChange
   const [selectedTheme, setSelectedTheme] = useState('general')
   const [selectedPromptsState, setSelectedPromptsState] = useState(selectedPrompts)
   const [promptThoughts, setPromptThoughts] = useState({})
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const [expandedPrompt, setExpandedPrompt] = useState(null)
 
   const currentTheme = PROMPT_THEMES.find(t => t.id === selectedTheme)
   const randomPrompt = () => {
@@ -181,142 +160,128 @@ function EnhancedPrompts({ onPromptSelect, currentPrompt, onPromptThoughtsChange
   }
 
   return (
-    <VStack spacing={4} align="stretch">
-      <HStack justify="space-between" align="center">
-        <HStack spacing={2}>
-          <Sparkles size={20} color="purple" />
-          <Text fontWeight="semibold" fontSize="lg">Choose a Prompt</Text>
-        </HStack>
-        <Button
-          size="sm"
-          variant="ghost"
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <Sparkles size={20} className="text-purple-500" />
+          <span className="font-semibold text-lg text-gray-900 dark:text-white">Choose a Prompt</span>
+        </div>
+        <button
           onClick={() => handlePromptClick(randomPrompt())}
-          leftIcon={<RefreshCw size={14} />}
+          className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800 rounded-lg transition-colors"
         >
+          <RefreshCw size={14} />
           Random
-        </Button>
-      </HStack>
+        </button>
+      </div>
 
       {/* Theme Selection */}
-      <Wrap spacing={2}>
+      <div className="flex flex-wrap gap-2">
         {PROMPT_THEMES.map((theme) => {
           const IconComponent = theme.icon
+          const isSelected = selectedTheme === theme.id
           return (
-            <WrapItem key={theme.id}>
-              <Button
-                variant={selectedTheme === theme.id ? "solid" : "outline"}
-                colorScheme={theme.color}
-                size="sm"
-                onClick={() => setSelectedTheme(theme.id)}
-                leftIcon={<IconComponent size={14} />}
-                borderRadius="full"
-              >
-                {theme.name}
-              </Button>
-            </WrapItem>
+            <button
+              key={theme.id}
+              onClick={() => setSelectedTheme(theme.id)}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-all ${isSelected
+                  ? `bg-${theme.color}-100 text-${theme.color}-800 ring-2 ring-${theme.color}-500 ring-offset-2 dark:ring-offset-gray-800`
+                  : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                }`}
+            >
+              <IconComponent size={14} />
+              {theme.name}
+            </button>
           )
         })}
-      </Wrap>
+      </div>
 
       {/* Current Theme Prompts */}
-      <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl">
-        <CardBody>
-          <HStack mb={3}>
-            <currentTheme.icon size={16} color={currentTheme.color} />
-            <Text fontWeight="semibold">{currentTheme.name} Prompts</Text>
-          </HStack>
-          <VStack spacing={2} align="stretch">
-            {currentTheme.prompts.map((prompt, index) => {
-              const isSelected = selectedPromptsState.includes(prompt)
-              return (
-                <Button
-                  key={index}
-                  variant={isSelected ? "solid" : "ghost"}
-                  colorScheme={isSelected ? currentTheme.color : "gray"}
-                  justifyContent="flex-start"
-                  textAlign="left"
-                  h="auto"
-                  py={2}
-                  px={3}
-                  borderRadius="md"
-                  onClick={() => handlePromptClick(prompt)}
-                  _hover={{ bg: isSelected ? `${currentTheme.color}.600` : `${currentTheme.color}.50` }}
-                  whiteSpace="normal"
-                  wordBreak="break-word"
-                  leftIcon={isSelected ? <Check size={14} /> : undefined}
-                >
-                  <Text fontSize="sm">{prompt}</Text>
-                </Button>
-              )
-            })}
-          </VStack>
-        </CardBody>
-      </Card>
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <currentTheme.icon size={16} className={`text-${currentTheme.color}-500`} />
+          <span className="font-semibold text-gray-900 dark:text-white">{currentTheme.name} Prompts</span>
+        </div>
+        <div className="space-y-2">
+          {currentTheme.prompts.map((prompt, index) => {
+            const isSelected = selectedPromptsState.includes(prompt)
+            return (
+              <button
+                key={index}
+                onClick={() => handlePromptClick(prompt)}
+                className={`w-full text-left px-3 py-2 rounded-lg transition-colors flex items-start gap-2 ${isSelected
+                    ? `bg-${currentTheme.color}-50 text-${currentTheme.color}-900 dark:bg-${currentTheme.color}-900/30 dark:text-${currentTheme.color}-100`
+                    : 'hover:bg-gray-50 dark:hover:bg-gray-700/50 text-gray-700 dark:text-gray-300'
+                  }`}
+              >
+                {isSelected && <Check size={16} className={`mt-0.5 shrink-0 text-${currentTheme.color}-600`} />}
+                <span className="text-sm">{prompt}</span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
 
       {/* Selected Prompts with Thoughts */}
       {selectedPromptsState.length > 0 && (
-        <Card bg="purple.50" borderColor="purple.200" borderWidth={1} borderRadius="xl">
-          <CardBody>
-            <HStack mb={3}>
-              <Sparkles size={16} color="purple" />
-              <Text fontWeight="semibold" color="purple.700">
-                Selected Prompts ({selectedPromptsState.length})
-              </Text>
-            </HStack>
-            <Accordion allowMultiple>
-              {selectedPromptsState.map((prompt, index) => (
-                <AccordionItem key={index} border="none">
-                  <AccordionButton
-                    _hover={{ bg: "purple.100" }}
-                    borderRadius="md"
-                    px={3}
-                    py={2}
-                  >
-                    <Box flex="1" textAlign="left">
-                      <HStack>
-                        <Text fontSize="sm" fontWeight="medium" color="purple.800">
-                          {prompt}
-                        </Text>
-                        <IconButton
-                          size="xs"
-                          variant="ghost"
-                          colorScheme="red"
-                          icon={<X size={12} />}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            removePrompt(prompt)
-                          }}
-                          aria-label="Remove prompt"
+        <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles size={16} className="text-purple-500" />
+            <span className="font-semibold text-purple-900 dark:text-purple-100">
+              Selected Prompts ({selectedPromptsState.length})
+            </span>
+          </div>
+          <div className="space-y-2">
+            {selectedPromptsState.map((prompt, index) => (
+              <div key={index} className="bg-white dark:bg-gray-800 rounded-lg border border-purple-100 dark:border-purple-800 overflow-hidden">
+                <button
+                  onClick={() => setExpandedPrompt(expandedPrompt === prompt ? null : prompt)}
+                  className="w-full flex items-center justify-between p-3 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors"
+                >
+                  <div className="flex items-center gap-3 flex-1 text-left">
+                    <span className="text-sm font-medium text-purple-900 dark:text-purple-100">{prompt}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        removePrompt(prompt)
+                      }}
+                      className="p-1 text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                    >
+                      <X size={14} />
+                    </button>
+                    {expandedPrompt === prompt ? <ChevronUp size={16} className="text-purple-400" /> : <ChevronDown size={16} className="text-purple-400" />}
+                  </div>
+                </button>
+
+                <AnimatePresence>
+                  {expandedPrompt === prompt && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="p-3 pt-0 border-t border-purple-50 dark:border-purple-800/50">
+                        <p className="text-xs text-gray-500 mb-2 mt-2">Add your thoughts about this prompt:</p>
+                        <textarea
+                          placeholder="Write your thoughts here..."
+                          value={promptThoughts[prompt] || ''}
+                          onChange={(e) => handleThoughtChange(prompt, e.target.value)}
+                          rows={3}
+                          className="w-full px-3 py-2 text-sm bg-white dark:bg-gray-900 border border-purple-200 dark:border-purple-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all resize-none"
                         />
-                      </HStack>
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                  <AccordionPanel pb={4}>
-                    <VStack spacing={2} align="stretch">
-                      <Text fontSize="xs" color="gray.600">
-                        Add your thoughts about this prompt:
-                      </Text>
-                      <Textarea
-                        placeholder="Write your thoughts here..."
-                        value={promptThoughts[prompt] || ''}
-                        onChange={(e) => handleThoughtChange(prompt, e.target.value)}
-                        size="sm"
-                        rows={3}
-                        borderRadius="md"
-                        bg="white"
-                        borderColor="purple.200"
-                        _focus={{ borderColor: "purple.300", boxShadow: "0 0 0 1px purple.300" }}
-                      />
-                    </VStack>
-                  </AccordionPanel>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </CardBody>
-        </Card>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
-    </VStack>
+    </div>
   )
 }
 

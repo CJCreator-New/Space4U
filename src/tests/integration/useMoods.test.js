@@ -39,8 +39,9 @@ describe('useMoods Hook Integration', () => {
   })
 
   it('should load moods from localStorage', async () => {
+    const today = new Date().toISOString().split('T')[0]
     const testMoods = {
-      '2024-01-15': { mood: 5, note: 'Great day!' }
+      [today]: { mood: 5, note: 'Great day!' }
     }
     localStorage.setItem('space4u_moods', JSON.stringify(testMoods))
 
@@ -60,11 +61,12 @@ describe('useMoods Hook Integration', () => {
       expect(result.current.loading).toBe(false)
     })
 
+    const today = new Date().toISOString().split('T')[0]
     const moodData = { mood: 4, note: 'Good day', emoji: '🙂' }
-    await result.current.saveMood('2024-01-15', moodData)
+    await result.current.saveMood(today, moodData)
 
     const saved = JSON.parse(localStorage.getItem('space4u_moods'))
-    expect(saved['2024-01-15']).toEqual(moodData)
+    expect(saved[today]).toEqual(moodData)
   })
 
   it('should handle empty moods gracefully', async () => {
@@ -84,11 +86,12 @@ describe('useMoods Hook Integration', () => {
       expect(result.current.loading).toBe(false)
     })
 
+    const today = new Date().toISOString().split('T')[0]
     const moodData = { mood: 3, note: 'Okay day' }
-    await result.current.saveMood('2024-01-15', moodData)
+    await result.current.saveMood(today, moodData)
 
     await waitFor(() => {
-      expect(result.current.moods['2024-01-15']).toEqual(moodData)
+      expect(result.current.moods[today]).toEqual(moodData)
     })
   })
 })

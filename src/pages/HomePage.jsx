@@ -3,30 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Crown, Sparkles, Smile, Heart, BookOpen, BarChart, Trophy, MessageCircle, TrendingUp } from 'lucide-react'
 import { motion } from 'framer-motion'
-import {
-  Box,
-  Card,
-  CardBody,
-  Heading,
-  Text,
-  Button,
-  Avatar,
-  Badge,
-  SimpleGrid,
-  VStack,
-  HStack,
-  Icon,
-  useColorModeValue,
-  Skeleton,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-} from '@chakra-ui/react'
 import MoodTracker from '../components/MoodTracker'
 import SafeComponent from '../components/SafeComponent'
 import FABMenu from '../components/common/FABMenu'
-import MicroInteraction from '../components/common/MicroInteraction'
 import QuickMoodCheckIn from '../components/home/QuickMoodCheckIn'
 import DailyTipWidget from '../components/home/DailyTipWidget'
 import WelcomeBanner from '../components/home/WelcomeBanner'
@@ -45,9 +24,9 @@ const DashboardWidgets = lazy(() => import('../components/dashboard/DashboardWid
 const AdaptiveDashboard = lazy(() => import('../components/personalization/AdaptiveDashboard'))
 
 const LoadingFallback = () => (
-  <Box mb={6}>
-    <Skeleton height="200px" borderRadius="xl" />
-  </Box>
+  <div className="mb-6">
+    <div className="h-[200px] w-full bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />
+  </div>
 )
 
 function HomePage() {
@@ -116,188 +95,183 @@ function HomePage() {
 
   if (error) {
     return (
-      <Box maxW="4xl" mx="auto" p={4}>
-        <Card bg="red.50" borderColor="red.200" borderWidth={1} borderRadius="xl" p={6} textAlign="center">
-          <Text color="red.600" mb={4}>{error}</Text>
-          <Button colorScheme="red" onClick={() => window.location.reload()}>
+      <div className="max-w-4xl mx-auto p-4">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+          >
             {t('errors.reloadPage')}
-          </Button>
-        </Card>
-      </Box>
+          </button>
+        </div>
+      </div>
     )
   }
 
   return (
-    <Box maxW="4xl" mx="auto" as="main" role="main" aria-label="Home page">
+    <div className="max-w-4xl mx-auto" role="main" aria-label="Home page">
       <OnboardingTip page="home" />
       <NavigationMap isOpen={showNavMap} onClose={() => setShowNavMap(false)} />
-      
+
       <WelcomeBanner />
-      
+
       {/* Core Actions Section */}
-      <Box mb={8}>
-        <Heading size="lg" mb={4} color="gray.900">Start Your Day</Heading>
-        <SimpleGrid columns={{ base: 1, md: 3 }} gap={4}>
-          <Card
-            as={motion.div}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Start Your Day</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <motion.div
             whileHover={{ y: -4, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
-            p={6}
-            bg="gradient-to-br from-blue-50 to-indigo-50"
-            borderLeft="4px solid"
-            borderColor="blue.500"
-            cursor="pointer"
+            className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-l-4 border-blue-500 rounded-xl cursor-pointer shadow-sm"
             onClick={() => {
               trackEvent(EVENTS.MOOD_LOG_OPENED, { source: 'core_action_card' })
               setShowMoodTracker(true)
             }}
           >
-            <VStack align="start" gap={3}>
-              <Box p={3} bg="blue.500" borderRadius="xl">
-                <Icon as={Smile} color="white" boxSize={6} />
-              </Box>
-              <Box>
-                <Heading size="md" mb={1}>Log Your Mood</Heading>
-                <Text fontSize="sm" color="gray.600">Track how you're feeling today</Text>
-              </Box>
-              <Button colorScheme="blue" size="sm" rightIcon={<Sparkles size={16} />}>
+            <div className="flex flex-col items-start gap-3">
+              <div className="p-3 bg-blue-500 rounded-xl">
+                <Smile className="text-white" size={24} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Log Your Mood</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Track how you're feeling today</p>
+              </div>
+              <button className="flex items-center gap-2 px-3 py-1.5 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors">
                 Check In Now
-              </Button>
-            </VStack>
-          </Card>
+                <Sparkles size={16} />
+              </button>
+            </div>
+          </motion.div>
 
-          <Card
-            as={motion.div}
+          <motion.div
             whileHover={{ y: -4, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
-            p={6}
-            bg="gradient-to-br from-purple-50 to-pink-50"
-            borderLeft="4px solid"
-            borderColor="purple.500"
-            cursor="pointer"
+            className="p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border-l-4 border-purple-500 rounded-xl cursor-pointer shadow-sm"
             onClick={() => {
               trackEvent(EVENTS.CIRCLE_RECOMMENDATION_VIEWED, { source: 'core_action_card' })
               navigate('/circles')
             }}
           >
-            <VStack align="start" gap={3}>
-              <Box p={3} bg="purple.500" borderRadius="xl">
-                <Icon as={Heart} color="white" boxSize={6} />
-              </Box>
-              <Box>
-                <Heading size="md" mb={1}>Join a Circle</Heading>
-                <Text fontSize="sm" color="gray.600">Connect with supportive communities</Text>
-              </Box>
-              <Button colorScheme="purple" size="sm" rightIcon={<Sparkles size={16} />}>
+            <div className="flex flex-col items-start gap-3">
+              <div className="p-3 bg-purple-500 rounded-xl">
+                <Heart className="text-white" size={24} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Join a Circle</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Connect with supportive communities</p>
+              </div>
+              <button className="flex items-center gap-2 px-3 py-1.5 bg-purple-500 text-white text-sm font-medium rounded-lg hover:bg-purple-600 transition-colors">
                 Discover
-              </Button>
-            </VStack>
-          </Card>
+                <Sparkles size={16} />
+              </button>
+            </div>
+          </motion.div>
 
-          <Card
-            as={motion.div}
+          <motion.div
             whileHover={{ y: -4, boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)' }}
-            p={6}
-            bg="gradient-to-br from-green-50 to-emerald-50"
-            borderLeft="4px solid"
-            borderColor="green.500"
-            cursor="pointer"
+            className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-l-4 border-green-500 rounded-xl cursor-pointer shadow-sm"
             onClick={() => {
               trackEvent(EVENTS.TOOL_LIST_OPENED, { source: 'core_action_card' })
               navigate('/resources')
             }}
           >
-            <VStack align="start" gap={3}>
-              <Box p={3} bg="green.500" borderRadius="xl">
-                <Icon as={BookOpen} color="white" boxSize={6} />
-              </Box>
-              <Box>
-                <Heading size="md" mb={1}>Explore Tools</Heading>
-                <Text fontSize="sm" color="gray.600">Access wellness resources</Text>
-              </Box>
-              <Button colorScheme="green" size="sm" rightIcon={<Sparkles size={16} />}>
+            <div className="flex flex-col items-start gap-3">
+              <div className="p-3 bg-green-500 rounded-xl">
+                <BookOpen className="text-white" size={24} />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Explore Tools</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Access wellness resources</p>
+              </div>
+              <button className="flex items-center gap-2 px-3 py-1.5 bg-green-500 text-white text-sm font-medium rounded-lg hover:bg-green-600 transition-colors">
                 Browse
-              </Button>
-            </VStack>
-          </Card>
-        </SimpleGrid>
-      </Box>
+                <Sparkles size={16} />
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </div>
 
       <QuickMoodCheckIn onMoodLogged={() => {
         trackEvent(EVENTS.MOOD_LOG_SUBMITTED, { source: 'quick_checkin' })
         setRefreshKey(prev => prev + 1)
       }} />
-      
-      <Box mb={6}>
+
+      <div className="mb-6">
         <MoodTimeline key={refreshKey} />
-      </Box>
-      
-      <Box mb={6}>
+      </div>
+
+      <div className="mb-6">
         <DailyTipWidget />
-      </Box>
-      
+      </div>
+
       <Suspense fallback={<LoadingFallback />}>
-        <Box mb={6}>
+        <div className="mb-6">
           <DashboardWidgets />
-        </Box>
+        </div>
       </Suspense>
-      
+
       <SafeComponent>
         <Suspense fallback={<LoadingFallback />}>
-          <Box mb={6}>
+          <div className="mb-6">
             <MoodCalendar key={refreshKey} />
-          </Box>
+          </div>
         </Suspense>
       </SafeComponent>
-      
+
       <SafeComponent>
         <Suspense fallback={<LoadingFallback />}>
-          <Box mb={6}>
+          <div className="mb-6">
             <MoodTrends key={refreshKey} />
-          </Box>
+          </div>
         </Suspense>
       </SafeComponent>
-      
+
       {/* Collapsible Wellness Tools */}
-      <Box mb={6} as="section" aria-label="Wellness tools">
-        <HStack justify="space-between" mb={4}>
-          <Heading size="lg">{t('home.quickActions')}</Heading>
-          <Button
-            size="sm"
-            variant="ghost"
+      <section className="mb-6" aria-label="Wellness tools">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('home.quickActions')}</h2>
+          <button
             onClick={() => navigate('/wellness')}
-            rightIcon={<Sparkles size={16} />}
+            className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
           >
             View All
-          </Button>
-        </HStack>
-        <SimpleGrid columns={{ base: 2, md: 3 }} gap={3}>
+            <Sparkles size={16} />
+          </button>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {[
-            { path: '/wellness', icon: BarChart, key: 'wellnessScore', color: 'blue.500' },
-            { path: '/gamification', icon: Trophy, key: 'gamification', color: 'yellow.500' },
-            { path: '/social', icon: MessageCircle, key: 'socialHub', color: 'purple.500' },
-            { path: '/analytics', icon: TrendingUp, key: 'analytics', color: 'green.500' },
+            { path: '/wellness', icon: BarChart, key: 'wellnessScore', color: 'text-blue-500' },
+            { path: '/gamification', icon: Trophy, key: 'gamification', color: 'text-yellow-500' },
+            { path: '/social', icon: MessageCircle, key: 'socialHub', color: 'text-purple-500' },
+            { path: '/analytics', icon: TrendingUp, key: 'analytics', color: 'text-green-500' },
           ].map(({ path, icon: IconComponent, key, color }) => (
-            <Link key={path} to={path} style={{ textDecoration: 'none' }}>
-              <Card
-                as={motion.div}
+            <Link key={path} to={path} className="no-underline block">
+              <motion.div
                 whileHover={{ y: -2, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)' }}
-                p={4}
-                transition="all 0.2s"
-                cursor="pointer"
+                className="p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer shadow-sm transition-all"
               >
-                <VStack gap={2}>
-                  <Icon as={IconComponent} boxSize={8} color={color} />
-                  <Text fontSize="sm" fontWeight="medium" textAlign="center">
+                <div className="flex flex-col items-center gap-2">
+                  <IconComponent size={32} className={color} />
+                  <p className="text-sm font-medium text-center text-gray-900 dark:text-white">
                     {t(`wellnessTools.${key}`)}
-                  </Text>
-                </VStack>
-              </Card>
+                  </p>
+                </div>
+              </motion.div>
             </Link>
           ))}
-        </SimpleGrid>
-      </Box>
+        </div>
+      </section>
 
       <FABMenu actions={fabActions} />
-    </Box>
+
+      {showMoodTracker && (
+        <MoodTracker
+          isOpen={showMoodTracker}
+          onClose={() => setShowMoodTracker(false)}
+          onSave={handleMoodLogged}
+        />
+      )}
+    </div>
   )
 }
 

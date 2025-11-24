@@ -5,9 +5,10 @@ import { ThemeProvider } from './contexts/ThemeContext'
 import { NotificationProvider } from './contexts/NotificationContext'
 import { ReminderProvider } from './contexts/ReminderContext'
 import { PremiumProvider } from './contexts/PremiumContext'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ToastProvider } from './contexts/ToastContext'
+
 import Layout from './components/Layout'
-import theme from './theme'
+
 import OnboardingFlow from './components/onboarding/OnboardingFlow'
 import ErrorBoundary from './components/ErrorBoundary'
 import LazyLoadErrorBoundary from './components/LazyLoadErrorBoundary'
@@ -73,7 +74,7 @@ const ImagePerformanceTest = lazy(() => import('./components/ImagePerformanceTes
 function App() {
   return (
     <ErrorBoundary>
-      <ChakraProvider theme={theme}>
+      <ToastProvider>
         <ThemeProvider>
           <AuthProvider>
             <PremiumProvider>
@@ -89,7 +90,7 @@ function App() {
             </PremiumProvider>
           </AuthProvider>
         </ThemeProvider>
-      </ChakraProvider>
+      </ToastProvider>
     </ErrorBoundary>
   )
 }
@@ -113,12 +114,12 @@ function AppContent() {
       } else if (user) {
         const onboardingComplete = safeStorage.getItem(`space4u_onboarding_complete_${user.id}`)
         setIsOnboardingComplete(onboardingComplete === 'true')
-        
+
         const tourCompleted = safeStorage.getItem('space4u_tour_completed')
         if (onboardingComplete === 'true' && !tourCompleted) {
           setShowTour(true)
         }
-        
+
         if (onboardingComplete === 'true') {
           requestNotificationPermission()
           initNotifications()
@@ -148,7 +149,7 @@ function AppContent() {
     // Listen for keyboard help trigger
     const handleShowHelp = () => setShowKeyboardHelp(true)
     window.addEventListener('showKeyboardHelp', handleShowHelp)
-    
+
     // Listen for global search trigger (Ctrl+K or Cmd+K or /)
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -163,7 +164,7 @@ function AppContent() {
         setShowSearch(false)
       }
     }
-    
+
     window.addEventListener('keydown', handleKeyDown)
     return () => {
       window.removeEventListener('showKeyboardHelp', handleShowHelp)
@@ -203,9 +204,9 @@ function AppContent() {
           <QuickActions />
         </Suspense>
       )}
-      <KeyboardHelpModal 
-        isOpen={showKeyboardHelp} 
-        onClose={() => setShowKeyboardHelp(false)} 
+      <KeyboardHelpModal
+        isOpen={showKeyboardHelp}
+        onClose={() => setShowKeyboardHelp(false)}
       />
       {showTour && (
         <Suspense fallback={null}>
@@ -222,45 +223,45 @@ function AppContent() {
         <Suspense fallback={<PageLoader message="Loading page..." />}>
           <PageTransition>
             <Routes>
-            <Route path="/auth" element={<AuthPage />} />
-            <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/circles" element={<CirclesPage />} />
-              <Route path="/circles/:circleId" element={<CircleFeedPage />} />
-              <Route path="/insights" element={<InsightsPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/resources" element={<ResourceLibraryPage />} />
-              <Route path="/resources/:id" element={<ResourceDetailPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/notifications" element={<NotificationsPage />} />
-              <Route path="/premium" element={<PremiumPage />} />
-              <Route path="/premium/success" element={<PremiumSuccessPage />} />
-              <Route path="/premium/manage" element={<PremiumManagePage />} />
-              <Route path="/premium/features" element={<PremiumFeaturesPage />} />
-              <Route path="/tools" element={<TherapeuticToolsPage />} />
-              <Route path="/gratitude" element={<GratitudeJournalPage />} />
-              <Route path="/habits" element={<HabitTrackerPage />} />
-              <Route path="/emotions" element={<EmotionTrackerPage />} />
-              <Route path="/coping-skills" element={<CopingSkillsPage />} />
-              <Route path="/reminders" element={<RemindersPage />} />
-              <Route path="/wellness" element={<WellnessDashboardPage />} />
-              <Route path="/advanced-tools" element={<Priority2FeaturesPage />} />
-              <Route path="/gamification" element={<GamificationPage />} />
-              <Route path="/wellness-plan" element={<WellnessPlanPage />} />
-              <Route path="/social" element={<SocialHubPage />} />
-              <Route path="/analytics" element={<AdvancedAnalyticsPage />} />
-              <Route path="/professional" element={<ProfessionalPage />} />
-              <Route path="/technical" element={<TechnicalFeaturesPage />} />
-              <Route path="/bookmarks" element={<BookmarksPage />} />
-              <Route path="/personalization" element={<PersonalizationPage />} />
-              <Route path="/demo/gestures" element={<GesturesDemoPage />} />
-              <Route path="/demo/visual" element={<VisualDemoPage />} />
-              <Route path="/demo/native" element={<NativeDemoPage />} />
-              <Route path="/demo/performance" element={<PerformanceDemoPage />} />
-              <Route path="/demo/image-performance" element={<ImagePerformanceTest />} />
-              <Route path="/demo" element={<DemoHubPage />} />
-            </Route>
-          </Routes>
+              <Route path="/auth" element={<AuthPage />} />
+              <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/circles" element={<CirclesPage />} />
+                <Route path="/circles/:circleId" element={<CircleFeedPage />} />
+                <Route path="/insights" element={<InsightsPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/resources" element={<ResourceLibraryPage />} />
+                <Route path="/resources/:id" element={<ResourceDetailPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/notifications" element={<NotificationsPage />} />
+                <Route path="/premium" element={<PremiumPage />} />
+                <Route path="/premium/success" element={<PremiumSuccessPage />} />
+                <Route path="/premium/manage" element={<PremiumManagePage />} />
+                <Route path="/premium/features" element={<PremiumFeaturesPage />} />
+                <Route path="/tools" element={<TherapeuticToolsPage />} />
+                <Route path="/gratitude" element={<GratitudeJournalPage />} />
+                <Route path="/habits" element={<HabitTrackerPage />} />
+                <Route path="/emotions" element={<EmotionTrackerPage />} />
+                <Route path="/coping-skills" element={<CopingSkillsPage />} />
+                <Route path="/reminders" element={<RemindersPage />} />
+                <Route path="/wellness" element={<WellnessDashboardPage />} />
+                <Route path="/advanced-tools" element={<Priority2FeaturesPage />} />
+                <Route path="/gamification" element={<GamificationPage />} />
+                <Route path="/wellness-plan" element={<WellnessPlanPage />} />
+                <Route path="/social" element={<SocialHubPage />} />
+                <Route path="/analytics" element={<AdvancedAnalyticsPage />} />
+                <Route path="/professional" element={<ProfessionalPage />} />
+                <Route path="/technical" element={<TechnicalFeaturesPage />} />
+                <Route path="/bookmarks" element={<BookmarksPage />} />
+                <Route path="/personalization" element={<PersonalizationPage />} />
+                <Route path="/demo/gestures" element={<GesturesDemoPage />} />
+                <Route path="/demo/visual" element={<VisualDemoPage />} />
+                <Route path="/demo/native" element={<NativeDemoPage />} />
+                <Route path="/demo/performance" element={<PerformanceDemoPage />} />
+                <Route path="/demo/image-performance" element={<ImagePerformanceTest />} />
+                <Route path="/demo" element={<DemoHubPage />} />
+              </Route>
+            </Routes>
           </PageTransition>
         </Suspense>
       </LazyLoadErrorBoundary>

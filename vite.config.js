@@ -17,7 +17,10 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
-    hmr: false,
+    hmr: {
+      overlay: true,
+      timeout: 30000
+    },
     headers: {
       'X-Content-Type-Options': 'nosniff',
       'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0'

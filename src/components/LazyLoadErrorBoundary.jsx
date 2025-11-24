@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { Box, Button, Heading, Text, VStack } from '@chakra-ui/react';
 import { AlertCircle, RefreshCw } from '../config/icons';
 
 class LazyLoadErrorBoundary extends Component {
@@ -26,28 +25,22 @@ class LazyLoadErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <Box 
-          minH="400px" 
-          display="flex" 
-          alignItems="center" 
-          justifyContent="center"
-          p={8}
-        >
-          <VStack spacing={4} textAlign="center" maxW="md">
+        <div className="min-h-[400px] flex items-center justify-center p-8">
+          <div className="flex flex-col items-center gap-4 text-center max-w-md">
             <AlertCircle size={48} color="#e53e3e" />
-            <Heading size="lg">Failed to Load Page</Heading>
-            <Text color="gray.600">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Failed to Load Page</h2>
+            <p className="text-gray-600 dark:text-gray-400">
               {this.state.error?.message || 'There was a problem loading this page.'}
-            </Text>
-            <Button
-              leftIcon={<RefreshCw size={18} />}
-              colorScheme="blue"
+            </p>
+            <button
               onClick={this.handleRetry}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
             >
+              <RefreshCw size={18} />
               Reload Page
-            </Button>
-          </VStack>
-        </Box>
+            </button>
+          </div>
+        </div>
       );
     }
 

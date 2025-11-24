@@ -1,25 +1,8 @@
 import { useMemo } from 'react'
 import { TrendingUp, Calendar, BarChart3, PieChart, Target, Heart } from 'lucide-react'
-import {
-  Box,
-  VStack,
-  HStack,
-  Text,
-  Card,
-  CardBody,
-  Grid,
-  GridItem,
-  Progress,
-  Badge,
-  useColorModeValue,
-  Divider,
-} from '@chakra-ui/react'
 import { GRATITUDE_CATEGORIES } from '../../data/gratitudeCategories'
 
 function GratitudeAnalytics({ entries }) {
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
-
   const analytics = useMemo(() => {
     if (!entries.length) return null
 
@@ -69,7 +52,7 @@ function GratitudeAnalytics({ entries }) {
     })
 
     const topWords = Object.entries(wordCount)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 10)
 
     // Streak analysis
@@ -121,155 +104,128 @@ function GratitudeAnalytics({ entries }) {
   const mostActiveDay = analytics.dayOfWeekCount.indexOf(Math.max(...analytics.dayOfWeekCount))
 
   return (
-    <VStack spacing={6} align="stretch">
-      <HStack spacing={2}>
-        <BarChart3 size={20} color="blue" />
-        <Text fontWeight="semibold" fontSize="lg">Gratitude Analytics</Text>
-      </HStack>
+    <div className="space-y-6">
+      <div className="flex items-center gap-2">
+        <BarChart3 size={20} className="text-blue-500" />
+        <span className="font-semibold text-lg text-gray-900 dark:text-white">Gratitude Analytics</span>
+      </div>
 
       {/* Key Metrics */}
-      <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }} gap={4}>
-        <GridItem>
-          <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl">
-            <CardBody textAlign="center">
-              <Calendar size={24} color="blue" />
-              <Text fontSize="2xl" fontWeight="bold" color="blue.500" mt={2}>
-                {analytics.totalEntries}
-              </Text>
-              <Text fontSize="sm" color="gray.600">Total Entries</Text>
-            </CardBody>
-          </Card>
-        </GridItem>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center">
+          <div className="flex justify-center mb-2">
+            <Calendar size={24} className="text-blue-500" />
+          </div>
+          <p className="text-2xl font-bold text-blue-500">{analytics.totalEntries}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Total Entries</p>
+        </div>
 
-        <GridItem>
-          <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl">
-            <CardBody textAlign="center">
-              <Target size={24} color="green" />
-              <Text fontSize="2xl" fontWeight="bold" color="green.500" mt={2}>
-                {analytics.avgItemsPerEntry}
-              </Text>
-              <Text fontSize="sm" color="gray.600">Avg Items/Entry</Text>
-            </CardBody>
-          </Card>
-        </GridItem>
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center">
+          <div className="flex justify-center mb-2">
+            <Target size={24} className="text-green-500" />
+          </div>
+          <p className="text-2xl font-bold text-green-500">{analytics.avgItemsPerEntry}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Avg Items/Entry</p>
+        </div>
 
-        <GridItem>
-          <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl">
-            <CardBody textAlign="center">
-              <Heart size={24} color="pink" />
-              <Text fontSize="2xl" fontWeight="bold" color="pink.500" mt={2}>
-                {analytics.avgMoodRating}/5
-              </Text>
-              <Text fontSize="sm" color="gray.600">Avg Mood</Text>
-            </CardBody>
-          </Card>
-        </GridItem>
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center">
+          <div className="flex justify-center mb-2">
+            <Heart size={24} className="text-pink-500" />
+          </div>
+          <p className="text-2xl font-bold text-pink-500">{analytics.avgMoodRating}/5</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Avg Mood</p>
+        </div>
 
-        <GridItem>
-          <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl">
-            <CardBody textAlign="center">
-              <TrendingUp size={24} color="purple" />
-              <Text fontSize="2xl" fontWeight="bold" color="purple.500" mt={2}>
-                {analytics.longestStreak}
-              </Text>
-              <Text fontSize="sm" color="gray.600">Longest Streak</Text>
-            </CardBody>
-          </Card>
-        </GridItem>
-      </Grid>
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center">
+          <div className="flex justify-center mb-2">
+            <TrendingUp size={24} className="text-purple-500" />
+          </div>
+          <p className="text-2xl font-bold text-purple-500">{analytics.longestStreak}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Longest Streak</p>
+        </div>
+      </div>
 
-      <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Category Distribution */}
-        <GridItem>
-          <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl">
-            <CardBody>
-              <HStack mb={4}>
-                <PieChart size={20} color="orange" />
-                <Text fontWeight="semibold">Category Distribution</Text>
-              </HStack>
-              <VStack spacing={3} align="stretch">
-                {Object.entries(analytics.categoryCount)
-                  .sort(([,a], [,b]) => b - a)
-                  .slice(0, 5)
-                  .map(([catId, count]) => {
-                    const category = GRATITUDE_CATEGORIES.find(c => c.id === catId)
-                    const percentage = Math.round((count / analytics.totalEntries) * 100)
-                    return (
-                      <Box key={catId}>
-                        <HStack justify="space-between" mb={1}>
-                          <HStack>
-                            <Text>{category?.icon || '✨'}</Text>
-                            <Text fontSize="sm">{category?.name || catId}</Text>
-                          </HStack>
-                          <Text fontSize="sm" color="gray.600">{count} ({percentage}%)</Text>
-                        </HStack>
-                        <Progress value={percentage} colorScheme="orange" size="sm" borderRadius="full" />
-                      </Box>
-                    )
-                  })}
-              </VStack>
-            </CardBody>
-          </Card>
-        </GridItem>
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <PieChart size={20} className="text-orange-500" />
+            <span className="font-semibold text-gray-900 dark:text-white">Category Distribution</span>
+          </div>
+          <div className="space-y-3">
+            {Object.entries(analytics.categoryCount)
+              .sort(([, a], [, b]) => b - a)
+              .slice(0, 5)
+              .map(([catId, count]) => {
+                const category = GRATITUDE_CATEGORIES.find(c => c.id === catId)
+                const percentage = Math.round((count / analytics.totalEntries) * 100)
+                return (
+                  <div key={catId}>
+                    <div className="flex justify-between mb-1 text-sm">
+                      <div className="flex items-center gap-2">
+                        <span>{category?.icon || '✨'}</span>
+                        <span className="text-gray-700 dark:text-gray-300">{category?.name || catId}</span>
+                      </div>
+                      <span className="text-gray-500">{count} ({percentage}%)</span>
+                    </div>
+                    <div className="h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-orange-500 rounded-full"
+                        style={{ width: `${percentage}%` }}
+                      />
+                    </div>
+                  </div>
+                )
+              })}
+          </div>
+        </div>
 
         {/* Activity Patterns */}
-        <GridItem>
-          <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl">
-            <CardBody>
-              <HStack mb={4}>
-                <Calendar size={20} color="teal" />
-                <Text fontWeight="semibold">Activity Patterns</Text>
-              </HStack>
-              <VStack spacing={3} align="stretch">
-                <Box>
-                  <Text fontSize="sm" color="gray.600" mb={1}>Most Active Day</Text>
-                  <Badge colorScheme="teal" fontSize="sm" px={3} py={1}>
-                    {dayNames[mostActiveDay]} ({analytics.dayOfWeekCount[mostActiveDay]} entries)
-                  </Badge>
-                </Box>
-                <Divider />
-                <Box>
-                  <Text fontSize="sm" color="gray.600" mb={2}>Current Streak</Text>
-                  <HStack>
-                    <Text fontSize="lg" fontWeight="bold" color="teal.500">
-                      {analytics.currentStreak} days
-                    </Text>
-                    <Text fontSize="sm" color="gray.500">
-                      (Best: {analytics.longestStreak})
-                    </Text>
-                  </HStack>
-                </Box>
-              </VStack>
-            </CardBody>
-          </Card>
-        </GridItem>
-      </Grid>
+        <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Calendar size={20} className="text-teal-500" />
+            <span className="font-semibold text-gray-900 dark:text-white">Activity Patterns</span>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Most Active Day</p>
+              <span className="inline-block px-3 py-1 bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300 rounded-full text-sm font-medium">
+                {dayNames[mostActiveDay]} ({analytics.dayOfWeekCount[mostActiveDay]} entries)
+              </span>
+            </div>
+            <div className="border-t border-gray-100 dark:border-gray-700 pt-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Current Streak</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-lg font-bold text-teal-500">
+                  {analytics.currentStreak} days
+                </span>
+                <span className="text-sm text-gray-500">
+                  (Best: {analytics.longestStreak})
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Top Words */}
-      <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl">
-        <CardBody>
-          <HStack mb={4}>
-            <BarChart3 size={20} color="purple" />
-            <Text fontWeight="semibold">Most Common Words in Your Gratitude</Text>
-          </HStack>
-          <Box display="flex" flexWrap="wrap" gap={2}>
-            {analytics.topWords.map(([word, count]) => (
-              <Badge
-                key={word}
-                variant="subtle"
-                colorScheme="purple"
-                borderRadius="full"
-                px={3}
-                py={1}
-                fontSize="sm"
-              >
-                {word} ({count})
-              </Badge>
-            ))}
-          </Box>
-        </CardBody>
-      </Card>
-    </VStack>
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <BarChart3 size={20} className="text-purple-500" />
+          <span className="font-semibold text-gray-900 dark:text-white">Most Common Words in Your Gratitude</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {analytics.topWords.map(([word, count]) => (
+            <span
+              key={word}
+              className="px-3 py-1 bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 rounded-full text-sm font-medium"
+            >
+              {word} ({count})
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
   )
 }
 

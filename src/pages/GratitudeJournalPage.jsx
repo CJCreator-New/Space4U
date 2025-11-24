@@ -1,5 +1,5 @@
 ﻿import { useState, useEffect } from 'react'
-import { Heart, Plus, Calendar, TrendingUp, Sparkles, Info, BookOpen, Crown, Lock, RefreshCw } from 'lucide-react'
+import { Heart, Plus, Calendar, TrendingUp, Sparkles, Info, BookOpen, Crown, Lock, RefreshCw, AlertTriangle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../hooks/useAuth'
 import GratitudeEntryModal from '../components/gratitude/GratitudeEntryModal'
@@ -20,30 +20,7 @@ import { researchCitations } from '../data/researchCitations'
 import EnhancedPrompts from '../components/gratitude/EnhancedPrompts'
 import { trackEvent, EVENTS, trackPageView } from '../utils/analytics'
 import { usePagination } from '../hooks/usePagination'
-import {
-  Box,
-  Container,
-  VStack,
-  HStack,
-  Heading,
-  Text,
-  Button,
-  Grid,
-  Card,
-  CardBody,
-  Icon,
-  useColorModeValue,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-  Badge,
-  Flex,
-  Spacer,
-} from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-
-const MotionDiv = motion.div
 
 function GratitudeJournalPage() {
   const { user } = useAuth()
@@ -58,7 +35,7 @@ function GratitudeJournalPage() {
   const [selectedPrompts, setSelectedPrompts] = useState([])
   const [promptThoughts, setPromptThoughts] = useState({})
   const { isPremium } = getPremiumStatus()
-  
+
   const FREE_ENTRY_LIMIT = 10
 
   // Use pagination hook
@@ -96,31 +73,31 @@ function GratitudeJournalPage() {
       setLongestStreak(0)
       return
     }
-    
+
     const sorted = [...entries].sort((a, b) => new Date(b.date) - new Date(a.date))
     let current = 0
     let longest = 0
     let tempStreak = 0
     let currentDate = new Date()
     currentDate.setHours(0, 0, 0, 0)
-    
+
     for (const entry of sorted) {
       const entryDate = new Date(entry.date)
       entryDate.setHours(0, 0, 0, 0)
       const diffDays = Math.floor((currentDate - entryDate) / (1000 * 60 * 60 * 24))
-      
+
       if (diffDays === current) {
         current++
         tempStreak++
         currentDate.setDate(currentDate.getDate() - 1)
       } else break
     }
-    
+
     // Calculate longest streak
     const dates = sorted.map(e => new Date(e.date).setHours(0, 0, 0, 0))
     let maxStreak = 0
     let currentStreak = 1
-    
+
     for (let i = 1; i < dates.length; i++) {
       const diff = (dates[i - 1] - dates[i]) / (1000 * 60 * 60 * 24)
       if (diff === 1) {
@@ -130,7 +107,7 @@ function GratitudeJournalPage() {
         currentStreak = 1
       }
     }
-    
+
     setStreak(tempStreak)
     setLongestStreak(Math.max(maxStreak, tempStreak))
   }
@@ -139,21 +116,21 @@ function GratitudeJournalPage() {
     const { getGratitudeEntries, saveGratitudeEntries } = await import('../utils/storageHelpers')
     const saved = await getGratitudeEntries()
     const existing = saved.findIndex(e => e.date === entry.date)
-    
+
     if (!isPremium && existing < 0 && saved.length >= FREE_ENTRY_LIMIT) {
       return
     }
-    
+
     if (existing >= 0) saved[existing] = entry
     else saved.unshift(entry)
-    
+
     await saveGratitudeEntries(saved)
     trackEvent(EVENTS.FEATURE_USED, { feature: 'gratitude_entry_saved', isNew: existing < 0 })
     loadEntries()
     setShowModal(false)
     setSelectedEntry(null)
   }
-  
+
   const handleAddClick = () => {
     if (!isPremium && allEntries.length >= FREE_ENTRY_LIMIT && !todayEntry) {
       navigate('/premium')
@@ -177,147 +154,132 @@ function GratitudeJournalPage() {
 
   const todayEntry = allEntries.find(e => e.date === new Date().toISOString().split('T')[0])
 
-  const bgColor = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
-
   return (
     <SafeComponent>
-      <Container maxW="6xl" py={8}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           {/* Disclaimer */}
-          <Box mb={6}>
+          <div className="mb-6">
             <DisclaimerBanner disclaimer={disclaimers.gratitude} />
-          </Box>
+          </div>
 
           {/* Research Support */}
-          <Box mb={6}>
+          <div className="mb-6">
             <ResearchCard citations={researchCitations.gratitude} title="Why Gratitude Works" />
-          </Box>
+          </div>
 
-          <VStack spacing={8} align="stretch">
-            <Flex justify="space-between" align="center" wrap="wrap" gap={4}>
-              <HStack spacing={3}>
-                <Icon as={Heart} w={8} h={8} color="pink.500" />
-                <Box>
-                  <Heading size="xl">{t('gratitude.title')}</Heading>
-                  <Text color="gray.600">{t('gratitude.subtitle')}</Text>
-                </Box>
-              </HStack>
-              <Button
-                leftIcon={<Plus />}
-                colorScheme="pink"
-                size="lg"
+          <div className="space-y-8">
+            <div className="flex flex-wrap justify-between items-center gap-4">
+              <div className="flex items-center gap-3">
+                <Heart className="text-pink-500 w-8 h-8" />
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('gratitude.title')}</h1>
+                  <p className="text-gray-600 dark:text-gray-400">{t('gratitude.subtitle')}</p>
+                </div>
+              </div>
+              <button
                 onClick={handleAddClick}
-                _hover={{ transform: 'scale(1.05)' }}
-                transition="all 0.2s"
+                className="flex items-center gap-2 px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
               >
+                <Plus size={20} />
                 {todayEntry ? t('gratitude.editToday') : t('gratitude.addEntry')}
-              </Button>
-            </Flex>
+              </button>
+            </div>
 
             {!isPremium && allEntries.length >= FREE_ENTRY_LIMIT && (
-              <Alert status="warning" borderRadius="xl">
-                <AlertIcon />
-                <Box flex="1">
-                  <AlertTitle>{t('gratitude.limitReached')}</AlertTitle>
-                  <AlertDescription>{t('gratitude.limitMessage', { limit: FREE_ENTRY_LIMIT })}</AlertDescription>
-                </Box>
-                <Button
-                  leftIcon={<Crown />}
-                  colorScheme="orange"
-                  size="sm"
+              <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-xl p-4 flex items-start gap-3">
+                <AlertTriangle className="text-orange-500 shrink-0 mt-1" />
+                <div className="flex-1">
+                  <h3 className="font-semibold text-orange-800 dark:text-orange-200">{t('gratitude.limitReached')}</h3>
+                  <p className="text-sm text-orange-700 dark:text-orange-300 mt-1">
+                    {t('gratitude.limitMessage', { limit: FREE_ENTRY_LIMIT })}
+                  </p>
+                </div>
+                <button
                   onClick={() => navigate('/premium')}
-                  ml={4}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors"
                 >
+                  <Crown size={16} />
                   {t('premium.upgrade')}
-                </Button>
-              </Alert>
+                </button>
+              </div>
             )}
 
             {/* Enhanced Prompts */}
-            <Card bg="gradient-to-br from-purple-50 to-pink-50" borderWidth={1} borderColor="purple.200" borderRadius="xl" shadow="lg">
-              <CardBody>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border border-purple-200 dark:border-purple-800 rounded-xl shadow-lg overflow-hidden">
+              <div className="p-6">
                 <EnhancedPrompts
                   onPromptSelect={setSelectedPrompts}
                   selectedPrompts={selectedPrompts}
                   onPromptThoughtsChange={setPromptThoughts}
                 />
-              </CardBody>
-            </Card>
+              </div>
+            </div>
 
             {/* Streak Display */}
-            <Box mb={6}>
+            <div className="mb-6">
               <StreakDisplay current={streak} longest={longestStreak} />
-            </Box>
+            </div>
 
-            <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={4}>
-              <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl" shadow="lg">
-                <CardBody>
-                  <HStack spacing={3} mb={2}>
-                    <Icon as={Sparkles} w={5} h={5} color="yellow.500" />
-                    <Text color="gray.600">{t('gratitude currentStreak')}</Text>
-                  </HStack>
-                  <Heading size="2xl" color="yellow.500">{streak}</Heading>
-                  <Text fontSize="sm" color="gray.500">{t('gratitude days')}</Text>
-                </CardBody>
-              </Card>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <Sparkles className="text-yellow-500 w-5 h-5" />
+                  <span className="text-gray-600 dark:text-gray-400">{t('gratitude currentStreak')}</span>
+                </div>
+                <h2 className="text-3xl font-bold text-yellow-500">{streak}</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{t('gratitude days')}</p>
+              </div>
 
-              <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl" shadow="lg">
-                <CardBody>
-                  <HStack spacing={3} mb={2}>
-                    <Icon as={Calendar} w={5} h={5} color="blue.500" />
-                    <Text color="gray.600">{t('gratitude totalEntries')}</Text>
-                  </HStack>
-                  <Heading size="2xl" color="blue.500">{allEntries.length}</Heading>
-                  <Text fontSize="sm" color="gray.500">{t('gratitude entries')}</Text>
-                </CardBody>
-              </Card>
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <Calendar className="text-blue-500 w-5 h-5" />
+                  <span className="text-gray-600 dark:text-gray-400">{t('gratitude totalEntries')}</span>
+                </div>
+                <h2 className="text-3xl font-bold text-blue-500">{allEntries.length}</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{t('gratitude entries')}</p>
+              </div>
 
-              <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl" shadow="lg">
-                <CardBody>
-                  <HStack spacing={3} mb={2}>
-                    <Icon as={TrendingUp} w={5} h={5} color="green.500" />
-                    <Text color="gray.600">{t('gratitude weeklyGoal')}</Text>
-                  </HStack>
-                  <Heading size="2xl" color="green.500">
-                    {Math.min(7, allEntries.filter(e => {
-                      const entryDate = new Date(e.date)
-                      const weekAgo = new Date()
-                      weekAgo.setDate(weekAgo.getDate() - 7)
-                      return entryDate >= weekAgo
-                    }).length)}
-                  </Heading>
-                  <Text fontSize="sm" color="gray.500">/7 {t('gratitude.thisWeek')}</Text>
-                </CardBody>
-              </Card>
-            </Grid>
+              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <TrendingUp className="text-green-500 w-5 h-5" />
+                  <span className="text-gray-600 dark:text-gray-400">{t('gratitude weeklyGoal')}</span>
+                </div>
+                <h2 className="text-3xl font-bold text-green-500">
+                  {Math.min(7, allEntries.filter(e => {
+                    const entryDate = new Date(e.date)
+                    const weekAgo = new Date()
+                    weekAgo.setDate(weekAgo.getDate() - 7)
+                    return entryDate >= weekAgo
+                  }).length)}
+                </h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">/7 {t('gratitude.thisWeek')}</p>
+              </div>
+            </div>
 
-            <VStack spacing={4} align="stretch">
-              <Heading size="lg">{t('gratitude recentEntries')}</Heading>
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('gratitude recentEntries')}</h2>
               {allEntries.length === 0 ? (
-                <Card bg={bgColor} borderColor={borderColor} borderWidth={1} borderRadius="xl" shadow="lg">
-                  <CardBody textAlign="center" py={12}>
-                    <Icon as={BookOpen} w={12} h={12} color="gray.400" mb={4} />
-                    <Heading size="md" color="gray.500" mb={2}>{t('gratitude noEntries')}</Heading>
-                    <Text color="gray.600" mb={4}>{t('gratitude.startJourney')}</Text>
-                    <Button
-                      leftIcon={<Plus />}
-                      colorScheme="pink"
-                      onClick={handleAddClick}
-                      size="lg"
-                    >
-                      {t('gratitude.addFirstEntry')}
-                    </Button>
-                  </CardBody>
-                </Card>
+                <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-12 text-center">
+                  <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-500 dark:text-gray-400 mb-2">{t('gratitude noEntries')}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-4">{t('gratitude.startJourney')}</p>
+                  <button
+                    onClick={handleAddClick}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-xl font-semibold transition-colors"
+                  >
+                    <Plus size={20} />
+                    {t('gratitude.addFirstEntry')}
+                  </button>
+                </div>
               ) : (
-                <VStack spacing={4} align="stretch">
+                <div className="space-y-4">
                   {entries.slice(0, 5).map((entry, index) => (
-                    <MotionDiv
+                    <motion.div
                       key={entry.date || index}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -329,47 +291,42 @@ function GratitudeJournalPage() {
                         onDelete={handleDelete}
                         isPremium={isPremium}
                       />
-                    </MotionDiv>
+                    </motion.div>
                   ))}
-                </VStack>
+                </div>
               )}
-            </VStack>
+            </div>
 
             {allEntries.length > 0 && (
               <>
-                <Box>
+                <div>
                   <GratitudeChallenges entries={allEntries} />
-                </Box>
-                <Box>
+                </div>
+                <div>
                   <GratitudeAnalytics entries={allEntries} />
-                </Box>
-                <Box>
+                </div>
+                <div>
                   <WeeklySummary entries={Object.fromEntries(allEntries.map(e => [e.date, e]))} />
-                </Box>
-                <Box>
+                </div>
+                <div>
                   <GratitudeStats entries={allEntries} />
-                </Box>
+                </div>
               </>
             )}
 
             {/* Load More Button */}
             {hasMore && (
-              <Box textAlign="center" py={4}>
-                <Button
+              <div className="text-center py-4">
+                <button
                   onClick={loadMore}
-                  colorScheme="blue"
-                  variant="outline"
-                  size="lg"
-                  leftIcon={<RefreshCw />}
-                  isLoading={false}
-                  _hover={{ transform: 'scale(1.05)' }}
-                  transition="all 0.2s"
+                  className="inline-flex items-center gap-2 px-6 py-3 border border-blue-500 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl font-semibold transition-all hover:scale-105"
                 >
+                  <RefreshCw size={20} />
                   {t('common.loadMore')}
-                </Button>
-              </Box>
+                </button>
+              </div>
             )}
-          </VStack>
+          </div>
         </motion.div>
 
         <GratitudeEntryModal
@@ -384,10 +341,9 @@ function GratitudeJournalPage() {
           selectedPrompts={selectedPrompts}
           promptThoughts={promptThoughts}
         />
-      </Container>
+      </div>
     </SafeComponent>
   )
 }
 
 export default GratitudeJournalPage
-

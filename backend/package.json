@@ -6,16 +6,25 @@
   "scripts": {
     "start": "node express-server.js",
     "dev": "nodemon express-server.js",
-    "ws": "node websocket-server.js"
+    "ws": "node websocket-server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.0",
+    "compression": "^1.8.1",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "socket.io": "^4.6.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "@types/jest": "^30.0.0",
+    "@types/supertest": "^6.0.3",
+    "jest": "^30.2.0",
+    "nodemon": "^3.0.2",
+    "supertest": "^7.1.4"
   }
 }

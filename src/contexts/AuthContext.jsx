@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { supabase, isBackendEnabled } from '../lib/supabase'
+import { authService } from '../services/authService'
 import { fullMigrationService } from '../services/fullMigrationService'
 
 const AuthContext = createContext()
@@ -10,18 +10,18 @@ export function AuthProvider({ children }) {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    if (!isBackendEnabled()) {
+    if (!authService.isEnabled()) {
       setError('Supabase not configured. Please add credentials to .env file.')
       setLoading(false)
       return
     }
 
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session }, error: sessionError }) => {
+    authService.getSession().then(({ data: { session }, error: sessionError }) => {
       if (sessionError) {
         console.warn('Session error:', sessionError.message)
         // Clear invalid session
-        supabase.auth.signOut().catch(console.error)
+        authService.signOut().catch(console.error)
       }
       setUser(session?.user ?? null)
       if (session?.user && !fullMigrationService.isMigrationComplete()) {
@@ -33,15 +33,15 @@ export function AuthProvider({ children }) {
       setLoading(false)
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const { data: { subscription } } = authService.onAuthStateChange(async (event, session) => {
       console.log('Auth state changed:', event)
-      
+
       // Handle token refresh errors
       if (event === 'TOKEN_REFRESHED' && !session) {
         console.warn('Token refresh failed, signing out')
-        await supabase.auth.signOut().catch(console.error)
+        await authService.signOut().catch(console.error)
       }
-      
+
       setUser(session?.user ?? null)
       if (event === 'SIGNED_IN' && session?.user && !fullMigrationService.isMigrationComplete()) {
         await fullMigrationService.migrateAllData(session.user.id).catch(console.error)
@@ -51,20 +51,9 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe()
   }, [])
 
-  const signUp = (email, password) => {
-    if (!isBackendEnabled()) return Promise.reject(new Error('Backend not configured'))
-    return supabase.auth.signUp({ email, password })
-  }
-  
-  const signIn = (email, password) => {
-    if (!isBackendEnabled()) return Promise.reject(new Error('Backend not configured'))
-    return supabase.auth.signInWithPassword({ email, password })
-  }
-  
-  const signOut = () => {
-    if (!isBackendEnabled()) return Promise.reject(new Error('Backend not configured'))
-    return supabase.auth.signOut()
-  }
+  const signUp = (email, password) => authService.signUp(email, password)
+  const signIn = (email, password) => authService.signIn(email, password)
+  const signOut = () => authService.signOut()
 
   return (
     <AuthContext.Provider value={{ user, loading, error, signUp, signIn, signOut }}>

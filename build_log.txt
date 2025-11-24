@@ -1,0 +1,42 @@
+﻿
+> space4u-mobile@1.0.0 build
+> vite build
+
+[36mvite v7.2.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 165 modules transformed.
+node.exe : [31mΓ£ù[39m Build failed in 4.33s
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([31mΓ£ù[ 
+   39m Build failed in 4.33s:String) [], RemoteExcepti  
+  on
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[31merror during build:
+[31mCould not resolve 
+"../components/dashboard/DashboardWidgets" from 
+"src/pages/HomePage.jsx"[31m
+file: 
+[36mC:/Users/HP/OneDrive/Desktop/Projects/AntiGravity 
+- Google - Projects/Space4U/src/pages/HomePage.jsx[31m
+    at getRollupError (file:///C:/Users/HP/OneDrive/Desk
+top/Projects/AntiGravity%20-%20Google%20-%20Projects/Spa
+ce4U/node_modules/rollup/dist/es/shared/parseAst.js:401:
+41)
+    at error (file:///C:/Users/HP/OneDrive/Desktop/Proje
+cts/AntiGravity%20-%20Google%20-%20Projects/Space4U/node
+_modules/rollup/dist/es/shared/parseAst.js:397:42)
+    at ModuleLoader.handleInvalidResolvedId (file:///C:/
+Users/HP/OneDrive/Desktop/Projects/AntiGravity%20-%20Goo
+gle%20-%20Projects/Space4U/node_modules/rollup/dist/es/s
+hared/node-entry.js:21564:24)
+    at ModuleLoader.resolveDynamicImport (file:///C:/Use
+rs/HP/OneDrive/Desktop/Projects/AntiGravity%20-%20Google
+%20-%20Projects/Space4U/node_modules/rollup/dist/es/shar
+ed/node-entry.js:21624:58)
+    at async file:///C:/Users/HP/OneDrive/Desktop/Projec
+ts/AntiGravity%20-%20Google%20-%20Projects/Space4U/node_
+modules/rollup/dist/es/shared/node-entry.js:21508:32[39
+m
